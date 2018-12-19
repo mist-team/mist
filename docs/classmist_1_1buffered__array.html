@@ -1,0 +1,677 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::buffered_array&lt; Array &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1buffered__array.html">buffered_array</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-types">Protected 型</a> &#124;
+<a href="#pro-methods">Protected メソッド</a> &#124;
+<a href="#pro-attribs">Protected 変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::buffered_array&lt; Array &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>１辺が2の指数乗のバッファを持った画像を作成する  
+ <a href="classmist_1_1buffered__array.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="mist_8h_source.html">mist.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a2deff8a0771c893781fae0b6e792de8a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2deff8a0771c893781fae0b6e792de8a"></a>
+typedef Array::allocator_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a2deff8a0771c893781fae0b6e792de8a">allocator_type</a></td></tr>
+<tr class="memdesc:a2deff8a0771c893781fae0b6e792de8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナが利用するアロケータ型 <br/></td></tr>
+<tr class="memitem:a68f553b1d42c0ef7cade44620ddd8ce4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a68f553b1d42c0ef7cade44620ddd8ce4"></a>
+typedef Array::reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a68f553b1d42c0ef7cade44620ddd8ce4">reference</a></td></tr>
+<tr class="memdesc:a68f553b1d42c0ef7cade44620ddd8ce4"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の参照．mist::array&lt; data &gt; の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:affaecfdc029ac50c749b14d75c38f02b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="affaecfdc029ac50c749b14d75c38f02b"></a>
+typedef Array::const_reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#affaecfdc029ac50c749b14d75c38f02b">const_reference</a></td></tr>
+<tr class="memdesc:affaecfdc029ac50c749b14d75c38f02b"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const 参照．mist::array&lt; data &gt; の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:a206a3a0feece97fe700dd63811a9b4ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a206a3a0feece97fe700dd63811a9b4ba"></a>
+typedef Array::value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a206a3a0feece97fe700dd63811a9b4ba">value_type</a></td></tr>
+<tr class="memdesc:a206a3a0feece97fe700dd63811a9b4ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型．mist::array&lt; data &gt; の data と同じ <br/></td></tr>
+<tr class="memitem:a19728c6718d374b8d949e07427564c68"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19728c6718d374b8d949e07427564c68"></a>
+typedef Array::size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a></td></tr>
+<tr class="memdesc:a19728c6718d374b8d949e07427564c68"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a82a68bda14720ca37e2358fda817097f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a82a68bda14720ca37e2358fda817097f"></a>
+typedef Array::difference_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a82a68bda14720ca37e2358fda817097f">difference_type</a></td></tr>
+<tr class="memdesc:a82a68bda14720ca37e2358fda817097f"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:a3f9104ae8f59f50a4d7e0a20feac70de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f9104ae8f59f50a4d7e0a20feac70de"></a>
+typedef Array::pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a3f9104ae8f59f50a4d7e0a20feac70de">pointer</a></td></tr>
+<tr class="memdesc:a3f9104ae8f59f50a4d7e0a20feac70de"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型のポインター型．mist::array&lt; data &gt; の場合，data * となる <br/></td></tr>
+<tr class="memitem:ae1231db43248209b98db9f1b5ef1f8a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae1231db43248209b98db9f1b5ef1f8a7"></a>
+typedef Array::const_pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#ae1231db43248209b98db9f1b5ef1f8a7">const_pointer</a></td></tr>
+<tr class="memdesc:ae1231db43248209b98db9f1b5ef1f8a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array&lt; data &gt; の場合，const data * となる <br/></td></tr>
+<tr class="memitem:a18ee2b2c09a8190a0af4abe59013c629"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a18ee2b2c09a8190a0af4abe59013c629"></a>
+typedef Array::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a18ee2b2c09a8190a0af4abe59013c629">iterator</a></td></tr>
+<tr class="memdesc:a18ee2b2c09a8190a0af4abe59013c629"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ <br/></td></tr>
+<tr class="memitem:a9b0bfe5841a976eff0d3a6574c8e74bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9b0bfe5841a976eff0d3a6574c8e74bc"></a>
+typedef Array::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a9b0bfe5841a976eff0d3a6574c8e74bc">const_iterator</a></td></tr>
+<tr class="memdesc:a9b0bfe5841a976eff0d3a6574c8e74bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版 <br/></td></tr>
+<tr class="memitem:a5377c116d8f3aa0dda83f82e5c539dfe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5377c116d8f3aa0dda83f82e5c539dfe"></a>
+typedef Array::reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a5377c116d8f3aa0dda83f82e5c539dfe">reverse_iterator</a></td></tr>
+<tr class="memdesc:a5377c116d8f3aa0dda83f82e5c539dfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ <br/></td></tr>
+<tr class="memitem:a6c9c7c7ccaa423bc4ecd1f2cba99d5c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c9c7c7ccaa423bc4ecd1f2cba99d5c2"></a>
+typedef <br class="typebreak"/>
+Array::const_reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a6c9c7c7ccaa423bc4ecd1f2cba99d5c2">const_reverse_iterator</a></td></tr>
+<tr class="memdesc:a6c9c7c7ccaa423bc4ecd1f2cba99d5c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a8441021d8ff345c5105c7f4a21c7589d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a8441021d8ff345c5105c7f4a21c7589d">resize</a> (<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a> num1)</td></tr>
+<tr class="memdesc:a8441021d8ff345c5105c7f4a21c7589d"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素数を変更する  <a href="#a8441021d8ff345c5105c7f4a21c7589d"></a><br/></td></tr>
+<tr class="memitem:a6623760c99f797a92efff48cb01d70f3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a6623760c99f797a92efff48cb01d70f3">resize</a> (<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a> num1, <a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a> num2)</td></tr>
+<tr class="memdesc:a6623760c99f797a92efff48cb01d70f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素数を変更する  <a href="#a6623760c99f797a92efff48cb01d70f3"></a><br/></td></tr>
+<tr class="memitem:a048aae0eb7cd60fdf2b9c585ace95f9b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a048aae0eb7cd60fdf2b9c585ace95f9b">resize</a> (<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a> num1, <a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a> num2, <a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a> num3)</td></tr>
+<tr class="memdesc:a048aae0eb7cd60fdf2b9c585ace95f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素数を変更する  <a href="#a048aae0eb7cd60fdf2b9c585ace95f9b"></a><br/></td></tr>
+<tr class="memitem:a67bad66b17b5d899b90a29e2effb9950"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a67bad66b17b5d899b90a29e2effb9950">swap</a> (<a class="el" href="classmist_1_1buffered__array.html">buffered_array</a> &amp;a)</td></tr>
+<tr class="memdesc:a67bad66b17b5d899b90a29e2effb9950"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の全ての内容を入れ替える．  <a href="#a67bad66b17b5d899b90a29e2effb9950"></a><br/></td></tr>
+<tr class="memitem:a8c24533f3ab1c7b7a89286eb900a4480"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a8c24533f3ab1c7b7a89286eb900a4480">clear</a> ()</td></tr>
+<tr class="memdesc:a8c24533f3ab1c7b7a89286eb900a4480"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナの要素を空にする  <a href="#a8c24533f3ab1c7b7a89286eb900a4480"></a><br/></td></tr>
+<tr class="memitem:a15a859bffa4f2ed16106b789d261868b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15a859bffa4f2ed16106b789d261868b"></a>
+<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a15a859bffa4f2ed16106b789d261868b">size1</a> () const </td></tr>
+<tr class="memdesc:a15a859bffa4f2ed16106b789d261868b"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:a1ea3387591002567e7e988346606fa4f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ea3387591002567e7e988346606fa4f"></a>
+<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a1ea3387591002567e7e988346606fa4f">size2</a> () const </td></tr>
+<tr class="memdesc:a1ea3387591002567e7e988346606fa4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:aedee7326326e965aa0f0b823e59dd86f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedee7326326e965aa0f0b823e59dd86f"></a>
+<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#aedee7326326e965aa0f0b823e59dd86f">size3</a> () const </td></tr>
+<tr class="memdesc:aedee7326326e965aa0f0b823e59dd86f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:a2db8e497e21b6ebfdad3fbc2e9764678"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2db8e497e21b6ebfdad3fbc2e9764678"></a>
+<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a2db8e497e21b6ebfdad3fbc2e9764678">width</a> () const </td></tr>
+<tr class="memdesc:a2db8e497e21b6ebfdad3fbc2e9764678"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:a1bcbd08910da831ffef1945e201deea5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1bcbd08910da831ffef1945e201deea5"></a>
+<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a1bcbd08910da831ffef1945e201deea5">height</a> () const </td></tr>
+<tr class="memdesc:a1bcbd08910da831ffef1945e201deea5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:a9c7017358fe60c6a3609397b31a9a977"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c7017358fe60c6a3609397b31a9a977"></a>
+<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a9c7017358fe60c6a3609397b31a9a977">depth</a> () const </td></tr>
+<tr class="memdesc:a9c7017358fe60c6a3609397b31a9a977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:aa7a839caf3b3f9dc370831b96fed8a09"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#aa7a839caf3b3f9dc370831b96fed8a09">operator=</a> (const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a> &amp;o)</td></tr>
+<tr class="memdesc:aa7a839caf3b3f9dc370831b96fed8a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">同じ型の <a class="el" href="classmist_1_1buffered__array.html" title="１辺が2の指数乗のバッファを持った画像を作成する">buffered_array</a> コンテナを代入する  <a href="#aa7a839caf3b3f9dc370831b96fed8a09"></a><br/></td></tr>
+<tr class="memitem:ae25412353eb2fec748f2806ceaf3a873"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ae25412353eb2fec748f2806ceaf3a873"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#ae25412353eb2fec748f2806ceaf3a873">operator=</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:ae25412353eb2fec748f2806ceaf3a873"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なる array コンテナを代入する  <a href="#ae25412353eb2fec748f2806ceaf3a873"></a><br/></td></tr>
+<tr class="memitem:a8f5b1373e35e0a4f618e9b0481e11a3e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a8f5b1373e35e0a4f618e9b0481e11a3e"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a8f5b1373e35e0a4f618e9b0481e11a3e">operator=</a> (const <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a8f5b1373e35e0a4f618e9b0481e11a3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なる <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1</a> コンテナを代入する  <a href="#a8f5b1373e35e0a4f618e9b0481e11a3e"></a><br/></td></tr>
+<tr class="memitem:a4591ea88f66c3efd40a189607cf5c3bc"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a4591ea88f66c3efd40a189607cf5c3bc"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a4591ea88f66c3efd40a189607cf5c3bc">operator=</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a4591ea88f66c3efd40a189607cf5c3bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なる <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> コンテナを代入する  <a href="#a4591ea88f66c3efd40a189607cf5c3bc"></a><br/></td></tr>
+<tr class="memitem:a457d64018429faa6d712fd998bec725b"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a457d64018429faa6d712fd998bec725b"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a457d64018429faa6d712fd998bec725b">operator=</a> (const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a457d64018429faa6d712fd998bec725b"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なる <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a> コンテナを代入する  <a href="#a457d64018429faa6d712fd998bec725b"></a><br/></td></tr>
+<tr class="memitem:a1a1d141feae95ac6d747672de1e5a5fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a1d141feae95ac6d747672de1e5a5fc"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a1a1d141feae95ac6d747672de1e5a5fc">buffered_array</a> ()</td></tr>
+<tr class="memdesc:a1a1d141feae95ac6d747672de1e5a5fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">ディフォルトコンストラクタ．要素数 0 のコンテナを作成する <br/></td></tr>
+<tr class="memitem:a6694d5906fb268d3c3e73611064eafdd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6694d5906fb268d3c3e73611064eafdd"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a6694d5906fb268d3c3e73611064eafdd">buffered_array</a> (const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a> &amp;o)</td></tr>
+<tr class="memdesc:a6694d5906fb268d3c3e73611064eafdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">コピーコンストラクタ <br/></td></tr>
+<tr class="memitem:a9276bcce1d32c5d3ec4c692e8e6aa277"><td class="memTemplParams" colspan="2"><a class="anchor" id="a9276bcce1d32c5d3ec4c692e8e6aa277"></a>
+template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a9276bcce1d32c5d3ec4c692e8e6aa277"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a9276bcce1d32c5d3ec4c692e8e6aa277">buffered_array</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a9276bcce1d32c5d3ec4c692e8e6aa277"><td class="mdescLeft">&#160;</td><td class="mdescRight">array 配列 o を用いて初期化し，一辺の長さを2の指数乗にする <br/></td></tr>
+<tr class="memitem:a2ec312a1c8e8cee07a9e1eeae50e12f7"><td class="memTemplParams" colspan="2"><a class="anchor" id="a2ec312a1c8e8cee07a9e1eeae50e12f7"></a>
+template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a2ec312a1c8e8cee07a9e1eeae50e12f7"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a2ec312a1c8e8cee07a9e1eeae50e12f7">buffered_array</a> (const <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a2ec312a1c8e8cee07a9e1eeae50e12f7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1</a> 配列 o を用いて初期化し，一辺の長さを2の指数乗にする <br/></td></tr>
+<tr class="memitem:abd48f66904f601f2ec0a4c204a6def35"><td class="memTemplParams" colspan="2"><a class="anchor" id="abd48f66904f601f2ec0a4c204a6def35"></a>
+template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:abd48f66904f601f2ec0a4c204a6def35"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#abd48f66904f601f2ec0a4c204a6def35">buffered_array</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:abd48f66904f601f2ec0a4c204a6def35"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> 配列 o を用いて初期化し，一辺の長さを2の指数乗にする <br/></td></tr>
+<tr class="memitem:ac9097bce66e00d057e5277055068144f"><td class="memTemplParams" colspan="2"><a class="anchor" id="ac9097bce66e00d057e5277055068144f"></a>
+template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ac9097bce66e00d057e5277055068144f"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#ac9097bce66e00d057e5277055068144f">buffered_array</a> (const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:ac9097bce66e00d057e5277055068144f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a> 配列 o を用いて初期化し，一辺の長さを2の指数乗にする <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-types"></a>
+Protected 型</h2></td></tr>
+<tr class="memitem:a83c6c77df5e701f8f1cecdd59a2d6535"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83c6c77df5e701f8f1cecdd59a2d6535"></a>
+typedef Array&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a83c6c77df5e701f8f1cecdd59a2d6535">base</a></td></tr>
+<tr class="memdesc:a83c6c77df5e701f8f1cecdd59a2d6535"><td class="mdescLeft">&#160;</td><td class="mdescRight">基底クラス <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr class="memitem:a4e18f65c0c5d1702f380c04a46569092"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a4e18f65c0c5d1702f380c04a46569092">floor_square_index</a> (size_t v)</td></tr>
+<tr class="memdesc:a4e18f65c0c5d1702f380c04a46569092"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定された数値以上の正整数で最も最小の2の指数乗を計算し，その指数部を返す  <a href="#a4e18f65c0c5d1702f380c04a46569092"></a><br/></td></tr>
+<tr class="memitem:ab2798b9b3895a2b9627c939270769913"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#ab2798b9b3895a2b9627c939270769913">floor_square</a> (size_t v)</td></tr>
+<tr class="memdesc:ab2798b9b3895a2b9627c939270769913"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定された数値以上の正整数で最も最小の2の指数乗を計算する  <a href="#ab2798b9b3895a2b9627c939270769913"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected 変数</h2></td></tr>
+<tr class="memitem:a1aade4a60ace8c149c2369f19bfeaca8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1aade4a60ace8c149c2369f19bfeaca8"></a>
+<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#a1aade4a60ace8c149c2369f19bfeaca8">size1_</a></td></tr>
+<tr class="memdesc:a1aade4a60ace8c149c2369f19bfeaca8"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の要素数 <br/></td></tr>
+<tr class="memitem:af753c6442e0548e9632fe1a8b374cbfd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af753c6442e0548e9632fe1a8b374cbfd"></a>
+<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#af753c6442e0548e9632fe1a8b374cbfd">size2_</a></td></tr>
+<tr class="memdesc:af753c6442e0548e9632fe1a8b374cbfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向の要素数 <br/></td></tr>
+<tr class="memitem:aaa10db5ba2ff3a394324ad32350df304"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa10db5ba2ff3a394324ad32350df304"></a>
+<a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1buffered__array.html#aaa10db5ba2ff3a394324ad32350df304">size3_</a></td></tr>
+<tr class="memdesc:aaa10db5ba2ff3a394324ad32350df304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z軸方向の要素数 <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class Array&gt;<br/>
+class mist::buffered_array&lt; Array &gt;</h3>
+
+<p>１辺が2の指数乗のバッファを持った画像を作成する </p>
+<p>1・2・3次元画像の１辺が2の指数乗にするための基本クラス</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Array</td><td>… 1・2・3次元画像クラスを指定する </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2>関数</h2>
+<a class="anchor" id="a8c24533f3ab1c7b7a89286eb900a4480"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナの要素を空にする </p>
+<p>コンテナに格納されているデータを全て削除し，コンテナを空（要素数0）にする </p>
+
+</div>
+</div>
+<a class="anchor" id="ab2798b9b3895a2b9627c939270769913"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::floor_square </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定された数値以上の正整数で最も最小の2の指数乗を計算する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 任意の非負の整数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力された正整数を超える最も最小の2の指数乗を表す整数 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4e18f65c0c5d1702f380c04a46569092"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::floor_square_index </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定された数値以上の正整数で最も最小の2の指数乗を計算し，その指数部を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 任意の非負の整数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力された正整数を超える最も最小の2の指数乗の指数部 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa7a839caf3b3f9dc370831b96fed8a09"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a>&amp; <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a>&lt; Array &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>同じ型の <a class="el" href="classmist_1_1buffered__array.html" title="１辺が2の指数乗のバッファを持った画像を作成する">buffered_array</a> コンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元の <a class="el" href="classmist_1_1buffered__array.html" title="１辺が2の指数乗のバッファを持った画像を作成する">buffered_array</a> コンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1buffered__array.html#a1aade4a60ace8c149c2369f19bfeaca8">mist::buffered_array&lt; Array &gt;::size1_</a>, <a class="el" href="classmist_1_1buffered__array.html#af753c6442e0548e9632fe1a8b374cbfd">mist::buffered_array&lt; Array &gt;::size2_</a>, と <a class="el" href="classmist_1_1buffered__array.html#aaa10db5ba2ff3a394324ad32350df304">mist::buffered_array&lt; Array &gt;::size3_</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae25412353eb2fec748f2806ceaf3a873"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a>&amp; <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">array</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>要素の型が異なる array コンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元の array コンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8f5b1373e35e0a4f618e9b0481e11a3e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a>&amp; <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>要素の型が異なる <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1</a> コンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元の <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1</a> コンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, と <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4591ea88f66c3efd40a189607cf5c3bc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a>&amp; <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>要素の型が異なる <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> コンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元の <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> コンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array2.html#ab6ecb95961c8f9e8f0cfa3ec9964e356">mist::array2&lt; T, Allocator &gt;::size1()</a>, と <a class="el" href="classmist_1_1array2.html#a8c8a04c195a6b969accb6b80a874129f">mist::array2&lt; T, Allocator &gt;::size2()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a457d64018429faa6d712fd998bec725b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1buffered__array.html">buffered_array</a>&amp; <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>要素の型が異なる <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a> コンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元の <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a> コンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array3.html#ae3aec3e8e4dcded2aa267a17a487d251">mist::array3&lt; T, Allocator &gt;::reso3()</a>, <a class="el" href="classmist_1_1array3.html#a0d7b4197964d6eed9ce23aa24f016b79">mist::array3&lt; T, Allocator &gt;::size1()</a>, <a class="el" href="classmist_1_1array3.html#af610c89e037e6ef03fe488abe994b4fd">mist::array3&lt; T, Allocator &gt;::size2()</a>, と <a class="el" href="classmist_1_1array3.html#a8e779970f1f14abe6a70bc87e2e1465e">mist::array3&lt; T, Allocator &gt;::size3()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8441021d8ff345c5105c7f4a21c7589d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td>
+          <td class="paramname"><em>num1</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の要素数を変更する </p>
+<p>各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，要素数が変更された場合のみ全ての要素をデフォルト値で初期化する．</p>
+<dl class="section attention"><dt>注意</dt><dd>必ず要素を初期化するためには，fill 関数を利用してください．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num1</td><td>… リサイズ後のX軸方向の要素数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a6623760c99f797a92efff48cb01d70f3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td>
+          <td class="paramname"><em>num1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td>
+          <td class="paramname"><em>num2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の要素数を変更する </p>
+<p>各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，要素数が変更された場合のみ全ての要素をデフォルト値で初期化する．</p>
+<dl class="section attention"><dt>注意</dt><dd>必ず要素を初期化するためには，fill 関数を利用してください．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num1</td><td>… リサイズ後のX軸方向の要素数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num2</td><td>… リサイズ後のY軸方向の要素数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a048aae0eb7cd60fdf2b9c585ace95f9b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td>
+          <td class="paramname"><em>num1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td>
+          <td class="paramname"><em>num2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1buffered__array.html#a19728c6718d374b8d949e07427564c68">size_type</a>&#160;</td>
+          <td class="paramname"><em>num3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の要素数を変更する </p>
+<p>各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，要素数が変更された場合のみ全ての要素をデフォルト値で初期化する．</p>
+<dl class="section attention"><dt>注意</dt><dd>必ず要素を初期化するためには，fill 関数を利用してください．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num1</td><td>… リサイズ後のX軸方向の要素数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num2</td><td>… リサイズ後のY軸方向の要素数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num3</td><td>… リサイズ後のZ軸方向の要素数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a67bad66b17b5d899b90a29e2effb9950"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1buffered__array.html">mist::buffered_array</a>&lt; Array &gt;::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1buffered__array.html">buffered_array</a>&lt; Array &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の全ての内容を入れ替える． </p>
+<dl class="section attention"><dt>注意</dt><dd>どちらかのコンテナが外部メモリを利用している場合は，スワップは必ず失敗する</dd></dl>
+<p>入れ替え元のコンテナ a の中身と全て入れ替える</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 内容を入れ替える対象</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… データのスワップに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… データのスワップに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1buffered__array.html#a1aade4a60ace8c149c2369f19bfeaca8">mist::buffered_array&lt; Array &gt;::size1_</a>, <a class="el" href="classmist_1_1buffered__array.html#af753c6442e0548e9632fe1a8b374cbfd">mist::buffered_array&lt; Array &gt;::size2_</a>, と <a class="el" href="classmist_1_1buffered__array.html#aaa10db5ba2ff3a394324ad32350df304">mist::buffered_array&lt; Array &gt;::size3_</a>.</p>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="mist_8h_source.html">mist.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

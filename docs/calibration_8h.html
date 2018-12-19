@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>calibration.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">calibration.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>カメラキャリブレーションを行う関数群  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">config/mist_conf.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="matrix_8h_source.html">matrix.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="vector_8h_source.html">vector.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="numeric_8h_source.html">numeric.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="minimization_8h_source.html">minimization.h</a>&quot;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+</div>
+<p><a href="calibration_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1Tsai_1_1parameter.html">mist::Tsai::parameter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">キャリブレーションに用いるパラメータ及びキャリブレーション結果を代入する構造体  <a href="structmist_1_1Tsai_1_1parameter.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1Tsai"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1Tsai.html">mist::Tsai</a></td></tr>
+<tr class="memdesc:namespacemist_1_1Tsai"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacemist_1_1Tsai.html" title="Tsai のカメラキャリブレーション手法">Tsai</a> のカメラキャリブレーション手法 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a0ada9caff75276ae00ab0a3c28924765"><td class="memItemLeft" align="right" valign="top">inline::std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1Tsai.html#a0ada9caff75276ae00ab0a3c28924765">mist::Tsai::operator&lt;&lt;</a> (::std::ostream &amp;out, const parameter &amp;p)</td></tr>
+<tr class="memdesc:a0ada9caff75276ae00ab0a3c28924765"><td class="mdescLeft">&#160;</td><td class="mdescRight">カメラキャリブレーションパラメータを整形して出力する  <a href="#a0ada9caff75276ae00ab0a3c28924765"></a><br/></td></tr>
+<tr class="memitem:a48d221829c8f3f8d436da82579a9853e"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 &gt; </td></tr>
+<tr class="memitem:a48d221829c8f3f8d436da82579a9853e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1Tsai.html#a48d221829c8f3f8d436da82579a9853e">mist::Tsai::calibration</a> (parameter &amp;p, const std::vector&lt; vector3&lt; T1 &gt; &gt; &amp;world, const std::vector&lt; vector2&lt; T2 &gt; &gt; &amp;image)</td></tr>
+<tr class="memdesc:a48d221829c8f3f8d436da82579a9853e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacemist_1_1Tsai.html" title="Tsai のカメラキャリブレーション手法">Tsai</a> のカメラキャリブレーション  <a href="#a48d221829c8f3f8d436da82579a9853e"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>カメラキャリブレーションを行う関数群 </p>
+<ul>
+<li>参考文献<ul>
+<li>R. Y. Tsai, ``A Versatile Camera Calibration Technique for High-Accuracy 3D Machine Vision Metrology Using Off-the-Shelf TV Cameras and Lenses,'' IEEE Journal of Robotics and Automation, Vol. RA-3, No. 4, pp. 323&ndash;344, 1987. </li>
+</ul>
+</li>
+</ul>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

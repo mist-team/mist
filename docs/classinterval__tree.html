@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート interval_tree&lt; S, V &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート interval_tree&lt; S, V &gt;<div class="ingroups"><a class="el" href="group__interval__tree__group.html">Interval-tree</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>区間の集合から任意の値が含まれる区間のみを高速に探索するためのクラス  
+ <a href="classinterval__tree.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="interval__tree_8h_source.html">interval_tree.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree_1_1node.html">node</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）  <a href="classinterval__tree_1_1node.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:ab5fb9320f7cf3664b336576393f77d43"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5fb9320f7cf3664b336576393f77d43"></a>
+typedef S&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43">section_type</a></td></tr>
+<tr class="memdesc:ab5fb9320f7cf3664b336576393f77d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">区間を表す型 <br/></td></tr>
+<tr class="memitem:a1e58a6e48fa9c73a130204ff33784a84"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e58a6e48fa9c73a130204ff33784a84"></a>
+typedef S::min_max_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#a1e58a6e48fa9c73a130204ff33784a84">min_max_type</a></td></tr>
+<tr class="memdesc:a1e58a6e48fa9c73a130204ff33784a84"><td class="mdescLeft">&#160;</td><td class="mdescRight">区間の両端の値を表す型 <br/></td></tr>
+<tr class="memitem:a9a9eef853a48363c8a41a3d1433c3ae6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a9eef853a48363c8a41a3d1433c3ae6"></a>
+typedef S::tag_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#a9a9eef853a48363c8a41a3d1433c3ae6">tag_type</a></td></tr>
+<tr class="memdesc:a9a9eef853a48363c8a41a3d1433c3ae6"><td class="mdescLeft">&#160;</td><td class="mdescRight">区間のタグ情報をを表す型 <br/></td></tr>
+<tr class="memitem:a6a9351c7810273c1555e604ff2888ec0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a9351c7810273c1555e604ff2888ec0"></a>
+typedef V&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0">value_type</a></td></tr>
+<tr class="memdesc:a6a9351c7810273c1555e604ff2888ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">区間の探索の際に入力される値を表す型 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:af8c0f0e8ed1a6f66a1b51b7fed9b560c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#af8c0f0e8ed1a6f66a1b51b7fed9b560c">find</a> (const <a class="el" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0">value_type</a> &amp;val, std::vector&lt; <a class="el" href="classinterval__tree.html#a9a9eef853a48363c8a41a3d1433c3ae6">tag_type</a> &gt; &amp;tags)</td></tr>
+<tr class="memdesc:af8c0f0e8ed1a6f66a1b51b7fed9b560c"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力された値が含まれる区間の探索  <a href="#af8c0f0e8ed1a6f66a1b51b7fed9b560c"></a><br/></td></tr>
+<tr class="memitem:a9f5377c6ea71235257a10ec5144d85b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#a9f5377c6ea71235257a10ec5144d85b3">construct</a> (const std::vector&lt; <a class="el" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43">section_type</a> &gt; &amp;secs)</td></tr>
+<tr class="memdesc:a9f5377c6ea71235257a10ec5144d85b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interval-treeの構築  <a href="#a9f5377c6ea71235257a10ec5144d85b3"></a><br/></td></tr>
+<tr class="memitem:a8bdf4bf3ecba1f76547ae506577836d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8bdf4bf3ecba1f76547ae506577836d6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#a8bdf4bf3ecba1f76547ae506577836d6">destruct</a> ()</td></tr>
+<tr class="memdesc:a8bdf4bf3ecba1f76547ae506577836d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interval-treeの破棄 <br/></td></tr>
+<tr class="memitem:a623562f67293ac36e11363fc56c3c94e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a623562f67293ac36e11363fc56c3c94e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#a623562f67293ac36e11363fc56c3c94e">interval_tree</a> ()</td></tr>
+<tr class="memdesc:a623562f67293ac36e11363fc56c3c94e"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトコンストラクタ <br/></td></tr>
+<tr class="memitem:a8521e57b166547f2fcebede4954bba13"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#a8521e57b166547f2fcebede4954bba13">interval_tree</a> (const std::vector&lt; <a class="el" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43">section_type</a> &gt; &amp;secs)</td></tr>
+<tr class="memdesc:a8521e57b166547f2fcebede4954bba13"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンストラクタ（Interval-treeの構築）  <a href="#a8521e57b166547f2fcebede4954bba13"></a><br/></td></tr>
+<tr class="memitem:a2fd9c606e228e10ab42966c40875b14c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#a2fd9c606e228e10ab42966c40875b14c">interval_tree</a> (const <a class="el" href="classinterval__tree.html">interval_tree</a>&lt; <a class="el" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43">section_type</a>, <a class="el" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0">value_type</a> &gt; &amp;it)</td></tr>
+<tr class="memdesc:a2fd9c606e228e10ab42966c40875b14c"><td class="mdescLeft">&#160;</td><td class="mdescRight">コピーコンストラクタ  <a href="#a2fd9c606e228e10ab42966c40875b14c"></a><br/></td></tr>
+<tr class="memitem:a17d326c4e43d4e6658a5ca97fa356cbf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a17d326c4e43d4e6658a5ca97fa356cbf"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#a17d326c4e43d4e6658a5ca97fa356cbf">~interval_tree</a> ()</td></tr>
+<tr class="memdesc:a17d326c4e43d4e6658a5ca97fa356cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">デストラクタ <br/></td></tr>
+<tr class="memitem:a8a8559a9d327181f6021f3249aa848a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classinterval__tree.html">interval_tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinterval__tree.html#a8a8559a9d327181f6021f3249aa848a0">operator=</a> (const <a class="el" href="classinterval__tree.html">interval_tree</a>&lt; <a class="el" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43">section_type</a>, <a class="el" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0">value_type</a> &gt; &amp;it)</td></tr>
+<tr class="memdesc:a8a8559a9d327181f6021f3249aa848a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">代入演算子  <a href="#a8a8559a9d327181f6021f3249aa848a0"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;typename S, typename V&gt;<br/>
+class interval_tree&lt; S, V &gt;</h3>
+
+<p>区間の集合から任意の値が含まれる区間のみを高速に探索するためのクラス </p>
+<p>区間の集合から2分木を構築し、通常O(n)かかる探索時間をO(log n)に削減する． 線分や面分の重なり判定などに有効．</p>
+<dl class="section attention"><dt>注意</dt><dd>mist::tagged_section&lt; M, T &gt;型のstd::vetorを入力とする． </dd>
+<dd>
+mist::tagged_section&lt; M, T &gt;::tag_type型のstd::vetorを探索結果の出力とする．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">S</td><td>… 区間のデータ型（ mist::tagged_section&lt; M, T &gt;型 ） </td></tr>
+    <tr><td class="paramname">V</td><td>… 区間の探索の際に入力する任意の値のデータ型（ double や float など，mist::rgb&lt; M, T &gt;::min_max_typeと同じか、あるいはより精度の高い型 ）</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"> 使用例</div>
+<div class="line"><span class="comment">// 区間の集合の用意</span></div>
+<div class="line"><span class="keyword">typedef</span> mist::tagged_section&lt; int, size_t &gt; <a class="code" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43" title="区間を表す型">section_type</a>;</div>
+<div class="line">std::vector&lt; section_type &gt; secs; <span class="comment">// int型の最大値，最小値にはさまれた区間の集合，各区間にはsize_t型のタグが付けられる．</span></div>
+<div class="line">secs.push_back( <a class="code" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43" title="区間を表す型">section_type</a>( -1, 5, 0 ) );　<span class="comment">// タグ0が付いた区間[ -1, 5 )を集合に追加．</span></div>
+<div class="line"><span class="comment">/* </span></div>
+<div class="line"><span class="comment">    区間の集合へ追加処理</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">// Interval-treeの構築</span></div>
+<div class="line"><span class="keyword">typedef</span> mist::interval_tree&lt; section_type, double &gt; i_tree_type;</div>
+<div class="line">mist::i_tree_type i_tree( secs );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 任意の値が含まれる区間のタグの集合を高速に探索</span></div>
+<div class="line">std::vector&lt; section_type::tag_type &gt; tags;</div>
+<div class="line">i_tree.find( 0.0, tags ); <span class="comment">// 0.0 が含まれる区間のタグの集合を得る</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 探索結果の表示</span></div>
+<div class="line"><span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> i = 0 ; i &lt; tags.size( ) ; i ++ )</div>
+<div class="line">{</div>
+<div class="line">    std::cout &lt;&lt; secs[ tags[ i ] ] &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+</div><!-- fragment --> </div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="a8521e57b166547f2fcebede4954bba13"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename S, typename V&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classinterval__tree.html">interval_tree</a>&lt; S, V &gt;::<a class="el" href="classinterval__tree.html">interval_tree</a> </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43">section_type</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>secs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンストラクタ（Interval-treeの構築） </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">secs</td><td>… 区間集合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a2fd9c606e228e10ab42966c40875b14c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename S, typename V&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classinterval__tree.html">interval_tree</a>&lt; S, V &gt;::<a class="el" href="classinterval__tree.html">interval_tree</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classinterval__tree.html">interval_tree</a>&lt; <a class="el" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43">section_type</a>, <a class="el" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0">value_type</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>it</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コピーコンストラクタ </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">it</td><td>… interval_treeオブジェクト </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="a9f5377c6ea71235257a10ec5144d85b3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename S, typename V&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classinterval__tree.html">interval_tree</a>&lt; S, V &gt;::construct </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43">section_type</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>secs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Interval-treeの構築 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">secs</td><td>… 区間の集合 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>木が正しく構築された場合に真を返す </dd></dl>
+
+<p>参照元 <a class="el" href="classinterval__tree.html#a8521e57b166547f2fcebede4954bba13">interval_tree&lt; section_type, float_type &gt;::interval_tree()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af8c0f0e8ed1a6f66a1b51b7fed9b560c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename S, typename V&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classinterval__tree.html">interval_tree</a>&lt; S, V &gt;::find </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0">value_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classinterval__tree.html#a9a9eef853a48363c8a41a3d1433c3ae6">tag_type</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tags</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>入力された値が含まれる区間の探索 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td>… 入力（この値を間に含む区間を探索） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">tags</td><td>… 探索された区間のタグ情報の集合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a8a8559a9d327181f6021f3249aa848a0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename S, typename V&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classinterval__tree.html">interval_tree</a>&amp; <a class="el" href="classinterval__tree.html">interval_tree</a>&lt; S, V &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classinterval__tree.html">interval_tree</a>&lt; <a class="el" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43">section_type</a>, <a class="el" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0">value_type</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>it</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>代入演算子 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">it</td><td>… interval_treeオブジェクト </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="interval__tree_8h_source.html">interval_tree.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

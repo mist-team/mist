@@ -1,0 +1,1080 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ネームスペース mist::linear</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="namespaces.html"><span>ネームスペース一覧</span></a></li>
+      <li><a href="namespacemembers.html"><span>ネームスペースメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1linear.html">linear</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ネームスペース mist::linear<div class="ingroups"><a class="el" href="group__linear__group.html">線形フィルタ</a> &#124; <a class="el" href="group__interpolate__group.html">画像補間</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>一般カーネルの線形フィルタの実装（コールバック関数を指定することが可能）  
+<a href="#details">[詳細]</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a54e884bd5f359e6bff8bea54a552c371"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </td></tr>
+<tr class="memitem:a54e884bd5f359e6bff8bea54a552c371"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a54e884bd5f359e6bff8bea54a552c371">filter</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; T1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array.html">array</a>&lt; T2, Allocator2 &gt; &amp;out, const Kernel &amp;kernel, Functor f, typename <a class="el" href="classmist_1_1array.html">array</a>&lt; T1, Allocator1 &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:a54e884bd5f359e6bff8bea54a552c371"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array )  <a href="#a54e884bd5f359e6bff8bea54a552c371"></a><br/></td></tr>
+<tr class="memitem:a86c38f09e916a850d63aa678e23e2884"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </td></tr>
+<tr class="memitem:a86c38f09e916a850d63aa678e23e2884"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a86c38f09e916a850d63aa678e23e2884">filter</a> (const <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T2, Allocator2 &gt; &amp;out, const Kernel &amp;kernel, Functor f, typename <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T1, Allocator1 &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:a86c38f09e916a850d63aa678e23e2884"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array1 )  <a href="#a86c38f09e916a850d63aa678e23e2884"></a><br/></td></tr>
+<tr class="memitem:a4ad7ea3730d2a8aa1a406699c5cecc33"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </td></tr>
+<tr class="memitem:a4ad7ea3730d2a8aa1a406699c5cecc33"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a4ad7ea3730d2a8aa1a406699c5cecc33">filter</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T2, Allocator2 &gt; &amp;out, const Kernel &amp;kernel, Functor f, typename <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T1, Allocator1 &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:a4ad7ea3730d2a8aa1a406699c5cecc33"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array2 )  <a href="#a4ad7ea3730d2a8aa1a406699c5cecc33"></a><br/></td></tr>
+<tr class="memitem:a938336c95aa76afb20d2fe439bb1c790"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </td></tr>
+<tr class="memitem:a938336c95aa76afb20d2fe439bb1c790"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a938336c95aa76afb20d2fe439bb1c790">filter1d</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T2, Allocator2 &gt; &amp;out, const Kernel &amp;kernel1, const Kernel &amp;kernel2, Functor f, typename <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T1, Allocator1 &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:a938336c95aa76afb20d2fe439bb1c790"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array2 )  <a href="#a938336c95aa76afb20d2fe439bb1c790"></a><br/></td></tr>
+<tr class="memitem:a66f6b2fcf7cf678db063b374bdd242f3"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Kernel , class Functor &gt; </td></tr>
+<tr class="memitem:a66f6b2fcf7cf678db063b374bdd242f3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a66f6b2fcf7cf678db063b374bdd242f3">filter1d</a> (<a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;in, const Kernel &amp;kernel1, const Kernel &amp;kernel2, Functor f, typename <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:a66f6b2fcf7cf678db063b374bdd242f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array2 )  <a href="#a66f6b2fcf7cf678db063b374bdd242f3"></a><br/></td></tr>
+<tr class="memitem:afdd0de3a99370bce0aea07b64ac2c0e1"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </td></tr>
+<tr class="memitem:afdd0de3a99370bce0aea07b64ac2c0e1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#afdd0de3a99370bce0aea07b64ac2c0e1">filter</a> (const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T2, Allocator2 &gt; &amp;out, const Kernel &amp;kernel, Functor f, typename <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T1, Allocator1 &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:afdd0de3a99370bce0aea07b64ac2c0e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array3 )  <a href="#afdd0de3a99370bce0aea07b64ac2c0e1"></a><br/></td></tr>
+<tr class="memitem:ac1238e4997fa045233e60cf5a3200c28"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </td></tr>
+<tr class="memitem:ac1238e4997fa045233e60cf5a3200c28"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#ac1238e4997fa045233e60cf5a3200c28">filter1d</a> (const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T2, Allocator2 &gt; &amp;out, const Kernel &amp;kernel1, const Kernel &amp;kernel2, const Kernel &amp;kernel3, Functor f, typename <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T1, Allocator1 &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:ac1238e4997fa045233e60cf5a3200c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array3 )  <a href="#ac1238e4997fa045233e60cf5a3200c28"></a><br/></td></tr>
+<tr class="memitem:a7e01a4e2f5676aa046e8de52f3333fdb"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Kernel , class Functor &gt; </td></tr>
+<tr class="memitem:a7e01a4e2f5676aa046e8de52f3333fdb"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a7e01a4e2f5676aa046e8de52f3333fdb">filter1d</a> (<a class="el" href="classmist_1_1array3.html">array3</a>&lt; T, Allocator &gt; &amp;in, const Kernel &amp;kernel1, const Kernel &amp;kernel2, const Kernel &amp;kernel3, Functor f, typename <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T, Allocator &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:a7e01a4e2f5676aa046e8de52f3333fdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array3 )  <a href="#a7e01a4e2f5676aa046e8de52f3333fdb"></a><br/></td></tr>
+<tr class="memitem:ae4478e46710d156473ae8405bf21e7a4"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ae4478e46710d156473ae8405bf21e7a4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#ae4478e46710d156473ae8405bf21e7a4">transform</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T1, Allocator1 &gt; &amp;out, const <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; T2, Allocator2 &gt; &amp;mat)</td></tr>
+<tr class="memdesc:ae4478e46710d156473ae8405bf21e7a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">transform <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a>  <a href="#ae4478e46710d156473ae8405bf21e7a4"></a><br/></td></tr>
+<tr class="memitem:af98bedc500bd6e51da328aae50decfa2"><td class="memTemplParams" colspan="2">template&lt;class Value_type1 , class Allocator1 , class Value_type2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:af98bedc500bd6e51da328aae50decfa2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#af98bedc500bd6e51da328aae50decfa2">transform</a> (const <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; Value_type1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; Value_type2, Allocator2 &gt; &amp;out, const double &amp;delta_x, const double &amp;delta_y)</td></tr>
+<tr class="memdesc:af98bedc500bd6e51da328aae50decfa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">平行移動と拡大を考慮して変形する  <a href="#af98bedc500bd6e51da328aae50decfa2"></a><br/></td></tr>
+<tr class="memitem:aebe0771229542cdeba0260f21d94da22"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:aebe0771229542cdeba0260f21d94da22"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#aebe0771229542cdeba0260f21d94da22">interpolate</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; T1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array.html">array</a>&lt; T2, Allocator2 &gt; &amp;out, typename <a class="el" href="classmist_1_1array.html">array</a>&lt; T1, Allocator1 &gt;::size_type width, typename <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:aebe0771229542cdeba0260f21d94da22"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する線形補間  <a href="#aebe0771229542cdeba0260f21d94da22"></a><br/></td></tr>
+<tr class="memitem:a9305b7a6f3d73b3e28fc2438df79b6ea"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a9305b7a6f3d73b3e28fc2438df79b6ea"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a9305b7a6f3d73b3e28fc2438df79b6ea">interpolate</a> (const <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T2, Allocator2 &gt; &amp;out, typename <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T1, Allocator1 &gt;::size_type width, typename <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a9305b7a6f3d73b3e28fc2438df79b6ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する線形補間  <a href="#a9305b7a6f3d73b3e28fc2438df79b6ea"></a><br/></td></tr>
+<tr class="memitem:a07e4c8eaec57b5b1c9fbfa040ce3dab2"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a07e4c8eaec57b5b1c9fbfa040ce3dab2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a07e4c8eaec57b5b1c9fbfa040ce3dab2">interpolate</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T2, Allocator2 &gt; &amp;out, typename <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T1, Allocator1 &gt;::size_type width, typename <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T1, Allocator1 &gt;::size_type height, typename <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a07e4c8eaec57b5b1c9fbfa040ce3dab2"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元配列に対する線形補間  <a href="#a07e4c8eaec57b5b1c9fbfa040ce3dab2"></a><br/></td></tr>
+<tr class="memitem:a34bf8729ae641085ffef7bd101228a1f"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a34bf8729ae641085ffef7bd101228a1f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a34bf8729ae641085ffef7bd101228a1f">interpolate</a> (const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T2, Allocator2 &gt; &amp;out, typename <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T1, Allocator1 &gt;::size_type width, typename <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T1, Allocator1 &gt;::size_type height, typename <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T1, Allocator1 &gt;::size_type depth, typename <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a34bf8729ae641085ffef7bd101228a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元配列に対する線形補間  <a href="#a34bf8729ae641085ffef7bd101228a1f"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>一般カーネルの線形フィルタの実装（コールバック関数を指定することが可能） </p>
+<p>線形補間 </p>
+</div><h2>関数</h2>
+<a class="anchor" id="a54e884bd5f359e6bff8bea54a552c371"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::filter </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array ) </p>
+<p>カーネル配列を指定する(中心はカーネルのサイズから計算)</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数は無視され，常にシングルスレッドで動作する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>カーネルの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力配列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel</td><td>… カーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… コールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710">mist::is_same_object()</a>, <a class="el" href="classmist_1_1array.html#ab2b09cc3b61f7dc9bb120ed876003705">mist::array&lt; T, Allocator &gt;::resize()</a>, と <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+<p>参照元 <a class="el" href="group__average__group.html#ga1798c622c35569098a8925b953b1ba23">mist::average_filter()</a>, <a class="el" href="namespacemist_1_1laplacian.html#a5598a105af58b16ef128d3be546c91e0">mist::laplacian::filter()</a>, <a class="el" href="namespacemist_1_1gaussian.html#aef2ee35eb6430927dd670f88c9e8f232">mist::gaussian::filter()</a>, <a class="el" href="namespacemist_1_1average.html#a1379a576c4b79616ecb0a01b95f13a5a">mist::average::filter()</a>, <a class="el" href="group__gaussian__group.html#ga89701e76eee4e634cc8635d01d6aa894">mist::gaussian_filter()</a>, <a class="el" href="group__laplacian__group.html#ga489ac607f4d3a57f958e05f1d05fb54e">mist::laplacian_filter()</a>, と <a class="el" href="group__linear__group.html#gab7462396eef1092ec686c96ac9936868">mist::linear_filter()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a86c38f09e916a850d63aa678e23e2884"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::filter </td>
+          <td>(</td>
+          <td class="paramtype">const array1&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array1&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array1&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array1 ) </p>
+<p>カーネル配列を指定する(中心はカーネルのサイズから計算)</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数は無視され，常にシングルスレッドで動作する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>カーネルの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力配列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel</td><td>… カーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… コールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710">mist::is_same_object()</a>, <a class="el" href="classmist_1_1array.html#ab2b09cc3b61f7dc9bb120ed876003705">mist::array&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, と <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4ad7ea3730d2a8aa1a406699c5cecc33"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::filter </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array2&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array2 ) </p>
+<p>カーネル配列を指定する(中心はカーネルのサイズから計算)</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>カーネルの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力配列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel</td><td>… カーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… コールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710">mist::is_same_object()</a>, <a class="el" href="classmist_1_1array2.html#a63fa884381a82e70d5381875fa4c85d5">mist::array2&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array2.html#ab6ecb95961c8f9e8f0cfa3ec9964e356">mist::array2&lt; T, Allocator &gt;::size1()</a>, と <a class="el" href="classmist_1_1array2.html#a8c8a04c195a6b969accb6b80a874129f">mist::array2&lt; T, Allocator &gt;::size2()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afdd0de3a99370bce0aea07b64ac2c0e1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::filter </td>
+          <td>(</td>
+          <td class="paramtype">const array3&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array3&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array3 ) </p>
+<p>カーネル配列を指定する(中心はカーネルのサイズから計算)</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>カーネルの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力配列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel</td><td>… カーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… コールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710">mist::is_same_object()</a>, <a class="el" href="classmist_1_1array3.html#a5a36dcc005da83a00b1275b949cd66c6">mist::array3&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array3.html#ae3aec3e8e4dcded2aa267a17a487d251">mist::array3&lt; T, Allocator &gt;::reso3()</a>, <a class="el" href="classmist_1_1array3.html#a0d7b4197964d6eed9ce23aa24f016b79">mist::array3&lt; T, Allocator &gt;::size1()</a>, <a class="el" href="classmist_1_1array3.html#af610c89e037e6ef03fe488abe994b4fd">mist::array3&lt; T, Allocator &gt;::size2()</a>, と <a class="el" href="classmist_1_1array3.html#a8e779970f1f14abe6a70bc87e2e1465e">mist::array3&lt; T, Allocator &gt;::size3()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a938336c95aa76afb20d2fe439bb1c790"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::filter1d </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array2&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array2 ) </p>
+<p>1次元分解した各軸に沿ったカーネル配列を画像に適用する(中心はカーネルのサイズから計算) ガウシアンフィルタ等の1次元分解可能なフィルタで利用可能です</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，別のMISTコンテナオブジェクトでなくても動作する </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>カーネルの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力配列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel1</td><td>… X軸方向のカーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel2</td><td>… Y軸方向のカーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… コールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="classmist_1_1array2.html#a63fa884381a82e70d5381875fa4c85d5">mist::array2&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array2.html#ab6ecb95961c8f9e8f0cfa3ec9964e356">mist::array2&lt; T, Allocator &gt;::size1()</a>, と <a class="el" href="classmist_1_1array2.html#a8c8a04c195a6b969accb6b80a874129f">mist::array2&lt; T, Allocator &gt;::size2()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a66f6b2fcf7cf678db063b374bdd242f3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Kernel , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::filter1d </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array2 ) </p>
+<p>1次元分解した各軸に沿ったカーネル配列を画像に適用する(中心はカーネルのサイズから計算) ガウシアンフィルタ等の1次元分解可能なフィルタで利用可能です</p>
+<dl class="section attention"><dt>注意</dt><dd>スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>カーネルの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入力・出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel1</td><td>… X軸方向のカーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel2</td><td>… Y軸方向のカーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… コールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, と <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac1238e4997fa045233e60cf5a3200c28"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::filter1d </td>
+          <td>(</td>
+          <td class="paramtype">const array3&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array3&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array3 ) </p>
+<p>1次元分解した各軸に沿ったカーネル配列を画像に適用する(中心はカーネルのサイズから計算) ガウシアンフィルタ等の1次元分解可能なフィルタで利用可能です</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，別のMISTコンテナオブジェクトでなくても動作する </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>カーネルの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力配列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel1</td><td>… X軸方向のカーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel2</td><td>… Y軸方向のカーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel3</td><td>… Z軸方向のカーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… コールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="classmist_1_1array3.html#a5a36dcc005da83a00b1275b949cd66c6">mist::array3&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array3.html#ae3aec3e8e4dcded2aa267a17a487d251">mist::array3&lt; T, Allocator &gt;::reso3()</a>, <a class="el" href="classmist_1_1array3.html#a0d7b4197964d6eed9ce23aa24f016b79">mist::array3&lt; T, Allocator &gt;::size1()</a>, <a class="el" href="classmist_1_1array3.html#af610c89e037e6ef03fe488abe994b4fd">mist::array3&lt; T, Allocator &gt;::size2()</a>, と <a class="el" href="classmist_1_1array3.html#a8e779970f1f14abe6a70bc87e2e1465e">mist::array3&lt; T, Allocator &gt;::size3()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7e01a4e2f5676aa046e8de52f3333fdb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Kernel , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::filter1d </td>
+          <td>(</td>
+          <td class="paramtype">array3&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array3 ) </p>
+<p>1次元分解した各軸に沿ったカーネル配列を画像に適用する(中心はカーネルのサイズから計算) ガウシアンフィルタ等の1次元分解可能なフィルタで利用可能です</p>
+<dl class="section attention"><dt>注意</dt><dd>スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>マスクの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入力・出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel1</td><td>… X軸方向のカーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel2</td><td>… Y軸方向のカーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel3</td><td>… Z軸方向のカーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… コールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, と <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aebe0771229542cdeba0260f21d94da22"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::interpolate </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array1&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>1次元配列に対する線形補間 </p>
+<p>拡大縮小に伴う画素の内挿を，近傍の2点を用いて線形関数で決定する</p>
+<dl class="section attention"><dt>注意</dt><dd>拡大縮小に伴い，画像の解像度も自動的に変換される</dd>
+<dd>
+入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力データ </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力データ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">width</td><td>… 出力データのサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 補間に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga8a2ddfc1cc10d1c045cea4005cb39cdf">mist::do_threads()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710">mist::is_same_object()</a>, <a class="el" href="classmist_1_1array.html#ab2b09cc3b61f7dc9bb120ed876003705">mist::array&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>, と <a class="el" href="classmist_1_1array.html#a8f838dd0c67be926596a9b8784039a61">mist::array&lt; T, Allocator &gt;::width()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9305b7a6f3d73b3e28fc2438df79b6ea"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::interpolate </td>
+          <td>(</td>
+          <td class="paramtype">const array1&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array1&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array1&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array1&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>1次元配列に対する線形補間 </p>
+<p>拡大縮小に伴う画素の内挿を，近傍の2点を用いて線形関数で決定する</p>
+<dl class="section attention"><dt>注意</dt><dd>拡大縮小に伴い，画像の解像度も自動的に変換される</dd>
+<dd>
+入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力データ </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力データ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">width</td><td>… 出力データのサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 補間に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga8a2ddfc1cc10d1c045cea4005cb39cdf">mist::do_threads()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710">mist::is_same_object()</a>, <a class="el" href="classmist_1_1array.html#ab2b09cc3b61f7dc9bb120ed876003705">mist::array&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>, と <a class="el" href="classmist_1_1array.html#a8f838dd0c67be926596a9b8784039a61">mist::array&lt; T, Allocator &gt;::width()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a07e4c8eaec57b5b1c9fbfa040ce3dab2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::interpolate </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array2&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>2次元配列に対する線形補間 </p>
+<p>拡大縮小に伴う画素の内挿を，近傍の4点を用いて線形関数で決定する</p>
+<dl class="section attention"><dt>注意</dt><dd>拡大縮小に伴い，画像の解像度も自動的に変換される</dd>
+<dd>
+入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力データ </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力データ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">width</td><td>… 出力データのX軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">height</td><td>… 出力データのY軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 補間に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga8a2ddfc1cc10d1c045cea4005cb39cdf">mist::do_threads()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea">mist::array2&lt; T, Allocator &gt;::height()</a>, <a class="el" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710">mist::is_same_object()</a>, <a class="el" href="classmist_1_1array2.html#a63fa884381a82e70d5381875fa4c85d5">mist::array2&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>, と <a class="el" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99">mist::array2&lt; T, Allocator &gt;::width()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a34bf8729ae641085ffef7bd101228a1f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear::interpolate </td>
+          <td>(</td>
+          <td class="paramtype">const array3&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array3&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>3次元配列に対する線形補間 </p>
+<p>拡大縮小に伴う画素の内挿を，近傍の8点を用いて線形関数で決定する</p>
+<dl class="section attention"><dt>注意</dt><dd>拡大縮小に伴い，画像の解像度も自動的に変換される</dd>
+<dd>
+入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力データ </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力データ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">width</td><td>… 出力データのX軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">height</td><td>… 出力データのY軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">depth</td><td>… 出力データのZ軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 補間に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array3.html#ae1a3cc64ed3e2d8818d1dcdd1ed6e342">mist::array3&lt; T, Allocator &gt;::depth()</a>, <a class="el" href="group__thread__group.html#ga8a2ddfc1cc10d1c045cea4005cb39cdf">mist::do_threads()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="classmist_1_1array3.html#a5a24ec70019f8004ef65f0ee02cc1caf">mist::array3&lt; T, Allocator &gt;::height()</a>, <a class="el" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710">mist::is_same_object()</a>, <a class="el" href="classmist_1_1array3.html#a5a36dcc005da83a00b1275b949cd66c6">mist::array3&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array3.html#ae3aec3e8e4dcded2aa267a17a487d251">mist::array3&lt; T, Allocator &gt;::reso3()</a>, <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>, と <a class="el" href="classmist_1_1array3.html#ad117cd297930e233e426591478519913">mist::array3&lt; T, Allocator &gt;::width()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae4478e46710d156473ae8405bf21e7a4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::linear::transform </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array2&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const matrix&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>transform <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>is input array </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>is output array </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">int]</td><td>mat is transformation matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea">mist::array2&lt; T, Allocator &gt;::height()</a>, <a class="el" href="group__numeric__group.html#ga260dc839da68a5284bf1dabe2ede3cff">mist::inverse()</a>, と <a class="el" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99">mist::array2&lt; T, Allocator &gt;::width()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af98bedc500bd6e51da328aae50decfa2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Value_type1 , class Allocator1 , class Value_type2 , class Allocator2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::linear::transform </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; Value_type1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; Value_type2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>delta_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>delta_y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>平行移動と拡大を考慮して変形する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 基準画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">delta_x</td><td>… x方向位置ずれ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">delta_y</td><td>… y方向位置ずれ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">factor</td><td>… 拡大率</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>なし </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea">mist::array2&lt; T, Allocator &gt;::height()</a>, <a class="el" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99">mist::array2&lt; T, Allocator &gt;::width()</a>, と <a class="el" href="classmist_1_1vector2.html#ad8df8b8e6bdcd20c4507827fbf4d9f6b">mist::vector2&lt; T &gt;::y</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>quaternion.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">quaternion.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>クォータニオン（四元数）を扱うためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">config/mist_conf.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="type__trait_8h_source.html">config/type_trait.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="vector_8h_source.html">vector.h</a>&quot;</code><br/>
+<code>#include &lt;cmath&gt;</code><br/>
+</div>
+<p><a href="quaternion_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html">mist::quaternion&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオン（四元数）を扱うクラス  <a href="classmist_1_1quaternion.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a1c6f361cc4ffaf3848f4dec810ab27ff"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a1c6f361cc4ffaf3848f4dec810ab27ff"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a1c6f361cc4ffaf3848f4dec810ab27ff">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const quaternion&lt; T &gt; &amp;q)</td></tr>
+<tr class="memdesc:a1c6f361cc4ffaf3848f4dec810ab27ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンの和  <a href="#a1c6f361cc4ffaf3848f4dec810ab27ff"></a><br/></td></tr>
+<tr class="memitem:a416c4e90fbe4e1ecb13ea585d80a77b2"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 &gt; </td></tr>
+<tr class="memitem:a416c4e90fbe4e1ecb13ea585d80a77b2"><td class="memTemplItemLeft" align="right" valign="top">const quaternion&lt; double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a416c4e90fbe4e1ecb13ea585d80a77b2">mist::interpolate</a> (const quaternion&lt; T1 &gt; &amp;q1, const quaternion&lt; T2 &gt; &amp;q2, double t)</td></tr>
+<tr class="memdesc:a416c4e90fbe4e1ecb13ea585d80a77b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">球面線形補間を行う  <a href="#a416c4e90fbe4e1ecb13ea585d80a77b2"></a><br/></td></tr>
+<tr class="memitem:a729e367dc6a47602a4bdee4635ead73c"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a729e367dc6a47602a4bdee4635ead73c"><td class="memTemplItemLeft" align="right" valign="top">const quaternion&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a729e367dc6a47602a4bdee4635ead73c">mist::track_ball</a> (const vector2&lt; T &gt; &amp;p1, const vector2&lt; T &gt; &amp;p2, const vector3&lt; T &gt; &amp;axisX, const vector3&lt; T &gt; axisY, const vector3&lt; T &gt; axisZ, const typename vector3&lt; T &gt;::value_type &amp;trackball_size)</td></tr>
+<tr class="memdesc:a729e367dc6a47602a4bdee4635ead73c"><td class="mdescLeft">&#160;</td><td class="mdescRight">仮想トラックボールの実装(左手座標系)  <a href="#a729e367dc6a47602a4bdee4635ead73c"></a><br/></td></tr>
+<tr class="memitem:a68bb87edf3accc81e8b5ed12dfbdd717"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a68bb87edf3accc81e8b5ed12dfbdd717"><td class="memTemplItemLeft" align="right" valign="top">const quaternion&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a68bb87edf3accc81e8b5ed12dfbdd717">mist::track_ball</a> (const vector2&lt; T &gt; &amp;p1, const vector2&lt; T &gt; &amp;p2, const vector3&lt; T &gt; &amp;axisX, const vector3&lt; T &gt; axisY, const vector3&lt; T &gt; axisZ)</td></tr>
+<tr class="memdesc:a68bb87edf3accc81e8b5ed12dfbdd717"><td class="mdescLeft">&#160;</td><td class="mdescRight">仮想トラックボールの実装(左手座標系)  <a href="#a68bb87edf3accc81e8b5ed12dfbdd717"></a><br/></td></tr>
+<tr class="memitem:a346202ee02abebad2f521b4bc4e8dd54"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a346202ee02abebad2f521b4bc4e8dd54"><td class="memTemplItemLeft" align="right" valign="top">const quaternion&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a346202ee02abebad2f521b4bc4e8dd54">mist::track_ball</a> (const typename vector3&lt; T &gt;::value_type &amp;x1, const typename vector3&lt; T &gt;::value_type &amp;y1, const typename vector3&lt; T &gt;::value_type &amp;x2, const typename vector3&lt; T &gt;::value_type &amp;y2, const vector3&lt; T &gt; &amp;axisX, const vector3&lt; T &gt; &amp;axisY, const vector3&lt; T &gt; &amp;axisZ, const typename vector3&lt; T &gt;::value_type &amp;trackball_size)</td></tr>
+<tr class="memdesc:a346202ee02abebad2f521b4bc4e8dd54"><td class="mdescLeft">&#160;</td><td class="mdescRight">仮想トラックボールの実装(左手座標系)  <a href="#a346202ee02abebad2f521b4bc4e8dd54"></a><br/></td></tr>
+<tr class="memitem:ae7784dceff9f4ce63b4ebad61470eb3e"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ae7784dceff9f4ce63b4ebad61470eb3e"><td class="memTemplItemLeft" align="right" valign="top">const quaternion&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#ae7784dceff9f4ce63b4ebad61470eb3e">mist::track_ball</a> (const typename vector3&lt; T &gt;::value_type &amp;x1, const typename vector3&lt; T &gt;::value_type &amp;y1, const typename vector3&lt; T &gt;::value_type &amp;x2, const typename vector3&lt; T &gt;::value_type &amp;y2, const vector3&lt; T &gt; &amp;axisX, const vector3&lt; T &gt; &amp;axisY, const vector3&lt; T &gt; &amp;axisZ)</td></tr>
+<tr class="memdesc:ae7784dceff9f4ce63b4ebad61470eb3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">仮想トラックボールの実装(左手座標系)  <a href="#ae7784dceff9f4ce63b4ebad61470eb3e"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>クォータニオン（四元数）を扱うためのライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

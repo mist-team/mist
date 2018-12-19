@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ネームスペース mist::Tsai</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="namespaces.html"><span>ネームスペース一覧</span></a></li>
+      <li><a href="namespacemembers.html"><span>ネームスペースメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1Tsai.html">Tsai</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ネームスペース mist::Tsai<div class="ingroups"><a class="el" href="group__calibration__group.html">カメラキャリブレーション</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><a class="el" href="namespacemist_1_1Tsai.html" title="Tsai のカメラキャリブレーション手法">Tsai</a> のカメラキャリブレーション手法  
+<a href="#details">[詳細]</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1Tsai_1_1parameter.html">parameter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">キャリブレーションに用いるパラメータ及びキャリブレーション結果を代入する構造体  <a href="structmist_1_1Tsai_1_1parameter.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a0ada9caff75276ae00ab0a3c28924765"><td class="memItemLeft" align="right" valign="top">inline::std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1Tsai.html#a0ada9caff75276ae00ab0a3c28924765">operator&lt;&lt;</a> (::std::ostream &amp;out, const <a class="el" href="structmist_1_1Tsai_1_1parameter.html">parameter</a> &amp;p)</td></tr>
+<tr class="memdesc:a0ada9caff75276ae00ab0a3c28924765"><td class="mdescLeft">&#160;</td><td class="mdescRight">カメラキャリブレーションパラメータを整形して出力する  <a href="#a0ada9caff75276ae00ab0a3c28924765"></a><br/></td></tr>
+<tr class="memitem:a48d221829c8f3f8d436da82579a9853e"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 &gt; </td></tr>
+<tr class="memitem:a48d221829c8f3f8d436da82579a9853e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1Tsai.html#a48d221829c8f3f8d436da82579a9853e">calibration</a> (<a class="el" href="structmist_1_1Tsai_1_1parameter.html">parameter</a> &amp;p, const std::vector&lt; <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T1 &gt; &gt; &amp;world, const std::vector&lt; <a class="el" href="classmist_1_1vector2.html">vector2</a>&lt; T2 &gt; &gt; &amp;image)</td></tr>
+<tr class="memdesc:a48d221829c8f3f8d436da82579a9853e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacemist_1_1Tsai.html" title="Tsai のカメラキャリブレーション手法">Tsai</a> のカメラキャリブレーション  <a href="#a48d221829c8f3f8d436da82579a9853e"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p><a class="el" href="namespacemist_1_1Tsai.html" title="Tsai のカメラキャリブレーション手法">Tsai</a> のカメラキャリブレーション手法 </p>
+</div><h2>関数</h2>
+<a class="anchor" id="a48d221829c8f3f8d436da82579a9853e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class T2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::Tsai::calibration </td>
+          <td>(</td>
+          <td class="paramtype">parameter &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; vector3&lt; T1 &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; vector2&lt; T2 &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespacemist_1_1Tsai.html" title="Tsai のカメラキャリブレーション手法">Tsai</a> のカメラキャリブレーション </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>… カメラキャリブレーションに用いるパラメータ，及び結果の出力用 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">world</td><td>… キャリブレーション点の実際の座標 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… キャリブレーション点の画像上の座標</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section attention"><dt>注意</dt><dd>入力のキャリブレーション点のZ座標値はゼロでなくてはならない</dd></dl>
+<dl class="section return"><dt>戻り値</dt><dd>キャリブレーションに成功したかどうか </dd></dl>
+
+<p>参照先 <a class="el" href="structmist_1_1Tsai_1_1parameter.html#aaf74a3cb83aa63cc82d9ccb23e08fdc0">mist::Tsai::parameter::Cx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a00394f4352df70169329b73ddb292103">mist::Tsai::parameter::Cy</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a61b762180e163c95caa5b749b0ef3899">mist::Tsai::parameter::dx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#aba9adc483dd0e45494d6a072ce4c37d1">mist::Tsai::parameter::dy</a>, <a class="el" href="group__numeric__group.html#ga260dc839da68a5284bf1dabe2ede3cff">mist::inverse()</a>, <a class="el" href="namespacemist_1_1gold.html#adb69f1d4d00e8930427bb3b78bb996e0">mist::gold::minimization()</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#afcd5f016f8c8b08270aab7113e667773">mist::Tsai::parameter::Ncx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a6e7afcc7e0b5f349052fbe67c6117752">mist::Tsai::parameter::Ncy</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#af122e3910e2f4b14417f379704ddc753">mist::Tsai::parameter::Nfx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a84d525f16a6d30cad6445a1fec522887">mist::Tsai::parameter::Nfy</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#ab39f3a4fdd72f6eaf12f46ad37e7217b">mist::Tsai::parameter::r1</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#aa850b687a8bb5742a8067ce115e7ea42">mist::Tsai::parameter::r2</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#aa5644b8b8d1d5510a442035cb5eac4cb">mist::Tsai::parameter::r4</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#abe30c07ddeb15f6fcbb4e6b16f6307e8">mist::Tsai::parameter::r5</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a33f943aded35301f094195326342bbf1">mist::Tsai::parameter::r7</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#aa0be3a50641041eccd32302bb3f35801">mist::Tsai::parameter::r8</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a7d2d7887db2e2cb535f1c3cb0ec4b2fc">mist::Tsai::parameter::sx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#afe6ea23a2509cc20e2e75936330b7051">mist::Tsai::parameter::Tx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a319facbb88420546a24231081ed8df57">mist::Tsai::parameter::Ty</a>, と <a class="el" href="structmist_1_1Tsai_1_1parameter.html#af8bdad8db63e1f6b60b36881ca116c8d">mist::Tsai::parameter::Tz</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0ada9caff75276ae00ab0a3c28924765"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inline ::std::ostream&amp; mist::Tsai::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">::std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const parameter &amp;&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>カメラキャリブレーションパラメータを整形して出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">out</td><td>… 入力と出力を行うストリーム </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>… 出力するキャリブレーションパラメータ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力されたストリーム </dd></dl>
+
+<p>参照先 <a class="el" href="structmist_1_1Tsai_1_1parameter.html#aaf74a3cb83aa63cc82d9ccb23e08fdc0">mist::Tsai::parameter::Cx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a00394f4352df70169329b73ddb292103">mist::Tsai::parameter::Cy</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a05968fa80f8f82dee2caaef398e90ee1">mist::Tsai::parameter::dpx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#ae3045e3810a2e8d9450cd83449cac3be">mist::Tsai::parameter::dpy</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a61b762180e163c95caa5b749b0ef3899">mist::Tsai::parameter::dx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#aba9adc483dd0e45494d6a072ce4c37d1">mist::Tsai::parameter::dy</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a16c3bb9e407c911633edf79547a01306">mist::Tsai::parameter::f</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#aa43cdcb9c2289c321d4b6bf1a2329a66">mist::Tsai::parameter::ka1</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#afcd5f016f8c8b08270aab7113e667773">mist::Tsai::parameter::Ncx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a6e7afcc7e0b5f349052fbe67c6117752">mist::Tsai::parameter::Ncy</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#af122e3910e2f4b14417f379704ddc753">mist::Tsai::parameter::Nfx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a84d525f16a6d30cad6445a1fec522887">mist::Tsai::parameter::Nfy</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#ab39f3a4fdd72f6eaf12f46ad37e7217b">mist::Tsai::parameter::r1</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#aa850b687a8bb5742a8067ce115e7ea42">mist::Tsai::parameter::r2</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a8f6e39719be44e8a0c111f7467d1bf4b">mist::Tsai::parameter::r3</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#aa5644b8b8d1d5510a442035cb5eac4cb">mist::Tsai::parameter::r4</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#abe30c07ddeb15f6fcbb4e6b16f6307e8">mist::Tsai::parameter::r5</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#ac415d48ad210b05290f8258762a3d37c">mist::Tsai::parameter::r6</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a33f943aded35301f094195326342bbf1">mist::Tsai::parameter::r7</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#aa0be3a50641041eccd32302bb3f35801">mist::Tsai::parameter::r8</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a7d2d7887db2e2cb535f1c3cb0ec4b2fc">mist::Tsai::parameter::sx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#afe6ea23a2509cc20e2e75936330b7051">mist::Tsai::parameter::Tx</a>, <a class="el" href="structmist_1_1Tsai_1_1parameter.html#a319facbb88420546a24231081ed8df57">mist::Tsai::parameter::Ty</a>, と <a class="el" href="structmist_1_1Tsai_1_1parameter.html#af8bdad8db63e1f6b60b36881ca116c8d">mist::Tsai::parameter::Tz</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

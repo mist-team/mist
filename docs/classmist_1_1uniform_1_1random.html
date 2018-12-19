@@ -1,0 +1,478 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::uniform::random</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1uniform.html">uniform</a></li><li class="navelem"><a class="el" href="classmist_1_1uniform_1_1random.html">random</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::uniform::random</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>MT(Mersenne Twister)法による一様乱数ジェネレータ  
+ <a href="classmist_1_1uniform_1_1random.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="random_8h_source.html">random.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a7f5f9c07c1cc8290284c630de69e7b6a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#a7f5f9c07c1cc8290284c630de69e7b6a">random</a> ()</td></tr>
+<tr class="memdesc:a7f5f9c07c1cc8290284c630de69e7b6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンストラクタ  <a href="#a7f5f9c07c1cc8290284c630de69e7b6a"></a><br/></td></tr>
+<tr class="memitem:a7fec36e7125f796b185744341cda3746"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#a7fec36e7125f796b185744341cda3746">random</a> (const unsigned long seed)</td></tr>
+<tr class="memdesc:a7fec36e7125f796b185744341cda3746"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンストラクタ(seedで初期化)  <a href="#a7fec36e7125f796b185744341cda3746"></a><br/></td></tr>
+<tr class="memitem:a33a1d30c6bf7a4bbbd1a9967cbe86ed4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#a33a1d30c6bf7a4bbbd1a9967cbe86ed4">random</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; unsigned long &gt; &amp;seed_array)</td></tr>
+<tr class="memdesc:a33a1d30c6bf7a4bbbd1a9967cbe86ed4"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンストラクタ(seed_arrayで初期化)  <a href="#a33a1d30c6bf7a4bbbd1a9967cbe86ed4"></a><br/></td></tr>
+<tr class="memitem:ac042339573163eb5322d17ccdbd090e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#ac042339573163eb5322d17ccdbd090e4">init</a> (const unsigned long &amp;seed)</td></tr>
+<tr class="memdesc:ac042339573163eb5322d17ccdbd090e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">seedで初期化  <a href="#ac042339573163eb5322d17ccdbd090e4"></a><br/></td></tr>
+<tr class="memitem:a29bd5ba99cd4d753ca620a173567e60a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#a29bd5ba99cd4d753ca620a173567e60a">init</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; unsigned long &gt; &amp;seed_array)</td></tr>
+<tr class="memdesc:a29bd5ba99cd4d753ca620a173567e60a"><td class="mdescLeft">&#160;</td><td class="mdescRight">seed_arrayで初期化  <a href="#a29bd5ba99cd4d753ca620a173567e60a"></a><br/></td></tr>
+<tr class="memitem:a43b0bceea2a081bd2cf24697d954c6f9"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#a43b0bceea2a081bd2cf24697d954c6f9">int32</a> ()</td></tr>
+<tr class="memdesc:a43b0bceea2a081bd2cf24697d954c6f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">32bit符号無し整数乱数の発生  <a href="#a43b0bceea2a081bd2cf24697d954c6f9"></a><br/></td></tr>
+<tr class="memitem:a2dfa29d307b6e5f05de9b98da4bab95b"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#a2dfa29d307b6e5f05de9b98da4bab95b">int31</a> ()</td></tr>
+<tr class="memdesc:a2dfa29d307b6e5f05de9b98da4bab95b"><td class="mdescLeft">&#160;</td><td class="mdescRight">31bit符号無し整数乱数の発生  <a href="#a2dfa29d307b6e5f05de9b98da4bab95b"></a><br/></td></tr>
+<tr class="memitem:a61381874b67deea9c96f27607142a7d7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#a61381874b67deea9c96f27607142a7d7">real1</a> ()</td></tr>
+<tr class="memdesc:a61381874b67deea9c96f27607142a7d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">[0,1]区間浮動小数点乱数の発生  <a href="#a61381874b67deea9c96f27607142a7d7"></a><br/></td></tr>
+<tr class="memitem:ae724174c085c113640614094182bbb35"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#ae724174c085c113640614094182bbb35">real2</a> ()</td></tr>
+<tr class="memdesc:ae724174c085c113640614094182bbb35"><td class="mdescLeft">&#160;</td><td class="mdescRight">[0,1)区間浮動小数点乱数の発生  <a href="#ae724174c085c113640614094182bbb35"></a><br/></td></tr>
+<tr class="memitem:a655200f04ca6d2fe59ded965ba360d01"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#a655200f04ca6d2fe59ded965ba360d01">real3</a> ()</td></tr>
+<tr class="memdesc:a655200f04ca6d2fe59ded965ba360d01"><td class="mdescLeft">&#160;</td><td class="mdescRight">(0,1)区間浮動小数点乱数の発生  <a href="#a655200f04ca6d2fe59ded965ba360d01"></a><br/></td></tr>
+<tr class="memitem:ab6f42753f15a3d3fa77a4b8771b331ee"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#ab6f42753f15a3d3fa77a4b8771b331ee">res53</a> ()</td></tr>
+<tr class="memdesc:ab6f42753f15a3d3fa77a4b8771b331ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">[0,1)区間浮動小数点乱数の発生(53bit分解能)  <a href="#ab6f42753f15a3d3fa77a4b8771b331ee"></a><br/></td></tr>
+<tr class="memitem:a8cfc9b4b01838951ed7dba68af700841"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#a8cfc9b4b01838951ed7dba68af700841">generate</a> (const unsigned int n=0xffffffffUL)</td></tr>
+<tr class="memdesc:a8cfc9b4b01838951ed7dba68af700841"><td class="mdescLeft">&#160;</td><td class="mdescRight">0, 1, ... N-1 の符号無し整数乱数発生  <a href="#a8cfc9b4b01838951ed7dba68af700841"></a><br/></td></tr>
+<tr class="memitem:aee10d02db87c07e70cb760461334cbcc"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1uniform_1_1random.html#aee10d02db87c07e70cb760461334cbcc">operator()</a> (const unsigned int n=0xffffffffUL)</td></tr>
+<tr class="memdesc:aee10d02db87c07e70cb760461334cbcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">0, 1, ... N-1 の符号無し整数乱数発生  <a href="#aee10d02db87c07e70cb760461334cbcc"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>MT(Mersenne Twister)法による一様乱数ジェネレータ </p>
+<p>長周期, 高次元均等分布を持つ擬似乱数を生成する． 周期が2^19937-1で、623次元超立方体の中に 均等に分布することが証明されている．</p>
+<p>このクラスは，MT法開発者によりCで書かれた乱数生成関数群(MT19937)をクラス化したものである．</p>
+<p>MT法(MT19937)開発者のページ： <a href="http://www.math.keio.ac.jp/~matumoto/mt.html">http://www.math.keio.ac.jp/~matumoto/mt.html</a> </p>
+</div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="a7f5f9c07c1cc8290284c630de69e7b6a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">mist::uniform::random::random </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンストラクタ </p>
+<p>デフォルトコンストラクタ </p>
+
+</div>
+</div>
+<a class="anchor" id="a7fec36e7125f796b185744341cda3746"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">mist::uniform::random::random </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned long&#160;</td>
+          <td class="paramname"><em>seed</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンストラクタ(seedで初期化) </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">seed</td><td>… 乱数のseed(これを用いてジェネレータの状態を初期化する) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a33a1d30c6bf7a4bbbd1a9967cbe86ed4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">mist::uniform::random::random </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">array</a>&lt; unsigned long &gt; &amp;&#160;</td>
+          <td class="paramname"><em>seed_array</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンストラクタ(seed_arrayで初期化) </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">seed_array</td><td>… 乱数のseed配列(これを用いてジェネレータの状態を初期化する) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="a8cfc9b4b01838951ed7dba68af700841"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long mist::uniform::random::generate </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>n</em> = <code>0xffffffffUL</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>0, 1, ... N-1 の符号無し整数乱数発生 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>… N の値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>0, 1, ... N-1 の符号無し整数乱数発生 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac042339573163eb5322d17ccdbd090e4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::uniform::random::init </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned long &amp;&#160;</td>
+          <td class="paramname"><em>seed</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>seedで初期化 </p>
+<p>initializes vec_[n_] with a seed</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">seed</td><td>… 乱数のseed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1dicom.html#a1beb77bab459d87a4764d0b57f0a34a2aa04923e27bc25ff33999040c5091ca7e">mist::dicom::UL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a29bd5ba99cd4d753ca620a173567e60a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::uniform::random::init </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">array</a>&lt; unsigned long &gt; &amp;&#160;</td>
+          <td class="paramname"><em>seed_array</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>seed_arrayで初期化 </p>
+<p>initialize by an array with array-length seed_array is the array for initializing seeds array_length is its length</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">seed_array</td><td>… 乱数のseed配列 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>, と <a class="el" href="namespacemist_1_1dicom.html#a1beb77bab459d87a4764d0b57f0a34a2aa04923e27bc25ff33999040c5091ca7e">mist::dicom::UL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2dfa29d307b6e5f05de9b98da4bab95b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long mist::uniform::random::int31 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>31bit符号無し整数乱数の発生 </p>
+<p>generates a random number on [0,0x7fffffff]-interval</p>
+<dl class="section return"><dt>戻り値</dt><dd>31bit符号無し整数乱数 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a43b0bceea2a081bd2cf24697d954c6f9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long mist::uniform::random::int32 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>32bit符号無し整数乱数の発生 </p>
+<p>generates a random number on [0,0xffffffff]-interval</p>
+<dl class="section return"><dt>戻り値</dt><dd>32bit符号無し整数乱数 </dd></dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1dicom.html#a1beb77bab459d87a4764d0b57f0a34a2aa04923e27bc25ff33999040c5091ca7e">mist::dicom::UL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aee10d02db87c07e70cb760461334cbcc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long mist::uniform::random::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>n</em> = <code>0xffffffffUL</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>0, 1, ... N-1 の符号無し整数乱数発生 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>… N の値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>0, 1, ... N-1 の符号無し整数乱数発生 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a61381874b67deea9c96f27607142a7d7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::uniform::random::real1 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>[0,1]区間浮動小数点乱数の発生 </p>
+<p>generates a random number on [0,1]-real-interval</p>
+<dl class="section return"><dt>戻り値</dt><dd>[0,1]区間浮動小数点乱数 </dd></dl>
+
+<p>参照元 <a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1classifier.html#ac9e8eab2547f6aae9e60842f4ecf257d">mist::machine_learning::adaboost::classifier&lt; __WEAK_CLASSIFIER__ &gt;::learn()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae724174c085c113640614094182bbb35"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::uniform::random::real2 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>[0,1)区間浮動小数点乱数の発生 </p>
+<p>generates a random number on [0,1)-real-interval</p>
+<dl class="section return"><dt>戻り値</dt><dd>[0,1)区間浮動小数点乱数 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a655200f04ca6d2fe59ded965ba360d01"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::uniform::random::real3 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>(0,1)区間浮動小数点乱数の発生 </p>
+<p>generates a random number on (0,1)-real-interval</p>
+<dl class="section return"><dt>戻り値</dt><dd>(0,1)区間浮動小数点乱数 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab6f42753f15a3d3fa77a4b8771b331ee"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::uniform::random::res53 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>[0,1)区間浮動小数点乱数の発生(53bit分解能) </p>
+<p>generates a random number on [0,1) with 53-bit resolution</p>
+<dl class="section return"><dt>戻り値</dt><dd>[0,1)区間浮動小数点乱数(53bit分解能) </dd></dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="random_8h_source.html">random.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

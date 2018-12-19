@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>dicom.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_693aed4c217c3209f853cada5eb38eec.html">io</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">dicom.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>DICOM画像を読み書きするためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">../config/mist_conf.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="endian_8h_source.html">../config/endian.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="limits_8h_source.html">../limits.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="color_8h_source.html">../config/color.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="dicom__tag_8h_source.html">./dicom_tag.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="dicom__info_8h_source.html">./dicom_info.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="singleton_8h_source.html">../singleton.h</a>&quot;</code><br/>
+</div>
+<p><a href="dicom_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1dicom"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html">mist::dicom</a></td></tr>
+<tr class="memdesc:namespacemist_1_1dicom"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMファイルを操作する関数・クラスを含む名前空間 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a721593b4cd9dc18692d989914ab11310"><td class="memItemLeft" align="right" valign="top">unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a721593b4cd9dc18692d989914ab11310">mist::dicom::check_dicom_file</a> (unsigned char *p, unsigned char *e)</td></tr>
+<tr class="memdesc:a721593b4cd9dc18692d989914ab11310"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定したメモリ領域がDICOM画像を現しているかどうかをチェックする  <a href="#a721593b4cd9dc18692d989914ab11310"></a><br/></td></tr>
+<tr class="memitem:a7ce1dbcbbaea114fb48df9f72cfce278"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a7ce1dbcbbaea114fb48df9f72cfce278">mist::dicom::is_sequence_separate_tag</a> (const unsigned char *p, const unsigned char *e)</td></tr>
+<tr class="memdesc:a7ce1dbcbbaea114fb48df9f72cfce278"><td class="mdescLeft">&#160;</td><td class="mdescRight">シーケンスタグかどうかを判定する  <a href="#a7ce1dbcbbaea114fb48df9f72cfce278"></a><br/></td></tr>
+<tr class="memitem:ae4220b8708c7d84be56cf8ff52dbfd4f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#ae4220b8708c7d84be56cf8ff52dbfd4f">mist::dicom::is_sequence_element_end</a> (const unsigned char *p, const unsigned char *e)</td></tr>
+<tr class="memdesc:ae4220b8708c7d84be56cf8ff52dbfd4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">シーケンス要素終了タグかどうか  <a href="#ae4220b8708c7d84be56cf8ff52dbfd4f"></a><br/></td></tr>
+<tr class="memitem:aad2f21e06f37cc7ead3d4c31b3ee4e82"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#aad2f21e06f37cc7ead3d4c31b3ee4e82">mist::dicom::is_sequence_tag_end</a> (const unsigned char *p, const unsigned char *e)</td></tr>
+<tr class="memdesc:aad2f21e06f37cc7ead3d4c31b3ee4e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">シーケンス終了タグかどうか  <a href="#aad2f21e06f37cc7ead3d4c31b3ee4e82"></a><br/></td></tr>
+<tr class="memitem:ae3a525dc5fd7fd4757fe75d93e62dca3"><td class="memItemLeft" align="right" valign="top">unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#ae3a525dc5fd7fd4757fe75d93e62dca3">mist::dicom::read_dicom_tag</a> (unsigned char *p, unsigned char *e, dicom_tag &amp;tag, difference_type &amp;numBytes, bool from_little_endian=true)</td></tr>
+<tr class="memdesc:ae3a525dc5fd7fd4757fe75d93e62dca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのタグを読み込み，テーブルに登録されているものと照合する  <a href="#ae3a525dc5fd7fd4757fe75d93e62dca3"></a><br/></td></tr>
+<tr class="memitem:aabf7eef04c71c86c6d52e65d60685d68"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#aabf7eef04c71c86c6d52e65d60685d68">mist::dicom::process_dicom_tag</a> (const dicom_tag &amp;tag, unsigned char *byte, difference_type num_bytes, bool from_little_endian=true)</td></tr>
+<tr class="memdesc:aabf7eef04c71c86c6d52e65d60685d68"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのタグに対し，各VRごとの処理を行う  <a href="#aabf7eef04c71c86c6d52e65d60685d68"></a><br/></td></tr>
+<tr class="memitem:a5cbca9f5e0a925b50b990853937398b9"><td class="memItemLeft" align="right" valign="top">unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a5cbca9f5e0a925b50b990853937398b9">mist::dicom::process_dicom_tag</a> (dicom_tag_container &amp;dicm, unsigned char *pointer, unsigned char *end_pointer, bool from_little_endian=true, bool is_in_sequence_tag=false)</td></tr>
+<tr class="memdesc:a5cbca9f5e0a925b50b990853937398b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのタグを処理する  <a href="#a5cbca9f5e0a925b50b990853937398b9"></a><br/></td></tr>
+<tr class="memitem:a824784249b8946acae96b6b99306ede5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a824784249b8946acae96b6b99306ede5">mist::dicom::read_dicom_tags</a> (dicom_tag_container &amp;dicm, unsigned char *buff, size_type numBytes, bool is_little_endian=true)</td></tr>
+<tr class="memdesc:a824784249b8946acae96b6b99306ede5"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMファイルを読み込んで，全てのDICOMタグを処理しテーブルに登録する  <a href="#a824784249b8946acae96b6b99306ede5"></a><br/></td></tr>
+<tr class="memitem:a0bcd17671b82ac24caeafc4a6c9935b0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a0bcd17671b82ac24caeafc4a6c9935b0">mist::dicom::read_dicom_tags</a> (dicom_tag_container &amp;dicm, const std::string &amp;filename)</td></tr>
+<tr class="memdesc:a0bcd17671b82ac24caeafc4a6c9935b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMファイルを読み込んで，全てのDICOMタグを処理しテーブルに登録する  <a href="#a0bcd17671b82ac24caeafc4a6c9935b0"></a><br/></td></tr>
+<tr class="memitem:af4f89de7551cc2861bc9461ba440c4d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#af4f89de7551cc2861bc9461ba440c4d4">mist::dicom::write_dicom_tag_explicit_vr</a> (unsigned short group, unsigned short element, dicom_vr vr, const unsigned char *data, size_t num_bytes, FILE *fp, bool to_little_endian=true)</td></tr>
+<tr class="memdesc:af4f89de7551cc2861bc9461ba440c4d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのタグ集合を Explicit VR 形式でファイルに書き出す  <a href="#af4f89de7551cc2861bc9461ba440c4d4"></a><br/></td></tr>
+<tr class="memitem:a46295afaefab8fb2b96d0b09550e6cfa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a46295afaefab8fb2b96d0b09550e6cfa">mist::dicom::write_dicom_tag_implicit_vr</a> (unsigned short group, unsigned short element, dicom_vr vr, const unsigned char *data, size_t num_bytes, FILE *fp, bool to_little_endian=true)</td></tr>
+<tr class="memdesc:a46295afaefab8fb2b96d0b09550e6cfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのタグ集合を Implicit VR 形式でファイルに書き出す  <a href="#a46295afaefab8fb2b96d0b09550e6cfa"></a><br/></td></tr>
+<tr class="memitem:a94ef801e8f3305c42a6f05108369b8ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a94ef801e8f3305c42a6f05108369b8ff">mist::dicom::write_dicom_tag_explicit_vr</a> (const dicom_element &amp;e, FILE *fp, bool to_little_endian=true)</td></tr>
+<tr class="memdesc:a94ef801e8f3305c42a6f05108369b8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのタグ集合を Explicit VR 形式でファイルに書き出す  <a href="#a94ef801e8f3305c42a6f05108369b8ff"></a><br/></td></tr>
+<tr class="memitem:a1011e2cf0c3091863ebce559e8f30fe1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a1011e2cf0c3091863ebce559e8f30fe1">mist::dicom::write_dicom_tag_implicit_vr</a> (const dicom_element &amp;e, FILE *fp, bool to_little_endian=true)</td></tr>
+<tr class="memdesc:a1011e2cf0c3091863ebce559e8f30fe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのタグ集合を Implicit VR 形式でファイルに書き出す  <a href="#a1011e2cf0c3091863ebce559e8f30fe1"></a><br/></td></tr>
+<tr class="memitem:adfe3678f3bd5f6519d95e363983a9b43"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#adfe3678f3bd5f6519d95e363983a9b43">mist::dicom::get_write_dicom_tag_size</a> (const dicom_element &amp;e, bool implicitVR)</td></tr>
+<tr class="memdesc:adfe3678f3bd5f6519d95e363983a9b43"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのタグを出力する際に各タグが必要とするバイト数を計算する  <a href="#adfe3678f3bd5f6519d95e363983a9b43"></a><br/></td></tr>
+<tr class="memitem:ab1c70247c7bc537e070d195272a12077"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#ab1c70247c7bc537e070d195272a12077">mist::dicom::compute_group_length</a> (dicom_tag_container &amp;dicm, bool implicitVR)</td></tr>
+<tr class="memdesc:ab1c70247c7bc537e070d195272a12077"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMの Group Length を計算し，タグに設定する  <a href="#ab1c70247c7bc537e070d195272a12077"></a><br/></td></tr>
+<tr class="memitem:a336c450ebbb3b252faca07e26852e46d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a336c450ebbb3b252faca07e26852e46d">mist::dicom::write_dicom_tags</a> (const dicom_tag_container &amp;dicom, const std::string &amp;filename)</td></tr>
+<tr class="memdesc:a336c450ebbb3b252faca07e26852e46d"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのタグ集合をファイルに書き出す  <a href="#a336c450ebbb3b252faca07e26852e46d"></a><br/></td></tr>
+<tr class="memitem:gae9f3cde0162d4864f3cc1097ff3e7aec"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gae9f3cde0162d4864f3cc1097ff3e7aec"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__dicom__group.html#gae9f3cde0162d4864f3cc1097ff3e7aec">mist::read_dicom</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename)</td></tr>
+<tr class="memdesc:gae9f3cde0162d4864f3cc1097ff3e7aec"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMデータを画像コンテナに読み込む  <a href="group__dicom__group.html#gae9f3cde0162d4864f3cc1097ff3e7aec"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>DICOM画像を読み書きするためのライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

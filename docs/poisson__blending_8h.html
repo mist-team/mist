@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>poisson_blending.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">poisson_blending.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Poisson Image Editing (SIGGRAPH 2003)  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="vector_8h_source.html">vector.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="numeric_8h_source.html">numeric.h</a>&quot;</code><br/>
+<code>#include &lt;<a class="el" href="converter_8h_source.html">mist/converter.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="morphology_8h_source.html">mist/filter/morphology.h</a>&gt;</code><br/>
+<code>#include &lt;map&gt;</code><br/>
+<code>#include &lt;stdio.h&gt;</code><br/>
+</div>
+<p><a href="poisson__blending_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga0d5b20b4c80c94163ac99f45f0e47270"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class Array3 &gt; </td></tr>
+<tr class="memitem:ga0d5b20b4c80c94163ac99f45f0e47270"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__poisson__image__editing__group.html#ga0d5b20b4c80c94163ac99f45f0e47270">mist::seamlessCloning</a> (const Array1 &amp;src, const Array2 &amp;target, Array3 &amp;out, const array2&lt; unsigned char &gt; &amp;mask, const int offx=0, const int offy=0, const bool mix=false)</td></tr>
+<tr class="memdesc:ga0d5b20b4c80c94163ac99f45f0e47270"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力画像のマスク領域を対象画像に合成する  <a href="group__poisson__image__editing__group.html#ga0d5b20b4c80c94163ac99f45f0e47270"></a><br/></td></tr>
+<tr class="memitem:ga7963adebf9c927aef96fe10bc079a2d9"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga7963adebf9c927aef96fe10bc079a2d9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__poisson__image__editing__group.html#ga7963adebf9c927aef96fe10bc079a2d9">mist::localColorChange</a> (const Array1 &amp;in, Array2 &amp;out, const array2&lt; unsigned char &gt; &amp;mask)</td></tr>
+<tr class="memdesc:ga7963adebf9c927aef96fe10bc079a2d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力画像のマスク領域以外をグレースケールにする  <a href="group__poisson__image__editing__group.html#ga7963adebf9c927aef96fe10bc079a2d9"></a><br/></td></tr>
+<tr class="memitem:ga20e213d2e6290329fa582d167b53b41f"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga20e213d2e6290329fa582d167b53b41f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__poisson__image__editing__group.html#ga20e213d2e6290329fa582d167b53b41f">mist::localColorChange</a> (const Array1 &amp;in, Array2 &amp;out, const array2&lt; unsigned char &gt; &amp;mask, const rgb&lt; double &gt; multiplier)</td></tr>
+<tr class="memdesc:ga20e213d2e6290329fa582d167b53b41f"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力画像のマスク領域だけ色成分を変更する  <a href="group__poisson__image__editing__group.html#ga20e213d2e6290329fa582d167b53b41f"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>Poisson Image Editing (SIGGRAPH 2003) </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>EMアルゴリズムを用いた混合分布の推定</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">EMアルゴリズムを用いた混合分布の推定</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist_1_1mixture"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mixture.html">mist::mixture</a></td></tr>
+<tr class="memdesc:namespacemist_1_1mixture"><td class="mdescLeft">&#160;</td><td class="mdescRight">混合分布推定に用いるパラメータ <br/></td></tr>
+<tr class="memitem:namespacemist_1_1histogram"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1histogram.html">mist::histogram</a></td></tr>
+<tr class="memdesc:namespacemist_1_1histogram"><td class="mdescLeft">&#160;</td><td class="mdescRight">ヒストグラムから正規分布の混合分布を推定する関数群 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga8e0ad06f1cb9445fb55535f3241e5e05"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga8e0ad06f1cb9445fb55535f3241e5e05"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#ga8e0ad06f1cb9445fb55535f3241e5e05">mist::estimate_mixture</a> (const Array &amp;rSamples, mixture::distribution *opdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double tolerance, size_t &amp;nIteration)</td></tr>
+<tr class="memdesc:ga8e0ad06f1cb9445fb55535f3241e5e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から正規分布の混合分布を推定する  <a href="#ga8e0ad06f1cb9445fb55535f3241e5e05"></a><br/></td></tr>
+<tr class="memitem:gaacbd07e36084039b89fa5a48579fa7e5"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:gaacbd07e36084039b89fa5a48579fa7e5"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#gaacbd07e36084039b89fa5a48579fa7e5">mist::estimate_mixture</a> (const Array &amp;rSamples, mixture::distribution2 *opdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double tolerance, size_t &amp;nIteration)</td></tr>
+<tr class="memdesc:gaacbd07e36084039b89fa5a48579fa7e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から正規分布の混合分布を推定する  <a href="#gaacbd07e36084039b89fa5a48579fa7e5"></a><br/></td></tr>
+<tr class="memitem:gaaa950fd139a0a9b448da5563f150124c"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:gaaa950fd139a0a9b448da5563f150124c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#gaaa950fd139a0a9b448da5563f150124c">mist::estimate_mixture</a> (const Array1 &amp;rSamples, Array2 &amp;pdp, typename Array1::size_type nMaxIteration, double tolerance, typename Array1::size_type &amp;nIteration)</td></tr>
+<tr class="memdesc:gaaa950fd139a0a9b448da5563f150124c"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から正規分布の混合分布を推定する  <a href="#gaaa950fd139a0a9b448da5563f150124c"></a><br/></td></tr>
+<tr class="memitem:ga5c52c04964dddcc4b4da604f9f9da108"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga5c52c04964dddcc4b4da604f9f9da108"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#ga5c52c04964dddcc4b4da604f9f9da108">mist::estimate_mixture</a> (const Array1 &amp;rSamples, Array2 &amp;pdp, typename Array1::size_type nMaxIteration, double tolerance)</td></tr>
+<tr class="memdesc:ga5c52c04964dddcc4b4da604f9f9da108"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から1次元正規分布の混合分布を推定する  <a href="#ga5c52c04964dddcc4b4da604f9f9da108"></a><br/></td></tr>
+<tr class="memitem:ga501fbe8466f198add2e46c697eed0980"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga501fbe8466f198add2e46c697eed0980"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#ga501fbe8466f198add2e46c697eed0980">mist::estimate_mixture</a> (const Array &amp;rSamples, mixture::distribution *pdp, typename Array::size_type nComponents, typename Array::size_type nMaxIteration, double tolerance)</td></tr>
+<tr class="memdesc:ga501fbe8466f198add2e46c697eed0980"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から正規分布の混合分布を推定する  <a href="#ga501fbe8466f198add2e46c697eed0980"></a><br/></td></tr>
+<tr class="memitem:ga224870a424283b9fb51de47f16e5b5ff"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga224870a424283b9fb51de47f16e5b5ff"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#ga224870a424283b9fb51de47f16e5b5ff">mist::estimate_mixture</a> (const Array &amp;rSamples, mixture::distribution2 *pdp, typename Array::size_type nComponents, typename Array::size_type nMaxIteration, double tolerance)</td></tr>
+<tr class="memdesc:ga224870a424283b9fb51de47f16e5b5ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から2次元正規分布の混合分布を推定する  <a href="#ga224870a424283b9fb51de47f16e5b5ff"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="mixture_8h.html" title="EMアルゴリズムを用いた混合分布の推定">mist/mixture.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga8e0ad06f1cb9445fb55535f3241e5e05"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::estimate_mixture </td>
+          <td>(</td>
+          <td class="paramtype">const Array &amp;&#160;</td>
+          <td class="paramname"><em>rSamples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mixture::distribution *&#160;</td>
+          <td class="paramname"><em>opdp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nSamples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nComponents</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nMaxIteration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>nIteration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>データ系列から正規分布の混合分布を推定する </p>
+<dl class="section attention"><dt>注意</dt><dd>入力となるデータの配列として，通常のデータ配列，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rSamples</td><td>… 入力サンプル </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">opdp</td><td>… 分布パラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nSamples</td><td>… 入力サンプル数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nComponents</td><td>… 推定する混合分布の数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nMaxIteration</td><td>… 最大ループ回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 対数尤度の打ち切り許容相対誤差 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nIteration</td><td>… 実際のループ回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 混合分布の推定に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 混合分布の推定に失敗，もしくは入力データが空 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__statistics__group.html#gab2e2f495a7afab3959fba5b3abd84932">mist::statistics::average()</a>, と <a class="el" href="group__statistics__group.html#gab1a1cf9612283f16d57f14642517b023">mist::statistics::variance()</a>.</p>
+
+<p>参照元 <a class="el" href="group__mixture__group.html#gaaa950fd139a0a9b448da5563f150124c">mist::estimate_mixture()</a>, と <a class="el" href="namespacemist_1_1histogram.html#a1bde1b189ea8d639f1870f120c8a1176">mist::histogram::estimate_mixture()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaacbd07e36084039b89fa5a48579fa7e5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::estimate_mixture </td>
+          <td>(</td>
+          <td class="paramtype">const Array &amp;&#160;</td>
+          <td class="paramname"><em>rSamples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mixture::distribution2 *&#160;</td>
+          <td class="paramname"><em>opdp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nSamples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nComponents</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nMaxIteration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>nIteration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>データ系列から正規分布の混合分布を推定する </p>
+<dl class="section attention"><dt>注意</dt><dd>入力となるデータの配列として，通常のデータ配列，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です． </dd>
+<dd>
+入力データは，MISTで提供する <a class="el" href="classmist_1_1vector2.html" title="2次元ベクトルを扱うクラス">vector2</a> タイプである必要があります．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rSamples</td><td>… 入力サンプル </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">opdp</td><td>… 分布パラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nSamples</td><td>… 入力サンプル数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nComponents</td><td>… 推定する混合分布の数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nMaxIteration</td><td>… 最大ループ回数 </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">tolerance</td><td>… 対数尤度の打ち切り許容相対誤差 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nIteration</td><td>… 実際のループ回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 混合分布の推定に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 混合分布の推定に失敗，もしくは入力データが空 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__statistics__group.html#gab2e2f495a7afab3959fba5b3abd84932">mist::statistics::average()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaaa950fd139a0a9b448da5563f150124c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::estimate_mixture </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>rSamples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>pdp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array1::size_type&#160;</td>
+          <td class="paramname"><em>nMaxIteration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array1::size_type &amp;&#160;</td>
+          <td class="paramname"><em>nIteration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>データ系列から正規分布の混合分布を推定する </p>
+<dl class="section attention"><dt>注意</dt><dd>入力となるデータの配列として，MISTで提供するコンテナもしくはSTLで提供されているvector，dequeコンテナが利用可能です． </dd>
+<dd>
+入力データは，MISTで提供する <a class="el" href="classmist_1_1vector2.html" title="2次元ベクトルを扱うクラス">vector2</a> タイプで分布が <a class="el" href="structmist_1_1mixture_1_1distribution2.html" title="混合分布を推定するための分布パラメータ">mixture::distribution2</a> の場合は2次元正規分布推定になります．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rSamples</td><td>… 入力サンプル </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pdp</td><td>… 分布パラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nMaxIteration</td><td>… 最大ループ回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 対数尤度の打ち切り許容相対誤差 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nIteration</td><td>… 実際のループ回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 混合分布の推定に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 混合分布の推定に失敗，もしくは入力データが空 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__mixture__group.html#ga8e0ad06f1cb9445fb55535f3241e5e05">mist::estimate_mixture()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga5c52c04964dddcc4b4da604f9f9da108"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::estimate_mixture </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>rSamples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>pdp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array1::size_type&#160;</td>
+          <td class="paramname"><em>nMaxIteration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>データ系列から1次元正規分布の混合分布を推定する </p>
+<dl class="section attention"><dt>注意</dt><dd>入力となるデータの配列として，MISTで提供するコンテナもしくはSTLで提供されているvector，dequeコンテナが利用可能です． </dd>
+<dd>
+入力データは，MISTで提供する <a class="el" href="classmist_1_1vector2.html" title="2次元ベクトルを扱うクラス">vector2</a> タイプで分布が <a class="el" href="structmist_1_1mixture_1_1distribution2.html" title="混合分布を推定するための分布パラメータ">mixture::distribution2</a> の場合は2次元正規分布推定になります．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rSamples</td><td>… 入力サンプル </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pdp</td><td>… 分布パラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nMaxIteration</td><td>… 最大ループ回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 対数尤度の打ち切り許容相対誤差</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 混合分布の推定に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 混合分布の推定に失敗，もしくは入力データが空 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__mixture__group.html#ga8e0ad06f1cb9445fb55535f3241e5e05">mist::estimate_mixture()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga501fbe8466f198add2e46c697eed0980"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::estimate_mixture </td>
+          <td>(</td>
+          <td class="paramtype">const Array &amp;&#160;</td>
+          <td class="paramname"><em>rSamples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mixture::distribution *&#160;</td>
+          <td class="paramname"><em>pdp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>nComponents</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>nMaxIteration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>データ系列から正規分布の混合分布を推定する </p>
+<dl class="section attention"><dt>注意</dt><dd>入力となるデータの配列として，MISTで提供するコンテナもしくはSTLで提供されているvector，dequeコンテナが利用可能です．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rSamples</td><td>… 入力サンプル </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pdp</td><td>… 分布パラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nComponents</td><td>… 推定する混合分布の数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nMaxIteration</td><td>… 最大ループ回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 対数尤度の打ち切り許容相対誤差</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 混合分布の推定に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 混合分布の推定に失敗，もしくは入力データが空 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__mixture__group.html#ga8e0ad06f1cb9445fb55535f3241e5e05">mist::estimate_mixture()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga224870a424283b9fb51de47f16e5b5ff"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::estimate_mixture </td>
+          <td>(</td>
+          <td class="paramtype">const Array &amp;&#160;</td>
+          <td class="paramname"><em>rSamples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mixture::distribution2 *&#160;</td>
+          <td class="paramname"><em>pdp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>nComponents</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>nMaxIteration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>データ系列から2次元正規分布の混合分布を推定する </p>
+<dl class="section attention"><dt>注意</dt><dd>入力となるデータの配列として，MISTで提供するコンテナもしくはSTLで提供されているvector，dequeコンテナが利用可能です． </dd>
+<dd>
+入力データは，MISTで提供する <a class="el" href="classmist_1_1vector2.html" title="2次元ベクトルを扱うクラス">vector2</a> タイプある必要があります．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rSamples</td><td>… 入力サンプル </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pdp</td><td>… 分布パラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nComponents</td><td>… 推定する混合分布の数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nMaxIteration</td><td>… 最大ループ回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 対数尤度の打ち切り許容相対誤差</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 混合分布の推定に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 混合分布の推定に失敗，もしくは入力データが空 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__mixture__group.html#ga8e0ad06f1cb9445fb55535f3241e5e05">mist::estimate_mixture()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

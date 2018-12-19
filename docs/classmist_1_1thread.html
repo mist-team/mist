@@ -1,0 +1,349 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::thread&lt; thread_parameter &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1thread.html">thread</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-methods">Protected メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::thread&lt; thread_parameter &gt;<div class="ingroups"><a class="el" href="group__thread__group.html">スレッド</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>template 型のデータを扱うことができるスレッドクラス  
+ <a href="classmist_1_1thread.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="thread_8h_source.html">thread.h</a>&gt;</code></p>
+
+<p>mist::thread_objectを継承しています。</p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:ad1cfbd091dcd9b5f8f8827ae6dd614b0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad1cfbd091dcd9b5f8f8827ae6dd614b0"></a>
+typedef unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread.html#ad1cfbd091dcd9b5f8f8827ae6dd614b0">thread_exit_type</a></td></tr>
+<tr class="memdesc:ad1cfbd091dcd9b5f8f8827ae6dd614b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド終了時の戻り値の型 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a9addec4654fb5039d7fb0a9847be0d6d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9addec4654fb5039d7fb0a9847be0d6d"></a>
+<a class="el" href="classmist_1_1thread.html#ad1cfbd091dcd9b5f8f8827ae6dd614b0">thread_exit_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread.html#a9addec4654fb5039d7fb0a9847be0d6d">exit_code</a> () const </td></tr>
+<tr class="memdesc:a9addec4654fb5039d7fb0a9847be0d6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドが終了した時に返した戻り値を取得する <br/></td></tr>
+<tr class="memitem:a0b2823d62cc6270f7e2a38f70db2c38f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1thread.html">thread</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread.html#a0b2823d62cc6270f7e2a38f70db2c38f">operator=</a> (const <a class="el" href="classmist_1_1thread.html">thread</a> &amp;t)</td></tr>
+<tr class="memdesc:a0b2823d62cc6270f7e2a38f70db2c38f"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のスレッドオブジェクトと同じものを作成する  <a href="#a0b2823d62cc6270f7e2a38f70db2c38f"></a><br/></td></tr>
+<tr class="memitem:a9b1ccfd73f2161a6aff5b04525cc1ed4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread.html#a9b1ccfd73f2161a6aff5b04525cc1ed4">operator==</a> (const <a class="el" href="classmist_1_1thread.html">thread</a> &amp;t) const </td></tr>
+<tr class="memdesc:a9b1ccfd73f2161a6aff5b04525cc1ed4"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのスレッドオブジェクトが同じものかどうかを判定する  <a href="#a9b1ccfd73f2161a6aff5b04525cc1ed4"></a><br/></td></tr>
+<tr class="memitem:aa5ba14ec407df272e6f5b6b49d3e731e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread.html#aa5ba14ec407df272e6f5b6b49d3e731e">create</a> ()</td></tr>
+<tr class="memdesc:aa5ba14ec407df272e6f5b6b49d3e731e"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドを生成する  <a href="#aa5ba14ec407df272e6f5b6b49d3e731e"></a><br/></td></tr>
+<tr class="memitem:a575ce752086199223dfe3a8ea64a5bde"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread.html#a575ce752086199223dfe3a8ea64a5bde">create_without_thread</a> ()</td></tr>
+<tr class="memdesc:a575ce752086199223dfe3a8ea64a5bde"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド無しで関数を実行する  <a href="#a575ce752086199223dfe3a8ea64a5bde"></a><br/></td></tr>
+<tr class="memitem:a1c3dfc48aa1b0361755740e332973c72"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread.html#a1c3dfc48aa1b0361755740e332973c72">wait</a> (unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:a1c3dfc48aa1b0361755740e332973c72"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドが終了するか，タイムアウトになるまで待機する  <a href="#a1c3dfc48aa1b0361755740e332973c72"></a><br/></td></tr>
+<tr class="memitem:abbb09cf8261ed9ad011db4d70dd79279"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread.html#abbb09cf8261ed9ad011db4d70dd79279">close</a> ()</td></tr>
+<tr class="memdesc:abbb09cf8261ed9ad011db4d70dd79279"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドが使用していたリソースを開放する  <a href="#abbb09cf8261ed9ad011db4d70dd79279"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr class="memitem:aaebd82e29d95dc29ecf570f05088c27f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classmist_1_1thread.html#ad1cfbd091dcd9b5f8f8827ae6dd614b0">thread_exit_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread.html#aaebd82e29d95dc29ecf570f05088c27f">thread_function</a> ()=0</td></tr>
+<tr class="memdesc:aaebd82e29d95dc29ecf570f05088c27f"><td class="mdescLeft">&#160;</td><td class="mdescRight">継承した先で必ず実装されるスレッド関数  <a href="#aaebd82e29d95dc29ecf570f05088c27f"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class thread_parameter = thread_dmy_class&gt;<br/>
+class mist::thread&lt; thread_parameter &gt;</h3>
+
+<p>template 型のデータを扱うことができるスレッドクラス </p>
+<p>詳細な説明や関数の使用例を書く</p>
+<dl class="section attention"><dt>注意</dt><dd><em>MIST_THREAD_SUPPORT</em> が 1 の場合は，スレッドサポートは行わないため，シングルスレッド用に内部実装が変更される</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">thread_parameter</td><td>… 引数の説明 </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2>関数</h2>
+<a class="anchor" id="abbb09cf8261ed9ad011db4d70dd79279"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class thread_parameter = thread_dmy_class&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool <a class="el" href="classmist_1_1thread.html">mist::thread</a>&lt; thread_parameter &gt;::close </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッドが使用していたリソースを開放する </p>
+<p>スレッドが使用したリソースを開放するために，必ず1つのスレッドに対し1度だけ呼ばれる必要がある</p>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 正常にスレッドを終了 </td></tr>
+    <tr><td class="paramname">false</td><td>… スレッドの終了に失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aa5ba14ec407df272e6f5b6b49d3e731e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class thread_parameter = thread_dmy_class&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool <a class="el" href="classmist_1_1thread.html">mist::thread</a>&lt; thread_parameter &gt;::create </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッドを生成する </p>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… スレッドの作成に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… スレッドの作成に失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a575ce752086199223dfe3a8ea64a5bde"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class thread_parameter = thread_dmy_class&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool <a class="el" href="classmist_1_1thread.html">mist::thread</a>&lt; thread_parameter &gt;::create_without_thread </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッド無しで関数を実行する </p>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… スレッドの作成に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… スレッドの作成に失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a0b2823d62cc6270f7e2a38f70db2c38f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class thread_parameter = thread_dmy_class&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1thread.html">thread</a>&amp; <a class="el" href="classmist_1_1thread.html">mist::thread</a>&lt; thread_parameter &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1thread.html">thread</a>&lt; thread_parameter &gt; &amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>他のスレッドオブジェクトと同じものを作成する </p>
+<dl class="section attention"><dt>注意</dt><dd>単なるコピーであり，別途スレッドが生成されるわけではない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>… コピー元のスレッドオブジェクト</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9b1ccfd73f2161a6aff5b04525cc1ed4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class thread_parameter = thread_dmy_class&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1thread.html">mist::thread</a>&lt; thread_parameter &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1thread.html">thread</a>&lt; thread_parameter &gt; &amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのスレッドオブジェクトが同じものかどうかを判定する </p>
+<p>詳細な説明や関数の使用例を書く</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>… 比較対象のスレッドオブジェクト</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 同じスレッド </td></tr>
+    <tr><td class="paramname">false</td><td>… 別のスレッド </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aaebd82e29d95dc29ecf570f05088c27f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class thread_parameter = thread_dmy_class&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classmist_1_1thread.html#ad1cfbd091dcd9b5f8f8827ae6dd614b0">thread_exit_type</a> <a class="el" href="classmist_1_1thread.html">mist::thread</a>&lt; thread_parameter &gt;::thread_function </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>継承した先で必ず実装されるスレッド関数 </p>
+<p>本クラスを継承し，スレッドの機能を持たせる場合に必ず実装しなくてはならない関数． スレッドの生成とともに本関数が呼ばれる．</p>
+<dl class="section return"><dt>戻り値</dt><dd>スレッド終了時の戻り値 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a1c3dfc48aa1b0361755740e332973c72"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class thread_parameter = thread_dmy_class&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool <a class="el" href="classmist_1_1thread.html">mist::thread</a>&lt; thread_parameter &gt;::wait </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>dwMilliseconds</em> = <code>INFINITE</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッドが終了するか，タイムアウトになるまで待機する </p>
+<p>タイムアウトを INFINITE に設定することで，スレッドが終了するまで待ち続ける</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">dwMilliseconds</td><td>… タイムアウト時間（ミリ秒単位）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… スレッドがタイムアウト前に終了した </td></tr>
+    <tr><td class="paramname">false</td><td>… タイムアウトが発生したか，その他のエラーが発生 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="thread_8h_source.html">thread.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

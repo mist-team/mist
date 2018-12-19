@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>statistics.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">statistics.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>データの統計処理  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;stdexcept&gt;</code><br/>
+<code>#include &lt;cstdio&gt;</code><br/>
+<code>#include &quot;<a class="el" href="mist__conf_8h_source.html">config/mist_conf.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="color_8h_source.html">config/color.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="mist_8h_source.html">mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="matrix_8h_source.html">matrix.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="numeric_8h_source.html">numeric.h</a>&quot;</code><br/>
+</div>
+<p><a href="statistics_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1statistics"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1statistics.html">mist::statistics</a></td></tr>
+<tr class="memdesc:namespacemist_1_1statistics"><td class="mdescLeft">&#160;</td><td class="mdescRight">統計処理 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gab2e2f495a7afab3959fba5b3abd84932"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:gab2e2f495a7afab3959fba5b3abd84932"><td class="memTemplItemLeft" align="right" valign="top">__utility__::__value_type__<br class="typebreak"/>
+&lt; typename Array::value_type &gt;<br class="typebreak"/>
+::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#gab2e2f495a7afab3959fba5b3abd84932">mist::statistics::average</a> (const Array &amp;a)</td></tr>
+<tr class="memitem:gab1a1cf9612283f16d57f14642517b023"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:gab1a1cf9612283f16d57f14642517b023"><td class="memTemplItemLeft" align="right" valign="top">__utility__::__value_type__<br class="typebreak"/>
+&lt; typename Array::value_type &gt;<br class="typebreak"/>
+::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#gab1a1cf9612283f16d57f14642517b023">mist::statistics::variance</a> (const Array &amp;a, const typename __utility__::__value_type__&lt; typename Array::value_type &gt;::value_type &amp;ave)</td></tr>
+<tr class="memitem:ga5b3f1b210aa90dcae6edd232fb694709"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga5b3f1b210aa90dcae6edd232fb694709"><td class="memTemplItemLeft" align="right" valign="top">__utility__::__value_type__<br class="typebreak"/>
+&lt; typename Array::value_type &gt;<br class="typebreak"/>
+::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#ga5b3f1b210aa90dcae6edd232fb694709">mist::statistics::variance</a> (const Array &amp;a)</td></tr>
+<tr class="memitem:ga230684939d7f54813e0f7a1801e6766d"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga230684939d7f54813e0f7a1801e6766d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">mist::statistics::generate_histogram</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::value_type min, typename Array1::value_type max, typename Array1::value_type bin)</td></tr>
+<tr class="memitem:ga10f48e56fc40327190f861c097e34546"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga10f48e56fc40327190f861c097e34546"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#ga10f48e56fc40327190f861c097e34546">mist::statistics::generate_histogram</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::value_type min, typename Array1::value_type max)</td></tr>
+<tr class="memitem:ga92a4b6f87b3d343e0f56a5b0cc1c71f9"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga92a4b6f87b3d343e0f56a5b0cc1c71f9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#ga92a4b6f87b3d343e0f56a5b0cc1c71f9">mist::statistics::generate_histogram</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::value_type bin)</td></tr>
+<tr class="memitem:ga38239bf11695e4bb9048d90d24a0badf"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga38239bf11695e4bb9048d90d24a0badf"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#ga38239bf11695e4bb9048d90d24a0badf">mist::statistics::generate_histogram</a> (const Array1 &amp;in, Array2 &amp;out)</td></tr>
+<tr class="memitem:ga6b409a7251e3503efbd6f549fcda0ae7"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga6b409a7251e3503efbd6f549fcda0ae7"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#ga6b409a7251e3503efbd6f549fcda0ae7">mist::statistics::generate_histogram</a> (const Array1 &amp;in1, const Array2 &amp;in2, array2&lt; T, Allocator &gt; &amp;out, typename Array1::value_type min1, typename Array1::value_type max1, typename Array1::value_type min2, typename Array1::value_type max2, typename Array1::value_type bin)</td></tr>
+<tr class="memitem:gacd482ebb848abe78ea49dfe32714ae20"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gacd482ebb848abe78ea49dfe32714ae20"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#gacd482ebb848abe78ea49dfe32714ae20">mist::statistics::generate_histogram</a> (const Array1 &amp;in1, const Array2 &amp;in2, array2&lt; T, Allocator &gt; &amp;out, typename Array1::value_type min1, typename Array1::value_type max1, typename Array1::value_type min2, typename Array1::value_type max2)</td></tr>
+<tr class="memitem:ga9d16ee210de1c1292ae1ef4cb12f9dc4"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga9d16ee210de1c1292ae1ef4cb12f9dc4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#ga9d16ee210de1c1292ae1ef4cb12f9dc4">mist::statistics::generate_histogram</a> (const Array1 &amp;in1, const Array2 &amp;in2, array2&lt; T, Allocator &gt; &amp;out, typename Array1::value_type bin)</td></tr>
+<tr class="memitem:gaf17a4f8636f657673ebad34c3bc8175a"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gaf17a4f8636f657673ebad34c3bc8175a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#gaf17a4f8636f657673ebad34c3bc8175a">mist::statistics::generate_histogram</a> (const Array1 &amp;in1, const Array2 &amp;in2, array2&lt; T, Allocator &gt; &amp;out)</td></tr>
+<tr class="memitem:aef3876ba10c610deadada41fdaa8bcd2"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:aef3876ba10c610deadada41fdaa8bcd2"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::statistics::detail::central_moment</b> (const array2&lt; T, Allocator &gt; &amp;img, size_t x_order, size_t y_order, double x0, double y0)</td></tr>
+<tr class="memdesc:aef3876ba10c610deadada41fdaa8bcd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の中心モーメント  <a href="#aef3876ba10c610deadada41fdaa8bcd2"></a><br/></td></tr>
+<tr class="memitem:a45d70d6bdf564a75df35280f86c0a31d"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:a45d70d6bdf564a75df35280f86c0a31d"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::statistics::detail::normalized_central_moment</b> (const array2&lt; T, Allocator &gt; &amp;img, size_t x_order, size_t y_order, double u00, double x0, double y0)</td></tr>
+<tr class="memdesc:a45d70d6bdf564a75df35280f86c0a31d"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像から正規化中心モーメントを求める  <a href="#a45d70d6bdf564a75df35280f86c0a31d"></a><br/></td></tr>
+<tr class="memitem:ga46b0729c0ae846a9a37875a7f3ebc5fc"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:ga46b0729c0ae846a9a37875a7f3ebc5fc"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc">mist::statistics::moment</a> (const array2&lt; T, Allocator &gt; &amp;img, size_t x_order, size_t y_order)</td></tr>
+<tr class="memdesc:ga46b0729c0ae846a9a37875a7f3ebc5fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像のモーメントを求める  <a href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc"></a><br/></td></tr>
+<tr class="memitem:ga57bd41d18b36f80b552209193530a628"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:ga57bd41d18b36f80b552209193530a628"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#ga57bd41d18b36f80b552209193530a628">mist::statistics::central_moment</a> (const array2&lt; T, Allocator &gt; &amp;img, size_t x_order, size_t y_order)</td></tr>
+<tr class="memdesc:ga57bd41d18b36f80b552209193530a628"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の中心モーメント  <a href="group__statistics__group.html#ga57bd41d18b36f80b552209193530a628"></a><br/></td></tr>
+<tr class="memitem:ga230cb0a3727439050fa781d432da131f"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:ga230cb0a3727439050fa781d432da131f"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#ga230cb0a3727439050fa781d432da131f">mist::statistics::normalized_central_moment</a> (const array2&lt; T, Allocator &gt; &amp;img, size_t x_order, size_t y_order)</td></tr>
+<tr class="memdesc:ga230cb0a3727439050fa781d432da131f"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像から正規化中心モーメントを求める  <a href="group__statistics__group.html#ga230cb0a3727439050fa781d432da131f"></a><br/></td></tr>
+<tr class="memitem:ga15bd6afc0181d63e9c3e2c18fbca3d9e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:ga15bd6afc0181d63e9c3e2c18fbca3d9e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__statistics__group.html#ga15bd6afc0181d63e9c3e2c18fbca3d9e">mist::statistics::hu_moments</a> (const array2&lt; T, Allocator &gt; &amp;img, array1&lt; double &gt; &amp;moments)</td></tr>
+<tr class="memdesc:ga15bd6afc0181d63e9c3e2c18fbca3d9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像からHuモーメントを求める  <a href="group__statistics__group.html#ga15bd6afc0181d63e9c3e2c18fbca3d9e"></a><br/></td></tr>
+<tr class="memitem:ab17f1c63e6c5257d044cc1f713c830df"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:ab17f1c63e6c5257d044cc1f713c830df"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::statistics::normal_distribution::probability</b> (const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;x, const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;u, const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;sigma)</td></tr>
+<tr class="memdesc:ab17f1c63e6c5257d044cc1f713c830df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain propability.  <a href="#ab17f1c63e6c5257d044cc1f713c830df"></a><br/></td></tr>
+<tr class="memitem:a7c75be1e0ba1ca694f000cf239cb3f82"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:a7c75be1e0ba1ca694f000cf239cb3f82"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::statistics::normal_distribution::estimate</b> (const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;sample, <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;average, <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;variance)</td></tr>
+<tr class="memdesc:a7c75be1e0ba1ca694f000cf239cb3f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate sample average and variance.  <a href="#a7c75be1e0ba1ca694f000cf239cb3f82"></a><br/></td></tr>
+<tr class="memitem:af219c32ccb9e7d2b3cd1477489ba3212"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:af219c32ccb9e7d2b3cd1477489ba3212"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::statistics::parzen::density</b> (const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;sample, const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;x, double band)</td></tr>
+<tr class="memdesc:af219c32ccb9e7d2b3cd1477489ba3212"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate probability density.  <a href="#af219c32ccb9e7d2b3cd1477489ba3212"></a><br/></td></tr>
+<tr class="memitem:a0548ae50d33c1a80110fb5a2c724d478"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:a0548ae50d33c1a80110fb5a2c724d478"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::statistics::parzen::test</b> (const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;sample, double band, int n=5)</td></tr>
+<tr class="memdesc:a0548ae50d33c1a80110fb5a2c724d478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Varidate band length.  <a href="#a0548ae50d33c1a80110fb5a2c724d478"></a><br/></td></tr>
+<tr class="memitem:a4016a8ef932559fa4ff557896f287630"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:a4016a8ef932559fa4ff557896f287630"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::statistics::kernel::density</b> (const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;sample, const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;x, double b)</td></tr>
+<tr class="memdesc:a4016a8ef932559fa4ff557896f287630"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate probability density.  <a href="#a4016a8ef932559fa4ff557896f287630"></a><br/></td></tr>
+<tr class="memitem:ae4728c35c75517a6024e0f8168a195b1"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:ae4728c35c75517a6024e0f8168a195b1"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::statistics::kernel::test</b> (const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;sample, double band, int n=5)</td></tr>
+<tr class="memdesc:ae4728c35c75517a6024e0f8168a195b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Varidate band length.  <a href="#ae4728c35c75517a6024e0f8168a195b1"></a><br/></td></tr>
+<tr class="memitem:ad504bdf1b307c21bab09340271295aa3"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:ad504bdf1b307c21bab09340271295aa3"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::statistics::knn::density</b> (const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;sample, const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;x, int k)</td></tr>
+<tr class="memdesc:ad504bdf1b307c21bab09340271295aa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate probability density.  <a href="#ad504bdf1b307c21bab09340271295aa3"></a><br/></td></tr>
+<tr class="memitem:a53bcf6b7000ca3ea3d8cd84e6a817c35"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
+<tr class="memitem:a53bcf6b7000ca3ea3d8cd84e6a817c35"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::statistics::knn::test</b> (const <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T, Allocator &gt; &amp;sample, int k, int n=5)</td></tr>
+<tr class="memdesc:a53bcf6b7000ca3ea3d8cd84e6a817c35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Varidate band length.  <a href="#a53bcf6b7000ca3ea3d8cd84e6a817c35"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>データの統計処理 </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

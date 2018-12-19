@@ -1,0 +1,571 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>最頻値フィルタ</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">最頻値フィルタ</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist_1_1mode__filter"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mode__filter.html">mist::mode_filter</a></td></tr>
+<tr class="memdesc:namespacemist_1_1mode__filter"><td class="mdescLeft">&#160;</td><td class="mdescRight">最頻値フィルタに利用する構造要素関連 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga8820313fa0f62e950e18a22083c2bc68"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga8820313fa0f62e950e18a22083c2bc68"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#ga8820313fa0f62e950e18a22083c2bc68">mist::mode</a> (array2&lt; T, Allocator &gt; &amp;in, const mode_filter::mode_structure &amp;s, Functor f, typename array2&lt; T, Allocator &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:ga8820313fa0f62e950e18a22083c2bc68"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応した最頻値フィルタ  <a href="#ga8820313fa0f62e950e18a22083c2bc68"></a><br/></td></tr>
+<tr class="memitem:ga8b5f5deca57ec112f8064278a297b237"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga8b5f5deca57ec112f8064278a297b237"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#ga8b5f5deca57ec112f8064278a297b237">mist::mode</a> (array2&lt; T, Allocator &gt; &amp;in, const mode_filter::mode_structure &amp;s, typename array2&lt; T, Allocator &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga8b5f5deca57ec112f8064278a297b237"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応した最頻値フィルタ  <a href="#ga8b5f5deca57ec112f8064278a297b237"></a><br/></td></tr>
+<tr class="memitem:gaf1cc81fcb38ffad645a8f8de4a8acb33"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:gaf1cc81fcb38ffad645a8f8de4a8acb33"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#gaf1cc81fcb38ffad645a8f8de4a8acb33">mist::mode</a> (array2&lt; T, Allocator &gt; &amp;in, double radius, Functor f, typename array2&lt; T, Allocator &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:gaf1cc81fcb38ffad645a8f8de4a8acb33"><td class="mdescLeft">&#160;</td><td class="mdescRight">円を構造要素とする最頻値フィルタ  <a href="#gaf1cc81fcb38ffad645a8f8de4a8acb33"></a><br/></td></tr>
+<tr class="memitem:ga30145212da9d0115e8180747e69b7601"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga30145212da9d0115e8180747e69b7601"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#ga30145212da9d0115e8180747e69b7601">mist::mode</a> (array2&lt; T, Allocator &gt; &amp;in, double radius, typename array2&lt; T, Allocator &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga30145212da9d0115e8180747e69b7601"><td class="mdescLeft">&#160;</td><td class="mdescRight">円を構造要素とする最頻値フィルタ  <a href="#ga30145212da9d0115e8180747e69b7601"></a><br/></td></tr>
+<tr class="memitem:gaf8f18c3973185b1324963d2e67ba4606"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:gaf8f18c3973185b1324963d2e67ba4606"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#gaf8f18c3973185b1324963d2e67ba4606">mist::mode</a> (array3&lt; T, Allocator &gt; &amp;in, const mode_filter::mode_structure &amp;s, Functor f, typename array3&lt; T, Allocator &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:gaf8f18c3973185b1324963d2e67ba4606"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応した最頻値フィルタ  <a href="#gaf8f18c3973185b1324963d2e67ba4606"></a><br/></td></tr>
+<tr class="memitem:ga5dddfc60e79d47eba7949284cf10d6f4"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga5dddfc60e79d47eba7949284cf10d6f4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#ga5dddfc60e79d47eba7949284cf10d6f4">mist::mode</a> (array3&lt; T, Allocator &gt; &amp;in, const mode_filter::mode_structure &amp;s, typename array3&lt; T, Allocator &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga5dddfc60e79d47eba7949284cf10d6f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応した最頻値フィルタ  <a href="#ga5dddfc60e79d47eba7949284cf10d6f4"></a><br/></td></tr>
+<tr class="memitem:gaa6a41c925eab670343e6a43fb56a4b5b"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:gaa6a41c925eab670343e6a43fb56a4b5b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#gaa6a41c925eab670343e6a43fb56a4b5b">mist::mode</a> (array3&lt; T, Allocator &gt; &amp;in, double radius, Functor f, typename array3&lt; T, Allocator &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:gaa6a41c925eab670343e6a43fb56a4b5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とする最頻値フィルタ  <a href="#gaa6a41c925eab670343e6a43fb56a4b5b"></a><br/></td></tr>
+<tr class="memitem:gae243779217caf8bd40fc8de22b68c409"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gae243779217caf8bd40fc8de22b68c409"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#gae243779217caf8bd40fc8de22b68c409">mist::mode</a> (array3&lt; T, Allocator &gt; &amp;in, double radius, typename array3&lt; T, Allocator &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:gae243779217caf8bd40fc8de22b68c409"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とする最頻値フィルタ  <a href="#gae243779217caf8bd40fc8de22b68c409"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="mode_8h.html" title="各次元の画像に対応し，任意の構造要素に対応した２値画像に対する最頻値フィルタ（多数決フィルタ）を行うためのライブラリ">mist/filter/mode.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga8820313fa0f62e950e18a22083c2bc68"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::mode </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mode_filter::mode_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応した最頻値フィルタ </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… 最頻値フィルタに用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#ae64af0291a7ce06ed3ef472bba70dd22">mist::mode_filter::create_pointer_diff_list()</a>, <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html#a8cfe81848f539328e8363cb742e92da0">mist::mode_filter::mode_structure::margin_x</a>, <a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html#a956869558ed376515fbf14367fb1affa">mist::mode_filter::mode_structure::margin_y</a>, <a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html#afee1937b2debd610013d7016efb262d3">mist::mode_filter::mode_structure::object</a>, <a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html#aefec80610394edbcb5c24143a2ee41ea">mist::mode_filter::mode_structure::update_in</a>, と <a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html#a0c1a4bf1e726c65f8fbc577d1ca723b8">mist::mode_filter::mode_structure::update_out</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga8b5f5deca57ec112f8064278a297b237"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::mode </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mode_filter::mode_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応した最頻値フィルタ </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… 最頻値フィルタに用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gaf1cc81fcb38ffad645a8f8de4a8acb33"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::mode </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>円を構造要素とする最頻値フィルタ </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 円の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#a49be8a5eecec8cc00aa0ed630f839d4c">mist::mode_filter::circle()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, と <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga30145212da9d0115e8180747e69b7601"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::mode </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>円を構造要素とする最頻値フィルタ </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 円の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#a49be8a5eecec8cc00aa0ed630f839d4c">mist::mode_filter::circle()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, と <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaf8f18c3973185b1324963d2e67ba4606"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::mode </td>
+          <td>(</td>
+          <td class="paramtype">array3&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mode_filter::mode_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応した最頻値フィルタ </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… 最頻値フィルタに用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#ae64af0291a7ce06ed3ef472bba70dd22">mist::mode_filter::create_pointer_diff_list()</a>, <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html#a8cfe81848f539328e8363cb742e92da0">mist::mode_filter::mode_structure::margin_x</a>, <a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html#a956869558ed376515fbf14367fb1affa">mist::mode_filter::mode_structure::margin_y</a>, <a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html#a419481bcab2b75b79c2740df160b63d2">mist::mode_filter::mode_structure::margin_z</a>, <a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html#afee1937b2debd610013d7016efb262d3">mist::mode_filter::mode_structure::object</a>, <a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html#aefec80610394edbcb5c24143a2ee41ea">mist::mode_filter::mode_structure::update_in</a>, と <a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html#a0c1a4bf1e726c65f8fbc577d1ca723b8">mist::mode_filter::mode_structure::update_out</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga5dddfc60e79d47eba7949284cf10d6f4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::mode </td>
+          <td>(</td>
+          <td class="paramtype">array3&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mode_filter::mode_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応した最頻値フィルタ </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… 最頻値フィルタに用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gaa6a41c925eab670343e6a43fb56a4b5b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::mode </td>
+          <td>(</td>
+          <td class="paramtype">array3&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>球を構造要素とする最頻値フィルタ </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 球の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array3.html#ae3aec3e8e4dcded2aa267a17a487d251">mist::array3&lt; T, Allocator &gt;::reso3()</a>, と <a class="el" href="namespacemist_1_1mode__filter.html#ab8f4385aa6d16689ce46e360d1342b4c">mist::mode_filter::sphere()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gae243779217caf8bd40fc8de22b68c409"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::mode </td>
+          <td>(</td>
+          <td class="paramtype">array3&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>球を構造要素とする最頻値フィルタ </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 球の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array3.html#ae3aec3e8e4dcded2aa267a17a487d251">mist::array3&lt; T, Allocator &gt;::reso3()</a>, と <a class="el" href="namespacemist_1_1mode__filter.html#ab8f4385aa6d16689ce46e360d1342b4c">mist::mode_filter::sphere()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>boundary.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_98af7b07076b7431daa71db42f45cb3a.html">filter</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">boundary.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>各次元の画像に対応した，境界画素抽出アルゴリズム  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+</div>
+<p><a href="boundary_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga8eff5c61a01d7521b7b5a9b2644a1ebb"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga8eff5c61a01d7521b7b5a9b2644a1ebb"><td class="memTemplItemLeft" align="right" valign="top">array2&lt; T, Allocator &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__boundary__group.html#ga8eff5c61a01d7521b7b5a9b2644a1ebb">mist::boundary4</a> (array2&lt; T, Allocator &gt; &amp;in, typename array2&lt; T, Allocator &gt;::value_type border, typename array2&lt; T, Allocator &gt;::value_type inside, bool boundary_is_border, Functor f)</td></tr>
+<tr class="memdesc:ga8eff5c61a01d7521b7b5a9b2644a1ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">背景と4近傍で接する境界画素を抽出する  <a href="group__boundary__group.html#ga8eff5c61a01d7521b7b5a9b2644a1ebb"></a><br/></td></tr>
+<tr class="memitem:ga8ac91088df808f135c8d8870259dc90c"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga8ac91088df808f135c8d8870259dc90c"><td class="memTemplItemLeft" align="right" valign="top">array2&lt; T, Allocator &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__boundary__group.html#ga8ac91088df808f135c8d8870259dc90c">mist::boundary4</a> (array2&lt; T, Allocator &gt; &amp;in, typename array2&lt; T, Allocator &gt;::value_type border, typename array2&lt; T, Allocator &gt;::value_type inside=0, bool boundary_is_border=true)</td></tr>
+<tr class="memdesc:ga8ac91088df808f135c8d8870259dc90c"><td class="mdescLeft">&#160;</td><td class="mdescRight">背景と4近傍で接する境界画素を抽出する  <a href="group__boundary__group.html#ga8ac91088df808f135c8d8870259dc90c"></a><br/></td></tr>
+<tr class="memitem:ga72bd215941ecfaecf21ea1d8075dbd38"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga72bd215941ecfaecf21ea1d8075dbd38"><td class="memTemplItemLeft" align="right" valign="top">array2&lt; T, Allocator &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__boundary__group.html#ga72bd215941ecfaecf21ea1d8075dbd38">mist::boundary8</a> (array2&lt; T, Allocator &gt; &amp;in, typename array2&lt; T, Allocator &gt;::value_type border, typename array2&lt; T, Allocator &gt;::value_type inside, bool boundary_is_border, Functor f)</td></tr>
+<tr class="memdesc:ga72bd215941ecfaecf21ea1d8075dbd38"><td class="mdescLeft">&#160;</td><td class="mdescRight">背景と8近傍で接する境界画素を抽出する  <a href="group__boundary__group.html#ga72bd215941ecfaecf21ea1d8075dbd38"></a><br/></td></tr>
+<tr class="memitem:gaa7cc8f4191197d39d25f3c51b2209a7b"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gaa7cc8f4191197d39d25f3c51b2209a7b"><td class="memTemplItemLeft" align="right" valign="top">array2&lt; T, Allocator &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__boundary__group.html#gaa7cc8f4191197d39d25f3c51b2209a7b">mist::boundary8</a> (array2&lt; T, Allocator &gt; &amp;in, typename array2&lt; T, Allocator &gt;::value_type border, typename array2&lt; T, Allocator &gt;::value_type inside=0, bool boundary_is_border=true)</td></tr>
+<tr class="memdesc:gaa7cc8f4191197d39d25f3c51b2209a7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">背景と8近傍で接する境界画素を抽出する  <a href="group__boundary__group.html#gaa7cc8f4191197d39d25f3c51b2209a7b"></a><br/></td></tr>
+<tr class="memitem:ga7d6273c62e5bcca1eec03be9ffb7a666"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga7d6273c62e5bcca1eec03be9ffb7a666"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T, Allocator &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__boundary__group.html#ga7d6273c62e5bcca1eec03be9ffb7a666">mist::boundary6</a> (array3&lt; T, Allocator &gt; &amp;in, typename array3&lt; T, Allocator &gt;::value_type border, typename array3&lt; T, Allocator &gt;::value_type inside, bool boundary_is_border, Functor f)</td></tr>
+<tr class="memdesc:ga7d6273c62e5bcca1eec03be9ffb7a666"><td class="mdescLeft">&#160;</td><td class="mdescRight">背景と6近傍で接する境界画素を抽出する  <a href="group__boundary__group.html#ga7d6273c62e5bcca1eec03be9ffb7a666"></a><br/></td></tr>
+<tr class="memitem:ga3271b015cfbd2becd92b9a6720af27bd"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga3271b015cfbd2becd92b9a6720af27bd"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T, Allocator &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__boundary__group.html#ga3271b015cfbd2becd92b9a6720af27bd">mist::boundary6</a> (array3&lt; T, Allocator &gt; &amp;in, typename array3&lt; T, Allocator &gt;::value_type border, typename array3&lt; T, Allocator &gt;::value_type inside=0, bool boundary_is_border=true)</td></tr>
+<tr class="memdesc:ga3271b015cfbd2becd92b9a6720af27bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">背景と6近傍で接する境界画素を抽出する  <a href="group__boundary__group.html#ga3271b015cfbd2becd92b9a6720af27bd"></a><br/></td></tr>
+<tr class="memitem:gada0f64d016f55345ce7366d2ebc0d8e1"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:gada0f64d016f55345ce7366d2ebc0d8e1"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T, Allocator &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__boundary__group.html#gada0f64d016f55345ce7366d2ebc0d8e1">mist::boundary18</a> (array3&lt; T, Allocator &gt; &amp;in, typename array3&lt; T, Allocator &gt;::value_type border, typename array3&lt; T, Allocator &gt;::value_type inside, bool boundary_is_border, Functor f)</td></tr>
+<tr class="memdesc:gada0f64d016f55345ce7366d2ebc0d8e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">背景と18近傍で接する境界画素を抽出する  <a href="group__boundary__group.html#gada0f64d016f55345ce7366d2ebc0d8e1"></a><br/></td></tr>
+<tr class="memitem:ga78e166ec40add3bd8655da2401fb303b"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga78e166ec40add3bd8655da2401fb303b"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T, Allocator &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__boundary__group.html#ga78e166ec40add3bd8655da2401fb303b">mist::boundary18</a> (array3&lt; T, Allocator &gt; &amp;in, typename array3&lt; T, Allocator &gt;::value_type border, typename array3&lt; T, Allocator &gt;::value_type inside=0, bool boundary_is_border=true)</td></tr>
+<tr class="memdesc:ga78e166ec40add3bd8655da2401fb303b"><td class="mdescLeft">&#160;</td><td class="mdescRight">背景と18近傍で接する境界画素を抽出する  <a href="group__boundary__group.html#ga78e166ec40add3bd8655da2401fb303b"></a><br/></td></tr>
+<tr class="memitem:gac60f8005d9f1a771b53f1e4250721141"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:gac60f8005d9f1a771b53f1e4250721141"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T, Allocator &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__boundary__group.html#gac60f8005d9f1a771b53f1e4250721141">mist::boundary26</a> (array3&lt; T, Allocator &gt; &amp;in, typename array3&lt; T, Allocator &gt;::value_type border, typename array3&lt; T, Allocator &gt;::value_type inside, bool boundary_is_border, Functor f)</td></tr>
+<tr class="memdesc:gac60f8005d9f1a771b53f1e4250721141"><td class="mdescLeft">&#160;</td><td class="mdescRight">背景と26近傍で接する境界画素を抽出する  <a href="group__boundary__group.html#gac60f8005d9f1a771b53f1e4250721141"></a><br/></td></tr>
+<tr class="memitem:ga76c01807f3477fd21c19f6ac6232ec7d"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga76c01807f3477fd21c19f6ac6232ec7d"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T, Allocator &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__boundary__group.html#ga76c01807f3477fd21c19f6ac6232ec7d">mist::boundary26</a> (array3&lt; T, Allocator &gt; &amp;in, typename array3&lt; T, Allocator &gt;::value_type border, typename array3&lt; T, Allocator &gt;::value_type inside=0, bool boundary_is_border=true)</td></tr>
+<tr class="memdesc:ga76c01807f3477fd21c19f6ac6232ec7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">背景と18近傍で接する境界画素を抽出する  <a href="group__boundary__group.html#ga76c01807f3477fd21c19f6ac6232ec7d"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>各次元の画像に対応した，境界画素抽出アルゴリズム </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

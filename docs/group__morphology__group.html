@@ -1,0 +1,1103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>モルフォロジ演算フィルタ</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">モルフォロジ演算フィルタ</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist_1_1morphology"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1morphology.html">mist::morphology</a></td></tr>
+<tr class="memdesc:namespacemist_1_1morphology"><td class="mdescLeft">&#160;</td><td class="mdescRight">モルフォロジ演算に利用する構造要素関連 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga4cfd75b7c98fa05078f0bc292d2d2b8f"><td class="memTemplParams" colspan="2">template&lt;class Array , class Functor &gt; </td></tr>
+<tr class="memitem:ga4cfd75b7c98fa05078f0bc292d2d2b8f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#ga4cfd75b7c98fa05078f0bc292d2d2b8f">mist::erosion</a> (Array &amp;in, const morphology::morphology_structure &amp;s, Functor f, typename Array::size_type thread_num)</td></tr>
+<tr class="memdesc:ga4cfd75b7c98fa05078f0bc292d2d2b8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応したErosion演算  <a href="#ga4cfd75b7c98fa05078f0bc292d2d2b8f"></a><br/></td></tr>
+<tr class="memitem:ga79fcd98dca5b829a9afe0ecaa3384071"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga79fcd98dca5b829a9afe0ecaa3384071"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#ga79fcd98dca5b829a9afe0ecaa3384071">mist::erosion</a> (Array &amp;in, const morphology::morphology_structure &amp;s, typename Array::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga79fcd98dca5b829a9afe0ecaa3384071"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応したErosion演算  <a href="#ga79fcd98dca5b829a9afe0ecaa3384071"></a><br/></td></tr>
+<tr class="memitem:gac856095b56c1a72f28f935246b52a265"><td class="memTemplParams" colspan="2">template&lt;class Array , class Functor &gt; </td></tr>
+<tr class="memitem:gac856095b56c1a72f28f935246b52a265"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#gac856095b56c1a72f28f935246b52a265">mist::dilation</a> (Array &amp;in, const morphology::morphology_structure &amp;s, Functor f, typename Array::size_type thread_num)</td></tr>
+<tr class="memdesc:gac856095b56c1a72f28f935246b52a265"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応したDilation演算  <a href="#gac856095b56c1a72f28f935246b52a265"></a><br/></td></tr>
+<tr class="memitem:ga2270d1de7ab82e0908256a63f0c255ce"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga2270d1de7ab82e0908256a63f0c255ce"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#ga2270d1de7ab82e0908256a63f0c255ce">mist::dilation</a> (Array &amp;in, const morphology::morphology_structure &amp;s, typename Array::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga2270d1de7ab82e0908256a63f0c255ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応したDilation演算  <a href="#ga2270d1de7ab82e0908256a63f0c255ce"></a><br/></td></tr>
+<tr class="memitem:ga99d5819b28dfe92e222fa0147c1cf9f8"><td class="memTemplParams" colspan="2">template&lt;class Array , class Functor &gt; </td></tr>
+<tr class="memitem:ga99d5819b28dfe92e222fa0147c1cf9f8"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#ga99d5819b28dfe92e222fa0147c1cf9f8">mist::opening</a> (Array &amp;in, const morphology::morphology_structure &amp;s, Functor f, typename Array::size_type thread_num)</td></tr>
+<tr class="memdesc:ga99d5819b28dfe92e222fa0147c1cf9f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応したOpening演算  <a href="#ga99d5819b28dfe92e222fa0147c1cf9f8"></a><br/></td></tr>
+<tr class="memitem:ga1b8f2156331461b77d5ff3b1f823b8ff"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga1b8f2156331461b77d5ff3b1f823b8ff"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#ga1b8f2156331461b77d5ff3b1f823b8ff">mist::opening</a> (Array &amp;in, const morphology::morphology_structure &amp;s, typename Array::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga1b8f2156331461b77d5ff3b1f823b8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応したOpening演算  <a href="#ga1b8f2156331461b77d5ff3b1f823b8ff"></a><br/></td></tr>
+<tr class="memitem:ga573121226332924e8d3a9a6aa80c7f07"><td class="memTemplParams" colspan="2">template&lt;class Array , class Functor &gt; </td></tr>
+<tr class="memitem:ga573121226332924e8d3a9a6aa80c7f07"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#ga573121226332924e8d3a9a6aa80c7f07">mist::closing</a> (Array &amp;in, const morphology::morphology_structure &amp;s, Functor f, typename Array::size_type thread_num)</td></tr>
+<tr class="memdesc:ga573121226332924e8d3a9a6aa80c7f07"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応したClosing演算  <a href="#ga573121226332924e8d3a9a6aa80c7f07"></a><br/></td></tr>
+<tr class="memitem:ga4ef4d3057c18f893cf861b2dcf09f08e"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga4ef4d3057c18f893cf861b2dcf09f08e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#ga4ef4d3057c18f893cf861b2dcf09f08e">mist::closing</a> (Array &amp;in, const morphology::morphology_structure &amp;s, typename Array::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga4ef4d3057c18f893cf861b2dcf09f08e"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応したClosing演算  <a href="#ga4ef4d3057c18f893cf861b2dcf09f08e"></a><br/></td></tr>
+<tr class="memitem:gaf1fef5380ee5762ca7c5ee3c4f9f6bf1"><td class="memTemplParams" colspan="2">template&lt;class Array , class Functor &gt; </td></tr>
+<tr class="memitem:gaf1fef5380ee5762ca7c5ee3c4f9f6bf1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#gaf1fef5380ee5762ca7c5ee3c4f9f6bf1">mist::erosion</a> (Array &amp;in, double radius, Functor f, typename Array::size_type thread_num)</td></tr>
+<tr class="memdesc:gaf1fef5380ee5762ca7c5ee3c4f9f6bf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とするErosion演算  <a href="#gaf1fef5380ee5762ca7c5ee3c4f9f6bf1"></a><br/></td></tr>
+<tr class="memitem:gac7341085467a84c17a6d6fe2d3bf6555"><td class="memTemplParams" colspan="2">template&lt;class Array , class Functor &gt; </td></tr>
+<tr class="memitem:gac7341085467a84c17a6d6fe2d3bf6555"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#gac7341085467a84c17a6d6fe2d3bf6555">mist::dilation</a> (Array &amp;in, double radius, Functor f, typename Array::size_type thread_num)</td></tr>
+<tr class="memdesc:gac7341085467a84c17a6d6fe2d3bf6555"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とするDilation演算  <a href="#gac7341085467a84c17a6d6fe2d3bf6555"></a><br/></td></tr>
+<tr class="memitem:gaf748e3254adf903183f2bd80dba659ee"><td class="memTemplParams" colspan="2">template&lt;class Array , class Functor &gt; </td></tr>
+<tr class="memitem:gaf748e3254adf903183f2bd80dba659ee"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#gaf748e3254adf903183f2bd80dba659ee">mist::opening</a> (Array &amp;in, double radius, Functor f, typename Array::size_type thread_num)</td></tr>
+<tr class="memdesc:gaf748e3254adf903183f2bd80dba659ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とするOpening演算  <a href="#gaf748e3254adf903183f2bd80dba659ee"></a><br/></td></tr>
+<tr class="memitem:ga511f1202c0d8c2c96eb0dc10af2a3e97"><td class="memTemplParams" colspan="2">template&lt;class Array , class Functor &gt; </td></tr>
+<tr class="memitem:ga511f1202c0d8c2c96eb0dc10af2a3e97"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#ga511f1202c0d8c2c96eb0dc10af2a3e97">mist::closing</a> (Array &amp;in, double radius, Functor f, typename Array::size_type thread_num)</td></tr>
+<tr class="memdesc:ga511f1202c0d8c2c96eb0dc10af2a3e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とするClosing演算  <a href="#ga511f1202c0d8c2c96eb0dc10af2a3e97"></a><br/></td></tr>
+<tr class="memitem:ga7573e874a96fecf8e0d98199917291f9"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga7573e874a96fecf8e0d98199917291f9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#ga7573e874a96fecf8e0d98199917291f9">mist::erosion</a> (Array &amp;in, double radius, typename Array::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga7573e874a96fecf8e0d98199917291f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とするErosion演算  <a href="#ga7573e874a96fecf8e0d98199917291f9"></a><br/></td></tr>
+<tr class="memitem:ga26d6629d1a21601fd0819c76d82bb2d1"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga26d6629d1a21601fd0819c76d82bb2d1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#ga26d6629d1a21601fd0819c76d82bb2d1">mist::dilation</a> (Array &amp;in, double radius, typename Array::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga26d6629d1a21601fd0819c76d82bb2d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とするDilation演算  <a href="#ga26d6629d1a21601fd0819c76d82bb2d1"></a><br/></td></tr>
+<tr class="memitem:gaad85d383ecd1957220e5aaed3d9eed9a"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:gaad85d383ecd1957220e5aaed3d9eed9a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#gaad85d383ecd1957220e5aaed3d9eed9a">mist::opening</a> (Array &amp;in, double radius, typename Array::size_type thread_num=0)</td></tr>
+<tr class="memdesc:gaad85d383ecd1957220e5aaed3d9eed9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とするOpening演算  <a href="#gaad85d383ecd1957220e5aaed3d9eed9a"></a><br/></td></tr>
+<tr class="memitem:gaa440cdd7deaeba3543c7a96affd16ccc"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:gaa440cdd7deaeba3543c7a96affd16ccc"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__morphology__group.html#gaa440cdd7deaeba3543c7a96affd16ccc">mist::closing</a> (Array &amp;in, double radius, typename Array::size_type thread_num=0)</td></tr>
+<tr class="memdesc:gaa440cdd7deaeba3543c7a96affd16ccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とするClosing演算  <a href="#gaa440cdd7deaeba3543c7a96affd16ccc"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="morphology_8h.html" title="各次元の画像に対応し，任意の構造要素に対応したモルフォロジ演算を行うためのライブラリ">mist/filter/morphology.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga573121226332924e8d3a9a6aa80c7f07"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::closing </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const morphology::morphology_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応したClosing演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… モルフォロジ演算に用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#ae64af0291a7ce06ed3ef472bba70dd22">mist::mode_filter::create_pointer_diff_list()</a>, <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="classmist_1_1marray.html#a7cb90c2169dc8b1e7e171cf23207f6e4">mist::marray&lt; Array &gt;::fill_margin()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a4bbb77c24cefffeaba6beb5cfa2b1850">mist::morphology::morphology_structure::margin_x</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a71d751bf253394edde4aa48c93f617e8">mist::morphology::morphology_structure::margin_y</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a6830ca60237e9e7c9f318acb77e6872c">mist::morphology::morphology_structure::margin_z</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a411b9fcd6da759f95c2827525e5047c1">mist::morphology::morphology_structure::object</a>, と <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#abcca1413585773e5ec6882c328d44942">mist::morphology::morphology_structure::update</a>.</p>
+
+<p>参照元 <a class="el" href="group__morphology__group.html#ga4ef4d3057c18f893cf861b2dcf09f08e">mist::closing()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga4ef4d3057c18f893cf861b2dcf09f08e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::closing </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const morphology::morphology_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応したClosing演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… モルフォロジ演算に用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__morphology__group.html#ga573121226332924e8d3a9a6aa80c7f07">mist::closing()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga511f1202c0d8c2c96eb0dc10af2a3e97"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array , class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::closing </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>球を構造要素とするClosing演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 球の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#a49be8a5eecec8cc00aa0ed630f839d4c">mist::mode_filter::circle()</a>, <a class="el" href="group__morphology__group.html#ga573121226332924e8d3a9a6aa80c7f07">mist::closing()</a>, と <a class="el" href="namespacemist_1_1mode__filter.html#ab8f4385aa6d16689ce46e360d1342b4c">mist::mode_filter::sphere()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaa440cdd7deaeba3543c7a96affd16ccc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::closing </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>球を構造要素とするClosing演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 球の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__morphology__group.html#ga573121226332924e8d3a9a6aa80c7f07">mist::closing()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gac856095b56c1a72f28f935246b52a265"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::dilation </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const morphology::morphology_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応したDilation演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… モルフォロジ演算に用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#ae64af0291a7ce06ed3ef472bba70dd22">mist::mode_filter::create_pointer_diff_list()</a>, <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a4bbb77c24cefffeaba6beb5cfa2b1850">mist::morphology::morphology_structure::margin_x</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a71d751bf253394edde4aa48c93f617e8">mist::morphology::morphology_structure::margin_y</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a6830ca60237e9e7c9f318acb77e6872c">mist::morphology::morphology_structure::margin_z</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a411b9fcd6da759f95c2827525e5047c1">mist::morphology::morphology_structure::object</a>, と <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#abcca1413585773e5ec6882c328d44942">mist::morphology::morphology_structure::update</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga2270d1de7ab82e0908256a63f0c255ce"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::dilation </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const morphology::morphology_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応したDilation演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… モルフォロジ演算に用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gac7341085467a84c17a6d6fe2d3bf6555"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array , class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::dilation </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>球を構造要素とするDilation演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 球の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#a49be8a5eecec8cc00aa0ed630f839d4c">mist::mode_filter::circle()</a>, と <a class="el" href="namespacemist_1_1mode__filter.html#ab8f4385aa6d16689ce46e360d1342b4c">mist::mode_filter::sphere()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga26d6629d1a21601fd0819c76d82bb2d1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::dilation </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>球を構造要素とするDilation演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 球の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ga4cfd75b7c98fa05078f0bc292d2d2b8f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::erosion </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const morphology::morphology_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応したErosion演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… モルフォロジ演算に用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#ae64af0291a7ce06ed3ef472bba70dd22">mist::mode_filter::create_pointer_diff_list()</a>, <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a4bbb77c24cefffeaba6beb5cfa2b1850">mist::morphology::morphology_structure::margin_x</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a71d751bf253394edde4aa48c93f617e8">mist::morphology::morphology_structure::margin_y</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a6830ca60237e9e7c9f318acb77e6872c">mist::morphology::morphology_structure::margin_z</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a411b9fcd6da759f95c2827525e5047c1">mist::morphology::morphology_structure::object</a>, と <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#abcca1413585773e5ec6882c328d44942">mist::morphology::morphology_structure::update</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga79fcd98dca5b829a9afe0ecaa3384071"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::erosion </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const morphology::morphology_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応したErosion演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… モルフォロジ演算に用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gaf1fef5380ee5762ca7c5ee3c4f9f6bf1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array , class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::erosion </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>球を構造要素とするErosion演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 球の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#a49be8a5eecec8cc00aa0ed630f839d4c">mist::mode_filter::circle()</a>, と <a class="el" href="namespacemist_1_1mode__filter.html#ab8f4385aa6d16689ce46e360d1342b4c">mist::mode_filter::sphere()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga7573e874a96fecf8e0d98199917291f9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::erosion </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>球を構造要素とするErosion演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 球の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ga99d5819b28dfe92e222fa0147c1cf9f8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::opening </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const morphology::morphology_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応したOpening演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… モルフォロジ演算に用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#ae64af0291a7ce06ed3ef472bba70dd22">mist::mode_filter::create_pointer_diff_list()</a>, <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, <a class="el" href="classmist_1_1marray.html#a7cb90c2169dc8b1e7e171cf23207f6e4">mist::marray&lt; Array &gt;::fill_margin()</a>, <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a4bbb77c24cefffeaba6beb5cfa2b1850">mist::morphology::morphology_structure::margin_x</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a71d751bf253394edde4aa48c93f617e8">mist::morphology::morphology_structure::margin_y</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a6830ca60237e9e7c9f318acb77e6872c">mist::morphology::morphology_structure::margin_z</a>, <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#a411b9fcd6da759f95c2827525e5047c1">mist::morphology::morphology_structure::object</a>, と <a class="el" href="structmist_1_1morphology_1_1morphology__structure.html#abcca1413585773e5ec6882c328d44942">mist::morphology::morphology_structure::update</a>.</p>
+
+<p>参照元 <a class="el" href="group__morphology__group.html#ga1b8f2156331461b77d5ff3b1f823b8ff">mist::opening()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga1b8f2156331461b77d5ff3b1f823b8ff"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::opening </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const morphology::morphology_structure &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素に対応したOpening演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… モルフォロジ演算に用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__morphology__group.html#ga99d5819b28dfe92e222fa0147c1cf9f8">mist::opening()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaf748e3254adf903183f2bd80dba659ee"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array , class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::opening </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>球を構造要素とするOpening演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 球の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を返すコールバック関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1mode__filter.html#a49be8a5eecec8cc00aa0ed630f839d4c">mist::mode_filter::circle()</a>, <a class="el" href="group__morphology__group.html#ga99d5819b28dfe92e222fa0147c1cf9f8">mist::opening()</a>, と <a class="el" href="namespacemist_1_1mode__filter.html#ab8f4385aa6d16689ce46e360d1342b4c">mist::mode_filter::sphere()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaad85d383ecd1957220e5aaed3d9eed9a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::opening </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>球を構造要素とするOpening演算 </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトを使用する </dd>
+<dd>
+CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… 入出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">radius</td><td>… 球の半径（単位は画素） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__morphology__group.html#ga99d5819b28dfe92e222fa0147c1cf9f8">mist::opening()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

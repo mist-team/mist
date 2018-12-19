@@ -1,0 +1,337 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ネームスペース mist::gradient_with_vector</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="namespaces.html"><span>ネームスペース一覧</span></a></li>
+      <li><a href="namespacemembers.html"><span>ネームスペースメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1gradient__with__vector.html">gradient_with_vector</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ネームスペース mist::gradient_with_vector<div class="ingroups"><a class="el" href="group__minimization__group.html">関数の最小化</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>勾配関数をユーザーが定義する最急降下法（勾配を用いた多変数関数の極小値の探索）  
+<a href="#details">[詳細]</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a2ed576bc72c7901235c9f76bd562dcab"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </td></tr>
+<tr class="memitem:a2ed576bc72c7901235c9f76bd562dcab"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient__with__vector.html#a2ed576bc72c7901235c9f76bd562dcab">minimization</a> (<a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; T, Allocator &gt; &amp;p, Functor1 f, Functor2 g, double tolerance, size_t &amp;iterations, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a2ed576bc72c7901235c9f76bd562dcab"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#a2ed576bc72c7901235c9f76bd562dcab"></a><br/></td></tr>
+<tr class="memitem:a9edb7d4f8f787f2aedd34409faf881be"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </td></tr>
+<tr class="memitem:a9edb7d4f8f787f2aedd34409faf881be"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient__with__vector.html#a9edb7d4f8f787f2aedd34409faf881be">minimization</a> (<a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; T, Allocator &gt; &amp;p, const <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; T, Allocator &gt; &amp;bound, Functor1 f, Functor2 g, double tolerance, size_t &amp;iterations, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a9edb7d4f8f787f2aedd34409faf881be"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#a9edb7d4f8f787f2aedd34409faf881be"></a><br/></td></tr>
+<tr class="memitem:a256102cef1204043ac75ad2b69ad9aee"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </td></tr>
+<tr class="memitem:a256102cef1204043ac75ad2b69ad9aee"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient__with__vector.html#a256102cef1204043ac75ad2b69ad9aee">minimization</a> (<a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; T, Allocator &gt; &amp;p, const <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; T, Allocator &gt; &amp;bound, Functor1 f, Functor2 g, double tolerance, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a256102cef1204043ac75ad2b69ad9aee"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#a256102cef1204043ac75ad2b69ad9aee"></a><br/></td></tr>
+<tr class="memitem:a3e2a77d1a1bc30d25c21c958ed93e154"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </td></tr>
+<tr class="memitem:a3e2a77d1a1bc30d25c21c958ed93e154"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient__with__vector.html#a3e2a77d1a1bc30d25c21c958ed93e154">minimization</a> (<a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; T, Allocator &gt; &amp;p, Functor1 f, Functor2 g, double tolerance, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a3e2a77d1a1bc30d25c21c958ed93e154"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#a3e2a77d1a1bc30d25c21c958ed93e154"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>勾配関数をユーザーが定義する最急降下法（勾配を用いた多変数関数の極小値の探索） </p>
+</div><h2>関数</h2>
+<a class="anchor" id="a2ed576bc72c7901235c9f76bd562dcab"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::gradient_with_vector::minimization </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor1&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor2&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>iterations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_iterations</em> = <code>1000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する </p>
+<p>探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>… 探索の開始ベクトル，最小値を与えるベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 評価関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">g</td><td>… 勾配関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 許容誤差 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">iterations</td><td>… 実際の反復回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_iterations</td><td>… 最大反復回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>極小を与える座標値における評価値 </dd></dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1gold.html#adb69f1d4d00e8930427bb3b78bb996e0">mist::gold::minimization()</a>, と <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9edb7d4f8f787f2aedd34409faf881be"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::gradient_with_vector::minimization </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bound</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor1&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor2&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>iterations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_iterations</em> = <code>1000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する </p>
+<p>探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>… 探索の開始ベクトル，最小値を与えるベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bound</td><td>… 探索に用いる各要素の探索範囲 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 評価関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">g</td><td>… 勾配関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 許容誤差 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">iterations</td><td>… 実際の反復回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_iterations</td><td>… 最大反復回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>極小を与える座標値における評価値 </dd></dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1gold.html#adb69f1d4d00e8930427bb3b78bb996e0">mist::gold::minimization()</a>, と <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a256102cef1204043ac75ad2b69ad9aee"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::gradient_with_vector::minimization </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bound</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor1&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor2&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_iterations</em> = <code>1000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する </p>
+<p>探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>… 探索の開始ベクトル，最小値を与えるベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bound</td><td>… 探索に用いる各要素の探索範囲 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 評価関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">g</td><td>… 勾配関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 許容誤差 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_iterations</td><td>… 最大反復回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>極小を与える座標値における評価値 </dd></dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1gold.html#adb69f1d4d00e8930427bb3b78bb996e0">mist::gold::minimization()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3e2a77d1a1bc30d25c21c958ed93e154"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::gradient_with_vector::minimization </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor1&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor2&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_iterations</em> = <code>1000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する </p>
+<p>探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>… 探索の開始ベクトル，最小値を与えるベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 評価関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">g</td><td>… 勾配関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 許容誤差 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_iterations</td><td>… 最大反復回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>極小を与える座標値における評価値 </dd></dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1gold.html#adb69f1d4d00e8930427bb3b78bb996e0">mist::gold::minimization()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

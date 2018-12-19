@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::integral_image&lt; Array &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1integral__image.html">integral_image</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::integral_image&lt; Array &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス  
+ <a href="classmist_1_1integral__image.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="integral__image_8h_source.html">integral_image.h</a>&gt;</code></p>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;typename Array&gt;<br/>
+class mist::integral_image&lt; Array &gt;</h3>
+
+<p>1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス </p>
+<p>画素数nに対してO(n)の前計算を行うことにより，任意の矩形領域の画素値の総和をO(1)で算出する 同一の画像配列中の複数の異なる矩形領域に対して、総和を計算する必要がある場合などに有効</p>
+<p><a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>, <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>, <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>, mist::array3に対応． </p>
+<dl class="section attention"><dt>注意</dt><dd>入力のデータ型は、算術型，mist::rgb&lt; 算術型 &gt;のみ対応． </dd>
+<dd>
+得られる画素値の総和のデータ型は，入力のデータ型に依存して変化． </dd>
+<dd>
+入力型：符号無し整数 → 画素値の総和型：size_t </dd>
+<dd>
+入力型：符号付き整数 → 画素値の総和型：int </dd>
+<dd>
+入力型：浮動小数点 → 画素値の総和型：double </dd>
+<dd>
+<a class="el" href="structmist_1_1rgb.html" title="カラー画像用の画素">mist::rgb</a>&lt; 入力型 &gt; → <a class="el" href="structmist_1_1rgb.html" title="カラー画像用の画素">mist::rgb</a>&lt; 画素値の総和型 &gt;</dd></dl>
+<p>特殊化のためのクラスであり外部からは利用しない </p>
+</div><hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="integral__image_8h_source.html">integral_image.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

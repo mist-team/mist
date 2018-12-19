@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>distance.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_98af7b07076b7431daa71db42f45cb3a.html">filter</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">distance.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>各次元の画像に対応した，各種距離変換・逆距離変換アルゴリズム  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &lt;cmath&gt;</code><br/>
+<code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="thread_8h_source.html">../thread.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="limits_8h_source.html">../limits.h</a>&quot;</code><br/>
+</div>
+<p><a href="distance_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1____saito_____1_1____inverse__distance__transform____.html">mist::__saito__::__inverse_distance_transform__&lt; DIMENSION &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド2乗逆距離変換関数  <a href="structmist_1_1____saito_____1_1____inverse__distance__transform____.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1____calvin_____1_1____distance__transform____.html">mist::__calvin__::__distance_transform__&lt; DIMENSION &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y,Z軸方向用の距離伝播関数（1次以外の全ての次元）  <a href="structmist_1_1____calvin_____1_1____distance__transform____.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1____calvin_____1_1____distance__transform_____3_011_01_4.html">mist::__calvin__::__distance_transform__&lt; 1 &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向専用の距離伝播関数  <a href="structmist_1_1____calvin_____1_1____distance__transform_____3_011_01_4.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1____calvin_____1_1____voronoi__distance__transform____.html">mist::__calvin__::__voronoi_distance_transform__&lt; DIMENSION &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y,Z軸方向用の距離伝播関数（1次以外の全ての次元）  <a href="structmist_1_1____calvin_____1_1____voronoi__distance__transform____.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1____calvin_____1_1____voronoi__distance__transform_____3_011_01_4.html">mist::__calvin__::__voronoi_distance_transform__&lt; 1 &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向専用の距離伝播関数  <a href="structmist_1_1____calvin_____1_1____voronoi__distance__transform_____3_011_01_4.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1saito"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1saito.html">mist::saito</a></td></tr>
+<tr class="memdesc:namespacemist_1_1saito"><td class="mdescLeft">&#160;</td><td class="mdescRight">斉藤先生によるユークリッド2乗距離変換 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1calvin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1calvin.html">mist::calvin</a></td></tr>
+<tr class="memdesc:namespacemist_1_1calvin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calvinによるユークリッド2乗距離変換 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1euclidean"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1euclidean.html">mist::euclidean</a></td></tr>
+<tr class="memdesc:namespacemist_1_1euclidean"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド距離変換 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1meijster"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1meijster.html">mist::meijster</a></td></tr>
+<tr class="memdesc:namespacemist_1_1meijster"><td class="mdescLeft">&#160;</td><td class="mdescRight">A. Meijster による距離変換（CDT, MDT） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1manhattan"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1manhattan.html">mist::manhattan</a></td></tr>
+<tr class="memdesc:namespacemist_1_1manhattan"><td class="mdescLeft">&#160;</td><td class="mdescRight">マンハッタン距離（シティーブロック距離）変換 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1cityblock"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1cityblock.html">mist::cityblock</a></td></tr>
+<tr class="memdesc:namespacemist_1_1cityblock"><td class="mdescLeft">&#160;</td><td class="mdescRight">マンハッタン距離（シティーブロック距離）変換 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1chessboard"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1chessboard.html">mist::chessboard</a></td></tr>
+<tr class="memdesc:namespacemist_1_1chessboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">チェスボード距離変換 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ad64e94405f47f6f460ed67cacf145537"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ad64e94405f47f6f460ed67cacf145537"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1saito.html#ad64e94405f47f6f460ed67cacf145537">mist::saito::distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, double max_length=-1.0, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ad64e94405f47f6f460ed67cacf145537"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド2乗距離変換  <a href="#ad64e94405f47f6f460ed67cacf145537"></a><br/></td></tr>
+<tr class="memitem:a4a18f11a2b12c8d1b97fbe68e2944cf6"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:a4a18f11a2b12c8d1b97fbe68e2944cf6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1saito.html#a4a18f11a2b12c8d1b97fbe68e2944cf6">mist::saito::inverse_distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a4a18f11a2b12c8d1b97fbe68e2944cf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド2乗逆距離変換  <a href="#a4a18f11a2b12c8d1b97fbe68e2944cf6"></a><br/></td></tr>
+<tr class="memitem:ac840bacdb89cabb99ed41e7bf55fc490"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ac840bacdb89cabb99ed41e7bf55fc490"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1calvin.html#ac840bacdb89cabb99ed41e7bf55fc490">mist::calvin::distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ac840bacdb89cabb99ed41e7bf55fc490"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド2乗距離変換  <a href="#ac840bacdb89cabb99ed41e7bf55fc490"></a><br/></td></tr>
+<tr class="memitem:a2356126093b9f70c5775cb2d003995db"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:a2356126093b9f70c5775cb2d003995db"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1calvin.html#a2356126093b9f70c5775cb2d003995db">mist::calvin::voronoi_distance_transform</a> (Array1 &amp;voronoi, Array2 &amp;dist, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a2356126093b9f70c5775cb2d003995db"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド距離を用いたボロノイ分割  <a href="#a2356126093b9f70c5775cb2d003995db"></a><br/></td></tr>
+<tr class="memitem:ad8766f3c659c7f94b7e22d48daa51d63"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ad8766f3c659c7f94b7e22d48daa51d63"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1calvin.html#ad8766f3c659c7f94b7e22d48daa51d63">mist::calvin::voronoi_transform</a> (Array &amp;voronoi, typename Array::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ad8766f3c659c7f94b7e22d48daa51d63"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド距離を用いたボロノイ分割  <a href="#ad8766f3c659c7f94b7e22d48daa51d63"></a><br/></td></tr>
+<tr class="memitem:a095331260091a5c7c4ae193bb22b10a5"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:a095331260091a5c7c4ae193bb22b10a5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1euclidean.html#a095331260091a5c7c4ae193bb22b10a5">mist::euclidean::distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a095331260091a5c7c4ae193bb22b10a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド距離変換  <a href="#a095331260091a5c7c4ae193bb22b10a5"></a><br/></td></tr>
+<tr class="memitem:a4d65329f5ad33bb8730e7f6c917df7b7"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:a4d65329f5ad33bb8730e7f6c917df7b7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1euclidean.html#a4d65329f5ad33bb8730e7f6c917df7b7">mist::euclidean::inverse_distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a4d65329f5ad33bb8730e7f6c917df7b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド2乗逆距離変換  <a href="#a4d65329f5ad33bb8730e7f6c917df7b7"></a><br/></td></tr>
+<tr class="memitem:ga455271785599f628701cca7714212e09"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga455271785599f628701cca7714212e09"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__voronoi__distance__group.html#ga455271785599f628701cca7714212e09">mist::euclidean::voronoi_distance_transform</a> (Array1 &amp;voronoi, Array2 &amp;dist, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga455271785599f628701cca7714212e09"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド距離を用いたボロノイ分割  <a href="group__voronoi__distance__group.html#ga455271785599f628701cca7714212e09"></a><br/></td></tr>
+<tr class="memitem:gad7e9b8ea65a4cd96ff8075f839012b1f"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:gad7e9b8ea65a4cd96ff8075f839012b1f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__voronoi__distance__group.html#gad7e9b8ea65a4cd96ff8075f839012b1f">mist::euclidean::voronoi_transform</a> (Array &amp;voronoi, typename Array::size_type thread_num=0)</td></tr>
+<tr class="memdesc:gad7e9b8ea65a4cd96ff8075f839012b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド距離を用いたボロノイ分割  <a href="group__voronoi__distance__group.html#gad7e9b8ea65a4cd96ff8075f839012b1f"></a><br/></td></tr>
+<tr class="memitem:ab7660f352840a6d7b3ed1e95f9016c53"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class Metric &gt; </td></tr>
+<tr class="memitem:ab7660f352840a6d7b3ed1e95f9016c53"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1meijster.html#ab7660f352840a6d7b3ed1e95f9016c53">mist::meijster::distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, Metric __metric__, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ab7660f352840a6d7b3ed1e95f9016c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">A. Meijster による距離変換（CDT, MDT）  <a href="#ab7660f352840a6d7b3ed1e95f9016c53"></a><br/></td></tr>
+<tr class="memitem:a7210ef9066042a4cb5d338cc2ad809da"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:a7210ef9066042a4cb5d338cc2ad809da"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1manhattan.html#a7210ef9066042a4cb5d338cc2ad809da">mist::manhattan::distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a7210ef9066042a4cb5d338cc2ad809da"><td class="mdescLeft">&#160;</td><td class="mdescRight">マンハッタン距離（シティーブロック距離）変換  <a href="#a7210ef9066042a4cb5d338cc2ad809da"></a><br/></td></tr>
+<tr class="memitem:a0c1b449e6611e58b7cc105f8726bbed7"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:a0c1b449e6611e58b7cc105f8726bbed7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1cityblock.html#a0c1b449e6611e58b7cc105f8726bbed7">mist::cityblock::distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a0c1b449e6611e58b7cc105f8726bbed7"><td class="mdescLeft">&#160;</td><td class="mdescRight">マンハッタン距離（シティーブロック距離）変換  <a href="#a0c1b449e6611e58b7cc105f8726bbed7"></a><br/></td></tr>
+<tr class="memitem:a6ec1bab1b35e7579fa194cf15b2b66f9"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:a6ec1bab1b35e7579fa194cf15b2b66f9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1chessboard.html#a6ec1bab1b35e7579fa194cf15b2b66f9">mist::chessboard::distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a6ec1bab1b35e7579fa194cf15b2b66f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">チェスボード距離変換  <a href="#a6ec1bab1b35e7579fa194cf15b2b66f9"></a><br/></td></tr>
+<tr class="memitem:ga09c94de055341e993e336cf60648a361"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga09c94de055341e993e336cf60648a361"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__skeleton__group.html#ga09c94de055341e993e336cf60648a361">mist::skeleton</a> (const Array1 &amp;in, Array2 &amp;out)</td></tr>
+<tr class="memdesc:ga09c94de055341e993e336cf60648a361"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド2乗距離画像を入力とするスケルトン抽出  <a href="group__skeleton__group.html#ga09c94de055341e993e336cf60648a361"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>各次元の画像に対応した，各種距離変換・逆距離変換アルゴリズム </p>
+<ul>
+<li>参考文献<ul>
+<li>ユークリッド距離変換<ul>
+<li>齋藤豊文, 鳥脇純一郎, "3次元ユークリッド距離変換および拡張ボロノイ分割のアルゴリズムと肝組織標本画像の解析," 画像電子学会誌, 第21巻，第5号, pp.468-474, 1992</li>
+<li>齋藤豊文, 鳥脇純一郎, "3次元ディジタル画像に対するユークリッド距離変換," 電子情報通信学会論文誌, J76-D-II, No. 3, pp.445-453, 1993</li>
+<li>斎藤豊文, 鳥脇純一郎, ``ディジタル画像におけるユークリッド逆距離変換とスケルトンについて,'' 電子情報通信学会パターン認識・理解研究会資料, PRU93-50, No.228, pp.57-64, 1993</li>
+<li>鳥脇純一郎, "3次元ディジタル画像処理," 昭晃堂, 2002</li>
+<li>Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003</li>
+<li>A. Meijster, J. Roerdink, and W. Hesselink, "A general algorithm for computing distance transforms in linear time," In: Mathematical Morphology and its Applications to Image and Signal Processing, J. Goutsias, L. Vincent, and D.S. Bloomberg (eds.), Kluwer, 2000, pp. 331-340 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

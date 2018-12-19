@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>mode.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_98af7b07076b7431daa71db42f45cb3a.html">filter</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">mode.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>各次元の画像に対応し，任意の構造要素に対応した２値画像に対する最頻値フィルタ（多数決フィルタ）を行うためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="limits_8h_source.html">../limits.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="thread_8h_source.html">../thread.h</a>&quot;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;cmath&gt;</code><br/>
+</div>
+<p><a href="mode_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1mode__filter_1_1point.html">mist::mode_filter::point</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">構造要素の各要素の座標を表す構造体  <a href="structmist_1_1mode__filter_1_1point.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1mode__filter_1_1mode__structure.html">mist::mode_filter::mode_structure</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">最頻値フィルタに利用する構造要素  <a href="structmist_1_1mode__filter_1_1mode__structure.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1mode__filter"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mode__filter.html">mist::mode_filter</a></td></tr>
+<tr class="memdesc:namespacemist_1_1mode__filter"><td class="mdescLeft">&#160;</td><td class="mdescRight">最頻値フィルタに利用する構造要素関連 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a49be8a5eecec8cc00aa0ed630f839d4c"><td class="memItemLeft" align="right" valign="top">mode_structure&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mode__filter.html#a49be8a5eecec8cc00aa0ed630f839d4c">mist::mode_filter::circle</a> (double radius, double resoX, double resoY)</td></tr>
+<tr class="memdesc:a49be8a5eecec8cc00aa0ed630f839d4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">最頻値フィルタに用いる円構造要素  <a href="#a49be8a5eecec8cc00aa0ed630f839d4c"></a><br/></td></tr>
+<tr class="memitem:ab8f4385aa6d16689ce46e360d1342b4c"><td class="memItemLeft" align="right" valign="top">mode_structure&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mode__filter.html#ab8f4385aa6d16689ce46e360d1342b4c">mist::mode_filter::sphere</a> (double radius, double resoX, double resoY, double resoZ)</td></tr>
+<tr class="memdesc:ab8f4385aa6d16689ce46e360d1342b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">最頻値フィルタに用いる球構造要素  <a href="#ab8f4385aa6d16689ce46e360d1342b4c"></a><br/></td></tr>
+<tr class="memitem:a599ea7ccfbbd353495c355124d23e4c2"><td class="memItemLeft" align="right" valign="top">mode_structure&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mode__filter.html#a599ea7ccfbbd353495c355124d23e4c2">mist::mode_filter::square</a> (double radius, double resoX, double resoY)</td></tr>
+<tr class="memdesc:a599ea7ccfbbd353495c355124d23e4c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">最頻値フィルタに用いる正方形構造要素  <a href="#a599ea7ccfbbd353495c355124d23e4c2"></a><br/></td></tr>
+<tr class="memitem:a1b4cfb2a48a1682d2a35135d736f8ce2"><td class="memItemLeft" align="right" valign="top">mode_structure&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mode__filter.html#a1b4cfb2a48a1682d2a35135d736f8ce2">mist::mode_filter::cube</a> (double radius, double resoX, double resoY, double resoZ)</td></tr>
+<tr class="memdesc:a1b4cfb2a48a1682d2a35135d736f8ce2"><td class="mdescLeft">&#160;</td><td class="mdescRight">最頻値フィルタに用いる立方体構造要素  <a href="#a1b4cfb2a48a1682d2a35135d736f8ce2"></a><br/></td></tr>
+<tr class="memitem:a0eebd591a41d7c1236a93c60a7d9cb7e"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:a0eebd591a41d7c1236a93c60a7d9cb7e"><td class="memTemplItemLeft" align="right" valign="top">mode_structure&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mode__filter.html#a0eebd591a41d7c1236a93c60a7d9cb7e">mist::mode_filter::create_mode_structure</a> (const Array &amp;in, typename Array::size_type cx, typename Array::size_type cy=0, typename Array::size_type cz=0)</td></tr>
+<tr class="memdesc:a0eebd591a41d7c1236a93c60a7d9cb7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の画像から，最頻値フィルタ用の構造要素を作成する  <a href="#a0eebd591a41d7c1236a93c60a7d9cb7e"></a><br/></td></tr>
+<tr class="memitem:ae64af0291a7ce06ed3ef472bba70dd22"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ae64af0291a7ce06ed3ef472bba70dd22"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; ptrdiff_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mode__filter.html#ae64af0291a7ce06ed3ef472bba70dd22">mist::mode_filter::create_pointer_diff_list</a> (const Array &amp;in, const std::vector&lt; point &gt; &amp;list)</td></tr>
+<tr class="memdesc:ae64af0291a7ce06ed3ef472bba70dd22"><td class="mdescLeft">&#160;</td><td class="mdescRight">各画像において，構造要素の中心と各要素間のポインタの差を計算し，そのリストを作成する  <a href="#ae64af0291a7ce06ed3ef472bba70dd22"></a><br/></td></tr>
+<tr class="memitem:ga8820313fa0f62e950e18a22083c2bc68"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga8820313fa0f62e950e18a22083c2bc68"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#ga8820313fa0f62e950e18a22083c2bc68">mist::mode</a> (array2&lt; T, Allocator &gt; &amp;in, const mode_filter::mode_structure &amp;s, Functor f, typename array2&lt; T, Allocator &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:ga8820313fa0f62e950e18a22083c2bc68"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応した最頻値フィルタ  <a href="group__mode__group.html#ga8820313fa0f62e950e18a22083c2bc68"></a><br/></td></tr>
+<tr class="memitem:ga8b5f5deca57ec112f8064278a297b237"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga8b5f5deca57ec112f8064278a297b237"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#ga8b5f5deca57ec112f8064278a297b237">mist::mode</a> (array2&lt; T, Allocator &gt; &amp;in, const mode_filter::mode_structure &amp;s, typename array2&lt; T, Allocator &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga8b5f5deca57ec112f8064278a297b237"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応した最頻値フィルタ  <a href="group__mode__group.html#ga8b5f5deca57ec112f8064278a297b237"></a><br/></td></tr>
+<tr class="memitem:gaf1cc81fcb38ffad645a8f8de4a8acb33"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:gaf1cc81fcb38ffad645a8f8de4a8acb33"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#gaf1cc81fcb38ffad645a8f8de4a8acb33">mist::mode</a> (array2&lt; T, Allocator &gt; &amp;in, double radius, Functor f, typename array2&lt; T, Allocator &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:gaf1cc81fcb38ffad645a8f8de4a8acb33"><td class="mdescLeft">&#160;</td><td class="mdescRight">円を構造要素とする最頻値フィルタ  <a href="group__mode__group.html#gaf1cc81fcb38ffad645a8f8de4a8acb33"></a><br/></td></tr>
+<tr class="memitem:ga30145212da9d0115e8180747e69b7601"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga30145212da9d0115e8180747e69b7601"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#ga30145212da9d0115e8180747e69b7601">mist::mode</a> (array2&lt; T, Allocator &gt; &amp;in, double radius, typename array2&lt; T, Allocator &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga30145212da9d0115e8180747e69b7601"><td class="mdescLeft">&#160;</td><td class="mdescRight">円を構造要素とする最頻値フィルタ  <a href="group__mode__group.html#ga30145212da9d0115e8180747e69b7601"></a><br/></td></tr>
+<tr class="memitem:gaf8f18c3973185b1324963d2e67ba4606"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:gaf8f18c3973185b1324963d2e67ba4606"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#gaf8f18c3973185b1324963d2e67ba4606">mist::mode</a> (array3&lt; T, Allocator &gt; &amp;in, const mode_filter::mode_structure &amp;s, Functor f, typename array3&lt; T, Allocator &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:gaf8f18c3973185b1324963d2e67ba4606"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応した最頻値フィルタ  <a href="group__mode__group.html#gaf8f18c3973185b1324963d2e67ba4606"></a><br/></td></tr>
+<tr class="memitem:ga5dddfc60e79d47eba7949284cf10d6f4"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga5dddfc60e79d47eba7949284cf10d6f4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#ga5dddfc60e79d47eba7949284cf10d6f4">mist::mode</a> (array3&lt; T, Allocator &gt; &amp;in, const mode_filter::mode_structure &amp;s, typename array3&lt; T, Allocator &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga5dddfc60e79d47eba7949284cf10d6f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素に対応した最頻値フィルタ  <a href="group__mode__group.html#ga5dddfc60e79d47eba7949284cf10d6f4"></a><br/></td></tr>
+<tr class="memitem:gaa6a41c925eab670343e6a43fb56a4b5b"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:gaa6a41c925eab670343e6a43fb56a4b5b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#gaa6a41c925eab670343e6a43fb56a4b5b">mist::mode</a> (array3&lt; T, Allocator &gt; &amp;in, double radius, Functor f, typename array3&lt; T, Allocator &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:gaa6a41c925eab670343e6a43fb56a4b5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とする最頻値フィルタ  <a href="group__mode__group.html#gaa6a41c925eab670343e6a43fb56a4b5b"></a><br/></td></tr>
+<tr class="memitem:gae243779217caf8bd40fc8de22b68c409"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gae243779217caf8bd40fc8de22b68c409"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mode__group.html#gae243779217caf8bd40fc8de22b68c409">mist::mode</a> (array3&lt; T, Allocator &gt; &amp;in, double radius, typename array3&lt; T, Allocator &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:gae243779217caf8bd40fc8de22b68c409"><td class="mdescLeft">&#160;</td><td class="mdescRight">球を構造要素とする最頻値フィルタ  <a href="group__mode__group.html#gae243779217caf8bd40fc8de22b68c409"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>各次元の画像に対応し，任意の構造要素に対応した２値画像に対する最頻値フィルタ（多数決フィルタ）を行うためのライブラリ </p>
+<dl class="section attention"><dt>注意</dt><dd>構造要素の形は凸形状でなくてはならない </dd></dl>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

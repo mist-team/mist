@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>region_growing.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_98af7b07076b7431daa71db42f45cb3a.html">filter</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#typedef-members">型定義</a> &#124;
+<a href="#enum-members">列挙型</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">region_growing.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>各次元の画像に対応し，任意の位置から任意の構造要素と任意の条件判定を用いて領域拡張法を適用するためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="limits_8h_source.html">../limits.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="vector_8h_source.html">../vector.h</a>&quot;</code><br/>
+<code>#include &lt;deque&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;cmath&gt;</code><br/>
+</div>
+<p><a href="region__growing_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1region__growing__utility_1_1pixel.html">mist::region_growing_utility::pixel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法で用いる２次元画素の構造要素  <a href="structmist_1_1region__growing__utility_1_1pixel.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1region__growing__utility_1_1voxel.html">mist::region_growing_utility::voxel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法で用いる３次元画素の構造要素  <a href="structmist_1_1region__growing__utility_1_1voxel.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1region__growing__utility_1_1circle.html">mist::region_growing_utility::circle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法で用いる円の構造要素  <a href="classmist_1_1region__growing__utility_1_1circle.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1region__growing__utility_1_1sphere.html">mist::region_growing_utility::sphere</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法で用いる球の構造要素  <a href="classmist_1_1region__growing__utility_1_1sphere.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1region__growing__utility_1_1less.html">mist::region_growing_utility::less&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法で用いる拡張条件  <a href="classmist_1_1region__growing__utility_1_1less.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1region__growing__utility_1_1greater.html">mist::region_growing_utility::greater&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法で用いる拡張条件  <a href="classmist_1_1region__growing__utility_1_1greater.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1region__growing__utility_1_1equal.html">mist::region_growing_utility::equal&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法で用いる拡張条件  <a href="classmist_1_1region__growing__utility_1_1equal.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1region__growing__utility_1_1range.html">mist::region_growing_utility::range&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法で用いる拡張条件  <a href="classmist_1_1region__growing__utility_1_1range.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1region__growing__utility"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1region__growing__utility.html">mist::region_growing_utility</a></td></tr>
+<tr class="memdesc:namespacemist_1_1region__growing__utility"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法に利用する構造要素関連 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="typedef-members"></a>
+型定義</h2></td></tr>
+<tr class="memitem:a9a92b715a23f70bfa431a583f05e9735"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a92b715a23f70bfa431a583f05e9735"></a>
+typedef vector3&lt; ptrdiff_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mist::__region_growing_utility__::point_type</b></td></tr>
+<tr class="memdesc:a9a92b715a23f70bfa431a583f05e9735"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法で利用する座標を表す型 <br/></td></tr>
+<tr class="memitem:ab96364fa148772c09614829c7ab4dcf0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab96364fa148772c09614829c7ab4dcf0"></a>
+typedef std::vector&lt; point_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mist::__region_growing_utility__::point_list_type</b></td></tr>
+<tr class="memdesc:ab96364fa148772c09614829c7ab4dcf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法で利用する座標のリスト型 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="enum-members"></a>
+列挙型</h2></td></tr>
+<tr class="memitem:ac40fb748b4933d7d127b5d0e997b02f5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5">mist::region_growing_utility::expand_mode_type</a> { <br/>
+&#160;&#160;<a class="el" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a94360168bdc0c7c111de0e10206e3ae0">mist::region_growing_utility::NC4</a>, 
+<a class="el" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5aae08a1b4828f3931bf1bb0084f4dbf06">mist::region_growing_utility::NC8</a>, 
+<a class="el" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a26d722f6b416a713fd65ce0476739e58">mist::region_growing_utility::NC6</a>, 
+<a class="el" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5adf50660bd21ec2472f47b2ebe35c3645">mist::region_growing_utility::NC18</a>, 
+<br/>
+&#160;&#160;<a class="el" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a022ccd1e24fe7f382c0dfa998a807cc8">mist::region_growing_utility::NC26</a>, 
+<a class="el" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a31ee749ac6b205a8ef040b4a68453c18">mist::region_growing_utility::ALL</a>
+<br/>
+ }</td></tr>
+<tr class="memdesc:ac40fb748b4933d7d127b5d0e997b02f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">次の注目点の定め方  <a href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gabae77324d51d95c848be61462fd817e5"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class MaskType , class PointList , class Component , class Condition &gt; </td></tr>
+<tr class="memitem:gabae77324d51d95c848be61462fd817e5"><td class="memTemplItemLeft" align="right" valign="top">Array1::difference_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__region__growing__group.html#gabae77324d51d95c848be61462fd817e5">mist::region_growing</a> (const Array1 &amp;in, Array2 &amp;out, const MaskType &amp;mask, const PointList &amp;start_points, typename Array2::value_type output_value, const Component &amp;components, const Condition &amp;condition, typename Array1::size_type max_paint)</td></tr>
+<tr class="memdesc:gabae77324d51d95c848be61462fd817e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素と条件を用いて領域拡張を行う関数  <a href="group__region__growing__group.html#gabae77324d51d95c848be61462fd817e5"></a><br/></td></tr>
+<tr class="memitem:gaec4ddb74f83f51b4accaa11df033dd21"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class PointList , class Component , class Condition &gt; </td></tr>
+<tr class="memitem:gaec4ddb74f83f51b4accaa11df033dd21"><td class="memTemplItemLeft" align="right" valign="top">Array1::difference_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__region__growing__group.html#gaec4ddb74f83f51b4accaa11df033dd21">mist::region_growing</a> (const Array1 &amp;in, Array2 &amp;out, const PointList &amp;start_points, typename Array2::value_type output_value, const Component &amp;components, const Condition &amp;condition, typename Array1::size_type max_paint=type_limits&lt; typename Array1::size_type &gt;::maximum())</td></tr>
+<tr class="memdesc:gaec4ddb74f83f51b4accaa11df033dd21"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素と条件を用いて領域拡張を行う関数  <a href="group__region__growing__group.html#gaec4ddb74f83f51b4accaa11df033dd21"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>各次元の画像に対応し，任意の位置から任意の構造要素と任意の条件判定を用いて領域拡張法を適用するためのライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

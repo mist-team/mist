@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>median.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_98af7b07076b7431daa71db42f45cb3a.html">filter</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">median.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>各次元の画像に対応したメディアン（中央値）を計算するためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="type__trait_8h_source.html">../config/type_trait.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="color_8h_source.html">../config/color.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="thread_8h_source.html">../thread.h</a>&quot;</code><br/>
+<code>#include &lt;algorithm&gt;</code><br/>
+</div>
+<p><a href="median_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga5941dca528cb1a97a876e50507785833"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga5941dca528cb1a97a876e50507785833"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__median__group.html#ga5941dca528cb1a97a876e50507785833">mist::median</a> (const array&lt; T1, Allocator1 &gt; &amp;in, array&lt; T2, Allocator2 &gt; &amp;out, typename array&lt; T1, Allocator1 &gt;::size_type fw, typename array&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga5941dca528cb1a97a876e50507785833"><td class="mdescLeft">&#160;</td><td class="mdescRight">メディアン（中央値）フィルタを適用する  <a href="group__median__group.html#ga5941dca528cb1a97a876e50507785833"></a><br/></td></tr>
+<tr class="memitem:gad2f20973ab301ab0d3cea5aa9d12ebb2"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gad2f20973ab301ab0d3cea5aa9d12ebb2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__median__group.html#gad2f20973ab301ab0d3cea5aa9d12ebb2">mist::median</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out, typename array1&lt; T1, Allocator1 &gt;::size_type fw, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:gad2f20973ab301ab0d3cea5aa9d12ebb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">メディアン（中央値）フィルタを適用する  <a href="group__median__group.html#gad2f20973ab301ab0d3cea5aa9d12ebb2"></a><br/></td></tr>
+<tr class="memitem:gaf752af3c8108ec0769fc5821a21f79ed"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Functor &gt; </td></tr>
+<tr class="memitem:gaf752af3c8108ec0769fc5821a21f79ed"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__median__group.html#gaf752af3c8108ec0769fc5821a21f79ed">mist::median</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type fw, typename array2&lt; T1, Allocator1 &gt;::size_type fh, Functor f, typename array2&lt; T1, Allocator1 &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:gaf752af3c8108ec0769fc5821a21f79ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">メディアン（中央値）フィルタを適用する  <a href="group__median__group.html#gaf752af3c8108ec0769fc5821a21f79ed"></a><br/></td></tr>
+<tr class="memitem:gabf0d0160f4069725e9faff420973a7aa"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gabf0d0160f4069725e9faff420973a7aa"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__median__group.html#gabf0d0160f4069725e9faff420973a7aa">mist::median</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type fw, typename array2&lt; T1, Allocator1 &gt;::size_type fh, typename array2&lt; T1, Allocator1 &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:gabf0d0160f4069725e9faff420973a7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">メディアン（中央値）フィルタを適用する  <a href="group__median__group.html#gabf0d0160f4069725e9faff420973a7aa"></a><br/></td></tr>
+<tr class="memitem:ga31348ef387b4c3dc7d26107b556fed71"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga31348ef387b4c3dc7d26107b556fed71"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__median__group.html#ga31348ef387b4c3dc7d26107b556fed71">mist::median</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type fw, typename array2&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga31348ef387b4c3dc7d26107b556fed71"><td class="mdescLeft">&#160;</td><td class="mdescRight">メディアン（中央値）フィルタを適用する  <a href="group__median__group.html#ga31348ef387b4c3dc7d26107b556fed71"></a><br/></td></tr>
+<tr class="memitem:ga7e3d1068858c685c72ba74293dae2f10"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Functor &gt; </td></tr>
+<tr class="memitem:ga7e3d1068858c685c72ba74293dae2f10"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__median__group.html#ga7e3d1068858c685c72ba74293dae2f10">mist::median</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type fw, typename array3&lt; T1, Allocator1 &gt;::size_type fh, typename array3&lt; T1, Allocator1 &gt;::size_type fd, Functor f, typename array3&lt; T1, Allocator1 &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:ga7e3d1068858c685c72ba74293dae2f10"><td class="mdescLeft">&#160;</td><td class="mdescRight">メディアン（中央値）フィルタを適用する  <a href="group__median__group.html#ga7e3d1068858c685c72ba74293dae2f10"></a><br/></td></tr>
+<tr class="memitem:ga0e89d3ba6e727a77fab47759055a895c"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga0e89d3ba6e727a77fab47759055a895c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__median__group.html#ga0e89d3ba6e727a77fab47759055a895c">mist::median</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type fw, typename array3&lt; T1, Allocator1 &gt;::size_type fh, typename array3&lt; T1, Allocator1 &gt;::size_type fd, typename array3&lt; T1, Allocator1 &gt;::size_type thread_num)</td></tr>
+<tr class="memdesc:ga0e89d3ba6e727a77fab47759055a895c"><td class="mdescLeft">&#160;</td><td class="mdescRight">メディアン（中央値）フィルタを適用する  <a href="group__median__group.html#ga0e89d3ba6e727a77fab47759055a895c"></a><br/></td></tr>
+<tr class="memitem:ga3a4405aed135bbe49d1e32ed569cc57d"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga3a4405aed135bbe49d1e32ed569cc57d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__median__group.html#ga3a4405aed135bbe49d1e32ed569cc57d">mist::median</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type fw, typename array3&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga3a4405aed135bbe49d1e32ed569cc57d"><td class="mdescLeft">&#160;</td><td class="mdescRight">メディアン（中央値）フィルタを適用する  <a href="group__median__group.html#ga3a4405aed135bbe49d1e32ed569cc57d"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>各次元の画像に対応したメディアン（中央値）を計算するためのライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

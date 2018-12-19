@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>線形フィルタ</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#groups">モジュール</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">線形フィルタ</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="groups"></a>
+モジュール</h2></td></tr>
+<tr class="memitem:group__laplacian__group"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplacian__group.html">ラプラシアンフィルタ</a></td></tr>
+<tr class="memitem:group__gaussian__group"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gaussian__group.html">ガウシアンフィルタ</a></td></tr>
+<tr class="memitem:group__average__group"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__average__group.html">一様重みフィルタ</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist_1_1linear"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html">mist::linear</a></td></tr>
+<tr class="memdesc:namespacemist_1_1linear"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般カーネルの線形フィルタの実装（コールバック関数を指定することが可能） <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gab7462396eef1092ec686c96ac9936868"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel &gt; </td></tr>
+<tr class="memitem:gab7462396eef1092ec686c96ac9936868"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__linear__group.html#gab7462396eef1092ec686c96ac9936868">mist::linear_filter</a> (const array&lt; T1, Allocator1 &gt; &amp;in, array&lt; T2, Allocator2 &gt; &amp;out, const Kernel &amp;kernel, typename array&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:gab7462396eef1092ec686c96ac9936868"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array )  <a href="#gab7462396eef1092ec686c96ac9936868"></a><br/></td></tr>
+<tr class="memitem:gad276974afe38d6b9547559d2f2664f40"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel &gt; </td></tr>
+<tr class="memitem:gad276974afe38d6b9547559d2f2664f40"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__linear__group.html#gad276974afe38d6b9547559d2f2664f40">mist::linear_filter</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out, const Kernel &amp;kernel, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:gad276974afe38d6b9547559d2f2664f40"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array1 )  <a href="#gad276974afe38d6b9547559d2f2664f40"></a><br/></td></tr>
+<tr class="memitem:ga44a75d55705d6adcf8d6f30d4615c409"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel &gt; </td></tr>
+<tr class="memitem:ga44a75d55705d6adcf8d6f30d4615c409"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__linear__group.html#ga44a75d55705d6adcf8d6f30d4615c409">mist::linear_filter</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, const Kernel &amp;kernel, typename array2&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga44a75d55705d6adcf8d6f30d4615c409"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array2 )  <a href="#ga44a75d55705d6adcf8d6f30d4615c409"></a><br/></td></tr>
+<tr class="memitem:gad8b0a484696ca70cada06645329b4c88"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel &gt; </td></tr>
+<tr class="memitem:gad8b0a484696ca70cada06645329b4c88"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__linear__group.html#gad8b0a484696ca70cada06645329b4c88">mist::linear_filter</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, const Kernel &amp;kernel, typename array3&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:gad8b0a484696ca70cada06645329b4c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般の線形フィルタ( array3 )  <a href="#gad8b0a484696ca70cada06645329b4c88"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="linear_8h.html" title="線形フィルタのためのライブラリ">mist/filter/linear.h</a>&gt;</span></div>
+</div><!-- fragment --><p>配列の端（カーネルがはみ出すところ）の要素の計算は行いません．</p>
+<p>使用可能な要素型は，算術型か <a class="el" href="structmist_1_1rgb.html" title="カラー画像用の画素">mist::rgb</a>&lt; 算術型 &gt; に限ります． 内部の計算は，出力配列の要素型が算術型の場合は double 型， <a class="el" href="structmist_1_1rgb.html" title="カラー画像用の画素">mist::rgb</a>&lt; 算術型 &gt; の場合は mist::rgb&lt; double &gt; で行います．</p>
+<p>自分で定義した線形フィルタ用カーネルを各次元の画像に適用できます．</p>
+<div class="fragment"><div class="line"> 使用例(5×5一様重み平滑化フィルタ)</div>
+<div class="line">mist::array2&lt; <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> &gt; in, out;</div>
+<div class="line"></div>
+<div class="line">mist::<a class="code" href="group__image__bmp__group.html#ga3148e2d706b35385b98790966f6ff022" title="BMP画像をMISTコンテナに読み込む">read_bmp</a>( in, &quot;hoge.bmp&quot; );  <span class="comment">// 適当な入力配列 </span></div>
+<div class="line"></div>
+<div class="line">mist::array2&lt; <span class="keywordtype">double</span> &gt; kernel( 5, 5 ); <span class="comment">// 適当なカーネル配列</span></div>
+<div class="line">kernel.fill( 1.0 / kernel.size( ) );  <span class="comment">// 5×5一様重み平滑化フィルタ用のカーネルを作成</span></div>
+<div class="line"></div>
+<div class="line">mist::<a class="code" href="group__linear__group.html#gab7462396eef1092ec686c96ac9936868" title="一般の線形フィルタ( array )">linear_filter</a>( in, out, kernel );  <span class="comment">// フィルタの適用（カーネル配列を渡します）</span></div>
+</div><!-- fragment --><p>ラプラシアンフィルタ，ガウシアンフィルタ，一様重み平滑化フィルタを array, <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1</a>, <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a>, <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a> で用意してあります． 一様重み平滑化フィルタは，キャッシュを利用して高速に計算することができます． </p>
+<h2>関数</h2>
+<a class="anchor" id="gab7462396eef1092ec686c96ac9936868"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear_filter </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array ) </p>
+<p>カーネル配列を指定する(中心はカーネルのサイズから計算)</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数は無視され，常にシングルスレッドで動作する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>マスクの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力配列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel</td><td>… カーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1linear.html#a54e884bd5f359e6bff8bea54a552c371">mist::linear::filter()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gad276974afe38d6b9547559d2f2664f40"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear_filter </td>
+          <td>(</td>
+          <td class="paramtype">const array1&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array1&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array1&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array1 ) </p>
+<p>カーネル配列を指定する(中心はカーネルのサイズから計算)</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数は無視され，常にシングルスレッドで動作する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>マスクの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力配列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel</td><td>… カーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1linear.html#a54e884bd5f359e6bff8bea54a552c371">mist::linear::filter()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga44a75d55705d6adcf8d6f30d4615c409"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear_filter </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array2&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array2 ) </p>
+<p>カーネル配列を指定する(中心はカーネルのサイズから計算)</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>マスクの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力配列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel</td><td>… カーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1linear.html#a54e884bd5f359e6bff8bea54a552c371">mist::linear::filter()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gad8b0a484696ca70cada06645329b4c88"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 , class Kernel &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::linear_filter </td>
+          <td>(</td>
+          <td class="paramtype">const array3&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array3&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Kernel &amp;&#160;</td>
+          <td class="paramname"><em>kernel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T1, Allocator1 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>一般の線形フィルタ( array3 ) </p>
+<p>カーネル配列を指定する(中心はカーネルのサイズから計算)</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，別のMISTコンテナオブジェクトでなくてはならない </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>マスクの一辺のサイズは奇数でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力配列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel</td><td>… カーネル配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力と出力が同じオブジェクトを指定した場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1linear.html#a54e884bd5f359e6bff8bea54a552c371">mist::linear::filter()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

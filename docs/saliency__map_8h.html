@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>saliency_map.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#typedef-members">型定義</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">saliency_map.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Saliency map関連のアルゴリズム  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="color_8h_source.html">config/color.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="interpolate_8h_source.html">interpolate.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="linear_8h_source.html">filter/linear.h</a>&quot;</code><br/>
+</div>
+<p><a href="saliency__map_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="typedef-members"></a>
+型定義</h2></td></tr>
+<tr class="memitem:a5c9a9f53d8c053c5b6e26393159bed51"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c9a9f53d8c053c5b6e26393159bed51"></a>
+typedef double&#160;</td><td class="memItemRight" valign="bottom"><b>mist::gabor::value_type</b></td></tr>
+<tr class="memdesc:a5c9a9f53d8c053c5b6e26393159bed51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gabor filterで利用するデータ型 <br/></td></tr>
+<tr class="memitem:a8416cc18076f978b17265b1d4ba12055"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; value_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mist::gabor::kernel_type</b></td></tr>
+<tr class="memdesc:a8416cc18076f978b17265b1d4ba12055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gabor filterで利用するカーネルの型  <a href="#a8416cc18076f978b17265b1d4ba12055"></a><br/></td></tr>
+<tr class="memitem:aec7955a4d4e2a062a5aaffbf4150c859"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec7955a4d4e2a062a5aaffbf4150c859"></a>
+typedef double&#160;</td><td class="memItemRight" valign="bottom"><b>mist::__itti__::value_type</b></td></tr>
+<tr class="memdesc:aec7955a4d4e2a062a5aaffbf4150c859"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feature map および Conspicuity mapで使用するデータ型 <br/></td></tr>
+<tr class="memitem:a6179c99bea3117e9c643396f8860932c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6179c99bea3117e9c643396f8860932c"></a>
+typedef <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; value_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mist::__itti__::map_type</b></td></tr>
+<tr class="memdesc:a6179c99bea3117e9c643396f8860932c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feature map および Conspicuity mapの型 <br/></td></tr>
+<tr class="memitem:a7127eb8768959da0e481e3bcd32d674c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7127eb8768959da0e481e3bcd32d674c"></a>
+typedef <a class="el" href="classmist_1_1array.html">mist::array</a>&lt; map_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mist::__itti__::pyramid_type</b></td></tr>
+<tr class="memdesc:a7127eb8768959da0e481e3bcd32d674c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gaussianピラミッドの型 <br/></td></tr>
+<tr class="memitem:a1c0c1b18f96a282958af6c65a803a66a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c0c1b18f96a282958af6c65a803a66a"></a>
+typedef <a class="el" href="classmist_1_1array.html">mist::array</a>&lt; map_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mist::__itti__::maps_type</b></td></tr>
+<tr class="memdesc:a1c0c1b18f96a282958af6c65a803a66a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feature mapを管理するコンテナの型 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:acfc5f27be199b1def93df9a57e534708"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:acfc5f27be199b1def93df9a57e534708"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::itti::saliency_map</b> (const <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; <a class="el" href="structmist_1_1rgb.html">mist::rgb</a>&lt; T1 &gt;, Allocator1 &gt; &amp;in, __itti__::map_type &amp;i_cm, __itti__::map_type &amp;c_cm, __itti__::map_type &amp;o_cm, <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T2, Allocator2 &gt; &amp;sm, const double intensity_weight=1.0, const double color_weight=1.0, const double orientation_weight=1.0, const double gauss_sigma=5, const size_t step_local_maxima=3, const size_t scale_min_c=2, const size_t scale_max_c=4, const size_t scale_min_d=3, const size_t scale_max_d=4, const size_t base_scale=4)</td></tr>
+<tr class="memdesc:acfc5f27be199b1def93df9a57e534708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saliency mapを計算（Conspicuity mapsも同時に出力）  <a href="#acfc5f27be199b1def93df9a57e534708"></a><br/></td></tr>
+<tr class="memitem:a6e659788a5198f8b8a2eb0de4eb4ef4c"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a6e659788a5198f8b8a2eb0de4eb4ef4c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::itti::saliency_map</b> (const <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; <a class="el" href="structmist_1_1rgb.html">mist::rgb</a>&lt; T1 &gt;, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T2, Allocator2 &gt; &amp;sm, const double intensity_weight=1.0, const double color_weight=1.0, const double orientation_weight=1.0, const double gauss_sigma=5, const size_t step_local_maxima=3, const size_t scale_min_c=2, const size_t scale_max_c=4, const size_t scale_min_d=3, const size_t scale_max_d=4, const size_t base_scale=4)</td></tr>
+<tr class="memdesc:a6e659788a5198f8b8a2eb0de4eb4ef4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saliency mapを計算  <a href="#a6e659788a5198f8b8a2eb0de4eb4ef4c"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>Saliency map関連のアルゴリズム </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

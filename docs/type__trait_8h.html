@@ -1,0 +1,385 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>type_trait.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_a2627e7237515a7c75baa232ceab4ab6.html">config</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#define-members">マクロ定義</a>  </div>
+  <div class="headertitle">
+<div class="title">type_trait.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>型の情報を取得・判定するためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">mist_conf.h</a>&quot;</code><br/>
+</div>
+<p><a href="type__trait_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1is__char.html">mist::is_char&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">char 判定  <a href="structmist_1_1is__char.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1is__float.html">mist::is_float&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">浮動小数点 判定  <a href="structmist_1_1is__float.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1is__integer.html">mist::is_integer&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">integer 判定  <a href="structmist_1_1is__integer.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1is__signed.html">mist::is_signed&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付き型かどうか判定  <a href="structmist_1_1is__signed.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1is__arithmetic.html">mist::is_arithmetic&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">arithmetic 判定  <a href="structmist_1_1is__arithmetic.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1is__builtin.html">mist::is_builtin&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">組み込み型の判定  <a href="structmist_1_1is__builtin.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1float__type.html">mist::float_type&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">対応する float 型を返す  <a href="structmist_1_1float__type.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1promote__trait.html">mist::promote_trait&lt; T1, T2 &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">型の昇格型を返す  <a href="structmist_1_1promote__trait.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1type__trait.html">mist::type_trait&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の確定を避けるために利用する  <a href="structmist_1_1type__trait.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1half__adjust.html">mist::half_adjust&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">値の四捨五入をする  <a href="structmist_1_1half__adjust.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1type__and.html">mist::type_and&lt; b1, b2, b3, b4, b5, b6, b7 &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">型のAND演算を行う  <a href="structmist_1_1type__and.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1type__or.html">mist::type_or&lt; b1, b2, b3, b4, b5, b6, b7 &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">型のOR演算を行う型  <a href="structmist_1_1type__or.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1type__not.html">mist::type_not&lt; b1 &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">型のNOT演算を行う型  <a href="structmist_1_1type__not.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1type__equal.html">mist::type_equal&lt; b1, b2 &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">型のEQUAL演算を行う型  <a href="structmist_1_1type__equal.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="define-members"></a>
+マクロ定義</h2></td></tr>
+<tr class="memitem:a29ac9fcd9de9e01a9ae6b0e6f972f6f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type__trait_8h.html#a29ac9fcd9de9e01a9ae6b0e6f972f6f1">DEFINE_PROMOTE_BIND_OPERATOR1</a>(TYPE, OPERATOR)</td></tr>
+<tr class="memdesc:a29ac9fcd9de9e01a9ae6b0e6f972f6f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">型の昇格を用いた四則演算子を定義する際に利用する  <a href="#a29ac9fcd9de9e01a9ae6b0e6f972f6f1"></a><br/></td></tr>
+<tr class="memitem:a4d459820a179f0d09957442da971fdbe"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type__trait_8h.html#a4d459820a179f0d09957442da971fdbe">DEFINE_PROMOTE_BIND_OPERATOR2</a>(TYPE, OPERATOR)</td></tr>
+<tr class="memdesc:a4d459820a179f0d09957442da971fdbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">型の昇格を用いた四則演算子を定義する際に利用する  <a href="#a4d459820a179f0d09957442da971fdbe"></a><br/></td></tr>
+<tr class="memitem:a19f4338368b4458875a18085bc051138"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type__trait_8h.html#a19f4338368b4458875a18085bc051138">DEFINE_PROMOTE_BIND_OPERATOR3</a>(TYPE, OPERATOR)</td></tr>
+<tr class="memdesc:a19f4338368b4458875a18085bc051138"><td class="mdescLeft">&#160;</td><td class="mdescRight">型の昇格を用いた四則演算子を定義する際に利用する  <a href="#a19f4338368b4458875a18085bc051138"></a><br/></td></tr>
+<tr class="memitem:a2cffbc9b4ec1ab760403b250c94e83e3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type__trait_8h.html#a2cffbc9b4ec1ab760403b250c94e83e3">DEFINE_PROMOTE_BIND_OPERATOR4</a>(TYPE, OPERATOR)</td></tr>
+<tr class="memdesc:a2cffbc9b4ec1ab760403b250c94e83e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">型の昇格を用いた四則演算子を定義する際に利用する  <a href="#a2cffbc9b4ec1ab760403b250c94e83e3"></a><br/></td></tr>
+<tr class="memitem:a5cc6f96e93339b13576ac9c17ee191e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type__trait_8h.html#a5cc6f96e93339b13576ac9c17ee191e2">DEFINE_PROMOTE_BIND_OPERATOR1_</a>(TYPE, OPERATOR)</td></tr>
+<tr class="memdesc:a5cc6f96e93339b13576ac9c17ee191e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">型の昇格を用いた四則演算子を定義する際に利用する  <a href="#a5cc6f96e93339b13576ac9c17ee191e2"></a><br/></td></tr>
+<tr class="memitem:a5f16d516d900dde3f8013ed0f6fb539a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type__trait_8h.html#a5f16d516d900dde3f8013ed0f6fb539a">DEFINE_PROMOTE_BIND_OPERATOR2_</a>(TYPE, OPERATOR)</td></tr>
+<tr class="memdesc:a5f16d516d900dde3f8013ed0f6fb539a"><td class="mdescLeft">&#160;</td><td class="mdescRight">型の昇格を用いた四則演算子を定義する際に利用する  <a href="#a5f16d516d900dde3f8013ed0f6fb539a"></a><br/></td></tr>
+<tr class="memitem:a245ee33e5256ed21639a92637a430ca3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type__trait_8h.html#a245ee33e5256ed21639a92637a430ca3">DEFINE_PROMOTE_BIND_OPERATOR3_</a>(TYPE, OPERATOR)</td></tr>
+<tr class="memdesc:a245ee33e5256ed21639a92637a430ca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">型の昇格を用いた四則演算子を定義する際に利用する  <a href="#a245ee33e5256ed21639a92637a430ca3"></a><br/></td></tr>
+<tr class="memitem:a8f641df4180921d27a0ced25c527203b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type__trait_8h.html#a8f641df4180921d27a0ced25c527203b">DEFINE_PROMOTE_BIND_OPERATOR4_</a>(TYPE, OPERATOR)</td></tr>
+<tr class="memdesc:a8f641df4180921d27a0ced25c527203b"><td class="mdescLeft">&#160;</td><td class="mdescRight">型の昇格を用いた四則演算子を定義する際に利用する  <a href="#a8f641df4180921d27a0ced25c527203b"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>型の情報を取得・判定するためのライブラリ </p>
+</div><h2>マクロ定義</h2>
+<a class="anchor" id="a29ac9fcd9de9e01a9ae6b0e6f972f6f1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PROMOTE_BIND_OPERATOR1</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">TYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OPERATOR&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>値:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt; <span class="keyword">class</span> T1, <span class="keyword">class</span> T2 &gt;                                                             \</div>
+<div class="line">        inline TYPE&lt; typename promote_trait&lt; T1, T2 &gt;::value_type &gt;                                 \</div>
+<div class="line">                    operator OPERATOR( <span class="keyword">const</span> TYPE&lt; T1 &gt; &amp;t1, <span class="keyword">const</span> TYPE&lt; T2 &gt; &amp;t2 )                 \</div>
+<div class="line">        {                                                                                           \</div>
+<div class="line">            return( TYPE&lt; <span class="keyword">typename</span> promote_trait&lt; T1, T2 &gt;::value_type &gt;( t1 ) OPERATOR ## = t2 );  \</div>
+<div class="line">        }</div>
+</div><!-- fragment -->
+<p>型の昇格を用いた四則演算子を定義する際に利用する </p>
+<p>オブジェクト '演算子' オブジェクト を実現する際に利用する． </p>
+
+</div>
+</div>
+<a class="anchor" id="a5cc6f96e93339b13576ac9c17ee191e2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PROMOTE_BIND_OPERATOR1_</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">TYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OPERATOR&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>値:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt; <span class="keyword">class</span> T1, <span class="keyword">class</span> T2, <span class="keywordtype">size_t</span> NDIM &gt;                                                        \</div>
+<div class="line">        inline TYPE&lt; typename promote_trait&lt; T1, T2 &gt;::value_type, NDIM &gt;                                   \</div>
+<div class="line">                    operator OPERATOR( <span class="keyword">const</span> TYPE&lt; T1, NDIM &gt; &amp;t1, <span class="keyword">const</span> TYPE&lt; T2, NDIM &gt; &amp;t2 )             \</div>
+<div class="line">        {                                                                                                   \</div>
+<div class="line">            return( TYPE&lt; <span class="keyword">typename</span> promote_trait&lt; T1, T2 &gt;::value_type, NDIM &gt;( t1 ) OPERATOR ## = t2 );    \</div>
+<div class="line">        }</div>
+</div><!-- fragment -->
+<p>型の昇格を用いた四則演算子を定義する際に利用する </p>
+<p>オブジェクト '演算子' オブジェクト を実現する際に利用する． </p>
+
+</div>
+</div>
+<a class="anchor" id="a4d459820a179f0d09957442da971fdbe"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PROMOTE_BIND_OPERATOR2</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">TYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OPERATOR&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>値:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt; <span class="keyword">class</span> T1, <span class="keyword">class</span> T2 &gt;                                                             \</div>
+<div class="line">        inline TYPE&lt; typename promote_trait&lt; T1, T2 &gt;::value_type &gt;                                 \</div>
+<div class="line">                    operator OPERATOR( <span class="keyword">const</span> TYPE&lt; T1 &gt; &amp;t1, <span class="keyword">const</span> T2 &amp;t2 )                         \</div>
+<div class="line">        {                                                                                           \</div>
+<div class="line">            return( TYPE&lt; <span class="keyword">typename</span> promote_trait&lt; T1, T2 &gt;::value_type &gt;( t1 ) OPERATOR ## = t2 );  \</div>
+<div class="line">        }</div>
+</div><!-- fragment -->
+<p>型の昇格を用いた四則演算子を定義する際に利用する </p>
+<p>オブジェクト '演算子' 定数 を実現する際に利用する． </p>
+
+</div>
+</div>
+<a class="anchor" id="a5f16d516d900dde3f8013ed0f6fb539a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PROMOTE_BIND_OPERATOR2_</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">TYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OPERATOR&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>値:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt; <span class="keyword">class</span> T1, <span class="keyword">class</span> T2, <span class="keywordtype">size_t</span> NDIM &gt;                                                        \</div>
+<div class="line">        inline TYPE&lt; typename promote_trait&lt; T1, T2 &gt;::value_type, NDIM &gt;                                   \</div>
+<div class="line">                    operator OPERATOR( <span class="keyword">const</span> TYPE&lt; T1, NDIM &gt; &amp;t1, <span class="keyword">const</span> T2 &amp;t2 )                           \</div>
+<div class="line">        {                                                                                                   \</div>
+<div class="line">            return( TYPE&lt; <span class="keyword">typename</span> promote_trait&lt; T1, T2 &gt;::value_type, NDIM &gt;( t1 ) OPERATOR ## = t2 );    \</div>
+<div class="line">        }</div>
+</div><!-- fragment -->
+<p>型の昇格を用いた四則演算子を定義する際に利用する </p>
+<p>オブジェクト '演算子' 定数 を実現する際に利用する． </p>
+
+</div>
+</div>
+<a class="anchor" id="a19f4338368b4458875a18085bc051138"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PROMOTE_BIND_OPERATOR3</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">TYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OPERATOR&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>値:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt; <span class="keyword">class</span> T1, <span class="keyword">class</span> T2 &gt;                                                             \</div>
+<div class="line">        inline TYPE&lt; typename promote_trait&lt; T1, T2 &gt;::value_type &gt;                                 \</div>
+<div class="line">                    operator OPERATOR( <span class="keyword">const</span> T1 &amp;t1, <span class="keyword">const</span> TYPE&lt; T2 &gt; &amp;t2 )                         \</div>
+<div class="line">        {                                                                                           \</div>
+<div class="line">            return( TYPE&lt; <span class="keyword">typename</span> promote_trait&lt; T1, T2 &gt;::value_type &gt;( t2 ) OPERATOR ## = t1 );  \</div>
+<div class="line">        }</div>
+</div><!-- fragment -->
+<p>型の昇格を用いた四則演算子を定義する際に利用する </p>
+<p>定数 '演算子' オブジェクト を実現する際に利用する．主に，引き算以外で利用する． </p>
+
+</div>
+</div>
+<a class="anchor" id="a245ee33e5256ed21639a92637a430ca3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PROMOTE_BIND_OPERATOR3_</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">TYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OPERATOR&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>値:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt; <span class="keyword">class</span> T1, <span class="keyword">class</span> T2, <span class="keywordtype">size_t</span> NDIM &gt;                                                        \</div>
+<div class="line">        inline TYPE&lt; typename promote_trait&lt; T1, T2 &gt;::value_type, NDIM &gt;                                   \</div>
+<div class="line">                    operator OPERATOR( <span class="keyword">const</span> T1 &amp;t1, <span class="keyword">const</span> TYPE&lt; T2, NDIM &gt; &amp;t2 )                           \</div>
+<div class="line">        {                                                                                                   \</div>
+<div class="line">            return( TYPE&lt; <span class="keyword">typename</span> promote_trait&lt; T1, T2 &gt;::value_type, NDIM &gt;( t2 ) OPERATOR ## = t1 );    \</div>
+<div class="line">        }</div>
+</div><!-- fragment -->
+<p>型の昇格を用いた四則演算子を定義する際に利用する </p>
+<p>定数 '演算子' オブジェクト を実現する際に利用する．主に，引き算以外で利用する． </p>
+
+</div>
+</div>
+<a class="anchor" id="a2cffbc9b4ec1ab760403b250c94e83e3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PROMOTE_BIND_OPERATOR4</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">TYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OPERATOR&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>値:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt; <span class="keyword">class</span> T1, <span class="keyword">class</span> T2 &gt;                                                             \</div>
+<div class="line">        inline TYPE&lt; typename promote_trait&lt; T1, T2 &gt;::value_type &gt;                                 \</div>
+<div class="line">                    operator OPERATOR( <span class="keyword">const</span> T1 &amp;t1, <span class="keyword">const</span> TYPE&lt; T2 &gt; &amp;t2 )                         \</div>
+<div class="line">        {                                                                                           \</div>
+<div class="line">            return( TYPE&lt; <span class="keyword">typename</span> promote_trait&lt; T1, T2 &gt;::value_type &gt;( t1 ) OPERATOR ## = t2 );  \</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+<p>型の昇格を用いた四則演算子を定義する際に利用する </p>
+<p>定数 '−' オブジェクト を実現する際に利用する．ただし，1引数のコンストラクタが利用可能でなくてはならない． </p>
+
+</div>
+</div>
+<a class="anchor" id="a8f641df4180921d27a0ced25c527203b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PROMOTE_BIND_OPERATOR4_</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">TYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OPERATOR&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>値:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt; <span class="keyword">class</span> T1, <span class="keyword">class</span> T2, <span class="keywordtype">size_t</span> NDIM &gt;                                                        \</div>
+<div class="line">        inline TYPE&lt; typename promote_trait&lt; T1, T2 &gt;::value_type, NDIM &gt;                                   \</div>
+<div class="line">                    operator OPERATOR( <span class="keyword">const</span> T1 &amp;t1, <span class="keyword">const</span> TYPE&lt; T2, NDIM &gt; &amp;t2 )                           \</div>
+<div class="line">        {                                                                                                   \</div>
+<div class="line">            return( TYPE&lt; <span class="keyword">typename</span> promote_trait&lt; T1, T2 &gt;::value_type, NDIM &gt;( t1 ) OPERATOR ## = t2 );    \</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+<p>型の昇格を用いた四則演算子を定義する際に利用する </p>
+<p>定数 '−' オブジェクト を実現する際に利用する．ただし，1引数のコンストラクタが利用可能でなくてはならない． </p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

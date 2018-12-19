@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::machine_learning::adaboost::confidence_rating_classifier</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1machine__learning.html">machine_learning</a></li><li class="navelem"><a class="el" href="namespacemist_1_1machine__learning_1_1adaboost.html">adaboost</a></li><li class="navelem"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html">confidence_rating_classifier</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::machine_learning::adaboost::confidence_rating_classifier</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>AdaBoost で利用するマハラノビス距離を用いた弱識別器  
+ <a href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="machine__learning_8h_source.html">machine_learning.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a1a34c805c973e3544ef538f9cce5249e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a34c805c973e3544ef538f9cce5249e"></a>
+typedef <a class="el" href="structmist_1_1machine__learning_1_1feature.html#a726f02447818c0ec66a799fc71065018">feature_type::value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#a1a34c805c973e3544ef538f9cce5249e">value_type</a></td></tr>
+<tr class="memdesc:a1a34c805c973e3544ef538f9cce5249e"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型．mist::array&lt; data &gt; の data と同じ <br/></td></tr>
+<tr class="memitem:ae2317a9fc394e4d26ead18f32d2ec8dc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2317a9fc394e4d26ead18f32d2ec8dc"></a>
+typedef <a class="el" href="structmist_1_1machine__learning_1_1feature.html#a6d307ebc692435c72c96ac37a41df3f8">feature_type::size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#ae2317a9fc394e4d26ead18f32d2ec8dc">size_type</a></td></tr>
+<tr class="memdesc:ae2317a9fc394e4d26ead18f32d2ec8dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a36a57017403beecdf41a3b08820a3349"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a36a57017403beecdf41a3b08820a3349"></a>
+typedef <br class="typebreak"/>
+<a class="el" href="structmist_1_1machine__learning_1_1feature.html#ab451787c3bd7b30e261028155ca87b98">feature_type::difference_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#a36a57017403beecdf41a3b08820a3349">difference_type</a></td></tr>
+<tr class="memdesc:a36a57017403beecdf41a3b08820a3349"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a38f7e7818efdd1a1c45b0fdac43f647a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38f7e7818efdd1a1c45b0fdac43f647a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#a38f7e7818efdd1a1c45b0fdac43f647a">confidence_rating_classifier</a> ()</td></tr>
+<tr class="memdesc:a38f7e7818efdd1a1c45b0fdac43f647a"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのコンストラクタ <br/></td></tr>
+<tr class="memitem:a2c7d45f2f1ab7c22cf8739aa21b1d677"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c7d45f2f1ab7c22cf8739aa21b1d677"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#a2c7d45f2f1ab7c22cf8739aa21b1d677">confidence_rating_classifier</a> (const <a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html">confidence_rating_classifier</a> &amp;w)</td></tr>
+<tr class="memdesc:a2c7d45f2f1ab7c22cf8739aa21b1d677"><td class="mdescLeft">&#160;</td><td class="mdescRight">コピーコンストラクタ <br/></td></tr>
+<tr class="memitem:a2cbbbf08128b50ab7b371d2a6c5b3f3d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2cbbbf08128b50ab7b371d2a6c5b3f3d"></a>
+<a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html">confidence_rating_classifier</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#a2cbbbf08128b50ab7b371d2a6c5b3f3d">operator=</a> (const <a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html">confidence_rating_classifier</a> &amp;other)</td></tr>
+<tr class="memdesc:a2cbbbf08128b50ab7b371d2a6c5b3f3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の識別器と同じパラメータの識別器となるようにデータをコピーする <br/></td></tr>
+<tr class="memitem:a39c41a8b3908358b78d6566683abc746"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename, typename &gt; class FEATURE_LIST, template&lt; typename, typename &gt; class CATEGORY_LIST, class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a39c41a8b3908358b78d6566683abc746"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#a39c41a8b3908358b78d6566683abc746">learn</a> (const FEATURE_LIST&lt; <a class="el" href="structmist_1_1machine__learning_1_1feature.html">feature_type</a>, Allocator1 &gt; &amp;features, const CATEGORY_LIST&lt; bool, Allocator2 &gt; &amp;categories)</td></tr>
+<tr class="memdesc:a39c41a8b3908358b78d6566683abc746"><td class="mdescLeft">&#160;</td><td class="mdescRight">教師データを用いて最適な弱識別器を構築する  <a href="#a39c41a8b3908358b78d6566683abc746"></a><br/></td></tr>
+<tr class="memitem:ab1d200162080045fd8701451f05423ad"><td class="memTemplParams" colspan="2">template&lt;class FEATURE &gt; </td></tr>
+<tr class="memitem:ab1d200162080045fd8701451f05423ad"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#ab1d200162080045fd8701451f05423ad">operator()</a> (const FEATURE &amp;f) const </td></tr>
+<tr class="memdesc:ab1d200162080045fd8701451f05423ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">学習済みの弱識別器を用いて特徴量を分類する  <a href="#ab1d200162080045fd8701451f05423ad"></a><br/></td></tr>
+<tr class="memitem:a7424a0138a921150b8dc4f90b11e0219"><td class="memTemplParams" colspan="2">template&lt;class FEATURE &gt; </td></tr>
+<tr class="memitem:a7424a0138a921150b8dc4f90b11e0219"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#a7424a0138a921150b8dc4f90b11e0219">evaluate</a> (const FEATURE &amp;f) const </td></tr>
+<tr class="memdesc:a7424a0138a921150b8dc4f90b11e0219"><td class="mdescLeft">&#160;</td><td class="mdescRight">学習済みの弱識別器を用いて特徴量を分類する  <a href="#a7424a0138a921150b8dc4f90b11e0219"></a><br/></td></tr>
+<tr class="memitem:a47a0cc7fc5d505d6c913b2cfb1738fe8"><td class="memTemplParams" colspan="2"><a class="anchor" id="a47a0cc7fc5d505d6c913b2cfb1738fe8"></a>
+template&lt;class FEATURE &gt; </td></tr>
+<tr class="memitem:a47a0cc7fc5d505d6c913b2cfb1738fe8"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#a47a0cc7fc5d505d6c913b2cfb1738fe8">evaluate</a> (const FEATURE &amp;f, <a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#ae2317a9fc394e4d26ead18f32d2ec8dc">size_type</a> indx, const double hist1[], const double hist2[], double min, double max) const </td></tr>
+<tr class="memdesc:a47a0cc7fc5d505d6c913b2cfb1738fe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">学習済みの弱識別器を用いて特徴量を分類する <br/></td></tr>
+<tr class="memitem:a9760260a90849d029f09701d6f94de1a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9760260a90849d029f09701d6f94de1a"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#a9760260a90849d029f09701d6f94de1a">serialize</a> () const </td></tr>
+<tr class="memdesc:a9760260a90849d029f09701d6f94de1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">識別機のパラメータを文字列形式で記録する <br/></td></tr>
+<tr class="memitem:a954450b759b15ad6bd5b7a47a07b84b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a954450b759b15ad6bd5b7a47a07b84b4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#a954450b759b15ad6bd5b7a47a07b84b4">deserialize</a> (const std::string &amp;)</td></tr>
+<tr class="memdesc:a954450b759b15ad6bd5b7a47a07b84b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">識別機のパラメータを記録した文字列からパラメータを復元する <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>AdaBoost で利用するマハラノビス距離を用いた弱識別器 </p>
+</div><h2>関数</h2>
+<a class="anchor" id="a7424a0138a921150b8dc4f90b11e0219"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class FEATURE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::machine_learning::adaboost::confidence_rating_classifier::evaluate </td>
+          <td>(</td>
+          <td class="paramtype">const FEATURE &amp;&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>学習済みの弱識別器を用いて特徴量を分類する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 分類する特徴量 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a39c41a8b3908358b78d6566683abc746"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;template&lt; typename, typename &gt; class FEATURE_LIST, template&lt; typename, typename &gt; class CATEGORY_LIST, class Allocator1 , class Allocator2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::machine_learning::adaboost::confidence_rating_classifier::learn </td>
+          <td>(</td>
+          <td class="paramtype">const FEATURE_LIST&lt; <a class="el" href="structmist_1_1machine__learning_1_1feature.html">feature_type</a>, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>features</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const CATEGORY_LIST&lt; bool, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>categories</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>教師データを用いて最適な弱識別器を構築する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">features</td><td>… 学習に用いる教師データ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">categories</td><td>… 学習データのカテゴリ（true もしくは false） </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structmist_1_1machine__learning_1_1feature.html#a332ae13dc5cb1090c84eacf696e2a62e">mist::machine_learning::feature::valid</a>, と <a class="el" href="structmist_1_1machine__learning_1_1feature.html#adf3a02464dc8ceeb44673ac716acff10">mist::machine_learning::feature::weight</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab1d200162080045fd8701451f05423ad"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class FEATURE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::machine_learning::adaboost::confidence_rating_classifier::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const FEATURE &amp;&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>学習済みの弱識別器を用いて特徴量を分類する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 分類する特徴量 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="machine__learning_8h_source.html">machine_learning.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

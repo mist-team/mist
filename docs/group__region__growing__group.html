@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>領域拡張法</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">領域拡張法</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist_1_1region__growing__utility"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1region__growing__utility.html">mist::region_growing_utility</a></td></tr>
+<tr class="memdesc:namespacemist_1_1region__growing__utility"><td class="mdescLeft">&#160;</td><td class="mdescRight">領域拡張法に利用する構造要素関連 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gabae77324d51d95c848be61462fd817e5"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class MaskType , class PointList , class Component , class Condition &gt; </td></tr>
+<tr class="memitem:gabae77324d51d95c848be61462fd817e5"><td class="memTemplItemLeft" align="right" valign="top">Array1::difference_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__region__growing__group.html#gabae77324d51d95c848be61462fd817e5">mist::region_growing</a> (const Array1 &amp;in, Array2 &amp;out, const MaskType &amp;mask, const PointList &amp;start_points, typename Array2::value_type output_value, const Component &amp;components, const Condition &amp;condition, typename Array1::size_type max_paint)</td></tr>
+<tr class="memdesc:gabae77324d51d95c848be61462fd817e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素と条件を用いて領域拡張を行う関数  <a href="#gabae77324d51d95c848be61462fd817e5"></a><br/></td></tr>
+<tr class="memitem:gaec4ddb74f83f51b4accaa11df033dd21"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class PointList , class Component , class Condition &gt; </td></tr>
+<tr class="memitem:gaec4ddb74f83f51b4accaa11df033dd21"><td class="memTemplItemLeft" align="right" valign="top">Array1::difference_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__region__growing__group.html#gaec4ddb74f83f51b4accaa11df033dd21">mist::region_growing</a> (const Array1 &amp;in, Array2 &amp;out, const PointList &amp;start_points, typename Array2::value_type output_value, const Component &amp;components, const Condition &amp;condition, typename Array1::size_type max_paint=type_limits&lt; typename Array1::size_type &gt;::maximum())</td></tr>
+<tr class="memdesc:gaec4ddb74f83f51b4accaa11df033dd21"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の構造要素と条件を用いて領域拡張を行う関数  <a href="#gaec4ddb74f83f51b4accaa11df033dd21"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="region__growing_8h.html" title="各次元の画像に対応し，任意の位置から任意の構造要素と任意の条件判定を用いて領域拡張法を適用するためのライブラリ">mist/filter/region_growing.h</a>&gt;</span></div>
+</div><!-- fragment --><div class="fragment"><div class="line"> 領域拡張法の使用例</div>
+<div class="line"><span class="keyword">typedef</span> mist::region_growing_utility::point_type    point_type;     <span class="comment">// 領域拡張の開始点を指定する型（mist::vector2 や mist::vector3 で代用可）</span></div>
+<div class="line"><span class="keyword">typedef</span> <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html" title="領域拡張法で用いる円の構造要素">mist::region_growing_utility::circle</a>        component_type; <span class="comment">// 領域拡張に用いる構造要素</span></div>
+<div class="line"><span class="keyword">typedef</span> <a class="code" href="classmist_1_1region__growing__utility_1_1less.html" title="領域拡張法で用いる拡張条件">mist::region_growing_utility::less&lt; short &gt;</a> condition_type; <span class="comment">// 領域拡張のの拡張条件</span></div>
+<div class="line"></div>
+<div class="line"><a class="code" href="group__region__growing__group.html#gabae77324d51d95c848be61462fd817e5" title="任意の構造要素と条件を用いて領域拡張を行う関数">mist::region_growing</a>(</div>
+<div class="line">                      in,                    <span class="comment">// 入力画像</span></div>
+<div class="line">                      out,                   <span class="comment">// 領域拡張を行った結果を格納する画像 </span></div>
+<div class="line">                      point_type( x, y ),    <span class="comment">// 拡張開始点（リストにすることで複数指定可能）</span></div>
+<div class="line">                      128,                   <span class="comment">// 領域拡張の結果に代入する値</span></div>
+<div class="line">                      component_type( 20 ),  <span class="comment">// 領域拡張に用いる構造要素（画素，円，球など）</span></div>
+<div class="line">                      condition_type( 128 )  <span class="comment">// 領域拡張のの拡張条件（未満，以上，範囲など）</span></div>
+<div class="line">                    );</div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="gabae77324d51d95c848be61462fd817e5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 , class MaskType , class PointList , class Component , class Condition &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Array1::difference_type mist::region_growing </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const MaskType &amp;&#160;</td>
+          <td class="paramname"><em>mask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const PointList &amp;&#160;</td>
+          <td class="paramname"><em>start_points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array2::value_type&#160;</td>
+          <td class="paramname"><em>output_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Component &amp;&#160;</td>
+          <td class="paramname"><em>components</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Condition &amp;&#160;</td>
+          <td class="paramname"><em>condition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array1::size_type&#160;</td>
+          <td class="paramname"><em>max_paint</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素と条件を用いて領域拡張を行う関数 </p>
+<dl class="section attention"><dt>注意</dt><dd>処理の都合上，max_paint で指定した画素数より若干多めに領域が拡張される可能性があります．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力マークデータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mask</td><td>… 処理対象外マスク </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">start_points</td><td>… 領域拡張の開始点のリスト（複数指定する場合は，std::vectorなどのリストに代入すること） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">output_value</td><td>… 出力マークデータに書き込む値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">components</td><td>… 領域拡張に用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">condition</td><td>… 構造要素内の画素が満たすべき条件 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_paint</td><td>… 最大で塗りつぶす画素数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力画像が不適切な場合や，最大反復回数を試行しても終了条件を満たさなかった場合に -1 を返す．それ以外の場合は，塗りつぶした画素数を返す． </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1marray.html#a7cb90c2169dc8b1e7e171cf23207f6e4">mist::marray&lt; Array &gt;::fill_margin()</a>, と <a class="el" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710">mist::is_same_object()</a>.</p>
+
+<p>参照元 <a class="el" href="group__region__growing__group.html#gaec4ddb74f83f51b4accaa11df033dd21">mist::region_growing()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaec4ddb74f83f51b4accaa11df033dd21"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 , class PointList , class Component , class Condition &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Array1::difference_type mist::region_growing </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const PointList &amp;&#160;</td>
+          <td class="paramname"><em>start_points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array2::value_type&#160;</td>
+          <td class="paramname"><em>output_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Component &amp;&#160;</td>
+          <td class="paramname"><em>components</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Condition &amp;&#160;</td>
+          <td class="paramname"><em>condition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array1::size_type&#160;</td>
+          <td class="paramname"><em>max_paint</em> = <code>type_limits&lt;&#160;typename&#160;Array1::size_type&#160;&gt;::maximum(&#160;)</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>任意の構造要素と条件を用いて領域拡張を行う関数 </p>
+<p>処理対象外マスクを設定しない領域拡張法</p>
+<dl class="section attention"><dt>注意</dt><dd>処理の都合上，max_paint で指定した画素数より若干多めに領域が拡張される可能性があります．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力マークデータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">start_points</td><td>… 領域拡張の開始点のリスト（複数指定する場合は，std::vectorなどのリストに代入すること） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">output_value</td><td>… 出力マークデータに書き込む値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">components</td><td>… 領域拡張に用いる構造要素 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">condition</td><td>… 構造要素内の画素が満たすべき条件 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_paint</td><td>… 最大で塗りつぶす画素数（省略した場合は条件を満たす点が存在しなくなるまで実行する）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力画像が不適切な場合や，最大反復回数を試行しても終了条件を満たさなかった場合に -1 を返す．それ以外の場合は，塗りつぶした画素数を返す． </dd></dl>
+
+<p>参照先 <a class="el" href="group__region__growing__group.html#gabae77324d51d95c848be61462fd817e5">mist::region_growing()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

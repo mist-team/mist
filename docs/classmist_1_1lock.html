@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::lock</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1lock.html">lock</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-attribs">Protected 変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::lock<div class="ingroups"><a class="el" href="group__thread__group.html">スレッド</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>スレッドの排他制御を簡便に記述するためのヘルパクラス  
+ <a href="classmist_1_1lock.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="thread_8h_source.html">thread.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:ad1222b5e56fe44e79b447552c80f823a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad1222b5e56fe44e79b447552c80f823a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1lock.html#ad1222b5e56fe44e79b447552c80f823a">lock</a> ()</td></tr>
+<tr class="memdesc:ad1222b5e56fe44e79b447552c80f823a"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトの名前でロックオブジェクトを生成し，ロックオブジェクトをロックする <br/></td></tr>
+<tr class="memitem:af61350a17a4f731ceaf22c6ddc2af6f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af61350a17a4f731ceaf22c6ddc2af6f2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1lock.html#af61350a17a4f731ceaf22c6ddc2af6f2">lock</a> (const std::string &amp;name)</td></tr>
+<tr class="memdesc:af61350a17a4f731ceaf22c6ddc2af6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した name の名前を持つロックオブジェクトを生成し，ロックオブジェクトをロックする <br/></td></tr>
+<tr class="memitem:ab634858aef54a686de105b4fcef8ffae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab634858aef54a686de105b4fcef8ffae"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1lock.html#ab634858aef54a686de105b4fcef8ffae">~lock</a> ()</td></tr>
+<tr class="memdesc:ab634858aef54a686de105b4fcef8ffae"><td class="mdescLeft">&#160;</td><td class="mdescRight">開放時に，ロックオブジェクトのロックを解除する <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected 変数</h2></td></tr>
+<tr class="memitem:a4bc7d7c6e7bdd4aee80d8e81ce6ef79d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4bc7d7c6e7bdd4aee80d8e81ce6ef79d"></a>
+<a class="el" href="structmist_1_1lock__object.html">lock_object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1lock.html#a4bc7d7c6e7bdd4aee80d8e81ce6ef79d">lock_object_</a></td></tr>
+<tr class="memdesc:a4bc7d7c6e7bdd4aee80d8e81ce6ef79d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ロックオブジェクト <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>スレッドの排他制御を簡便に記述するためのヘルパクラス </p>
+<div class="fragment"><div class="line"> 使用例</div>
+<div class="line">... 何らかの処理 ...</div>
+<div class="line">{</div>
+<div class="line">    <span class="comment">// このブロック内を排他制御する</span></div>
+<div class="line">    <a class="code" href="classmist_1_1lock.html#ad1222b5e56fe44e79b447552c80f823a" title="デフォルトの名前でロックオブジェクトを生成し，ロックオブジェクトをロックする">lock</a> l( <span class="stringliteral">&quot;ロックオブジェクトの名前&quot;</span> );  <span class="comment">// &lt;- 名前を指定しないと，デフォルトのロックオブジェクトが使用される</span></div>
+<div class="line"></div>
+<div class="line">    ... 排他制御したい処理 ...</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// ここまでの処理が排他制御される</span></div>
+<div class="line">}</div>
+</div><!-- fragment --> </div><hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="thread_8h_source.html">thread.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

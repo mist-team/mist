@@ -1,0 +1,1994 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::tensor&lt; M, V, A &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1tensor.html">tensor</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::tensor&lt; M, V, A &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Tensor class.  
+ <a href="classmist_1_1tensor.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="tensor_8h_source.html">tensor.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:afe739884c8a3315145660c3ebbe31cc9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe739884c8a3315145660c3ebbe31cc9"></a>
+typedef V&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a></td></tr>
+<tr class="memdesc:afe739884c8a3315145660c3ebbe31cc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">data type of tensor's elements <br/></td></tr>
+<tr class="memitem:a356d4793d986c65434d541a35b850532"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a356d4793d986c65434d541a35b850532"></a>
+typedef A&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a356d4793d986c65434d541a35b850532">allocator</a></td></tr>
+<tr class="memdesc:a356d4793d986c65434d541a35b850532"><td class="mdescLeft">&#160;</td><td class="mdescRight">allocator type of mist containers <br/></td></tr>
+<tr class="memitem:a9957768ffda9c7645f22d5f0cf2d26e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9957768ffda9c7645f22d5f0cf2d26e1"></a>
+typedef data_type::size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a></td></tr>
+<tr class="memdesc:a9957768ffda9c7645f22d5f0cf2d26e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">unsigned integer type used for contener size or data index (same as size_t) <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a906b199d272273714a05c8c7e94b53f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a906b199d272273714a05c8c7e94b53f9"></a>
+const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a906b199d272273714a05c8c7e94b53f9">mode</a> () const </td></tr>
+<tr class="memdesc:a906b199d272273714a05c8c7e94b53f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">return the number of tensor's modes <br/></td></tr>
+<tr class="memitem:a198eeb6965ff8f50eae8c51bb87c71ff"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a198eeb6965ff8f50eae8c51bb87c71ff">rank</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;<a class="el" href="classmist_1_1tensor.html#a906b199d272273714a05c8c7e94b53f9">mode</a>) const </td></tr>
+<tr class="memdesc:a198eeb6965ff8f50eae8c51bb87c71ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">return a mode rank of the tensor for each mode  <a href="#a198eeb6965ff8f50eae8c51bb87c71ff"></a><br/></td></tr>
+<tr class="memitem:a2bb7703f2a987b9e5f7e295a9c892c95"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bb7703f2a987b9e5f7e295a9c892c95"></a>
+const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a2bb7703f2a987b9e5f7e295a9c892c95">size</a> () const </td></tr>
+<tr class="memdesc:a2bb7703f2a987b9e5f7e295a9c892c95"><td class="mdescLeft">&#160;</td><td class="mdescRight">return the number of tensor's elements <br/></td></tr>
+<tr class="memitem:ae5b0b3153d0be9725bb97bfcc452ae46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#ae5b0b3153d0be9725bb97bfcc452ae46">operator[]</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i)</td></tr>
+<tr class="memdesc:ae5b0b3153d0be9725bb97bfcc452ae46"><td class="mdescLeft">&#160;</td><td class="mdescRight">return the i-th element of the tensor without depending on the number of modes  <a href="#ae5b0b3153d0be9725bb97bfcc452ae46"></a><br/></td></tr>
+<tr class="memitem:a89828b06b5736bf365082738f1ad3431"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a89828b06b5736bf365082738f1ad3431">operator[]</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i) const </td></tr>
+<tr class="memdesc:a89828b06b5736bf365082738f1ad3431"><td class="mdescLeft">&#160;</td><td class="mdescRight">return the i-th element of the tensor without depending on the number of modes  <a href="#a89828b06b5736bf365082738f1ad3431"></a><br/></td></tr>
+<tr class="memitem:a1aea3c299eb6513fe91c6325a6f95ca7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1matrix.html">matrix_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a1aea3c299eb6513fe91c6325a6f95ca7">unfold</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;<a class="el" href="classmist_1_1tensor.html#a906b199d272273714a05c8c7e94b53f9">mode</a>) const </td></tr>
+<tr class="memdesc:a1aea3c299eb6513fe91c6325a6f95ca7"><td class="mdescLeft">&#160;</td><td class="mdescRight">return a matrix form of the tensor obtained by unfolding it for each mode  <a href="#a1aea3c299eb6513fe91c6325a6f95ca7"></a><br/></td></tr>
+<tr class="memitem:aa034b8be790d830dbd6a96ae478b4e13"><td class="memTemplParams" colspan="2">template&lt;typename MV , typename MA &gt; </td></tr>
+<tr class="memitem:aa034b8be790d830dbd6a96ae478b4e13"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#aa034b8be790d830dbd6a96ae478b4e13">x</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;<a class="el" href="classmist_1_1tensor.html#a906b199d272273714a05c8c7e94b53f9">mode</a>, const <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;mat) const </td></tr>
+<tr class="memdesc:aa034b8be790d830dbd6a96ae478b4e13"><td class="mdescLeft">&#160;</td><td class="mdescRight">return a mode-product between the tensor and a matrix  <a href="#aa034b8be790d830dbd6a96ae478b4e13"></a><br/></td></tr>
+<tr class="memitem:ac3062f646f590b08120a25c7c7275a9e"><td class="memTemplParams" colspan="2"><a class="anchor" id="ac3062f646f590b08120a25c7c7275a9e"></a>
+template&lt;typename TV , typename TA &gt; </td></tr>
+<tr class="memitem:ac3062f646f590b08120a25c7c7275a9e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#ac3062f646f590b08120a25c7c7275a9e">operator==</a> (const <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, TV, TA &gt; &amp;t) const </td></tr>
+<tr class="memdesc:ac3062f646f590b08120a25c7c7275a9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">equivalence operator <br/></td></tr>
+<tr class="memitem:aac30591d9d4283cfbcabfd932cc14536"><td class="memTemplParams" colspan="2"><a class="anchor" id="aac30591d9d4283cfbcabfd932cc14536"></a>
+template&lt;typename TV , typename TA &gt; </td></tr>
+<tr class="memitem:aac30591d9d4283cfbcabfd932cc14536"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#aac30591d9d4283cfbcabfd932cc14536">operator!=</a> (const <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, TV, TA &gt; &amp;t) const </td></tr>
+<tr class="memdesc:aac30591d9d4283cfbcabfd932cc14536"><td class="mdescLeft">&#160;</td><td class="mdescRight">non-equivalence operator <br/></td></tr>
+<tr class="memitem:a5bf74ce417818b7b2cf9a6dd5ae9f587"><td class="memTemplParams" colspan="2"><a class="anchor" id="a5bf74ce417818b7b2cf9a6dd5ae9f587"></a>
+template&lt;typename TV , typename TA &gt; </td></tr>
+<tr class="memitem:a5bf74ce417818b7b2cf9a6dd5ae9f587"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a5bf74ce417818b7b2cf9a6dd5ae9f587">operator+=</a> (const <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, TV, TA &gt; &amp;t)</td></tr>
+<tr class="memdesc:a5bf74ce417818b7b2cf9a6dd5ae9f587"><td class="mdescLeft">&#160;</td><td class="mdescRight">addision assignment operator to add a tensor to the tensor <br/></td></tr>
+<tr class="memitem:a0d77e6afdbe2f36d8dc5d90200589796"><td class="memTemplParams" colspan="2"><a class="anchor" id="a0d77e6afdbe2f36d8dc5d90200589796"></a>
+template&lt;typename TV , typename TA &gt; </td></tr>
+<tr class="memitem:a0d77e6afdbe2f36d8dc5d90200589796"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a0d77e6afdbe2f36d8dc5d90200589796">operator-=</a> (const <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, TV, TA &gt; &amp;t)</td></tr>
+<tr class="memdesc:a0d77e6afdbe2f36d8dc5d90200589796"><td class="mdescLeft">&#160;</td><td class="mdescRight">subtraction assignment operator to subtract a tensor from the tensor <br/></td></tr>
+<tr class="memitem:ab0b38a3df69862558b57bad68645a432"><td class="memTemplParams" colspan="2"><a class="anchor" id="ab0b38a3df69862558b57bad68645a432"></a>
+template&lt;typename VV &gt; </td></tr>
+<tr class="memitem:ab0b38a3df69862558b57bad68645a432"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#ab0b38a3df69862558b57bad68645a432">operator*=</a> (const VV &amp;v)</td></tr>
+<tr class="memdesc:ab0b38a3df69862558b57bad68645a432"><td class="mdescLeft">&#160;</td><td class="mdescRight">multiplication assignment operator to multiply the tensor by a value <br/></td></tr>
+<tr class="memitem:a41bf67b2d234c2a68fc1c234543a67a9"><td class="memTemplParams" colspan="2"><a class="anchor" id="a41bf67b2d234c2a68fc1c234543a67a9"></a>
+template&lt;typename VV &gt; </td></tr>
+<tr class="memitem:a41bf67b2d234c2a68fc1c234543a67a9"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a41bf67b2d234c2a68fc1c234543a67a9">operator/=</a> (const VV &amp;v)</td></tr>
+<tr class="memdesc:a41bf67b2d234c2a68fc1c234543a67a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">division assignment operator to divide the tensor by a value <br/></td></tr>
+<tr class="memitem:ac0d0ee7f787a6ff8363c3300275964e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0d0ee7f787a6ff8363c3300275964e9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#ac0d0ee7f787a6ff8363c3300275964e9">tensor</a> ()</td></tr>
+<tr class="memdesc:ac0d0ee7f787a6ff8363c3300275964e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a tensor (default constructer) <br/></td></tr>
+<tr class="memitem:a2333af1e87a6a6a9ca027cb9bc10f0be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a2333af1e87a6a6a9ca027cb9bc10f0be">resize</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2)</td></tr>
+<tr class="memdesc:a2333af1e87a6a6a9ca027cb9bc10f0be"><td class="mdescLeft">&#160;</td><td class="mdescRight">resize the 2nd order tensor  <a href="#a2333af1e87a6a6a9ca027cb9bc10f0be"></a><br/></td></tr>
+<tr class="memitem:ab01b89f798670bb0d39fe150ced58380"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#ab01b89f798670bb0d39fe150ced58380">operator()</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i2)</td></tr>
+<tr class="memdesc:ab01b89f798670bb0d39fe150ced58380"><td class="mdescLeft">&#160;</td><td class="mdescRight">return a element of the 2nd order tensor for each pair of indices  <a href="#ab01b89f798670bb0d39fe150ced58380"></a><br/></td></tr>
+<tr class="memitem:aee1166be575885281e27f3e47d23b2d9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#aee1166be575885281e27f3e47d23b2d9">operator()</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i2) const </td></tr>
+<tr class="memdesc:aee1166be575885281e27f3e47d23b2d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">return a element of the 2nd order tensor for each pair of indices  <a href="#aee1166be575885281e27f3e47d23b2d9"></a><br/></td></tr>
+<tr class="memitem:a63ee82385cbbc7ac6bf1eb9ae9b8fad6"><td class="memTemplParams" colspan="2">template&lt;typename MV , typename MA &gt; </td></tr>
+<tr class="memitem:a63ee82385cbbc7ac6bf1eb9ae9b8fad6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a63ee82385cbbc7ac6bf1eb9ae9b8fad6">hosvd</a> (<a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;z, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u1, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u2) const </td></tr>
+<tr class="memdesc:a63ee82385cbbc7ac6bf1eb9ae9b8fad6"><td class="mdescLeft">&#160;</td><td class="mdescRight">apply higher order singular value decomposition (HOSVD) to the 2nd order tensor  <a href="#a63ee82385cbbc7ac6bf1eb9ae9b8fad6"></a><br/></td></tr>
+<tr class="memitem:ac0d209d94e5b3acfb1cbe6da82f90978"><td class="memTemplParams" colspan="2">template&lt;typename AV , typename AA &gt; </td></tr>
+<tr class="memitem:ac0d209d94e5b3acfb1cbe6da82f90978"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#ac0d209d94e5b3acfb1cbe6da82f90978">tensor</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2, const <a class="el" href="classmist_1_1array.html">array</a>&lt; AV, AA &gt; &amp;data)</td></tr>
+<tr class="memdesc:ac0d209d94e5b3acfb1cbe6da82f90978"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 2nd order tensor  <a href="#ac0d209d94e5b3acfb1cbe6da82f90978"></a><br/></td></tr>
+<tr class="memitem:a4750173005cc6e132adfbd8326f2ad1a"><td class="memTemplParams" colspan="2">template&lt;typename AV , typename AA &gt; </td></tr>
+<tr class="memitem:a4750173005cc6e132adfbd8326f2ad1a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a4750173005cc6e132adfbd8326f2ad1a">tensor</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; AV, AA &gt; &amp;img)</td></tr>
+<tr class="memdesc:a4750173005cc6e132adfbd8326f2ad1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 2nd order tensor from an image  <a href="#a4750173005cc6e132adfbd8326f2ad1a"></a><br/></td></tr>
+<tr class="memitem:ab81e5e2bbbbb4f4b04d25cfb7a6e10c9"><td class="memTemplParams" colspan="2">template&lt;typename MV , typename MA &gt; </td></tr>
+<tr class="memitem:ab81e5e2bbbbb4f4b04d25cfb7a6e10c9"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#ab81e5e2bbbbb4f4b04d25cfb7a6e10c9">tensor</a> (const <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;mat)</td></tr>
+<tr class="memdesc:ab81e5e2bbbbb4f4b04d25cfb7a6e10c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 2nd order tensor from a matrix  <a href="#ab81e5e2bbbbb4f4b04d25cfb7a6e10c9"></a><br/></td></tr>
+<tr class="memitem:aa4814b444a31710dbed6a5368c7ee6bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#aa4814b444a31710dbed6a5368c7ee6bd">tensor</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2)</td></tr>
+<tr class="memdesc:aa4814b444a31710dbed6a5368c7ee6bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 2nd order tensor  <a href="#aa4814b444a31710dbed6a5368c7ee6bd"></a><br/></td></tr>
+<tr class="memitem:a8fc317470c094a9b5a5a69ed9f686f17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a8fc317470c094a9b5a5a69ed9f686f17">resize</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank3)</td></tr>
+<tr class="memdesc:a8fc317470c094a9b5a5a69ed9f686f17"><td class="mdescLeft">&#160;</td><td class="mdescRight">resize the 3rd order tensor  <a href="#a8fc317470c094a9b5a5a69ed9f686f17"></a><br/></td></tr>
+<tr class="memitem:a15810ff7d766390aa5cb5e666f0f4ec5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a15810ff7d766390aa5cb5e666f0f4ec5">operator()</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i3)</td></tr>
+<tr class="memdesc:a15810ff7d766390aa5cb5e666f0f4ec5"><td class="mdescLeft">&#160;</td><td class="mdescRight">return a element of the 3rd order tensor for each set of indices  <a href="#a15810ff7d766390aa5cb5e666f0f4ec5"></a><br/></td></tr>
+<tr class="memitem:a594c72d9befdfeb4c6fc0c6cf507f0a0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a594c72d9befdfeb4c6fc0c6cf507f0a0">operator()</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i3) const </td></tr>
+<tr class="memdesc:a594c72d9befdfeb4c6fc0c6cf507f0a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">return a element of the 3rd order tensor for each set of indices  <a href="#a594c72d9befdfeb4c6fc0c6cf507f0a0"></a><br/></td></tr>
+<tr class="memitem:a8a186329c7a9c35f30b84aa7b434fa15"><td class="memTemplParams" colspan="2">template&lt;typename MV , typename MA &gt; </td></tr>
+<tr class="memitem:a8a186329c7a9c35f30b84aa7b434fa15"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a8a186329c7a9c35f30b84aa7b434fa15">hosvd</a> (<a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;z, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u1, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u2, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u3) const </td></tr>
+<tr class="memdesc:a8a186329c7a9c35f30b84aa7b434fa15"><td class="mdescLeft">&#160;</td><td class="mdescRight">apply higher order singular value decomposition (HOSVD) to the 3rd order tensor  <a href="#a8a186329c7a9c35f30b84aa7b434fa15"></a><br/></td></tr>
+<tr class="memitem:ad63832c30055fae6a57184fda325ca95"><td class="memTemplParams" colspan="2">template&lt;typename AV , typename AA &gt; </td></tr>
+<tr class="memitem:ad63832c30055fae6a57184fda325ca95"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#ad63832c30055fae6a57184fda325ca95">tensor</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank3, const <a class="el" href="classmist_1_1array.html">array</a>&lt; AV, AA &gt; &amp;data)</td></tr>
+<tr class="memdesc:ad63832c30055fae6a57184fda325ca95"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 3rd order tensor  <a href="#ad63832c30055fae6a57184fda325ca95"></a><br/></td></tr>
+<tr class="memitem:a427dc92b0731c45b8f837486bb6b5eba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a427dc92b0731c45b8f837486bb6b5eba">tensor</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank3)</td></tr>
+<tr class="memdesc:a427dc92b0731c45b8f837486bb6b5eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 3rd order tensor  <a href="#a427dc92b0731c45b8f837486bb6b5eba"></a><br/></td></tr>
+<tr class="memitem:a59b505ab11580805c9219f16b3e10d6f"><td class="memTemplParams" colspan="2">template&lt;typename TV , typename TA , typename AA &gt; </td></tr>
+<tr class="memitem:a59b505ab11580805c9219f16b3e10d6f"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a59b505ab11580805c9219f16b3e10d6f">tensor</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; 2, TV, TA &gt;, AA &gt; &amp;ts)</td></tr>
+<tr class="memdesc:a59b505ab11580805c9219f16b3e10d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 3rd order tensor from an array of 2nd order tensors  <a href="#a59b505ab11580805c9219f16b3e10d6f"></a><br/></td></tr>
+<tr class="memitem:ad5d71be29b6af738bb8cf091ddea5614"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#ad5d71be29b6af738bb8cf091ddea5614">resize</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank3, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank4)</td></tr>
+<tr class="memdesc:ad5d71be29b6af738bb8cf091ddea5614"><td class="mdescLeft">&#160;</td><td class="mdescRight">resize the 4th order tensor  <a href="#ad5d71be29b6af738bb8cf091ddea5614"></a><br/></td></tr>
+<tr class="memitem:a0216c8398b4dcbff4d1cf0e61a4da8b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a0216c8398b4dcbff4d1cf0e61a4da8b4">operator()</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i3, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i4)</td></tr>
+<tr class="memdesc:a0216c8398b4dcbff4d1cf0e61a4da8b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">return a element of the 4th order tensor for each set of indices  <a href="#a0216c8398b4dcbff4d1cf0e61a4da8b4"></a><br/></td></tr>
+<tr class="memitem:a673f4e5746407c4ff6ecf689a00ffc6d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a673f4e5746407c4ff6ecf689a00ffc6d">operator()</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i3, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i4) const </td></tr>
+<tr class="memdesc:a673f4e5746407c4ff6ecf689a00ffc6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">return a element of the 4th order tensor for each set of indices  <a href="#a673f4e5746407c4ff6ecf689a00ffc6d"></a><br/></td></tr>
+<tr class="memitem:a5e2e7a97155416eb30829894e05845d8"><td class="memTemplParams" colspan="2">template&lt;typename MV , typename MA &gt; </td></tr>
+<tr class="memitem:a5e2e7a97155416eb30829894e05845d8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a5e2e7a97155416eb30829894e05845d8">hosvd</a> (<a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;z, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u1, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u2, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u3, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u4) const </td></tr>
+<tr class="memdesc:a5e2e7a97155416eb30829894e05845d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">apply higher order singular value decomposition (HOSVD) to the 4th order tensor  <a href="#a5e2e7a97155416eb30829894e05845d8"></a><br/></td></tr>
+<tr class="memitem:a94543276bfd49d17d427611b3e7c0636"><td class="memTemplParams" colspan="2">template&lt;typename AV , typename AA &gt; </td></tr>
+<tr class="memitem:a94543276bfd49d17d427611b3e7c0636"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a94543276bfd49d17d427611b3e7c0636">tensor</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank3, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank4, const <a class="el" href="classmist_1_1array.html">array</a>&lt; AV, AA &gt; &amp;data)</td></tr>
+<tr class="memdesc:a94543276bfd49d17d427611b3e7c0636"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 4th order tensor  <a href="#a94543276bfd49d17d427611b3e7c0636"></a><br/></td></tr>
+<tr class="memitem:ab012c0355665b2012f96ca690e058aa8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#ab012c0355665b2012f96ca690e058aa8">tensor</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank3, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank4)</td></tr>
+<tr class="memdesc:ab012c0355665b2012f96ca690e058aa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 4th order tensor  <a href="#ab012c0355665b2012f96ca690e058aa8"></a><br/></td></tr>
+<tr class="memitem:a7d1f826f5f9b272e9f9ffe22bd656b77"><td class="memTemplParams" colspan="2">template&lt;typename TV , typename TA , typename AA &gt; </td></tr>
+<tr class="memitem:a7d1f826f5f9b272e9f9ffe22bd656b77"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a7d1f826f5f9b272e9f9ffe22bd656b77">tensor</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; 3, TV, TA &gt;, AA &gt; &amp;ts)</td></tr>
+<tr class="memdesc:a7d1f826f5f9b272e9f9ffe22bd656b77"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 4th order tensor from an array of 3rd order tensors  <a href="#a7d1f826f5f9b272e9f9ffe22bd656b77"></a><br/></td></tr>
+<tr class="memitem:a03da2f10576b894c0482b2c710f69522"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a03da2f10576b894c0482b2c710f69522">resize</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank3, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank4, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank5)</td></tr>
+<tr class="memdesc:a03da2f10576b894c0482b2c710f69522"><td class="mdescLeft">&#160;</td><td class="mdescRight">resize the 5th order tensor  <a href="#a03da2f10576b894c0482b2c710f69522"></a><br/></td></tr>
+<tr class="memitem:a6599381d730b862f7cf75078ad0c4e81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a6599381d730b862f7cf75078ad0c4e81">operator()</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i3, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i4, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i5)</td></tr>
+<tr class="memdesc:a6599381d730b862f7cf75078ad0c4e81"><td class="mdescLeft">&#160;</td><td class="mdescRight">return a element of the 5th order tensor for each set of indices  <a href="#a6599381d730b862f7cf75078ad0c4e81"></a><br/></td></tr>
+<tr class="memitem:ae261a833eeb00be63a618fee608153a1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#ae261a833eeb00be63a618fee608153a1">operator()</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i3, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i4, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;i5) const </td></tr>
+<tr class="memdesc:ae261a833eeb00be63a618fee608153a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">return a element of the 5th order tensor for each set of indices  <a href="#ae261a833eeb00be63a618fee608153a1"></a><br/></td></tr>
+<tr class="memitem:a71083284775db582c885c4d2699b4bd4"><td class="memTemplParams" colspan="2">template&lt;typename MV , typename MA &gt; </td></tr>
+<tr class="memitem:a71083284775db582c885c4d2699b4bd4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a71083284775db582c885c4d2699b4bd4">hosvd</a> (<a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;z, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u1, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u2, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u3, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u4, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;u5) const </td></tr>
+<tr class="memdesc:a71083284775db582c885c4d2699b4bd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">apply higher order singular value decomposition (HOSVD) to the 5th order tensor  <a href="#a71083284775db582c885c4d2699b4bd4"></a><br/></td></tr>
+<tr class="memitem:a7854182c0ffa1bcbc358ca076d6f11b3"><td class="memTemplParams" colspan="2">template&lt;typename AV , typename AA &gt; </td></tr>
+<tr class="memitem:a7854182c0ffa1bcbc358ca076d6f11b3"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a7854182c0ffa1bcbc358ca076d6f11b3">tensor</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank3, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank4, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank5, const <a class="el" href="classmist_1_1array.html">array</a>&lt; AV, AA &gt; &amp;data)</td></tr>
+<tr class="memdesc:a7854182c0ffa1bcbc358ca076d6f11b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 5th order tensor  <a href="#a7854182c0ffa1bcbc358ca076d6f11b3"></a><br/></td></tr>
+<tr class="memitem:a5651a0ea6938856050f7a09f444abdfe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#a5651a0ea6938856050f7a09f444abdfe">tensor</a> (const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank1, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank2, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank3, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank4, const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;rank5)</td></tr>
+<tr class="memdesc:a5651a0ea6938856050f7a09f444abdfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 5th order tensor  <a href="#a5651a0ea6938856050f7a09f444abdfe"></a><br/></td></tr>
+<tr class="memitem:abbe9bb14fe8d3ba01a6f273d09d5f0df"><td class="memTemplParams" colspan="2">template&lt;typename TV , typename TA , typename AA &gt; </td></tr>
+<tr class="memitem:abbe9bb14fe8d3ba01a6f273d09d5f0df"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html#abbe9bb14fe8d3ba01a6f273d09d5f0df">tensor</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; 4, TV, TA &gt;, AA &gt; &amp;ts)</td></tr>
+<tr class="memdesc:abbe9bb14fe8d3ba01a6f273d09d5f0df"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct a 5th order tensor from an array of 4th order tensors  <a href="#abbe9bb14fe8d3ba01a6f273d09d5f0df"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt;<br/>
+class mist::tensor&lt; M, V, A &gt;</h3>
+
+<p>Tensor class. </p>
+<p>An N-th order tensor T has mode-ranks I_1, I_2, ..., I_N and belongs to the product space R^{I_1  I_2  ...  I_N}.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">M</td><td>integer parameter to assign tensor's order (number of modes) </td></tr>
+    <tr><td class="paramname">V</td><td>data type parameter used as tensor's element type </td></tr>
+    <tr><td class="paramname">A</td><td>allocator type paramerter used by mist containers </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="ac0d209d94e5b3acfb1cbe6da82f90978"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename AV , typename AA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">array</a>&lt; AV, AA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 2nd order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>data to assign initial values to elements of the tensor </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a4750173005cc6e132adfbd8326f2ad1a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename AV , typename AA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; AV, AA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>img</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 2nd order tensor from an image </p>
+<p>Width and height of the image are assigned to the 1st and 2nd mode ranks respectively.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">img</td><td>image to assign initial values to elements of the tensor </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab81e5e2bbbbb4f4b04d25cfb7a6e10c9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename MV , typename MA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mat</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 2nd order tensor from a matrix </p>
+<p>Numbers of rows and cols of the matrix are assigned to the 1st and 2nd mode ranks respectively.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">mat</td><td>matrix to assign initial values to elements of the tensor </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aa4814b444a31710dbed6a5368c7ee6bd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 2nd order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ad63832c30055fae6a57184fda325ca95"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename AV , typename AA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">array</a>&lt; AV, AA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 3rd order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank3</td><td>3rd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>data to assign initial values to elements of the tensor </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a427dc92b0731c45b8f837486bb6b5eba"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 3rd order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank3</td><td>3rd mode rank </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a59b505ab11580805c9219f16b3e10d6f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename TV , typename TA , typename AA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">array</a>&lt; <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; 2, TV, TA &gt;, AA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 3rd order tensor from an array of 2nd order tensors </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ts</td><td>array of 2nd order tensors </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a94543276bfd49d17d427611b3e7c0636"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename AV , typename AA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">array</a>&lt; AV, AA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 4th order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank3</td><td>3rd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank4</td><td>4th mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>data to assign initial values to elements of the tensor </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab012c0355665b2012f96ca690e058aa8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank4</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 4th order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank3</td><td>3rd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank4</td><td>4th mode rank </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a7d1f826f5f9b272e9f9ffe22bd656b77"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename TV , typename TA , typename AA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">array</a>&lt; <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; 3, TV, TA &gt;, AA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 4th order tensor from an array of 3rd order tensors </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ts</td><td>array of 3rd order tensors </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a7854182c0ffa1bcbc358ca076d6f11b3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename AV , typename AA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank5</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">array</a>&lt; AV, AA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 5th order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank3</td><td>3rd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank4</td><td>4th mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank5</td><td>5th mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>data to assign initial values to elements of the tensor </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a5651a0ea6938856050f7a09f444abdfe"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank5</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 5th order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank3</td><td>3rd mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank4</td><td>4th mode rank </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank5</td><td>5th mode rank </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="abbe9bb14fe8d3ba01a6f273d09d5f0df"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename TV , typename TA , typename AA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::<a class="el" href="classmist_1_1tensor.html">tensor</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">array</a>&lt; <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; 4, TV, TA &gt;, AA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>construct a 5th order tensor from an array of 4th order tensors </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ts</td><td>array of 4th order tensors </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="a63ee82385cbbc7ac6bf1eb9ae9b8fad6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename MV , typename MA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::hosvd </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>apply higher order singular value decomposition (HOSVD) to the 2nd order tensor </p>
+<p>HOSVD decomposes a 2nd order tensor T as T = Z  U_1  U_2. Here U_1 and U_2 are unitary matrices and a 2nd order tensor Z is called as a core tensor. Using 1-mode-unfolding matrix of T, this is described like SVD of a matrix as T_1 = U1 S U2^t Here S is a singular value matrix.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">z</td><td>core tensor of the tensor </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u1</td><td>unitary matrix corresponding to the 1st mode </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u2</td><td>unitary matrix corresponding to the 2nd mode </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#ab305a682c88d9871e86e4f68fa09522f">mist::matrix&lt; T, Allocator &gt;::dagger()</a>, と <a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd()</a>.</p>
+
+<p>参照元 <a class="el" href="namespacemist.html#afeb4393ea1a69bfbabde03b68dace5c6">mist::hosvd()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8a186329c7a9c35f30b84aa7b434fa15"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename MV , typename MA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::hosvd </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>apply higher order singular value decomposition (HOSVD) to the 3rd order tensor </p>
+<p>HOSVD decomposes a 3rd order tensor T as T = Z  U_1  U_2  U_3. Here U_1, U_2, and U_3 are unitary matrices and a 3rd order tensor Z is called as a core tensor.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">z</td><td>core tensor of the tensor </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u1</td><td>unitary matrix corresponding to the 1st mode </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u2</td><td>unitary matrix corresponding to the 2nd mode </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u3</td><td>unitary matrix corresponding to the 3rd mode </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#ab305a682c88d9871e86e4f68fa09522f">mist::matrix&lt; T, Allocator &gt;::dagger()</a>, と <a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5e2e7a97155416eb30829894e05845d8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename MV , typename MA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::hosvd </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u4</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>apply higher order singular value decomposition (HOSVD) to the 4th order tensor </p>
+<p>HOSVD decomposes a 4th order tensor T as T = Z  U_1  U_2  U_3  U_4. Here U_1, U_2, U_3, and U_4 are unitary matrices and a 4th order tensor Z is called as a core tensor.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">z</td><td>core tensor of the tensor </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u1</td><td>unitary matrix corresponding to the 1st mode </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u2</td><td>unitary matrix corresponding to the 2nd mode </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u3</td><td>unitary matrix corresponding to the 3rd mode </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u4</td><td>unitary matrix corresponding to the 4th mode </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#ab305a682c88d9871e86e4f68fa09522f">mist::matrix&lt; T, Allocator &gt;::dagger()</a>, と <a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a71083284775db582c885c4d2699b4bd4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename MV , typename MA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::hosvd </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; &amp;&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u5</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>apply higher order singular value decomposition (HOSVD) to the 5th order tensor </p>
+<p>HOSVD decomposes a 5th order tensor T as T = Z  U_1  U_2  U_3  U_4  U_5. Here U_1, U_2, U_3, U_4, and U_5 are unitary matrices and a 5th order tensor Z is called as a core tensor.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">z</td><td>core tensor of the tensor </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u1</td><td>unitary matrix corresponding to the 1st mode </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u2</td><td>unitary matrix corresponding to the 2nd mode </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u3</td><td>unitary matrix corresponding to the 3rd mode </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u4</td><td>unitary matrix corresponding to the 4th mode </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">u5</td><td>unitary matrix corresponding to the 5th mode </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#ab305a682c88d9871e86e4f68fa09522f">mist::matrix&lt; T, Allocator &gt;::dagger()</a>, と <a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab01b89f798670bb0d39fe150ced58380"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a>&amp; <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return a element of the 2nd order tensor for each pair of indices </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i1</td><td>index for the 1st mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i2</td><td>index for the 2nd mode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the element corresponding to the indices </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aee1166be575885281e27f3e47d23b2d9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a>&amp; <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return a element of the 2nd order tensor for each pair of indices </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i1</td><td>index for the 1st mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i2</td><td>index for the 2nd mode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the element corresponding to the indices </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a15810ff7d766390aa5cb5e666f0f4ec5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a>&amp; <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return a element of the 3rd order tensor for each set of indices </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i1</td><td>index of the 1st mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i2</td><td>index of the 2nd mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i3</td><td>index of the 3rd mode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the element corresponding to the indices </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a594c72d9befdfeb4c6fc0c6cf507f0a0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a>&amp; <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return a element of the 3rd order tensor for each set of indices </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i1</td><td>index of the 1st mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i2</td><td>index of the 2nd mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i3</td><td>index of the 3rd mode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the element corresponding to the indices </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a0216c8398b4dcbff4d1cf0e61a4da8b4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a>&amp; <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i4</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return a element of the 4th order tensor for each set of indices </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i1</td><td>index of the 1st mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i2</td><td>index of the 2nd mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i3</td><td>index of the 3rd mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i4</td><td>index of the 4th mode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the element corresponding to the indices </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a673f4e5746407c4ff6ecf689a00ffc6d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a>&amp; <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i4</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return a element of the 4th order tensor for each set of indices </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i1</td><td>index of the 1st mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i2</td><td>index of the 2nd mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i3</td><td>index of the 3rd mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i4</td><td>index of the 4th mode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the element corresponding to the indices </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6599381d730b862f7cf75078ad0c4e81"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt;&amp; <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i5</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return a element of the 5th order tensor for each set of indices </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i1</td><td>index of the 1st mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i2</td><td>index of the 2nd mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i3</td><td>index of the 3rd mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i4</td><td>index of the 4th mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i5</td><td>index of the 5th mode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the element corresponding to the indices </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae261a833eeb00be63a618fee608153a1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt;&amp; <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i5</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return a element of the 5th order tensor for each set of indices </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i1</td><td>index of the 1st mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i2</td><td>index of the 2nd mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i3</td><td>index of the 3rd mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i4</td><td>index of the 4th mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i5</td><td>index of the 5th mode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the element corresponding to the indices </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae5b0b3153d0be9725bb97bfcc452ae46"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a>&amp; <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return the i-th element of the tensor without depending on the number of modes </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>index to specify tensor's element </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the i-th element of the tensor </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a89828b06b5736bf365082738f1ad3431"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1tensor.html#afe739884c8a3315145660c3ebbe31cc9">value_type</a>&amp; <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return the i-th element of the tensor without depending on the number of modes </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>index to specify tensor's element </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the i-th element of the tensor </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a198eeb6965ff8f50eae8c51bb87c71ff"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::rank </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return a mode rank of the tensor for each mode </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>mode value to obtain the corresponding tensor's rank </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the tensor's rank corresponding to the mode </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a2333af1e87a6a6a9ca027cb9bc10f0be"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>resize the 2nd order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank after this operation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank after this operation </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a8fc317470c094a9b5a5a69ed9f686f17"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>resize the 3rd order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank after this operation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank after this operation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank3</td><td>3rd mode rank after this operation </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ad5d71be29b6af738bb8cf091ddea5614"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank4</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>resize the 4th order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank after this operation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank after this operation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank3</td><td>3rd mode rank after this operation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank4</td><td>4th mode rank after this operation </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a03da2f10576b894c0482b2c710f69522"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rank5</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>resize the 5th order tensor </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank1</td><td>1st mode rank after this operation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank2</td><td>2nd mode rank after this operation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank3</td><td>3rd mode rank after this operation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank4</td><td>4th mode rank after this operation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rank5</td><td>5th mode rank after this operation </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a1aea3c299eb6513fe91c6325a6f95ca7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1matrix.html">matrix_type</a> <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::unfold </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return a matrix form of the tensor obtained by unfolding it for each mode </p>
+<p>For a tensor T in R^{I_1  I_2  ...  I_N}, n-mode-unfolding means constructing a matrix T_n from T so that T_n consits of I_n dimensional column vectors and the number of vectors is I_1  I_2  ...  I_{n-1}  I_{n+1}  ...  I_N.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>mode value to unfold the tensor </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the the matrix obtained by unfolding the tensor </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa034b8be790d830dbd6a96ae478b4e13"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int M, typename V, typename A = ::std::allocator&lt; V &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename MV , typename MA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1tensor.html">tensor</a>&lt; M, V, A &gt; <a class="el" href="classmist_1_1tensor.html">mist::tensor</a>&lt; M, V, A &gt;::x </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1tensor.html#a9957768ffda9c7645f22d5f0cf2d26e1">size_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; MV, MA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return a mode-product between the tensor and a matrix </p>
+<p>An n-mode-product between a tensor T and a matrix M is denoted as T  M. Using n-mode-unfolding matrix T_n, elements of the mode-product are calculated by M T_n.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>mode value to determine the direction of multiplication </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the mode-product </dd></dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="tensor_8h_source.html">tensor.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>エッジ検出フィルタ</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">エッジ検出フィルタ</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga28a5402c2799df009c0cfee3cb5cb2ce"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga28a5402c2799df009c0cfee3cb5cb2ce"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__edge__group.html#ga28a5402c2799df009c0cfee3cb5cb2ce">mist::canny</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, double lower, double upper, bool useL2gradient=false, const typename array2&lt; T2, Allocator2 &gt;::value_type &amp;fgval=typename array2&lt; T2, Allocator2 &gt;::value_type(255), const typename array2&lt; T2, Allocator2 &gt;::value_type &amp;bgval=typename array2&lt; T2, Allocator2 &gt;::value_type(0), typename array2&lt; T2, Allocator2 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ga28a5402c2799df009c0cfee3cb5cb2ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cannyのエッジ検出フィルタ  <a href="#ga28a5402c2799df009c0cfee3cb5cb2ce"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="edge_8h.html" title="2次元の画像にからエッジ画素を検出するライブラリ">mist/filter/edge.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga28a5402c2799df009c0cfee3cb5cb2ce"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::canny </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array2&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>lower</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>upper</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useL2gradient</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const typename array2&lt; T2, Allocator2 &gt;::value_type &amp;&#160;</td>
+          <td class="paramname"><em>fgval</em> = <code>typename&#160;array2&lt;&#160;T2,&#160;Allocator2&#160;&gt;::value_type(&#160;255&#160;)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const typename array2&lt; T2, Allocator2 &gt;::value_type &amp;&#160;</td>
+          <td class="paramname"><em>bgval</em> = <code>typename&#160;array2&lt;&#160;T2,&#160;Allocator2&#160;&gt;::value_type(&#160;0&#160;)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T2, Allocator2 &gt;::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Cannyのエッジ検出フィルタ </p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じオブジェクトでも正しく動作する </dd>
+<dd>
+OpenMPが有効な場合は自動的に並列計算が実行される</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">lower</td><td>… ヒステリシスしきい値処理の下限 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">upper</td><td>… ヒステリシスしきい値処理の上限 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">useL2gradient</td><td>… L2のグラディエントを計算するかどうか（デフォルトはfalse） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fgval</td><td>… エッジ画素（前景）に代入する値（デフォルトは255） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bgval</td><td>… 背景画素に代入する値（デフォルトは0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… フィルタリングに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 入力画像が空の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__converter__group.html#ga0106393335685307f2dc94e85957743b">mist::convert()</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea">mist::array2&lt; T, Allocator &gt;::height()</a>, <a class="el" href="classmist_1_1array2.html#a63fa884381a82e70d5381875fa4c85d5">mist::array2&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1array2.html#adb038b9e34b30e2a3a26cd416c1c493f">mist::array2&lt; T, Allocator &gt;::reso()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>, と <a class="el" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99">mist::array2&lt; T, Allocator &gt;::width()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

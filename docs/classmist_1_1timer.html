@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::timer</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1timer.html">timer</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::timer</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="timer_8h_source.html">timer.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a8537d516a22c4ed39fd2b1770090a2dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1timer.html#a8537d516a22c4ed39fd2b1770090a2dc">timer</a> ()</td></tr>
+<tr class="memdesc:a8537d516a22c4ed39fd2b1770090a2dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">時間計測を行うためのクラスのコンストラクタ．  <a href="#a8537d516a22c4ed39fd2b1770090a2dc"></a><br/></td></tr>
+<tr class="memitem:a7a81fdeb0973a9c4252bfba1b954be8a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a81fdeb0973a9c4252bfba1b954be8a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1timer.html#a7a81fdeb0973a9c4252bfba1b954be8a">reset</a> ()</td></tr>
+<tr class="memdesc:a7a81fdeb0973a9c4252bfba1b954be8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">強制的に，タイマーをクリアする． <br/></td></tr>
+<tr class="memitem:a6736962dfa03cfccbe4a000ed9a34aa3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1timer.html#a6736962dfa03cfccbe4a000ed9a34aa3">elapse</a> () const </td></tr>
+<tr class="memdesc:a6736962dfa03cfccbe4a000ed9a34aa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">時間計測開始時からの経過時間をミリ秒単位で返す．  <a href="#a6736962dfa03cfccbe4a000ed9a34aa3"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>時間計測を行うためのクラス</p>
+<p>timerクラスを生成時から時間計測を開始する．</p>
+<dl class="section user"><dt>複数箇所で時間計測を行う場合は，以下のように記述する</dt><dd><div class="fragment"><div class="line"> タイマーオブジェクトの利用方法</div>
+<div class="line">{</div>
+<div class="line">    <a class="code" href="classmist_1_1timer.html">mist::timer</a> t;</div>
+<div class="line"></div>
+<div class="line">    ... 何らかの計算 ...</div>
+<div class="line"></div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;計算時間: &quot;</span> &lt;&lt; t &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+</div><!-- fragment --> </dd></dl>
+</div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="a8537d516a22c4ed39fd2b1770090a2dc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">mist::timer::timer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>時間計測を行うためのクラスのコンストラクタ． </p>
+<p>生成時に，自動的にタイマを初期化する． </p>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="a6736962dfa03cfccbe4a000ed9a34aa3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::timer::elapse </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>時間計測開始時からの経過時間をミリ秒単位で返す． </p>
+<dl class="section return"><dt>戻り値</dt><dd>ミリ秒単位での経過時間 </dd></dl>
+
+<p>参照元 <a class="el" href="namespacemist.html#a5942791f8f865a86f65267109d54aab0">mist::operator&lt;&lt;()</a>.</p>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="timer_8h_source.html">timer.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

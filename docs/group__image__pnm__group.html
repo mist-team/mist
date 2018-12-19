@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>PBM，PGM，PPM，PNM 画像入出力</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">PBM，PGM，PPM，PNM 画像入出力</div>  </div>
+<div class="ingroups"><a class="el" href="group__image__group.html">画像入出力</a></div></div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gad97d66fc27f5f72526aa05439668105e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gad97d66fc27f5f72526aa05439668105e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__pnm__group.html#gad97d66fc27f5f72526aa05439668105e">mist::read_pnm</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array2&lt; T, Allocator &gt;::size_type level=255)</td></tr>
+<tr class="memdesc:gad97d66fc27f5f72526aa05439668105e"><td class="mdescLeft">&#160;</td><td class="mdescRight">PNM画像をMISTコンテナに読み込む  <a href="#gad97d66fc27f5f72526aa05439668105e"></a><br/></td></tr>
+<tr class="memitem:gaafeb86f0cb2f3842dff92fefb8256b85"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gaafeb86f0cb2f3842dff92fefb8256b85"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__pnm__group.html#gaafeb86f0cb2f3842dff92fefb8256b85">mist::read_pnm</a> (array2&lt; T, Allocator &gt; &amp;image, const std::wstring &amp;filename, typename array2&lt; T, Allocator &gt;::size_type level=255)</td></tr>
+<tr class="memdesc:gaafeb86f0cb2f3842dff92fefb8256b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">PNM画像をMISTコンテナに読み込む  <a href="#gaafeb86f0cb2f3842dff92fefb8256b85"></a><br/></td></tr>
+<tr class="memitem:ga0ecb39ac67566de19deb3ca7f5c0060b"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga0ecb39ac67566de19deb3ca7f5c0060b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__pnm__group.html#ga0ecb39ac67566de19deb3ca7f5c0060b">mist::write_pnm</a> (const array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array2&lt; T, Allocator &gt;::size_type pnm_type=6, typename array2&lt; T, Allocator &gt;::size_type level=255)</td></tr>
+<tr class="memdesc:ga0ecb39ac67566de19deb3ca7f5c0060b"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナの画像をPNM形式でファイルに出力する  <a href="#ga0ecb39ac67566de19deb3ca7f5c0060b"></a><br/></td></tr>
+<tr class="memitem:ga0874ffc7b75914d2525b72412aa2b63e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga0874ffc7b75914d2525b72412aa2b63e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__pnm__group.html#ga0874ffc7b75914d2525b72412aa2b63e">mist::write_pnm</a> (const array2&lt; T, Allocator &gt; &amp;image, const std::wstring &amp;filename, typename array2&lt; T, Allocator &gt;::size_type pnm_type=6, typename array2&lt; T, Allocator &gt;::size_type level=255)</td></tr>
+<tr class="memdesc:ga0874ffc7b75914d2525b72412aa2b63e"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナの画像をPNM形式でファイルに出力する  <a href="#ga0874ffc7b75914d2525b72412aa2b63e"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<p>PNM（PBM，PGM，PPM）形式のファイルを読み込んで，MISTコンテナへ格納する． また，MISTコンテナからPNMファイルへの書き出しをサポート． P1，P2，P3，P4，P5，P6形式のPNMに対応．</p>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="pnm_8h.html" title="PBM，PGM，PPM，PNM画像を読み書きするためのライブラリ">mist/io/pnm.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="gad97d66fc27f5f72526aa05439668105e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_pnm </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>level</em> = <code>255</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>PNM画像をMISTコンテナに読み込む </p>
+<p>P1〜P6までの全てのPNM画像を読み込むことが可能です</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">level</td><td>… 読み込んだPNMファイルをMISTコンテナに格納する際の量子化レベル</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__group.html#ga753d074332158a04c160ab1c29182967">mist::read_image()</a>, と <a class="el" href="group__image__pnm__group.html#gaafeb86f0cb2f3842dff92fefb8256b85">mist::read_pnm()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaafeb86f0cb2f3842dff92fefb8256b85"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_pnm </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>level</em> = <code>255</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>PNM画像をMISTコンテナに読み込む </p>
+<p>P1〜P6までの全てのPNM画像を読み込むことが可能です</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">level</td><td>… 読み込んだPNMファイルをMISTコンテナに格納する際の量子化レベル</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__pnm__group.html#gad97d66fc27f5f72526aa05439668105e">mist::read_pnm()</a>, と <a class="el" href="namespacemist.html#ab2f799d2c98c030f7bc5ba23c8fb0380">mist::wstr2str()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga0ecb39ac67566de19deb3ca7f5c0060b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_pnm </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>pnm_type</em> = <code>6</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>level</em> = <code>255</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナの画像をPNM形式でファイルに出力する </p>
+<dl class="section attention"><dt>注意</dt><dd>出力する画像形式によって，必要なマジックナンバーを選択する必要あり </dd>
+<dd>
+デフォルトのマジックナンバーはP6のカラー画像で，量子化レベルは256階調</dd></dl>
+<ul>
+<li>PNM画像のマジックナンバー<ol type="1">
+<li>bitmap (ASCII) 2値</li>
+<li>graymap (ASCII) グレースケール</li>
+<li>pixmap (ASCII) カラー</li>
+<li>bitmap (Binary) 2値</li>
+<li>graymap (Binary) グレースケール</li>
+<li>pixmap (Binary) カラー</li>
+</ol>
+</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 出力画像を保持するMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 出力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pnm_type</td><td>… PNM画像のマジックナンバーのうちの1つ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">level</td><td>… 出力するPNMファイルの量子化ビット数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の書き込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の書き込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__group.html#ga0b247072df9e69c7ddddac0f60af66b2">mist::write_image()</a>, と <a class="el" href="group__image__pnm__group.html#ga0874ffc7b75914d2525b72412aa2b63e">mist::write_pnm()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga0874ffc7b75914d2525b72412aa2b63e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_pnm </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>pnm_type</em> = <code>6</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>level</em> = <code>255</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナの画像をPNM形式でファイルに出力する </p>
+<dl class="section attention"><dt>注意</dt><dd>出力する画像形式によって，必要なマジックナンバーを選択する必要あり </dd>
+<dd>
+デフォルトのマジックナンバーはP6のカラー画像で，量子化レベルは256階調</dd></dl>
+<ul>
+<li>PNM画像のマジックナンバー<ol type="1">
+<li>bitmap (ASCII) 2値</li>
+<li>graymap (ASCII) グレースケール</li>
+<li>pixmap (ASCII) カラー</li>
+<li>bitmap (Binary) 2値</li>
+<li>graymap (Binary) グレースケール</li>
+<li>pixmap (Binary) カラー</li>
+</ol>
+</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 出力画像を保持するMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 出力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pnm_type</td><td>… PNM画像のマジックナンバーのうちの1つ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">level</td><td>… 出力するPNMファイルの量子化ビット数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の書き込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の書き込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__pnm__group.html#ga0ecb39ac67566de19deb3ca7f5c0060b">mist::write_pnm()</a>, と <a class="el" href="namespacemist.html#ab2f799d2c98c030f7bc5ba23c8fb0380">mist::wstr2str()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ネームスペース mist::saito</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="namespaces.html"><span>ネームスペース一覧</span></a></li>
+      <li><a href="namespacemembers.html"><span>ネームスペースメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1saito.html">saito</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ネームスペース mist::saito<div class="ingroups"><a class="el" href="group__euclidean__distance__group.html">ユークリッド距離変換</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>斉藤先生によるユークリッド2乗距離変換  
+<a href="#details">[詳細]</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ad64e94405f47f6f460ed67cacf145537"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ad64e94405f47f6f460ed67cacf145537"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1saito.html#ad64e94405f47f6f460ed67cacf145537">distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, double max_length=-1.0, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ad64e94405f47f6f460ed67cacf145537"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド2乗距離変換  <a href="#ad64e94405f47f6f460ed67cacf145537"></a><br/></td></tr>
+<tr class="memitem:a4a18f11a2b12c8d1b97fbe68e2944cf6"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:a4a18f11a2b12c8d1b97fbe68e2944cf6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1saito.html#a4a18f11a2b12c8d1b97fbe68e2944cf6">inverse_distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a4a18f11a2b12c8d1b97fbe68e2944cf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド2乗逆距離変換  <a href="#a4a18f11a2b12c8d1b97fbe68e2944cf6"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>斉藤先生によるユークリッド2乗距離変換 </p>
+</div><h2>関数</h2>
+<a class="anchor" id="ad64e94405f47f6f460ed67cacf145537"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::saito::distance_transform </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>max_length</em> = <code>-1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array1::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ユークリッド2乗距離変換 </p>
+<p>計算される距離は，ユークリッド2乗距離となります． ユークリッド距離に変換するためには，計算結果の各値の平方根を求めてください． ただし，計算に用いる画素が立方体ではなく直方体の場合には，計算されるユークリッド2距離も画素のアスペクトを考慮して計算されます． 立方体画素を用いている場合には以下を考慮する必要はありません．</p>
+<p>本関数で計算されるユークリッド2乗距離は，X軸方向の画素の大きさを1としたときの比を用いて計算されます． ここで，本関数のある画素の出力が <img class="formulaInl" alt="$l^2$" src="form_21.png"/> で，画素のX軸方向の解像度（大きさ）が <img class="formulaInl" alt="$a_x$" src="form_22.png"/> の場合， <img class="formulaInl" alt="$l a_x$" src="form_23.png"/> が画素の大きさを考慮したユークリッド距離値になります．</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<ul>
+<li>参考文献<ul>
+<li>齋藤豊文, 鳥脇純一郎, "3次元ディジタル画像に対するユークリッド距離変換," 電子情報通信学会論文誌, J76-D-II, No. 3, pp.445-453, 1993</li>
+</ul>
+</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_length</td><td>… 伝播させる距離の最大値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, と <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>.</p>
+
+<p>参照元 <a class="el" href="namespacemist_1_1euclidean.html#a095331260091a5c7c4ae193bb22b10a5">mist::euclidean::distance_transform()</a>, <a class="el" href="namespacemist_1_1manhattan.html#a7210ef9066042a4cb5d338cc2ad809da">mist::manhattan::distance_transform()</a>, <a class="el" href="namespacemist_1_1cityblock.html#a0c1b449e6611e58b7cc105f8726bbed7">mist::cityblock::distance_transform()</a>, <a class="el" href="namespacemist_1_1chessboard.html#a6ec1bab1b35e7579fa194cf15b2b66f9">mist::chessboard::distance_transform()</a>, <a class="el" href="group__decomposition__group.html#gacbb7810e4010bb9b2ce368d2295e351d">mist::figure_decomposition()</a>, と <a class="el" href="group__volumerendering__group.html#ga4fb3a2763da5beebdba291a08e977b00">mist::generate_depth_map()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4a18f11a2b12c8d1b97fbe68e2944cf6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::saito::inverse_distance_transform </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array1::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ユークリッド2乗逆距離変換 </p>
+<p>入力画像はユークリッド2乗距離が入った画像であり，出力画像は2値図形となります． アスペクトを考慮したユークリッド2乗逆距離変換が可能です．</p>
+<p>本関数で用いるユークリッド2乗距離は，X軸方向の画素の大きさを1としたときの比を用いて計算されます．</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<ul>
+<li>参考文献<ul>
+<li>鳥脇純一郎, "3次元ディジタル画像処理," 昭晃堂, 2002</li>
+<li>斎藤豊文, 鳥脇純一郎, ``ディジタル画像におけるユークリッド逆距離変換とスケルトンについて,'' 電子情報通信学会パターン認識・理解研究会資料, PRU93-50, No.228, pp.57-64, 1993</li>
+</ul>
+</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, と <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>.</p>
+
+<p>参照元 <a class="el" href="namespacemist_1_1euclidean.html#a4d65329f5ad33bb8730e7f6c917df7b7">mist::euclidean::inverse_distance_transform()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

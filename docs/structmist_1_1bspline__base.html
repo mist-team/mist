@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>構造体 テンプレート mist::bspline_base&lt; K &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="structmist_1_1bspline__base.html">bspline_base</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-static-methods">Static Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">構造体 テンプレート mist::bspline_base&lt; K &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Bスプラインの基底関数を計算する関数を実装した構造体  
+ <a href="structmist_1_1bspline__base.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="bspline_8h_source.html">bspline.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public メソッド</h2></td></tr>
+<tr class="memitem:abe5302f88c7cd0c9637ad84cefe0ba89"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1bspline__base.html#abe5302f88c7cd0c9637ad84cefe0ba89">Base</a> (const std::vector&lt; double &gt; &amp;knot, std::vector&lt; double &gt;::size_type i, double t)</td></tr>
+<tr class="memdesc:abe5302f88c7cd0c9637ad84cefe0ba89"><td class="mdescLeft">&#160;</td><td class="mdescRight">K次のBスプライン基底関数の計算を行う  <a href="#abe5302f88c7cd0c9637ad84cefe0ba89"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;int K&gt;<br/>
+struct mist::bspline_base&lt; K &gt;</h3>
+
+<p>Bスプラインの基底関数を計算する関数を実装した構造体 </p>
+<p>K次のBスプライン基底関数の計算を行う </p>
+</div><h2>関数</h2>
+<a class="anchor" id="abe5302f88c7cd0c9637ad84cefe0ba89"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int K&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static double <a class="el" href="structmist_1_1bspline__base.html">mist::bspline_base</a>&lt; K &gt;::Base </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>knot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; double &gt;::size_type&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>K次のBスプライン基底関数の計算を行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">knot</td><td>… Bスプラインで利用するノットベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… Bスプラインの制御点番号 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>… Bスプラインの区間位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定されたノットベクトル，制御点番号，区間位置に基づく基底関数の値 </dd></dl>
+
+</div>
+</div>
+<hr/>この構造体の説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="bspline_8h_source.html">bspline.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

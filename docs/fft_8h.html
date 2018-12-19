@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>fft.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_bec4273047a049cd76c9f4544f227a71.html">fft</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">fft.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>高速フーリエ変換のアルゴリズム  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="thread_8h_source.html">../thread.h</a>&quot;</code><br/>
+<code>#include &quot;fft_util.h&quot;</code><br/>
+<code>#include &quot;fftsg.h&quot;</code><br/>
+<code>#include &quot;fftsg2d.h&quot;</code><br/>
+<code>#include &quot;fftsg3d.h&quot;</code><br/>
+</div>
+<p><a href="fft_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga6d5c0e7f1b527cdb6d1e5ed4ea08fe32"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga6d5c0e7f1b527cdb6d1e5ed4ea08fe32"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__fft__group.html#ga6d5c0e7f1b527cdb6d1e5ed4ea08fe32">mist::fft</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:ga6d5c0e7f1b527cdb6d1e5ed4ea08fe32"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元高速フーリエ変換  <a href="group__fft__group.html#ga6d5c0e7f1b527cdb6d1e5ed4ea08fe32"></a><br/></td></tr>
+<tr class="memitem:ga953311489527890425e38766a9995eb4"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga953311489527890425e38766a9995eb4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__fft__group.html#ga953311489527890425e38766a9995eb4">mist::ifft</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:ga953311489527890425e38766a9995eb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元高速逆フーリエ変換  <a href="group__fft__group.html#ga953311489527890425e38766a9995eb4"></a><br/></td></tr>
+<tr class="memitem:ga107d069c519780f194df0a7c93e52511"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga107d069c519780f194df0a7c93e52511"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__fft__group.html#ga107d069c519780f194df0a7c93e52511">mist::fft</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:ga107d069c519780f194df0a7c93e52511"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元高速フーリエ変換  <a href="group__fft__group.html#ga107d069c519780f194df0a7c93e52511"></a><br/></td></tr>
+<tr class="memitem:ga439af1a554c441934f03df5cb2a32bd2"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga439af1a554c441934f03df5cb2a32bd2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__fft__group.html#ga439af1a554c441934f03df5cb2a32bd2">mist::ifft</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:ga439af1a554c441934f03df5cb2a32bd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元高速逆フーリエ変換  <a href="group__fft__group.html#ga439af1a554c441934f03df5cb2a32bd2"></a><br/></td></tr>
+<tr class="memitem:ga30f39ef010f005266cbae422cb963f8d"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga30f39ef010f005266cbae422cb963f8d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__fft__group.html#ga30f39ef010f005266cbae422cb963f8d">mist::fft</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:ga30f39ef010f005266cbae422cb963f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元高速フーリエ変換  <a href="group__fft__group.html#ga30f39ef010f005266cbae422cb963f8d"></a><br/></td></tr>
+<tr class="memitem:gad3c2e6b5a4199c1d4fc7422f67566a48"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gad3c2e6b5a4199c1d4fc7422f67566a48"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__fft__group.html#gad3c2e6b5a4199c1d4fc7422f67566a48">mist::ifft</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:gad3c2e6b5a4199c1d4fc7422f67566a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元高速逆フーリエ変換  <a href="group__fft__group.html#gad3c2e6b5a4199c1d4fc7422f67566a48"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>高速フーリエ変換のアルゴリズム </p>
+<p>東京大学の Takuya OOURA 氏が開発された，FFTのパッケージを利用しています．</p>
+<p><a href="http://momonga.t.u-tokyo.ac.jp/~ooura/fft.html">http://momonga.t.u-tokyo.ac.jp/~ooura/fft.html</a> </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

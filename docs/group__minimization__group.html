@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>関数の最小化</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">関数の最小化</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist_1_1gold"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gold.html">mist::gold</a></td></tr>
+<tr class="memdesc:namespacemist_1_1gold"><td class="mdescLeft">&#160;</td><td class="mdescRight">黄金分割を用いた極小値の1次元探索（1次収束） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1brent"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1brent.html">mist::brent</a></td></tr>
+<tr class="memdesc:namespacemist_1_1brent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Brent の放物線補間を用いた極小値の1次元探索（2次収束） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1Armijo"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1Armijo.html">mist::Armijo</a></td></tr>
+<tr class="memdesc:namespacemist_1_1Armijo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Armijoの基準を用いた極小値の一次元探索 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1gradient__with__vector"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient__with__vector.html">mist::gradient_with_vector</a></td></tr>
+<tr class="memdesc:namespacemist_1_1gradient__with__vector"><td class="mdescLeft">&#160;</td><td class="mdescRight">勾配関数をユーザーが定義する最急降下法（勾配を用いた多変数関数の極小値の探索） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1gradient"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient.html">mist::gradient</a></td></tr>
+<tr class="memdesc:namespacemist_1_1gradient"><td class="mdescLeft">&#160;</td><td class="mdescRight">最急降下法（勾配を用いた多変数関数の極小値の探索） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1conjugate__gradient"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1conjugate__gradient.html">mist::conjugate_gradient</a></td></tr>
+<tr class="memdesc:namespacemist_1_1conjugate__gradient"><td class="mdescLeft">&#160;</td><td class="mdescRight">共役勾配法（勾配を用いた多変数関数の極小値の探索） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1powell"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1powell.html">mist::powell</a></td></tr>
+<tr class="memdesc:namespacemist_1_1powell"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powell法（方向集合を用いた多変数関数の極小値の探索） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1lucidi"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1lucidi.html">mist::lucidi</a></td></tr>
+<tr class="memdesc:namespacemist_1_1lucidi"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lucidi法（方向集合を用いた多変数関数の極小値の探索） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1condor"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html">mist::condor</a></td></tr>
+<tr class="memdesc:namespacemist_1_1condor"><td class="mdescLeft">&#160;</td><td class="mdescRight">CONDOR法（多変数関数の極小値の探索） <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga28809be0c956f7387194e4d474ace7e3"><td class="memTemplParams" colspan="2">template&lt;class Functor &gt; </td></tr>
+<tr class="memitem:ga28809be0c956f7387194e4d474ace7e3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__minimization__group.html#ga28809be0c956f7387194e4d474ace7e3">mist::enclose</a> (double &amp;a, double &amp;b, double &amp;c, double &amp;fa, double &amp;fb, double &amp;fc, Functor f, size_t max_iterations=100)</td></tr>
+<tr class="memdesc:ga28809be0c956f7387194e4d474ace7e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">f(x)の一次元探索において，極小値を与える x を囲む区間を決定する  <a href="#ga28809be0c956f7387194e4d474ace7e3"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="minimization_8h.html" title="関数の最小化を扱うためのライブラリ">mist/minimization.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga28809be0c956f7387194e4d474ace7e3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::enclose </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>fa</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>fb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>fc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_iterations</em> = <code>100</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>f(x)の一次元探索において，極小値を与える x を囲む区間を決定する </p>
+<p><img class="formulaInl" alt="$ a \ge b \ge c $" src="form_33.png"/> もしくは <img class="formulaInl" alt="$ c \ge b \ge a $" src="form_34.png"/> 内で極小値を持つ区間を決定する．</p>
+<dl class="section attention"><dt>注意</dt><dd>入力となる a, b は異なる値を設定する必要あり </dd>
+<dd>
+評価関数が直線などで極小値を持たない場合は，区間を決定できない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">a</td><td>… 区間の左端 </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">b</td><td>… 区間の真ん中 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">c</td><td>… 区間の右端 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">fa</td><td>… 評価関数値 <img class="formulaInl" alt="$ f(a) $" src="form_35.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">fb</td><td>… 評価関数値 <img class="formulaInl" alt="$ f(b) $" src="form_36.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">fc</td><td>… 評価関数値 <img class="formulaInl" alt="$ f(c) $" src="form_37.png"/> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 評価関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_iterations</td><td>… 最大反復回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>極小を囲む区間を見つけることができたかどうか </dd></dl>
+
+<p>参照元 <a class="el" href="namespacemist_1_1gold.html#adb69f1d4d00e8930427bb3b78bb996e0">mist::gold::minimization()</a>, と <a class="el" href="namespacemist_1_1brent.html#a31e3f96cf4667950e7fdef0f5dbe55a3">mist::brent::minimization()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

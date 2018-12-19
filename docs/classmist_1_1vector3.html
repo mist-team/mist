@@ -1,0 +1,725 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::vector3&lt; T &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1vector3.html">vector3</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pub-attribs">変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::vector3&lt; T &gt;<div class="ingroups"><a class="el" href="group__vector__group.html">ベクトルライブラリ</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>3次元ベクトルを扱うクラス  
+ <a href="classmist_1_1vector3.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="vector_8h_source.html">vector.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:ab50f032ddd06ae88f4300893adb64243"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab50f032ddd06ae88f4300893adb64243"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a></td></tr>
+<tr class="memdesc:ab50f032ddd06ae88f4300893adb64243"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型．mist::array&lt; data &gt; の data と同じ <br/></td></tr>
+<tr class="memitem:acdf0ba30a4cd02c183b1198883e8c97a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acdf0ba30a4cd02c183b1198883e8c97a"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#acdf0ba30a4cd02c183b1198883e8c97a">size_type</a></td></tr>
+<tr class="memdesc:acdf0ba30a4cd02c183b1198883e8c97a"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a2f8d41b99f658887609f1f0971d2da16"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f8d41b99f658887609f1f0971d2da16"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a2f8d41b99f658887609f1f0971d2da16">difference_type</a></td></tr>
+<tr class="memdesc:a2f8d41b99f658887609f1f0971d2da16"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:ae673c2a401496721186c886ad18deb15"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae673c2a401496721186c886ad18deb15"></a>
+typedef <a class="el" href="classmist_1_1vector3.html#ae673c2a401496721186c886ad18deb15">float_type</a>&lt; T &gt;::<a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#ae673c2a401496721186c886ad18deb15">float_type</a></td></tr>
+<tr class="memdesc:ae673c2a401496721186c886ad18deb15"><td class="mdescLeft">&#160;</td><td class="mdescRight">長さなどを計算するときに用いる浮動小数点型 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a91a2ad21feb9bd6f8eaacb32341280f3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a91a2ad21feb9bd6f8eaacb32341280f3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a91a2ad21feb9bd6f8eaacb32341280f3">vector3</a> ()</td></tr>
+<tr class="memdesc:a91a2ad21feb9bd6f8eaacb32341280f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトコンストラクタ．( 0, 0, 0 ) に初期化する <br/></td></tr>
+<tr class="memitem:a0ba2f752d7ed71324610fe396223ecc5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ba2f752d7ed71324610fe396223ecc5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a0ba2f752d7ed71324610fe396223ecc5">vector3</a> (const <a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a> &amp;xx, const <a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a> &amp;yy, const <a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a> &amp;zz)</td></tr>
+<tr class="memdesc:a0ba2f752d7ed71324610fe396223ecc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">( xx, yy, zz ) のベクトルを作成する <br/></td></tr>
+<tr class="memitem:a1ddcbd3d4e32877021c7a2e01826018b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ddcbd3d4e32877021c7a2e01826018b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a1ddcbd3d4e32877021c7a2e01826018b">vector3</a> (const <a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a> &amp;vv)</td></tr>
+<tr class="memdesc:a1ddcbd3d4e32877021c7a2e01826018b"><td class="mdescLeft">&#160;</td><td class="mdescRight">( vv, vv, vv ) のベクトルを作成する <br/></td></tr>
+<tr class="memitem:a24fa9553b1b843a698ef3e8fd94cf5d1"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a24fa9553b1b843a698ef3e8fd94cf5d1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a24fa9553b1b843a698ef3e8fd94cf5d1">vector3</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;v)</td></tr>
+<tr class="memdesc:a24fa9553b1b843a698ef3e8fd94cf5d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の3次元ベクトルで要素の型が異なるものから同じ要素を持つベクトルを作成する  <a href="#a24fa9553b1b843a698ef3e8fd94cf5d1"></a><br/></td></tr>
+<tr class="memitem:ab958945ab746fdddb80d157ce2b66a28"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab958945ab746fdddb80d157ce2b66a28"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#ab958945ab746fdddb80d157ce2b66a28">vector3</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T &gt; &amp;v)</td></tr>
+<tr class="memdesc:ab958945ab746fdddb80d157ce2b66a28"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の3次元ベクトルで同じ要素型のものを用いて初期化する <br/></td></tr>
+<tr class="memitem:aac88d62c7c3759efa2cc6b5d7c1a3fd3"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:aac88d62c7c3759efa2cc6b5d7c1a3fd3"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#aac88d62c7c3759efa2cc6b5d7c1a3fd3">operator=</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;v)</td></tr>
+<tr class="memdesc:aac88d62c7c3759efa2cc6b5d7c1a3fd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">他データ型の3次元ベクトルを代入する  <a href="#aac88d62c7c3759efa2cc6b5d7c1a3fd3"></a><br/></td></tr>
+<tr class="memitem:afb218d30d251738702d3921d14a56381"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#afb218d30d251738702d3921d14a56381">operator=</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T &gt; &amp;v)</td></tr>
+<tr class="memdesc:afb218d30d251738702d3921d14a56381"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の3次元ベクトルを代入する  <a href="#afb218d30d251738702d3921d14a56381"></a><br/></td></tr>
+<tr class="memitem:ae43bf9e4bd8d117a7e6d58004a0aa6cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae43bf9e4bd8d117a7e6d58004a0aa6cd"></a>
+<a class="el" href="classmist_1_1vector3.html">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#ae43bf9e4bd8d117a7e6d58004a0aa6cd">operator-</a> () const </td></tr>
+<tr class="memdesc:ae43bf9e4bd8d117a7e6d58004a0aa6cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号反転したベクトルを返す <br/></td></tr>
+<tr class="memitem:a1c8ef2ef57732d48d698e773405092a8"><td class="memTemplParams" colspan="2"><a class="anchor" id="a1c8ef2ef57732d48d698e773405092a8"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a1c8ef2ef57732d48d698e773405092a8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a1c8ef2ef57732d48d698e773405092a8">operator+=</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;v)</td></tr>
+<tr class="memdesc:a1c8ef2ef57732d48d698e773405092a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトル和 <br/></td></tr>
+<tr class="memitem:aaffe013b0df2b6c110486fda3c378339"><td class="memTemplParams" colspan="2"><a class="anchor" id="aaffe013b0df2b6c110486fda3c378339"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:aaffe013b0df2b6c110486fda3c378339"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#aaffe013b0df2b6c110486fda3c378339">operator-=</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;v)</td></tr>
+<tr class="memdesc:aaffe013b0df2b6c110486fda3c378339"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトル差 <br/></td></tr>
+<tr class="memitem:a3b2e2050f060af5252de40d7f71b191b"><td class="memTemplParams" colspan="2"><a class="anchor" id="a3b2e2050f060af5252de40d7f71b191b"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a3b2e2050f060af5252de40d7f71b191b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a3b2e2050f060af5252de40d7f71b191b">operator*=</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;v)</td></tr>
+<tr class="memdesc:a3b2e2050f060af5252de40d7f71b191b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルの外積 <br/></td></tr>
+<tr class="memitem:a41978a7346f63aa00e0fa95ec72b42ee"><td class="memTemplParams" colspan="2"><a class="anchor" id="a41978a7346f63aa00e0fa95ec72b42ee"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a41978a7346f63aa00e0fa95ec72b42ee"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a41978a7346f63aa00e0fa95ec72b42ee">operator*=</a> (const TT &amp;a)</td></tr>
+<tr class="memdesc:a41978a7346f63aa00e0fa95ec72b42ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルの定数倍 <br/></td></tr>
+<tr class="memitem:a068593b80db0bfd36c836f447e4b55c0"><td class="memTemplParams" colspan="2"><a class="anchor" id="a068593b80db0bfd36c836f447e4b55c0"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a068593b80db0bfd36c836f447e4b55c0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a068593b80db0bfd36c836f447e4b55c0">operator/=</a> (const TT &amp;a)</td></tr>
+<tr class="memdesc:a068593b80db0bfd36c836f447e4b55c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルを定数で割る <br/></td></tr>
+<tr class="memitem:a100b4bb633138563b9e16b0a2cc285d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a100b4bb633138563b9e16b0a2cc285d9">operator==</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;v) const </td></tr>
+<tr class="memdesc:a100b4bb633138563b9e16b0a2cc285d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのベクトルが等しい（全要素が同じ値を持つ）かどうかを判定する  <a href="#a100b4bb633138563b9e16b0a2cc285d9"></a><br/></td></tr>
+<tr class="memitem:a4a0f10c02bcce30c40eea8e0cfb3e857"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a4a0f10c02bcce30c40eea8e0cfb3e857">operator!=</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;v) const </td></tr>
+<tr class="memdesc:a4a0f10c02bcce30c40eea8e0cfb3e857"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのベクトルが等しくない（どれか１つでも異なる要素を持つ）かどうかを判定する  <a href="#a4a0f10c02bcce30c40eea8e0cfb3e857"></a><br/></td></tr>
+<tr class="memitem:ae388b632d1fd6dc43a08796083cb97d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#ae388b632d1fd6dc43a08796083cb97d9">operator&lt;</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;v) const </td></tr>
+<tr class="memdesc:ae388b632d1fd6dc43a08796083cb97d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのベクトルの &lt; を判定する  <a href="#ae388b632d1fd6dc43a08796083cb97d9"></a><br/></td></tr>
+<tr class="memitem:acd78cee81122c42cebd083d412a4adce"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#acd78cee81122c42cebd083d412a4adce">operator&lt;=</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;v) const </td></tr>
+<tr class="memdesc:acd78cee81122c42cebd083d412a4adce"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのベクトルの &lt;= を判定する  <a href="#acd78cee81122c42cebd083d412a4adce"></a><br/></td></tr>
+<tr class="memitem:a4e210f0ccaec78c0d627594b8dc0d21b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a4e210f0ccaec78c0d627594b8dc0d21b">operator&gt;</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;v) const </td></tr>
+<tr class="memdesc:a4e210f0ccaec78c0d627594b8dc0d21b"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのベクトルの &gt; を判定する  <a href="#a4e210f0ccaec78c0d627594b8dc0d21b"></a><br/></td></tr>
+<tr class="memitem:af7db972a924f2ce215fd1deabacb1167"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#af7db972a924f2ce215fd1deabacb1167">operator&gt;=</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;v) const </td></tr>
+<tr class="memdesc:af7db972a924f2ce215fd1deabacb1167"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのベクトルの &gt;= を判定する  <a href="#af7db972a924f2ce215fd1deabacb1167"></a><br/></td></tr>
+<tr class="memitem:ae4e4a3cabaec8b450c0dda19a38b8aa6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1vector3.html">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#ae4e4a3cabaec8b450c0dda19a38b8aa6">unit</a> () const </td></tr>
+<tr class="memdesc:ae4e4a3cabaec8b450c0dda19a38b8aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">単位ベクトルを計算する  <a href="#ae4e4a3cabaec8b450c0dda19a38b8aa6"></a><br/></td></tr>
+<tr class="memitem:ad81929e66a96307352b3902ff89e4cd5"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:ad81929e66a96307352b3902ff89e4cd5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structmist_1_1promote__trait.html">promote_trait</a>&lt; T, TT &gt;::<a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#ad81929e66a96307352b3902ff89e4cd5">inner</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;v) const </td></tr>
+<tr class="memdesc:ad81929e66a96307352b3902ff89e4cd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルの内積を計算する  <a href="#ad81929e66a96307352b3902ff89e4cd5"></a><br/></td></tr>
+<tr class="memitem:a15bd4eda63a5af7cb33963a07f05659c"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a15bd4eda63a5af7cb33963a07f05659c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; typename <br class="typebreak"/>
+<a class="el" href="structmist_1_1promote__trait.html">promote_trait</a>&lt; <a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a>, TT &gt;<br class="typebreak"/>
+::<a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a15bd4eda63a5af7cb33963a07f05659c">outer</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;v) const </td></tr>
+<tr class="memdesc:a15bd4eda63a5af7cb33963a07f05659c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルの外積を計算する  <a href="#a15bd4eda63a5af7cb33963a07f05659c"></a><br/></td></tr>
+<tr class="memitem:a3218abe6783fdee0aa4bca5c0259f27e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1vector3.html#ae673c2a401496721186c886ad18deb15">float_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a3218abe6783fdee0aa4bca5c0259f27e">length</a> () const </td></tr>
+<tr class="memdesc:a3218abe6783fdee0aa4bca5c0259f27e"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルの大きさを計算する  <a href="#a3218abe6783fdee0aa4bca5c0259f27e"></a><br/></td></tr>
+<tr class="memitem:a34a62aed31e3b9da409f0422452bfc73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1vector3.html">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a34a62aed31e3b9da409f0422452bfc73">rotate</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a> &amp;v, double theta) const </td></tr>
+<tr class="memdesc:a34a62aed31e3b9da409f0422452bfc73"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意軸周りのベクトルの回転  <a href="#a34a62aed31e3b9da409f0422452bfc73"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
+変数</h2></td></tr>
+<tr class="memitem:af8bc62562bfcf84e19b8c460c90eb87b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8bc62562bfcf84e19b8c460c90eb87b"></a>
+<a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#af8bc62562bfcf84e19b8c460c90eb87b">x</a></td></tr>
+<tr class="memdesc:af8bc62562bfcf84e19b8c460c90eb87b"><td class="mdescLeft">&#160;</td><td class="mdescRight">X座標値 <br/></td></tr>
+<tr class="memitem:ad713c6bf4aceb2b61dec9dfca7175bd3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad713c6bf4aceb2b61dec9dfca7175bd3"></a>
+<a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#ad713c6bf4aceb2b61dec9dfca7175bd3">y</a></td></tr>
+<tr class="memdesc:ad713c6bf4aceb2b61dec9dfca7175bd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y座標値 <br/></td></tr>
+<tr class="memitem:a65670ab9189ceb952f9ac1f7684cf567"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65670ab9189ceb952f9ac1f7684cf567"></a>
+<a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html#a65670ab9189ceb952f9ac1f7684cf567">z</a></td></tr>
+<tr class="memdesc:a65670ab9189ceb952f9ac1f7684cf567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z座標値 <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br/>
+class mist::vector3&lt; T &gt;</h3>
+
+<p>3次元ベクトルを扱うクラス </p>
+<p>ベクトルの内積・外積等を簡便に扱うためのクラス</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>… ベクトル内に各座標を表すデータ型 </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="a24fa9553b1b843a698ef3e8fd94cf5d1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::<a class="el" href="classmist_1_1vector3.html">vector3</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>他の3次元ベクトルで要素の型が異なるものから同じ要素を持つベクトルを作成する </p>
+<dl class="section attention"><dt>注意</dt><dd>異なる要素型間でデータの変換が可能でなくてはならない </dd></dl>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="ad81929e66a96307352b3902ff89e4cd5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmist_1_1promote__trait.html">promote_trait</a>&lt; T, TT &gt;::<a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a> <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::inner </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ベクトルの内積を計算する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \cdot \mbox{\boldmath q} = p_x \times q_x + p_y \times q_y + p_z \times q_z \]" src="form_93.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 右辺値 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__facet__group.html#gaeeaa0e1c6ffe913f8992308642ee8858">mist::convert_to_vertex_face_list()</a>, と <a class="el" href="classmist_1_1quaternion.html#ad1d36eb04e0ea3e4798d6b7799ddd3c8">mist::quaternion&lt; T &gt;::rotate()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3218abe6783fdee0aa4bca5c0259f27e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1vector3.html#ae673c2a401496721186c886ad18deb15">float_type</a> <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::length </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ベクトルの大きさを計算する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left\|\mbox{\boldmath v}\right\| = \sqrt{v_x^2 + v_y^2 + v_z^2} \]" src="form_95.png"/>
+</p>
+<dl class="section return"><dt>戻り値</dt><dd>ベクトルの大きさ </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4a0f10c02bcce30c40eea8e0cfb3e857"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのベクトルが等しくない（どれか１つでも異なる要素を持つ）かどうかを判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_x = q_x \; \wedge \; p_y = q_y \; \wedge \; p_z = q_z} \]" src="form_87.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 2つのベクトルが異なる場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 2つのベクトルが等しい場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ae388b632d1fd6dc43a08796083cb97d9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのベクトルの &lt; を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z } \]" src="form_88.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… v1 &lt; v2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… v1 &gt;= v2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="acd78cee81122c42cebd083d412a4adce"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::operator&lt;= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのベクトルの &lt;= を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z \]" src="form_89.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… v1 &lt;= v2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… v1 &gt; v2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aac88d62c7c3759efa2cc6b5d7c1a3fd3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&amp; <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>他データ型の3次元ベクトルを代入する </p>
+<p>コピー元であるベクトル v と全く同じベクトルを作成する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… コピー元のベクトル</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="afb218d30d251738702d3921d14a56381"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&amp; <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>他の3次元ベクトルを代入する </p>
+<p>コピー元であるベクトル v と全く同じベクトルを作成する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… コピー元のベクトル</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a100b4bb633138563b9e16b0a2cc285d9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのベクトルが等しい（全要素が同じ値を持つ）かどうかを判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_x = q_x \; \wedge \; p_y = q_y \; \wedge \; p_z = q_z \]" src="form_86.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 2つのベクトルが等しい場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 2つのベクトルが異なる場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a4e210f0ccaec78c0d627594b8dc0d21b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::operator&gt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのベクトルの &gt; を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z } \]" src="form_90.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… v1 &gt; v2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… v1 &lt;= v2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="af7db972a924f2ce215fd1deabacb1167"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::operator&gt;= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのベクトルの &gt;= を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z \]" src="form_91.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… v1 &gt;= v2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… v1 &lt; v2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a15bd4eda63a5af7cb33963a07f05659c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; typename <a class="el" href="structmist_1_1promote__trait.html">promote_trait</a>&lt; <a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a>, TT &gt;::<a class="el" href="classmist_1_1vector3.html#ab50f032ddd06ae88f4300893adb64243">value_type</a> &gt; <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::outer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ベクトルの外積を計算する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \times \mbox{\boldmath q} = \left( p_y \times q_z - p_z \times q_y \;,\; p_z \times q_x - p_x \times q_z \;,\; p_x \times q_y - p_y \times q_x \right)^T \]" src="form_94.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 右辺値 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="classmist_1_1quaternion.html#ad1d36eb04e0ea3e4798d6b7799ddd3c8">mist::quaternion&lt; T &gt;::rotate()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a34a62aed31e3b9da409f0422452bfc73"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1vector3.html">vector3</a> <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::rotate </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>theta</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>任意軸周りのベクトルの回転 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 回転軸 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">theta</td><td>… 右ねじ方向？で測った回転角度</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>回転後のベクトル </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae4e4a3cabaec8b450c0dda19a38b8aa6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1vector3.html">vector3</a> <a class="el" href="classmist_1_1vector3.html">mist::vector3</a>&lt; T &gt;::unit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>単位ベクトルを計算する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \frac{\mbox{\boldmath v}}{\left\|{\mbox{\boldmath v}}\right\|} \]" src="form_92.png"/>
+</p>
+ 
+<p>参照元 <a class="el" href="classmist_1_1quaternion.html#a17564861b1100d7b049efb0716d1552d">mist::quaternion&lt; T &gt;::quaternion()</a>, と <a class="el" href="classmist_1_1quaternion.html#ad1d36eb04e0ea3e4798d6b7799ddd3c8">mist::quaternion&lt; T &gt;::rotate()</a>.</p>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="vector_8h_source.html">vector.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

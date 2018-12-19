@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>labeling.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_98af7b07076b7431daa71db42f45cb3a.html">filter</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">labeling.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>各次元の画像に対応した，ラベリングアルゴリズム  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="limits_8h_source.html">../limits.h</a>&quot;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;list&gt;</code><br/>
+</div>
+<p><a href="labeling_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga4525d91ad64550cb609f29c1943e78fc"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 , class Functor &gt; </td></tr>
+<tr class="memitem:ga4525d91ad64550cb609f29c1943e78fc"><td class="memTemplItemLeft" align="right" valign="top">array2&lt; T2, Allocator2 &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#ga4525d91ad64550cb609f29c1943e78fc">mist::labeling4</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T2, Allocator2 &gt;::size_type max_label, Functor f)</td></tr>
+<tr class="memdesc:ga4525d91ad64550cb609f29c1943e78fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元画像に対する4近傍型ラベリング  <a href="group__labeling__group.html#ga4525d91ad64550cb609f29c1943e78fc"></a><br/></td></tr>
+<tr class="memitem:gac6f0036a0f09a182cf881b1757a9fac4"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gac6f0036a0f09a182cf881b1757a9fac4"><td class="memTemplItemLeft" align="right" valign="top">array2&lt; T2, Allocator2 &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#gac6f0036a0f09a182cf881b1757a9fac4">mist::labeling4</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T2, Allocator2 &gt;::size_type max_label=__labeling_controller__::default_label_num2&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:gac6f0036a0f09a182cf881b1757a9fac4"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元画像に対する4近傍型ラベリング  <a href="group__labeling__group.html#gac6f0036a0f09a182cf881b1757a9fac4"></a><br/></td></tr>
+<tr class="memitem:gacb7346f9b644c8a8314fb069b725c9a8"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 , class Functor &gt; </td></tr>
+<tr class="memitem:gacb7346f9b644c8a8314fb069b725c9a8"><td class="memTemplItemLeft" align="right" valign="top">array2&lt; T2, Allocator2 &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#gacb7346f9b644c8a8314fb069b725c9a8">mist::labeling8</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T2, Allocator2 &gt;::size_type max_label, Functor f)</td></tr>
+<tr class="memdesc:gacb7346f9b644c8a8314fb069b725c9a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元画像に対する8近傍型ラベリング  <a href="group__labeling__group.html#gacb7346f9b644c8a8314fb069b725c9a8"></a><br/></td></tr>
+<tr class="memitem:ga5a6bccfea833f8dc5984b835d644bbda"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga5a6bccfea833f8dc5984b835d644bbda"><td class="memTemplItemLeft" align="right" valign="top">array2&lt; T2, Allocator2 &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#ga5a6bccfea833f8dc5984b835d644bbda">mist::labeling8</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T2, Allocator2 &gt;::size_type max_label=__labeling_controller__::default_label_num2&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:ga5a6bccfea833f8dc5984b835d644bbda"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元画像に対する8近傍型ラベリング  <a href="group__labeling__group.html#ga5a6bccfea833f8dc5984b835d644bbda"></a><br/></td></tr>
+<tr class="memitem:gaaa5cec904b596976a0851d5b5b1750df"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 , class Functor &gt; </td></tr>
+<tr class="memitem:gaaa5cec904b596976a0851d5b5b1750df"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T2, Allocator2 &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#gaaa5cec904b596976a0851d5b5b1750df">mist::labeling6</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T2, Allocator2 &gt;::size_type max_label, Functor f)</td></tr>
+<tr class="memdesc:gaaa5cec904b596976a0851d5b5b1750df"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元画像に対する6近傍型ラベリング  <a href="group__labeling__group.html#gaaa5cec904b596976a0851d5b5b1750df"></a><br/></td></tr>
+<tr class="memitem:ga9c6571e042cbacad5db2a4251c85832c"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga9c6571e042cbacad5db2a4251c85832c"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T2, Allocator2 &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#ga9c6571e042cbacad5db2a4251c85832c">mist::labeling6</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T2, Allocator2 &gt;::size_type max_label=__labeling_controller__::default_label_num3&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:ga9c6571e042cbacad5db2a4251c85832c"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元画像に対する6近傍型ラベリング  <a href="group__labeling__group.html#ga9c6571e042cbacad5db2a4251c85832c"></a><br/></td></tr>
+<tr class="memitem:ga6f3ef28629aa0e5b2e0f2f2326166d37"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 , class Functor &gt; </td></tr>
+<tr class="memitem:ga6f3ef28629aa0e5b2e0f2f2326166d37"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T2, Allocator2 &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#ga6f3ef28629aa0e5b2e0f2f2326166d37">mist::labeling18</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T2, Allocator2 &gt;::size_type max_label, Functor f)</td></tr>
+<tr class="memdesc:ga6f3ef28629aa0e5b2e0f2f2326166d37"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元画像に対する18近傍型ラベリング  <a href="group__labeling__group.html#ga6f3ef28629aa0e5b2e0f2f2326166d37"></a><br/></td></tr>
+<tr class="memitem:ga5b2a29c59708aea4c65d66b2e4d79f89"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga5b2a29c59708aea4c65d66b2e4d79f89"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T2, Allocator2 &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#ga5b2a29c59708aea4c65d66b2e4d79f89">mist::labeling18</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T2, Allocator2 &gt;::size_type max_label=__labeling_controller__::default_label_num3&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:ga5b2a29c59708aea4c65d66b2e4d79f89"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元画像に対する18近傍型ラベリング  <a href="group__labeling__group.html#ga5b2a29c59708aea4c65d66b2e4d79f89"></a><br/></td></tr>
+<tr class="memitem:gab002f7a4bf7b6cb564a7bd8f92ff1dc5"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 , class Functor &gt; </td></tr>
+<tr class="memitem:gab002f7a4bf7b6cb564a7bd8f92ff1dc5"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T2, Allocator2 &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#gab002f7a4bf7b6cb564a7bd8f92ff1dc5">mist::labeling26</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T2, Allocator2 &gt;::size_type max_label, Functor f)</td></tr>
+<tr class="memdesc:gab002f7a4bf7b6cb564a7bd8f92ff1dc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元画像に対する26近傍型ラベリング  <a href="group__labeling__group.html#gab002f7a4bf7b6cb564a7bd8f92ff1dc5"></a><br/></td></tr>
+<tr class="memitem:gae065a2486f8db43376350cb093d5c170"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gae065a2486f8db43376350cb093d5c170"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T2, Allocator2 &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#gae065a2486f8db43376350cb093d5c170">mist::labeling26</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T2, Allocator2 &gt;::size_type max_label=__labeling_controller__::default_label_num3&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:gae065a2486f8db43376350cb093d5c170"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元画像に対する26近傍型ラベリング  <a href="group__labeling__group.html#gae065a2486f8db43376350cb093d5c170"></a><br/></td></tr>
+<tr class="memitem:gab4988aad0f149ad38fdc1fe6e728474b"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gab4988aad0f149ad38fdc1fe6e728474b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#gab4988aad0f149ad38fdc1fe6e728474b">mist::maximum_region</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type sx, typename array2&lt; T1, Allocator1 &gt;::size_type ex, typename array2&lt; T1, Allocator1 &gt;::size_type sy, typename array2&lt; T1, Allocator1 &gt;::size_type ey, typename array2&lt; T1, Allocator1 &gt;::size_type max_label=__labeling_controller__::default_label_num2&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:gab4988aad0f149ad38fdc1fe6e728474b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ある範囲内での最大のラベルを抽出する  <a href="group__labeling__group.html#gab4988aad0f149ad38fdc1fe6e728474b"></a><br/></td></tr>
+<tr class="memitem:ga7415e934c78c71c7f4e496b421b09d8a"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga7415e934c78c71c7f4e496b421b09d8a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#ga7415e934c78c71c7f4e496b421b09d8a">mist::maximum_region</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type max_label=__labeling_controller__::default_label_num2&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:ga7415e934c78c71c7f4e496b421b09d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の全範囲内での最大のラベルを抽出する  <a href="group__labeling__group.html#ga7415e934c78c71c7f4e496b421b09d8a"></a><br/></td></tr>
+<tr class="memitem:ga90faddb3959ebf22bad32463d1373ea1"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga90faddb3959ebf22bad32463d1373ea1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#ga90faddb3959ebf22bad32463d1373ea1">mist::maximum_region</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type sx, typename array3&lt; T1, Allocator1 &gt;::size_type ex, typename array3&lt; T1, Allocator1 &gt;::size_type sy, typename array3&lt; T1, Allocator1 &gt;::size_type ey, typename array3&lt; T1, Allocator1 &gt;::size_type sz, typename array3&lt; T1, Allocator1 &gt;::size_type ez, typename array3&lt; T1, Allocator1 &gt;::size_type max_label=__labeling_controller__::default_label_num3&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:ga90faddb3959ebf22bad32463d1373ea1"><td class="mdescLeft">&#160;</td><td class="mdescRight">ある範囲内での最大のラベルを抽出する  <a href="group__labeling__group.html#ga90faddb3959ebf22bad32463d1373ea1"></a><br/></td></tr>
+<tr class="memitem:ga9c90d9468af507b6218f3de3facbde79"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga9c90d9468af507b6218f3de3facbde79"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#ga9c90d9468af507b6218f3de3facbde79">mist::maximum_region</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type max_label=__labeling_controller__::default_label_num3&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:ga9c90d9468af507b6218f3de3facbde79"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の全範囲内での最大のラベルを抽出する  <a href="group__labeling__group.html#ga9c90d9468af507b6218f3de3facbde79"></a><br/></td></tr>
+<tr class="memitem:gab1b35af94b40a90520ec3c12adfac3e8"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gab1b35af94b40a90520ec3c12adfac3e8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#gab1b35af94b40a90520ec3c12adfac3e8">mist::remove_hole_region</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, const bool include_corner_labels, typename array2&lt; T1, Allocator1 &gt;::size_type max_label=__labeling_controller__::default_label_num2&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:gab1b35af94b40a90520ec3c12adfac3e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の0/1を反転させて穴埋め処理を行う  <a href="group__labeling__group.html#gab1b35af94b40a90520ec3c12adfac3e8"></a><br/></td></tr>
+<tr class="memitem:ga93a8c4cef38b2b08823f13826b79e94d"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga93a8c4cef38b2b08823f13826b79e94d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#ga93a8c4cef38b2b08823f13826b79e94d">mist::remove_hole_region</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type max_label=__labeling_controller__::default_label_num2&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:ga93a8c4cef38b2b08823f13826b79e94d"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の0/1を反転させて穴埋め処理を行う  <a href="group__labeling__group.html#ga93a8c4cef38b2b08823f13826b79e94d"></a><br/></td></tr>
+<tr class="memitem:ga9a83ed9672830f242612fb016313421f"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga9a83ed9672830f242612fb016313421f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#ga9a83ed9672830f242612fb016313421f">mist::remove_hole_region</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, const bool include_corner_labels, typename array3&lt; T1, Allocator1 &gt;::size_type max_label=__labeling_controller__::default_label_num3&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:ga9a83ed9672830f242612fb016313421f"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の0/1を反転させて穴埋め処理を行う  <a href="group__labeling__group.html#ga9a83ed9672830f242612fb016313421f"></a><br/></td></tr>
+<tr class="memitem:gaa56f7a6c056f7b49f0594d0273e07588"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gaa56f7a6c056f7b49f0594d0273e07588"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__labeling__group.html#gaa56f7a6c056f7b49f0594d0273e07588">mist::remove_hole_region</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type max_label=__labeling_controller__::default_label_num3&lt; T2 &gt;::value)</td></tr>
+<tr class="memdesc:gaa56f7a6c056f7b49f0594d0273e07588"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の0/1を反転させて穴埋め処理を行う  <a href="group__labeling__group.html#gaa56f7a6c056f7b49f0594d0273e07588"></a><br/></td></tr>
+<tr class="memitem:a9fe108039f28a677f7bac53fb30825de"><td class="memTemplParams" colspan="2">template&lt;typename T1 , class Allocator1 , typename T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a9fe108039f28a677f7bac53fb30825de"><td class="memTemplItemLeft" align="right" valign="top">array2&lt; T2, Allocator2 &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::he::labeling8</b> (const array2&lt; T1, Allocator1 &gt; &amp;b, array2&lt; T2, Allocator2 &gt; &amp;v)</td></tr>
+<tr class="memdesc:a9fe108039f28a677f7bac53fb30825de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Heらの2次元画像に対する8近傍型ラベリング  <a href="#a9fe108039f28a677f7bac53fb30825de"></a><br/></td></tr>
+<tr class="memitem:a0c22d41cf88fa6629df295b86f1d0420"><td class="memTemplParams" colspan="2">template&lt;typename T1 , class Allocator1 , typename T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a0c22d41cf88fa6629df295b86f1d0420"><td class="memTemplItemLeft" align="right" valign="top">array3&lt; T2, Allocator2 &gt;<br class="typebreak"/>
+::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::he::labeling26</b> (const array3&lt; T1, Allocator1 &gt; &amp;b, array3&lt; T2, Allocator2 &gt; &amp;l)</td></tr>
+<tr class="memdesc:a0c22d41cf88fa6629df295b86f1d0420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Heらの3次元画像に対する26近傍型ラベリング  <a href="#a0c22d41cf88fa6629df295b86f1d0420"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>各次元の画像に対応した，ラベリングアルゴリズム </p>
+<ul>
+<li>参考文献<ul>
+<li>米倉達広, 横井茂樹, 鳥脇純一郎, 福村晃夫, "三次元ディジタル空間における図形の連結性とオイラー数," 電子通信学会論文誌D, J65-D, No.1, pp.80-87, 1982</li>
+<li>鳥脇純一郎, "3次元ディジタル画像処理," 昭晃堂, 2002</li>
+<li>何 立風, 巣 宇燕, 鈴木 賢治, 中村 剛士, 伊藤 英則, "高速2回走査ラベル付けアルゴリズム," 電子情報通信学会論文誌 D, Vol.J91-D, No.4, pp.1016-1024, 2008/4 </li>
+</ul>
+</li>
+</ul>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

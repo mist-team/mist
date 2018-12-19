@@ -1,0 +1,2118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Active Search</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">Active Search</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structactive__search__style.html">active_search_style</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の型を要素として持つ画像を対象としたアクティブ探索の形式  <a href="structactive__search__style.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga9300ead93d1a49ad8ddba727ce1cd5b7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#ga9300ead93d1a49ad8ddba727ce1cd5b7">active_search</a> (const array2&lt; rgb&lt; unsigned char &gt; &gt; &amp;input, const array2&lt; rgb&lt; unsigned char &gt; &gt; &amp;reference, unsigned int &amp;x, unsigned int &amp;y, double &amp;scale, double &amp;similarity, const double &amp;min_scale, const double &amp;max_scale, const double &amp;scale_factor, size_t num_of_bins2)</td></tr>
+<tr class="memdesc:ga9300ead93d1a49ad8ddba727ce1cd5b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; mist::rgb&lt; unsigned char &gt; &gt; 型特化バージョン  <a href="#ga9300ead93d1a49ad8ddba727ce1cd5b7"></a><br/></td></tr>
+<tr class="memitem:gaf914cee46251ee58e81b3e3775c0d3c0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#gaf914cee46251ee58e81b3e3775c0d3c0">active_search</a> (const array2&lt; rgb&lt; unsigned char &gt; &gt; &amp;input, const array2&lt; rgb&lt; unsigned char &gt; &gt; &amp;reference, unsigned int &amp;x, unsigned int &amp;y, double &amp;similarity, const double &amp;scale, size_t num_of_bins2)</td></tr>
+<tr class="memdesc:gaf914cee46251ee58e81b3e3775c0d3c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; mist::rgb&lt; unsigned char &gt; &gt; 型特化バージョン  <a href="#gaf914cee46251ee58e81b3e3775c0d3c0"></a><br/></td></tr>
+<tr class="memitem:ga8661ee538ba62216a8db17eee1f4efe0"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator &gt; </td></tr>
+<tr class="memitem:ga8661ee538ba62216a8db17eee1f4efe0"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#ga8661ee538ba62216a8db17eee1f4efe0">active_search</a> (const array&lt; Value_type, Allocator &gt; &amp;input, const array&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, double &amp;scale, double &amp;similarity, const double &amp;min_scale, const double &amp;max_scale, const double &amp;scale_factor, const size_t &amp;num_of_bins)</td></tr>
+<tr class="memdesc:ga8661ee538ba62216a8db17eee1f4efe0"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; サイズ型 &gt; 型バージョン  <a href="#ga8661ee538ba62216a8db17eee1f4efe0"></a><br/></td></tr>
+<tr class="memitem:gab543fd65edd10d9d653d0b6bbb365938"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator &gt; </td></tr>
+<tr class="memitem:gab543fd65edd10d9d653d0b6bbb365938"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#gab543fd65edd10d9d653d0b6bbb365938">active_search</a> (const array&lt; Value_type, Allocator &gt; &amp;input, const array&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, double &amp;similarity, const double &amp;scale, const size_t &amp;num_of_bins)</td></tr>
+<tr class="memdesc:gab543fd65edd10d9d653d0b6bbb365938"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; サイズ型 &gt; 型バージョン  <a href="#gab543fd65edd10d9d653d0b6bbb365938"></a><br/></td></tr>
+<tr class="memitem:ga96d7374e5d925bc61432474c17990c80"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator , typename Functor &gt; </td></tr>
+<tr class="memitem:ga96d7374e5d925bc61432474c17990c80"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#ga96d7374e5d925bc61432474c17990c80">active_search</a> (const array&lt; Value_type, Allocator &gt; &amp;input, const array&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, double &amp;scale, double &amp;similarity, const double &amp;min_scale, const double &amp;max_scale, const double &amp;scale_factor, const size_t &amp;num_of_bins, const Functor &amp;f, const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;style=<a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>)</td></tr>
+<tr class="memdesc:ga96d7374e5d925bc61432474c17990c80"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; 任意の型 &gt; 型バージョン  <a href="#ga96d7374e5d925bc61432474c17990c80"></a><br/></td></tr>
+<tr class="memitem:ga16c936134927744aefacd48c92390761"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator , typename Functor &gt; </td></tr>
+<tr class="memitem:ga16c936134927744aefacd48c92390761"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#ga16c936134927744aefacd48c92390761">active_search</a> (const array&lt; Value_type, Allocator &gt; &amp;input, const array&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, double &amp;similarity, const double &amp;scale, const size_t &amp;num_of_bins, const Functor &amp;f, const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;style=<a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>)</td></tr>
+<tr class="memdesc:ga16c936134927744aefacd48c92390761"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; 任意の型 &gt; 型バージョン  <a href="#ga16c936134927744aefacd48c92390761"></a><br/></td></tr>
+<tr class="memitem:ga87ee31e161aa9bbdae50b7b913c5f6d9"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator &gt; </td></tr>
+<tr class="memitem:ga87ee31e161aa9bbdae50b7b913c5f6d9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#ga87ee31e161aa9bbdae50b7b913c5f6d9">active_search</a> (const array1&lt; Value_type, Allocator &gt; &amp;input, const array1&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, double &amp;scale, double &amp;similarity, const double &amp;min_scale, const double &amp;max_scale, const double &amp;scale_factor, const size_t &amp;num_of_bins)</td></tr>
+<tr class="memdesc:ga87ee31e161aa9bbdae50b7b913c5f6d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; サイズ型 &gt; 型バージョン  <a href="#ga87ee31e161aa9bbdae50b7b913c5f6d9"></a><br/></td></tr>
+<tr class="memitem:gab09fcaf3cca3151bfdfebc5063241f78"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator &gt; </td></tr>
+<tr class="memitem:gab09fcaf3cca3151bfdfebc5063241f78"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#gab09fcaf3cca3151bfdfebc5063241f78">active_search</a> (const array1&lt; Value_type, Allocator &gt; &amp;input, const array1&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, double &amp;similarity, const double &amp;scale, const size_t &amp;num_of_bins)</td></tr>
+<tr class="memdesc:gab09fcaf3cca3151bfdfebc5063241f78"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; サイズ型 &gt; 型バージョン  <a href="#gab09fcaf3cca3151bfdfebc5063241f78"></a><br/></td></tr>
+<tr class="memitem:ga9f2770987ad4c5316bccc420f270bd3b"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator , typename Functor &gt; </td></tr>
+<tr class="memitem:ga9f2770987ad4c5316bccc420f270bd3b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#ga9f2770987ad4c5316bccc420f270bd3b">active_search</a> (const array1&lt; Value_type, Allocator &gt; &amp;input, const array1&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, double &amp;scale, double &amp;similarity, const double &amp;min_scale, const double &amp;max_scale, const double &amp;scale_factor, const size_t &amp;num_of_bins, const Functor &amp;f, const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;style=<a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>)</td></tr>
+<tr class="memdesc:ga9f2770987ad4c5316bccc420f270bd3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; 任意の型 &gt; 型バージョン  <a href="#ga9f2770987ad4c5316bccc420f270bd3b"></a><br/></td></tr>
+<tr class="memitem:ga50afa4689fcb27b39c22687e9627963a"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator , typename Functor &gt; </td></tr>
+<tr class="memitem:ga50afa4689fcb27b39c22687e9627963a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#ga50afa4689fcb27b39c22687e9627963a">active_search</a> (const array1&lt; Value_type, Allocator &gt; &amp;input, const array1&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, double &amp;similarity, const double &amp;scale, const size_t &amp;num_of_bins, const Functor &amp;f, const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;style=<a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>)</td></tr>
+<tr class="memdesc:ga50afa4689fcb27b39c22687e9627963a"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; 任意の型 &gt; 型バージョン  <a href="#ga50afa4689fcb27b39c22687e9627963a"></a><br/></td></tr>
+<tr class="memitem:ga4af6e0d2f1237e8d19eb96eb4af3eada"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator &gt; </td></tr>
+<tr class="memitem:ga4af6e0d2f1237e8d19eb96eb4af3eada"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#ga4af6e0d2f1237e8d19eb96eb4af3eada">active_search</a> (const array2&lt; Value_type, Allocator &gt; &amp;input, const array2&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, unsigned int &amp;y, double &amp;scale, double &amp;similarity, const double &amp;min_scale, const double &amp;max_scale, const double &amp;scale_factor, const size_t &amp;num_of_bins)</td></tr>
+<tr class="memdesc:ga4af6e0d2f1237e8d19eb96eb4af3eada"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; サイズ型 &gt; 型バージョン  <a href="#ga4af6e0d2f1237e8d19eb96eb4af3eada"></a><br/></td></tr>
+<tr class="memitem:ga9f5cdf6deb1a462699c9b713ad234076"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator &gt; </td></tr>
+<tr class="memitem:ga9f5cdf6deb1a462699c9b713ad234076"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#ga9f5cdf6deb1a462699c9b713ad234076">active_search</a> (const array2&lt; Value_type, Allocator &gt; &amp;input, const array2&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, unsigned int &amp;y, double &amp;similarity, const double &amp;scale, const size_t &amp;num_of_bins)</td></tr>
+<tr class="memdesc:ga9f5cdf6deb1a462699c9b713ad234076"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; サイズ型 &gt; 型バージョン  <a href="#ga9f5cdf6deb1a462699c9b713ad234076"></a><br/></td></tr>
+<tr class="memitem:ga2205f052d5936bf114b64f26ab003728"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator , typename Functor &gt; </td></tr>
+<tr class="memitem:ga2205f052d5936bf114b64f26ab003728"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#ga2205f052d5936bf114b64f26ab003728">active_search</a> (const array2&lt; Value_type, Allocator &gt; &amp;input, const array2&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, unsigned int &amp;y, double &amp;scale, double &amp;similarity, const double &amp;min_scale, const double &amp;max_scale, const double &amp;scale_factor, const size_t &amp;num_of_bins, const Functor &amp;f, const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;style=<a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>)</td></tr>
+<tr class="memdesc:ga2205f052d5936bf114b64f26ab003728"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; 任意の型 &gt; 型バージョン  <a href="#ga2205f052d5936bf114b64f26ab003728"></a><br/></td></tr>
+<tr class="memitem:gaf0f48ecae738780e6b158f95585506e5"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator , typename Functor &gt; </td></tr>
+<tr class="memitem:gaf0f48ecae738780e6b158f95585506e5"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#gaf0f48ecae738780e6b158f95585506e5">active_search</a> (const array2&lt; Value_type, Allocator &gt; &amp;input, const array2&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, unsigned int &amp;y, double &amp;similarity, const double &amp;scale, const size_t &amp;num_of_bins, const Functor &amp;f, const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;style=<a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>)</td></tr>
+<tr class="memdesc:gaf0f48ecae738780e6b158f95585506e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; 任意の型 &gt; 型バージョン  <a href="#gaf0f48ecae738780e6b158f95585506e5"></a><br/></td></tr>
+<tr class="memitem:gaf63a4f08eb8b8d0fa5fbbdfa5fef143f"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator &gt; </td></tr>
+<tr class="memitem:gaf63a4f08eb8b8d0fa5fbbdfa5fef143f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#gaf63a4f08eb8b8d0fa5fbbdfa5fef143f">active_search</a> (const array3&lt; Value_type, Allocator &gt; &amp;input, const array3&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, unsigned int &amp;y, unsigned int &amp;z, double &amp;scale, double &amp;similarity, const double &amp;min_scale, const double &amp;max_scale, const double &amp;scale_factor, const size_t &amp;num_of_bins)</td></tr>
+<tr class="memdesc:gaf63a4f08eb8b8d0fa5fbbdfa5fef143f"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; サイズ型 &gt; 型バージョン  <a href="#gaf63a4f08eb8b8d0fa5fbbdfa5fef143f"></a><br/></td></tr>
+<tr class="memitem:ga783fb8b902198eef82d19ccd52289cab"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator &gt; </td></tr>
+<tr class="memitem:ga783fb8b902198eef82d19ccd52289cab"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#ga783fb8b902198eef82d19ccd52289cab">active_search</a> (const array3&lt; Value_type, Allocator &gt; &amp;input, const array3&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, unsigned int &amp;y, unsigned int &amp;z, double &amp;similarity, const double &amp;scale, const size_t &amp;num_of_bins)</td></tr>
+<tr class="memdesc:ga783fb8b902198eef82d19ccd52289cab"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; サイズ型 &gt; 型バージョン  <a href="#ga783fb8b902198eef82d19ccd52289cab"></a><br/></td></tr>
+<tr class="memitem:gadd7ab6b49adddbb2c8bf677ecb67856d"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator , typename Functor &gt; </td></tr>
+<tr class="memitem:gadd7ab6b49adddbb2c8bf677ecb67856d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#gadd7ab6b49adddbb2c8bf677ecb67856d">active_search</a> (const array3&lt; Value_type, Allocator &gt; &amp;input, const array3&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, unsigned int &amp;y, unsigned int &amp;z, double &amp;scale, double &amp;similarity, const double &amp;min_scale, const double &amp;max_scale, const double &amp;scale_factor, const size_t &amp;num_of_bins, const Functor &amp;f, const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;style=<a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>)</td></tr>
+<tr class="memdesc:gadd7ab6b49adddbb2c8bf677ecb67856d"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; 任意の型 &gt; 型バージョン  <a href="#gadd7ab6b49adddbb2c8bf677ecb67856d"></a><br/></td></tr>
+<tr class="memitem:gab1aff64ea38831d30bc7d45763c8beb7"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator , typename Functor &gt; </td></tr>
+<tr class="memitem:gab1aff64ea38831d30bc7d45763c8beb7"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__active__search__group.html#gab1aff64ea38831d30bc7d45763c8beb7">active_search</a> (const array3&lt; Value_type, Allocator &gt; &amp;input, const array3&lt; Value_type, Allocator &gt; &amp;reference, unsigned int &amp;x, unsigned int &amp;y, unsigned int &amp;z, double &amp;similarity, const double &amp;scale, const size_t &amp;num_of_bins, const Functor &amp;f, const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;style=<a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>)</td></tr>
+<tr class="memdesc:gab1aff64ea38831d30bc7d45763c8beb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; 任意の型 &gt; 型バージョン  <a href="#gab1aff64ea38831d30bc7d45763c8beb7"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="active__search_8h.html" title="アクティブ探索のためのライブラリ">mist/active_search.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga9300ead93d1a49ad8ddba727ce1cd5b7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; rgb&lt; unsigned char &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; rgb&lt; unsigned char &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>min_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>max_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale_factor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_of_bins2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; mist::rgb&lt; unsigned char &gt; &gt; 型特化バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; mist::rgb&lt; unsigned char &gt; &gt; 型でなければならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>参照画像のスケールを指定した範囲で変化させながら入力画像中で最も類似する領域の左上端の位置、スケール、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左上端のx座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">y</td><td>… 探索された領域の左上端のy座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>… 探索された領域の参照画像に対するスケール </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">min_scale</td><td>… 最小スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_scale</td><td>… 最大スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale_factor</td><td>… min_scale と max_scale の間を scale_factor で拡大縮小しながら探索(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins2</td><td>… 各r, g, bのヒストグラムのビン数（≦256）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale_factor に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57ac25cfd23ea307941ac26e4343d0d2632">active_search_style::speed</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaf914cee46251ee58e81b3e3775c0d3c0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; rgb&lt; unsigned char &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; rgb&lt; unsigned char &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_of_bins2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; mist::rgb&lt; unsigned char &gt; &gt; 型特化バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; mist::rgb&lt; unsigned char &gt; &gt; 型でなければならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>入力画像中で指定したスケールの参照画像と最も類似する領域の左上端の位置、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左上端のx座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">y</td><td>… 探索された領域の左上端のy座標 </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale</td><td>… 参照画像のスケール </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins2</td><td>… 各r, g, bのヒストグラムのビン数（≦256）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57ac25cfd23ea307941ac26e4343d0d2632">active_search_style::speed</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga8661ee538ba62216a8db17eee1f4efe0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>min_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>max_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale_factor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; サイズ型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; サイズ型 &gt; 型でなければならない </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>参照画像のスケールを指定した範囲で変化させながら入力画像中で最も類似する領域の左端の位置、スケール、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左端の座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>… 探索された領域の参照画像に対するスケール </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">min_scale</td><td>… 最小スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_scale</td><td>… 最大スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale_factor</td><td>… min_scale と max_scale の間を scale_factor で拡大縮小しながら探索(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale_factor に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gab543fd65edd10d9d653d0b6bbb365938"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; サイズ型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; サイズ型 &gt; 型でなければならない </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>入力画像中で指定したスケールの参照画像と最も類似する領域の左端の位置、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左端の座標 </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale</td><td>… 参照画像のスケール </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga96d7374e5d925bc61432474c17990c80"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator , typename Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>min_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>max_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale_factor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Functor &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;&#160;</td>
+          <td class="paramname"><em>style</em> = <code><a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; 任意の型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; 任意の型 &gt; 型でなければならない </dd>
+<dd>
+任意の型からサイズ型に変換するファンクタ（std::unary_functon から派生）を定義しなければならない </dd>
+<dd>
+ファンクタには argument_type （任意の型）と result_type （サイズ型）を typedef しておく必要がある </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素から変換されたサイズ型変数は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>参照画像のスケールを指定した範囲で変化させながら入力画像中で最も類似する領域の左端の位置、スケール、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左端の座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>… 探索された領域の参照画像に対するスケール </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">min_scale</td><td>… 最小スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_scale</td><td>… 最大スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale_factor</td><td>… min_scale と max_scale の間を scale_factor で拡大縮小しながら探索(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 任意の型からサイズ型に変換するファンクタ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… memory 重視か speed 重視を選択（デフォルトは memory 重視）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale_factor に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ga16c936134927744aefacd48c92390761"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator , typename Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Functor &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;&#160;</td>
+          <td class="paramname"><em>style</em> = <code><a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; 任意の型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>&lt; 任意の型 &gt; 型でなければならない </dd>
+<dd>
+任意の型からサイズ型に変換するファンクタ（std::unary_functon から派生）を定義しなければならない </dd>
+<dd>
+ファンクタには argument_type （任意の型）と result_type （サイズ型）を typedef しておく必要がある </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素から変換されたサイズ型変数は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>入力画像中で指定したスケールの参照画像と最も類似する領域の左端の位置、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左端の座標 </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale</td><td>… 参照画像のスケール </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 任意の型からサイズ型に変換するファンクタ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… memory 重視か speed 重視を選択（デフォルトは memory 重視）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ga87ee31e161aa9bbdae50b7b913c5f6d9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array1&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array1&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>min_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>max_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale_factor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; サイズ型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; サイズ型 &gt; 型でなければならない </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>参照画像のスケールを指定した範囲で変化させながら入力画像中で最も類似する領域の左端の位置、スケール、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左端の座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>… 探索された領域の参照画像に対するスケール </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">min_scale</td><td>… 最小スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_scale</td><td>… 最大スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale_factor</td><td>… min_scale と max_scale の間を scale_factor で拡大縮小しながら探索(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale_factor に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gab09fcaf3cca3151bfdfebc5063241f78"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array1&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array1&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; サイズ型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; サイズ型 &gt; 型でなければならない </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>入力画像中で指定したスケールの参照画像と最も類似する領域の左端の位置、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左端の座標 </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale</td><td>… 参照画像のスケール </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga9f2770987ad4c5316bccc420f270bd3b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator , typename Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array1&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array1&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>min_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>max_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale_factor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Functor &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;&#160;</td>
+          <td class="paramname"><em>style</em> = <code><a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; 任意の型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; 任意の型 &gt; 型でなければならない </dd>
+<dd>
+任意の型からサイズ型に変換するファンクタ（std::unary_functon から派生）を定義しなければならない </dd>
+<dd>
+ファンクタには argument_type （任意の型）と result_type （サイズ型）を typedef しておく必要がある </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素から変換されたサイズ型変数は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>参照画像のスケールを指定した範囲で変化させながら入力画像中で最も類似する領域の左端の位置、スケール、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左端の座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>… 探索された領域の参照画像に対するスケール </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">min_scale</td><td>… 最小スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_scale</td><td>… 最大スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale_factor</td><td>… min_scale と max_scale の間を scale_factor で拡大縮小しながら探索(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 任意の型からサイズ型に変換するファンクタ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… memory 重視か speed 重視を選択（デフォルトは memory 重視）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale_factor に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ga50afa4689fcb27b39c22687e9627963a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator , typename Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array1&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array1&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Functor &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;&#160;</td>
+          <td class="paramname"><em>style</em> = <code><a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; 任意の型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>&lt; 任意の型 &gt; 型でなければならない </dd>
+<dd>
+任意の型からサイズ型に変換するファンクタ（std::unary_functon から派生）を定義しなければならない </dd>
+<dd>
+ファンクタには argument_type （任意の型）と result_type （サイズ型）を typedef しておく必要がある </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素から変換されたサイズ型変数は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>入力画像中で指定したスケールの参照画像と最も類似する領域の左端の位置、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左端の座標 </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale</td><td>… 参照画像のスケール </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 任意の型からサイズ型に変換するファンクタ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… memory 重視か speed 重視を選択（デフォルトは memory 重視）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ga4af6e0d2f1237e8d19eb96eb4af3eada"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>min_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>max_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale_factor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; サイズ型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; サイズ型 &gt; 型でなければならない </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>参照画像のスケールを指定した範囲で変化させながら入力画像中で最も類似する領域の左上端の位置、スケール、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左上端の x 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">y</td><td>… 探索された領域の左上端の y 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>… 探索された領域の参照画像に対するスケール </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">min_scale</td><td>… 最小スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_scale</td><td>… 最大スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale_factor</td><td>… min_scale と max_scale の間を scale_factor で拡大縮小しながら探索(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale_factor に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga9f5cdf6deb1a462699c9b713ad234076"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; サイズ型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; サイズ型 &gt; 型でなければならない </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>入力画像中で指定したスケールの参照画像と最も類似する領域の左上端の位置、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左上端の x 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">y</td><td>… 探索された領域の左上端の y 座標 </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale</td><td>… 参照画像のスケール </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga2205f052d5936bf114b64f26ab003728"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator , typename Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>min_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>max_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale_factor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Functor &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;&#160;</td>
+          <td class="paramname"><em>style</em> = <code><a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; 任意の型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; 任意の型 &gt; 型でなければならない </dd>
+<dd>
+任意の型からサイズ型に変換するファンクタ（std::unary_functon から派生）を定義しなければならない </dd>
+<dd>
+ファンクタには argument_type （任意の型）と result_type （サイズ型）を typedef しておく必要がある </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素から変換されたサイズ型変数は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>参照画像のスケールを指定した範囲で変化させながら入力画像中で最も類似する領域の左上端の位置、スケール、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左上端の x 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">y</td><td>… 探索された領域の左上端の y 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>… 探索された領域の参照画像に対するスケール </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">min_scale</td><td>… 最小スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_scale</td><td>… 最大スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale_factor</td><td>… min_scale と max_scale の間を scale_factor で拡大縮小しながら探索(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 任意の型からサイズ型に変換するファンクタ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… memory 重視か speed 重視を選択（デフォルトは memory 重視）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale_factor に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gaf0f48ecae738780e6b158f95585506e5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator , typename Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Functor &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;&#160;</td>
+          <td class="paramname"><em>style</em> = <code><a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; 任意の型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; 任意の型 &gt; 型でなければならない </dd>
+<dd>
+任意の型からサイズ型に変換するファンクタ（std::unary_functon から派生）を定義しなければならない </dd>
+<dd>
+ファンクタには argument_type （任意の型）と result_type （サイズ型）を typedef しておく必要がある </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素から変換されたサイズ型変数は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>入力画像中で指定したスケールの参照画像と最も類似する領域の左上端の位置、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左上端の x 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">y</td><td>… 探索された領域の左上端の y 座標 </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale</td><td>… 参照画像のスケール </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 任意の型からサイズ型に変換するファンクタ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… memory 重視か speed 重視を選択（デフォルトは memory 重視）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gaf63a4f08eb8b8d0fa5fbbdfa5fef143f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array3&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array3&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>min_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>max_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale_factor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; サイズ型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; サイズ型 &gt; 型でなければならない </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>参照画像のスケールを指定した範囲で変化させながら入力画像中で最も類似する領域の左上手前端の位置、スケール、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左上手前端の x 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">y</td><td>… 探索された領域の左上手前端の y 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">z</td><td>… 探索された領域の左上手前端の z 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>… 探索された領域の参照画像に対するスケール </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">min_scale</td><td>… 最小スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_scale</td><td>… 最大スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale_factor</td><td>… min_scale と max_scale の間を scale_factor で拡大縮小しながら探索(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale_factor に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga783fb8b902198eef82d19ccd52289cab"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array3&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array3&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; サイズ型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; サイズ型 &gt; 型でなければならない </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>入力画像中で指定したスケールの参照画像と最も類似する領域の左上手前端の位置、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左上手前端の x 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">y</td><td>… 探索された領域の左上手前端の y 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">z</td><td>… 探索された領域の左上手前端の z 座標 </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale</td><td>… 参照画像のスケール </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gadd7ab6b49adddbb2c8bf677ecb67856d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator , typename Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array3&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array3&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>min_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>max_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale_factor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Functor &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;&#160;</td>
+          <td class="paramname"><em>style</em> = <code><a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; 任意の型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; 任意の型 &gt; 型でなければならない </dd>
+<dd>
+任意の型からサイズ型に変換するファンクタ（std::unary_functon から派生）を定義しなければならない </dd>
+<dd>
+ファンクタには argument_type （任意の型）と result_type （サイズ型）を typedef しておく必要がある </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素から変換されたサイズ型変数は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>参照画像のスケールを指定した範囲で変化させながら入力画像中で最も類似する領域の左上手前端の位置、スケール、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左上手前端の x 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">y</td><td>… 探索された領域の左上手前端の y 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">z</td><td>… 探索された領域の左上手前端の z 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>… 探索された領域の参照画像に対するスケール </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">min_scale</td><td>… 最小スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_scale</td><td>… 最大スケール(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale_factor</td><td>… min_scale と max_scale の間を scale_factor で拡大縮小しながら探索(＞0) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 任意の型からサイズ型に変換するファンクタ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… memory 重視か speed 重視を選択（デフォルトは memory 重視）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale_factor に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gab1aff64ea38831d30bc7d45763c8beb7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Allocator , typename Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool active_search </td>
+          <td>(</td>
+          <td class="paramtype">const array3&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array3&lt; Value_type, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>similarity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;&#160;</td>
+          <td class="paramname"><em>num_of_bins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Functor &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57">active_search_style::style</a> &amp;&#160;</td>
+          <td class="paramname"><em>style</em> = <code><a class="el" href="structactive__search__style.html#adb254eaff33688547193fd21ee899a57af59bb7673b1a82c9b599059f671f03a9">active_search_style::memory</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した参照画像を入力画像中から高速に探索する: <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; 任意の型 &gt; 型バージョン </p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像、参照画像ともに <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">mist::array3</a>&lt; 任意の型 &gt; 型でなければならない </dd>
+<dd>
+任意の型からサイズ型に変換するファンクタ（std::unary_functon から派生）を定義しなければならない </dd>
+<dd>
+ファンクタには argument_type （任意の型）と result_type （サイズ型）を typedef しておく必要がある </dd>
+<dd>
+サイズ型とは char, unsigned char, short, unsigned short, int など </dd>
+<dd>
+入力画像、参照画像の各要素から変換されたサイズ型変数は 0 以上かつヒストグラムのビン数より小さくなくてはならない</dd></dl>
+<dl class="section note"><dt>覚え書き</dt><dd>入力画像中で指定したスケールの参照画像と最も類似する領域の左上手前端の位置、類似度を返す </dd>
+<dd>
+類似度の下限を指定することにより無駄な探索を省略可能</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>… 参照画像（このパターンと最も類似度の高い領域を入力画像中から探索する） </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 探索された領域の左上手前端の x 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">y</td><td>… 探索された領域の左上手前端の y 座標 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">z</td><td>… 探索された領域の左上手前端の z 座標 </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">similarity</td><td>… 類似度の下限を渡し、探索された領域の参照画像との類似度を返す(≦1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">scale</td><td>… 参照画像のスケール </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_of_bins</td><td>… ヒストグラムのビン数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 任意の型からサイズ型に変換するファンクタ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… memory 重視か speed 重視を選択（デフォルトは memory 重視）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… similarity 以上の類似度を持つ領域が探索された </td></tr>
+    <tr><td class="paramname">false</td><td>… similarity 以上の類似度を持つ領域は存在しなかった、scale に 0.0 以下の値が渡された </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::binary</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1binary.html">binary</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::binary</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>バイナリ演算を行うためのもの  
+ <a href="classmist_1_1binary.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="binary_8h_source.html">binary.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:aa8ab6f7970c8d669b7667a29a22857e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8ab6f7970c8d669b7667a29a22857e7"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#aa8ab6f7970c8d669b7667a29a22857e7">size_type</a></td></tr>
+<tr class="memdesc:aa8ab6f7970c8d669b7667a29a22857e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:ababc0ec2c4bd592deacd8d8f23a1bcc5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ababc0ec2c4bd592deacd8d8f23a1bcc5"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#ababc0ec2c4bd592deacd8d8f23a1bcc5">difference_type</a></td></tr>
+<tr class="memdesc:ababc0ec2c4bd592deacd8d8f23a1bcc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:a726e3130395cfa997582dc0f39b3d1ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a726e3130395cfa997582dc0f39b3d1ed"></a>
+typedef bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a726e3130395cfa997582dc0f39b3d1ed">reference</a></td></tr>
+<tr class="memdesc:a726e3130395cfa997582dc0f39b3d1ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の参照．data の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:ad3de9695d9e1eb29f4958fa789b2cd3f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad3de9695d9e1eb29f4958fa789b2cd3f"></a>
+typedef const bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#ad3de9695d9e1eb29f4958fa789b2cd3f">const_reference</a></td></tr>
+<tr class="memdesc:ad3de9695d9e1eb29f4958fa789b2cd3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const 参照．data の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:a021df6f86303a7d1998615c2fc7071ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a021df6f86303a7d1998615c2fc7071ab"></a>
+typedef bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a021df6f86303a7d1998615c2fc7071ab">value_type</a></td></tr>
+<tr class="memdesc:a021df6f86303a7d1998615c2fc7071ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部データ型．bool と同じ <br/></td></tr>
+<tr class="memitem:a238aa9f5b102ac42c067a3861e885202"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a238aa9f5b102ac42c067a3861e885202"></a>
+typedef bool *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a238aa9f5b102ac42c067a3861e885202">pointer</a></td></tr>
+<tr class="memdesc:a238aa9f5b102ac42c067a3861e885202"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型のポインター型．data の場合，data * となる <br/></td></tr>
+<tr class="memitem:a375539c21ee42490771416a5a77bf2af"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a375539c21ee42490771416a5a77bf2af"></a>
+typedef const bool *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a375539c21ee42490771416a5a77bf2af">const_pointer</a></td></tr>
+<tr class="memdesc:a375539c21ee42490771416a5a77bf2af"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const ポインター型．data の場合，const data * となる <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a213dd54c7a5632bc2ea85e8a7360e77f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a213dd54c7a5632bc2ea85e8a7360e77f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a213dd54c7a5632bc2ea85e8a7360e77f">binary</a> ()</td></tr>
+<tr class="memdesc:a213dd54c7a5632bc2ea85e8a7360e77f"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトコンストラクタ（要素を false で初期化する） <br/></td></tr>
+<tr class="memitem:ac37125b58fea4b4b02c2b39e48fb418f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac37125b58fea4b4b02c2b39e48fb418f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#ac37125b58fea4b4b02c2b39e48fb418f">binary</a> (const <a class="el" href="classmist_1_1binary.html#a021df6f86303a7d1998615c2fc7071ab">value_type</a> &amp;b)</td></tr>
+<tr class="memdesc:ac37125b58fea4b4b02c2b39e48fb418f"><td class="mdescLeft">&#160;</td><td class="mdescRight">成分を b で初期化する <br/></td></tr>
+<tr class="memitem:ab87e04e772863fe051feb6d3dc11dba4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab87e04e772863fe051feb6d3dc11dba4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#ab87e04e772863fe051feb6d3dc11dba4">binary</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b)</td></tr>
+<tr class="memdesc:ab87e04e772863fe051feb6d3dc11dba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のバイナリ画素を用いて初期化する <br/></td></tr>
+<tr class="memitem:a70359b224566c9c1bf1634f34668e091"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70359b224566c9c1bf1634f34668e091"></a>
+const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a70359b224566c9c1bf1634f34668e091">operator=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b)</td></tr>
+<tr class="memdesc:a70359b224566c9c1bf1634f34668e091"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のバイナリ画素を代入する <br/></td></tr>
+<tr class="memitem:a562112ad876b843bd934084bbe1a7003"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a562112ad876b843bd934084bbe1a7003"></a>
+const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a562112ad876b843bd934084bbe1a7003">operator=</a> (const <a class="el" href="classmist_1_1binary.html#a021df6f86303a7d1998615c2fc7071ab">value_type</a> &amp;b)</td></tr>
+<tr class="memdesc:a562112ad876b843bd934084bbe1a7003"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素に b を代入する <br/></td></tr>
+<tr class="memitem:aed602f717b519c3a1286e0ae8c39fff0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#aed602f717b519c3a1286e0ae8c39fff0">operator+=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b)</td></tr>
+<tr class="memdesc:aed602f717b519c3a1286e0ae8c39fff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">論理和  <a href="#aed602f717b519c3a1286e0ae8c39fff0"></a><br/></td></tr>
+<tr class="memitem:a4e778e853e792643ad7e7705f3253a19"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a4e778e853e792643ad7e7705f3253a19">operator-=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b)</td></tr>
+<tr class="memdesc:a4e778e853e792643ad7e7705f3253a19"><td class="mdescLeft">&#160;</td><td class="mdescRight">論理差  <a href="#a4e778e853e792643ad7e7705f3253a19"></a><br/></td></tr>
+<tr class="memitem:a889e429581ffaa610ad8486ac4f45d31"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a889e429581ffaa610ad8486ac4f45d31">operator*=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b)</td></tr>
+<tr class="memdesc:a889e429581ffaa610ad8486ac4f45d31"><td class="mdescLeft">&#160;</td><td class="mdescRight">論理積  <a href="#a889e429581ffaa610ad8486ac4f45d31"></a><br/></td></tr>
+<tr class="memitem:a258a779f163370301326450f51d7f455"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a258a779f163370301326450f51d7f455">operator/=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b)</td></tr>
+<tr class="memdesc:a258a779f163370301326450f51d7f455"><td class="mdescLeft">&#160;</td><td class="mdescRight">排他論理差  <a href="#a258a779f163370301326450f51d7f455"></a><br/></td></tr>
+<tr class="memitem:a5c0cf78b7ecbcd56bb24336f96c82da3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a5c0cf78b7ecbcd56bb24336f96c82da3">operator%=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b)</td></tr>
+<tr class="memdesc:a5c0cf78b7ecbcd56bb24336f96c82da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">論理差  <a href="#a5c0cf78b7ecbcd56bb24336f96c82da3"></a><br/></td></tr>
+<tr class="memitem:a378d494de4a9a2a77d57c5466f73be39"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a378d494de4a9a2a77d57c5466f73be39">operator|=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b)</td></tr>
+<tr class="memdesc:a378d494de4a9a2a77d57c5466f73be39"><td class="mdescLeft">&#160;</td><td class="mdescRight">論理和  <a href="#a378d494de4a9a2a77d57c5466f73be39"></a><br/></td></tr>
+<tr class="memitem:ae878a13d66e3fd3497b8c8c4438f17d8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#ae878a13d66e3fd3497b8c8c4438f17d8">operator&amp;=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b)</td></tr>
+<tr class="memdesc:ae878a13d66e3fd3497b8c8c4438f17d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">論理積  <a href="#ae878a13d66e3fd3497b8c8c4438f17d8"></a><br/></td></tr>
+<tr class="memitem:a75ed60a33f81ec89e162628dc34f3f89"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a75ed60a33f81ec89e162628dc34f3f89">operator^=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b)</td></tr>
+<tr class="memdesc:a75ed60a33f81ec89e162628dc34f3f89"><td class="mdescLeft">&#160;</td><td class="mdescRight">排他論理和  <a href="#a75ed60a33f81ec89e162628dc34f3f89"></a><br/></td></tr>
+<tr class="memitem:a56cc3952a2199e8c16db629959ee5bf4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56cc3952a2199e8c16db629959ee5bf4"></a>
+const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a56cc3952a2199e8c16db629959ee5bf4">operator+=</a> (const <a class="el" href="classmist_1_1binary.html#a021df6f86303a7d1998615c2fc7071ab">value_type</a> &amp;b)</td></tr>
+<tr class="memdesc:a56cc3952a2199e8c16db629959ee5bf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">論理和 <br/></td></tr>
+<tr class="memitem:adb0ab06cd3c6b4c7530c41eb401157d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb0ab06cd3c6b4c7530c41eb401157d6"></a>
+const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#adb0ab06cd3c6b4c7530c41eb401157d6">operator-=</a> (const <a class="el" href="classmist_1_1binary.html#a021df6f86303a7d1998615c2fc7071ab">value_type</a> &amp;b)</td></tr>
+<tr class="memdesc:adb0ab06cd3c6b4c7530c41eb401157d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">論理差 <br/></td></tr>
+<tr class="memitem:aa6c17845f561a05f762b576c66670782"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6c17845f561a05f762b576c66670782"></a>
+const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#aa6c17845f561a05f762b576c66670782">operator*=</a> (const <a class="el" href="classmist_1_1binary.html#a021df6f86303a7d1998615c2fc7071ab">value_type</a> &amp;b)</td></tr>
+<tr class="memdesc:aa6c17845f561a05f762b576c66670782"><td class="mdescLeft">&#160;</td><td class="mdescRight">論理積 <br/></td></tr>
+<tr class="memitem:a1896a7d8b052f46d3f10083f02f939f3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1896a7d8b052f46d3f10083f02f939f3"></a>
+const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a1896a7d8b052f46d3f10083f02f939f3">operator/=</a> (const <a class="el" href="classmist_1_1binary.html#a021df6f86303a7d1998615c2fc7071ab">value_type</a> &amp;b)</td></tr>
+<tr class="memdesc:a1896a7d8b052f46d3f10083f02f939f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">排他論理差 <br/></td></tr>
+<tr class="memitem:a68d84fbac81d3b540b34c0b68ce1d893"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a68d84fbac81d3b540b34c0b68ce1d893"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a68d84fbac81d3b540b34c0b68ce1d893">operator==</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b) const </td></tr>
+<tr class="memdesc:a68d84fbac81d3b540b34c0b68ce1d893"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力された2つのオブジェクトが等しいかどうかを判定する <br/></td></tr>
+<tr class="memitem:a84ae335996609dd44f21b0cd23475fa1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84ae335996609dd44f21b0cd23475fa1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a84ae335996609dd44f21b0cd23475fa1">operator!=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b) const </td></tr>
+<tr class="memdesc:a84ae335996609dd44f21b0cd23475fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力された2つのオブジェクトが等しくないかどうかを判定する <br/></td></tr>
+<tr class="memitem:a5094d77a2feb4f0d0eb2ff27fc5f66c7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5094d77a2feb4f0d0eb2ff27fc5f66c7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a5094d77a2feb4f0d0eb2ff27fc5f66c7">operator&lt;</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b) const </td></tr>
+<tr class="memdesc:a5094d77a2feb4f0d0eb2ff27fc5f66c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力された2つのオブジェクトの &lt; 関係を判定する <br/></td></tr>
+<tr class="memitem:a6becddf2c75aa9764f9b22033e393dc1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6becddf2c75aa9764f9b22033e393dc1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a6becddf2c75aa9764f9b22033e393dc1">operator&lt;=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b) const </td></tr>
+<tr class="memdesc:a6becddf2c75aa9764f9b22033e393dc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力された2つのオブジェクトの &lt;= 関係を判定する <br/></td></tr>
+<tr class="memitem:a6316dfe14030850b94965a61a3bd4e09"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6316dfe14030850b94965a61a3bd4e09"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#a6316dfe14030850b94965a61a3bd4e09">operator&gt;</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b) const </td></tr>
+<tr class="memdesc:a6316dfe14030850b94965a61a3bd4e09"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力された2つのオブジェクトの &gt; 関係を判定する <br/></td></tr>
+<tr class="memitem:ab09814daf8038974b63c822907e8f4a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab09814daf8038974b63c822907e8f4a0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#ab09814daf8038974b63c822907e8f4a0">operator&gt;=</a> (const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;b) const </td></tr>
+<tr class="memdesc:ab09814daf8038974b63c822907e8f4a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力された2つのオブジェクトの &gt;= 関係を判定する <br/></td></tr>
+<tr class="memitem:ac1f58571f54ea8ef3df5f6e4034f9f06"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1f58571f54ea8ef3df5f6e4034f9f06"></a>
+<a class="el" href="classmist_1_1binary.html#a021df6f86303a7d1998615c2fc7071ab">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1binary.html#ac1f58571f54ea8ef3df5f6e4034f9f06">get_value</a> () const </td></tr>
+<tr class="memdesc:ac1f58571f54ea8ef3df5f6e4034f9f06"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部データを取得する <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>バイナリ演算を行うためのもの </p>
+<div class="fragment"><div class="line"> バイナリ画像の作成例</div>
+<div class="line"><a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2&lt; mist::binary &gt;</a> image;</div>
+</div><!-- fragment --> </div><h2>関数</h2>
+<a class="anchor" id="a5c0cf78b7ecbcd56bb24336f96c82da3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1binary.html">binary</a>&amp; mist::binary::operator%= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>論理差 </p>
+<p>以下の演算を行う</p>
+<ul>
+<li>true + true -&gt; false</li>
+<li>true + false -&gt; true</li>
+<li>false + true -&gt; false</li>
+<li>false + false -&gt; false</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>演算結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae878a13d66e3fd3497b8c8c4438f17d8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1binary.html">binary</a>&amp; mist::binary::operator&amp;= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>論理積 </p>
+<p>以下の演算を行う</p>
+<ul>
+<li>true + true -&gt; true</li>
+<li>true + false -&gt; false</li>
+<li>false + true -&gt; false</li>
+<li>false + false -&gt; false</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>演算結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a889e429581ffaa610ad8486ac4f45d31"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1binary.html">binary</a>&amp; mist::binary::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>論理積 </p>
+<p>以下の演算を行う</p>
+<ul>
+<li>true + true -&gt; true</li>
+<li>true + false -&gt; false</li>
+<li>false + true -&gt; false</li>
+<li>false + false -&gt; false</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>演算結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aed602f717b519c3a1286e0ae8c39fff0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1binary.html">binary</a>&amp; mist::binary::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>論理和 </p>
+<p>以下の演算を行う</p>
+<ul>
+<li>true + true -&gt; true</li>
+<li>true + false -&gt; true</li>
+<li>false + true -&gt; true</li>
+<li>false + false -&gt; false</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>演算結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4e778e853e792643ad7e7705f3253a19"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1binary.html">binary</a>&amp; mist::binary::operator-= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>論理差 </p>
+<p>以下の演算を行う</p>
+<ul>
+<li>true + true -&gt; false</li>
+<li>true + false -&gt; true</li>
+<li>false + true -&gt; false</li>
+<li>false + false -&gt; false</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>演算結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a258a779f163370301326450f51d7f455"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1binary.html">binary</a>&amp; mist::binary::operator/= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>排他論理差 </p>
+<p>以下の演算を行う</p>
+<ul>
+<li>true + true -&gt; true</li>
+<li>true + false -&gt; false</li>
+<li>false + true -&gt; false</li>
+<li>false + false -&gt; true</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>演算結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a75ed60a33f81ec89e162628dc34f3f89"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1binary.html">binary</a>&amp; mist::binary::operator^= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>排他論理和 </p>
+<p>以下の演算を行う</p>
+<ul>
+<li>true + true -&gt; false</li>
+<li>true + false -&gt; true</li>
+<li>false + true -&gt; true</li>
+<li>false + false -&gt; false</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>演算結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a378d494de4a9a2a77d57c5466f73be39"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1binary.html">binary</a>&amp; mist::binary::operator|= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1binary.html">binary</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>論理和 </p>
+<p>以下の演算を行う</p>
+<ul>
+<li>true + true -&gt; true</li>
+<li>true + false -&gt; true</li>
+<li>false + true -&gt; true</li>
+<li>false + false -&gt; false</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>演算結果 </dd></dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="binary_8h_source.html">binary.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::mist_iterator2&lt; T, Distance, Pointer, Reference &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::mist_iterator2&lt; T, Distance, Pointer, Reference &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>mistコンテナで利用する2次元操作用ランダムアクセスイテレータ  
+ <a href="classmist_1_1mist__iterator2.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="iterator_8h_source.html">iterator.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a1c8bcc7cd0ad690ad40deaa89ceaaed1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c8bcc7cd0ad690ad40deaa89ceaaed1"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a1c8bcc7cd0ad690ad40deaa89ceaaed1">value_type</a></td></tr>
+<tr class="memdesc:a1c8bcc7cd0ad690ad40deaa89ceaaed1"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部データ型．bool と同じ <br/></td></tr>
+<tr class="memitem:a5d5bde0821a8229eb11d024426e9f4d5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5d5bde0821a8229eb11d024426e9f4d5"></a>
+typedef Pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a5d5bde0821a8229eb11d024426e9f4d5">pointer</a></td></tr>
+<tr class="memdesc:a5d5bde0821a8229eb11d024426e9f4d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型のポインター型．data の場合，data * となる <br/></td></tr>
+<tr class="memitem:a26d2b0446824d9d2f681d676d7edb809"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a26d2b0446824d9d2f681d676d7edb809"></a>
+typedef Reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a26d2b0446824d9d2f681d676d7edb809">reference</a></td></tr>
+<tr class="memdesc:a26d2b0446824d9d2f681d676d7edb809"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の参照．data の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:adcd2e00a1ec8a90b3997f4ce119a7edf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adcd2e00a1ec8a90b3997f4ce119a7edf"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#adcd2e00a1ec8a90b3997f4ce119a7edf">size_type</a></td></tr>
+<tr class="memdesc:adcd2e00a1ec8a90b3997f4ce119a7edf"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a91e6406a44084b465aac199b0279a646"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a91e6406a44084b465aac199b0279a646"></a>
+typedef Distance&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a91e6406a44084b465aac199b0279a646">difference_type</a></td></tr>
+<tr class="memdesc:a91e6406a44084b465aac199b0279a646"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:ab81ee49b489b5cc2ede67bc3dc0397c0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab81ee49b489b5cc2ede67bc3dc0397c0"></a>
+typedef Reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#ab81ee49b489b5cc2ede67bc3dc0397c0">const_reference</a></td></tr>
+<tr class="memdesc:ab81ee49b489b5cc2ede67bc3dc0397c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const 参照．data の場合，const data &amp; となる <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:aeee42ab049a3d2bcb768cc7c234b4405"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeee42ab049a3d2bcb768cc7c234b4405"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#aeee42ab049a3d2bcb768cc7c234b4405">mist_iterator2</a> (<a class="el" href="classmist_1_1mist__iterator2.html#a5d5bde0821a8229eb11d024426e9f4d5">pointer</a> p=NULL, <a class="el" href="classmist_1_1mist__iterator2.html#a91e6406a44084b465aac199b0279a646">difference_type</a> <a class="el" href="classmist_1_1mist__iterator2.html#ae6be545494bbc3c7796ca2237b872ed9">index</a>=0, <a class="el" href="classmist_1_1mist__iterator2.html#a91e6406a44084b465aac199b0279a646">difference_type</a> <a class="el" href="classmist_1_1mist__iterator2.html#a48c75df6dfee9d07d356063e31543437">width</a>=1, <a class="el" href="classmist_1_1mist__iterator2.html#a91e6406a44084b465aac199b0279a646">difference_type</a> step=1)</td></tr>
+<tr class="memdesc:aeee42ab049a3d2bcb768cc7c234b4405"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトコンストラクタ <br/></td></tr>
+<tr class="memitem:ac865883bbfd62d1411452cca5baec649"><td class="memTemplParams" colspan="2"><a class="anchor" id="ac865883bbfd62d1411452cca5baec649"></a>
+template&lt;class TT , class DD , class PP , class RR &gt; </td></tr>
+<tr class="memitem:ac865883bbfd62d1411452cca5baec649"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#ac865883bbfd62d1411452cca5baec649">mist_iterator2</a> (const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&lt; TT, DD, PP, RR &gt; &amp;ite)</td></tr>
+<tr class="memdesc:ac865883bbfd62d1411452cca5baec649"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のイテレータを用いて初期化する <br/></td></tr>
+<tr class="memitem:a1a9ed8da9d8fc26d295f70aae8b6b971"><td class="memTemplParams" colspan="2">template&lt;class TT , class DD , class PP , class RR &gt; </td></tr>
+<tr class="memitem:a1a9ed8da9d8fc26d295f70aae8b6b971"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a1a9ed8da9d8fc26d295f70aae8b6b971">operator=</a> (const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&lt; TT, DD, PP, RR &gt; &amp;ite)</td></tr>
+<tr class="memdesc:a1a9ed8da9d8fc26d295f70aae8b6b971"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のイテレータを代入する  <a href="#a1a9ed8da9d8fc26d295f70aae8b6b971"></a><br/></td></tr>
+<tr class="memitem:abe7fa779603822b2825a7e1cb1bf06f0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe7fa779603822b2825a7e1cb1bf06f0"></a>
+<a class="el" href="classmist_1_1mist__iterator2.html#a5d5bde0821a8229eb11d024426e9f4d5">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#abe7fa779603822b2825a7e1cb1bf06f0">data</a> ()</td></tr>
+<tr class="memdesc:abe7fa779603822b2825a7e1cb1bf06f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">現在のイテレーターが指している領域の先頭位置 <br/></td></tr>
+<tr class="memitem:aeaa2e7d1f5dcc29a4d54995a7563db75"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeaa2e7d1f5dcc29a4d54995a7563db75"></a>
+const <a class="el" href="classmist_1_1mist__iterator2.html#a5d5bde0821a8229eb11d024426e9f4d5">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#aeaa2e7d1f5dcc29a4d54995a7563db75">data</a> () const </td></tr>
+<tr class="memdesc:aeaa2e7d1f5dcc29a4d54995a7563db75"><td class="mdescLeft">&#160;</td><td class="mdescRight">現在のイテレーターが指しているインデックス <br/></td></tr>
+<tr class="memitem:ae6be545494bbc3c7796ca2237b872ed9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae6be545494bbc3c7796ca2237b872ed9"></a>
+<a class="el" href="classmist_1_1mist__iterator2.html#a91e6406a44084b465aac199b0279a646">difference_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#ae6be545494bbc3c7796ca2237b872ed9">index</a> () const </td></tr>
+<tr class="memdesc:ae6be545494bbc3c7796ca2237b872ed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">1行あたりのデータ数 <br/></td></tr>
+<tr class="memitem:a48c75df6dfee9d07d356063e31543437"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a48c75df6dfee9d07d356063e31543437"></a>
+<a class="el" href="classmist_1_1mist__iterator2.html#a91e6406a44084b465aac199b0279a646">difference_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a48c75df6dfee9d07d356063e31543437">width</a> () const </td></tr>
+<tr class="memdesc:a48c75df6dfee9d07d356063e31543437"><td class="mdescLeft">&#160;</td><td class="mdescRight">インクリメント時のスキップ数 <br/></td></tr>
+<tr class="memitem:a3d55570dc9456e64d72889bb6853ca93"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d55570dc9456e64d72889bb6853ca93"></a>
+<a class="el" href="classmist_1_1mist__iterator2.html#a26d2b0446824d9d2f681d676d7edb809">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a3d55570dc9456e64d72889bb6853ca93">operator*</a> ()</td></tr>
+<tr class="memdesc:a3d55570dc9456e64d72889bb6853ca93"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の参照 <br/></td></tr>
+<tr class="memitem:a9a80f946939f6471262b45287b12558b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a80f946939f6471262b45287b12558b"></a>
+<a class="el" href="classmist_1_1mist__iterator2.html#ab81ee49b489b5cc2ede67bc3dc0397c0">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a9a80f946939f6471262b45287b12558b">operator*</a> () const </td></tr>
+<tr class="memdesc:a9a80f946939f6471262b45287b12558b"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の const 参照 <br/></td></tr>
+<tr class="memitem:adf3e0f4e513cc76b38f2b32d715856f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adf3e0f4e513cc76b38f2b32d715856f2"></a>
+<a class="el" href="classmist_1_1mist__iterator2.html#a5d5bde0821a8229eb11d024426e9f4d5">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#adf3e0f4e513cc76b38f2b32d715856f2">operator-&gt;</a> ()</td></tr>
+<tr class="memdesc:adf3e0f4e513cc76b38f2b32d715856f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素のアドレス演算子 <br/></td></tr>
+<tr class="memitem:a27624e404fe3b38b24f0576ca7da2d5d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27624e404fe3b38b24f0576ca7da2d5d"></a>
+const <a class="el" href="classmist_1_1mist__iterator2.html#a5d5bde0821a8229eb11d024426e9f4d5">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a27624e404fe3b38b24f0576ca7da2d5d">operator-&gt;</a> () const </td></tr>
+<tr class="memdesc:a27624e404fe3b38b24f0576ca7da2d5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の const アドレス演算子 <br/></td></tr>
+<tr class="memitem:a8fbadac3c5c2236ef379a45c459c79d4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8fbadac3c5c2236ef379a45c459c79d4"></a>
+<a class="el" href="classmist_1_1mist__iterator2.html#a26d2b0446824d9d2f681d676d7edb809">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a8fbadac3c5c2236ef379a45c459c79d4">operator[]</a> (<a class="el" href="classmist_1_1mist__iterator2.html#a91e6406a44084b465aac199b0279a646">difference_type</a> dist)</td></tr>
+<tr class="memdesc:a8fbadac3c5c2236ef379a45c459c79d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist で指定した位置の要素の参照 <br/></td></tr>
+<tr class="memitem:a923b39f9e106f4f38f5b9cce6ea27935"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a923b39f9e106f4f38f5b9cce6ea27935"></a>
+<a class="el" href="classmist_1_1mist__iterator2.html#ab81ee49b489b5cc2ede67bc3dc0397c0">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a923b39f9e106f4f38f5b9cce6ea27935">operator[]</a> (<a class="el" href="classmist_1_1mist__iterator2.html#a91e6406a44084b465aac199b0279a646">difference_type</a> dist) const </td></tr>
+<tr class="memdesc:a923b39f9e106f4f38f5b9cce6ea27935"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist で指定した位置の要素の const 参照 <br/></td></tr>
+<tr class="memitem:a60e7ba8975b9f3355d21c02de6f0b973"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a60e7ba8975b9f3355d21c02de6f0b973"></a>
+<a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a60e7ba8975b9f3355d21c02de6f0b973">operator++</a> ()</td></tr>
+<tr class="memdesc:a60e7ba8975b9f3355d21c02de6f0b973"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置型のインクリメント演算子 <br/></td></tr>
+<tr class="memitem:a4930c388a835252bd27ad8b22a052227"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4930c388a835252bd27ad8b22a052227"></a>
+const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a4930c388a835252bd27ad8b22a052227">operator++</a> (int)</td></tr>
+<tr class="memdesc:a4930c388a835252bd27ad8b22a052227"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置型のインクリメント演算子 <br/></td></tr>
+<tr class="memitem:a7ffbeba377f102a69dac9871e2ea478c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ffbeba377f102a69dac9871e2ea478c"></a>
+<a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a7ffbeba377f102a69dac9871e2ea478c">operator--</a> ()</td></tr>
+<tr class="memdesc:a7ffbeba377f102a69dac9871e2ea478c"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置型のデクリメント演算子 <br/></td></tr>
+<tr class="memitem:a964914b4d327d4a1c190929702f11bb0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a964914b4d327d4a1c190929702f11bb0"></a>
+const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a964914b4d327d4a1c190929702f11bb0">operator--</a> (int)</td></tr>
+<tr class="memdesc:a964914b4d327d4a1c190929702f11bb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置型のデクリメント演算子 <br/></td></tr>
+<tr class="memitem:af5413db04c37cc0f44bb61df36c8c141"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5413db04c37cc0f44bb61df36c8c141"></a>
+const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#af5413db04c37cc0f44bb61df36c8c141">operator+=</a> (<a class="el" href="classmist_1_1mist__iterator2.html#a91e6406a44084b465aac199b0279a646">difference_type</a> dist)</td></tr>
+<tr class="memdesc:af5413db04c37cc0f44bb61df36c8c141"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ + 方向に離れた位置の要素に移動する <br/></td></tr>
+<tr class="memitem:aca730c9e176ba8dbbb2ad5995215b105"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca730c9e176ba8dbbb2ad5995215b105"></a>
+const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#aca730c9e176ba8dbbb2ad5995215b105">operator-=</a> (<a class="el" href="classmist_1_1mist__iterator2.html#a91e6406a44084b465aac199b0279a646">difference_type</a> dist)</td></tr>
+<tr class="memdesc:aca730c9e176ba8dbbb2ad5995215b105"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ - 方向に離れた位置の要素に移動する <br/></td></tr>
+<tr class="memitem:acd675fe94ad0694090143bfc821290ab"><td class="memTemplParams" colspan="2"><a class="anchor" id="acd675fe94ad0694090143bfc821290ab"></a>
+template&lt;class TT , class DD , class PP , class RR &gt; </td></tr>
+<tr class="memitem:acd675fe94ad0694090143bfc821290ab"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1mist__iterator2.html#a91e6406a44084b465aac199b0279a646">difference_type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#acd675fe94ad0694090143bfc821290ab">operator-</a> (const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&lt; TT, DD, PP, RR &gt; &amp;ite) const </td></tr>
+<tr class="memdesc:acd675fe94ad0694090143bfc821290ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素間のポインタの差を計算する <br/></td></tr>
+<tr class="memitem:af1a64a224395415c79a7616f1ce6ddc9"><td class="memTemplParams" colspan="2"><a class="anchor" id="af1a64a224395415c79a7616f1ce6ddc9"></a>
+template&lt;class TT , class DD , class PP , class RR &gt; </td></tr>
+<tr class="memitem:af1a64a224395415c79a7616f1ce6ddc9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#af1a64a224395415c79a7616f1ce6ddc9">operator==</a> (const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&lt; TT, DD, PP, RR &gt; &amp;ite) const </td></tr>
+<tr class="memdesc:af1a64a224395415c79a7616f1ce6ddc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">二つのイテレータが同じ要素をさしているかどうか <br/></td></tr>
+<tr class="memitem:a9f17c0569972de1bffbec2ec22174ffa"><td class="memTemplParams" colspan="2"><a class="anchor" id="a9f17c0569972de1bffbec2ec22174ffa"></a>
+template&lt;class TT , class DD , class PP , class RR &gt; </td></tr>
+<tr class="memitem:a9f17c0569972de1bffbec2ec22174ffa"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a9f17c0569972de1bffbec2ec22174ffa">operator!=</a> (const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&lt; TT, DD, PP, RR &gt; &amp;ite) const </td></tr>
+<tr class="memdesc:a9f17c0569972de1bffbec2ec22174ffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">二つのイテレータが同じ要素をさしていないかどうか <br/></td></tr>
+<tr class="memitem:aec439ca64db2a616ede72a204394f450"><td class="memTemplParams" colspan="2"><a class="anchor" id="aec439ca64db2a616ede72a204394f450"></a>
+template&lt;class TT , class DD , class PP , class RR &gt; </td></tr>
+<tr class="memitem:aec439ca64db2a616ede72a204394f450"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#aec439ca64db2a616ede72a204394f450">operator&lt;</a> (const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&lt; TT, DD, PP, RR &gt; &amp;ite) const </td></tr>
+<tr class="memdesc:aec439ca64db2a616ede72a204394f450"><td class="mdescLeft">&#160;</td><td class="mdescRight">二つのイテレータの &lt; の関係を調べる <br/></td></tr>
+<tr class="memitem:acba4cc7aee7d7759e3e6f71f9bede845"><td class="memTemplParams" colspan="2"><a class="anchor" id="acba4cc7aee7d7759e3e6f71f9bede845"></a>
+template&lt;class TT , class DD , class PP , class RR &gt; </td></tr>
+<tr class="memitem:acba4cc7aee7d7759e3e6f71f9bede845"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#acba4cc7aee7d7759e3e6f71f9bede845">operator&lt;=</a> (const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&lt; TT, DD, PP, RR &gt; &amp;ite) const </td></tr>
+<tr class="memdesc:acba4cc7aee7d7759e3e6f71f9bede845"><td class="mdescLeft">&#160;</td><td class="mdescRight">二つのイテレータの &lt;= の関係を調べる <br/></td></tr>
+<tr class="memitem:a3e0b88806f5af5eb824a22b61f8c1ffa"><td class="memTemplParams" colspan="2"><a class="anchor" id="a3e0b88806f5af5eb824a22b61f8c1ffa"></a>
+template&lt;class TT , class DD , class PP , class RR &gt; </td></tr>
+<tr class="memitem:a3e0b88806f5af5eb824a22b61f8c1ffa"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a3e0b88806f5af5eb824a22b61f8c1ffa">operator&gt;</a> (const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&lt; TT, DD, PP, RR &gt; &amp;ite) const </td></tr>
+<tr class="memdesc:a3e0b88806f5af5eb824a22b61f8c1ffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">二つのイテレータの &gt; の関係を調べる <br/></td></tr>
+<tr class="memitem:a920333304a3f8aa356cd06a40cfb26e1"><td class="memTemplParams" colspan="2"><a class="anchor" id="a920333304a3f8aa356cd06a40cfb26e1"></a>
+template&lt;class TT , class DD , class PP , class RR &gt; </td></tr>
+<tr class="memitem:a920333304a3f8aa356cd06a40cfb26e1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html#a920333304a3f8aa356cd06a40cfb26e1">operator&gt;=</a> (const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&lt; TT, DD, PP, RR &gt; &amp;ite) const </td></tr>
+<tr class="memdesc:a920333304a3f8aa356cd06a40cfb26e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">二つのイテレータの &gt;= の関係を調べる <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&amp;&gt;<br/>
+class mist::mist_iterator2&lt; T, Distance, Pointer, Reference &gt;</h3>
+
+<p>mistコンテナで利用する2次元操作用ランダムアクセスイテレータ </p>
+<p><a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a> 用の順方向ランダムアクセスイテレータ</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>… 入力型 </td></tr>
+    <tr><td class="paramname">Distance</td><td>… イテレータ間の差を表す型（デフォルトは ptrdiff_t） </td></tr>
+    <tr><td class="paramname">Pointer</td><td>… イテレータの要素へのポインタ型（デフォルトは T*） </td></tr>
+    <tr><td class="paramname">Reference</td><td>… イテレータの要素への参照型（デフォルトは T&amp;） </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2>関数</h2>
+<a class="anchor" id="a1a9ed8da9d8fc26d295f70aae8b6b971"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&amp;&gt; </div>
+<div class="memtemplate">
+template&lt;class TT , class DD , class PP , class RR &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&amp; <a class="el" href="classmist_1_1mist__iterator2.html">mist::mist_iterator2</a>&lt; T, Distance, Pointer, Reference &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1mist__iterator2.html">mist_iterator2</a>&lt; TT, DD, PP, RR &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ite</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>他のイテレータを代入する </p>
+<p>現在のイテレーターが指している領域の先頭位置 </p>
+
+<p>参照先 <a class="el" href="classmist_1_1mist__iterator2.html#abe7fa779603822b2825a7e1cb1bf06f0">mist::mist_iterator2&lt; T, Distance, Pointer, Reference &gt;::data()</a>, <a class="el" href="classmist_1_1mist__iterator2.html#ae6be545494bbc3c7796ca2237b872ed9">mist::mist_iterator2&lt; T, Distance, Pointer, Reference &gt;::index()</a>, と <a class="el" href="classmist_1_1mist__iterator2.html#a48c75df6dfee9d07d356063e31543437">mist::mist_iterator2&lt; T, Distance, Pointer, Reference &gt;::width()</a>.</p>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="iterator_8h_source.html">iterator.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

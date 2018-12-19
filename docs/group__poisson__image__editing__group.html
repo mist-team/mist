@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>PoissonImageEditing</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">PoissonImageEditing</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga0d5b20b4c80c94163ac99f45f0e47270"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class Array3 &gt; </td></tr>
+<tr class="memitem:ga0d5b20b4c80c94163ac99f45f0e47270"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__poisson__image__editing__group.html#ga0d5b20b4c80c94163ac99f45f0e47270">mist::seamlessCloning</a> (const Array1 &amp;src, const Array2 &amp;target, Array3 &amp;out, const array2&lt; unsigned char &gt; &amp;mask, const int offx=0, const int offy=0, const bool mix=false)</td></tr>
+<tr class="memdesc:ga0d5b20b4c80c94163ac99f45f0e47270"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力画像のマスク領域を対象画像に合成する  <a href="#ga0d5b20b4c80c94163ac99f45f0e47270"></a><br/></td></tr>
+<tr class="memitem:ga7963adebf9c927aef96fe10bc079a2d9"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga7963adebf9c927aef96fe10bc079a2d9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__poisson__image__editing__group.html#ga7963adebf9c927aef96fe10bc079a2d9">mist::localColorChange</a> (const Array1 &amp;in, Array2 &amp;out, const array2&lt; unsigned char &gt; &amp;mask)</td></tr>
+<tr class="memdesc:ga7963adebf9c927aef96fe10bc079a2d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力画像のマスク領域以外をグレースケールにする  <a href="#ga7963adebf9c927aef96fe10bc079a2d9"></a><br/></td></tr>
+<tr class="memitem:ga20e213d2e6290329fa582d167b53b41f"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga20e213d2e6290329fa582d167b53b41f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__poisson__image__editing__group.html#ga20e213d2e6290329fa582d167b53b41f">mist::localColorChange</a> (const Array1 &amp;in, Array2 &amp;out, const array2&lt; unsigned char &gt; &amp;mask, const rgb&lt; double &gt; multiplier)</td></tr>
+<tr class="memdesc:ga20e213d2e6290329fa582d167b53b41f"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力画像のマスク領域だけ色成分を変更する  <a href="#ga20e213d2e6290329fa582d167b53b41f"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="poisson__blending_8h.html" title="Poisson Image Editing (SIGGRAPH 2003)">mist/poisson_blending.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga7963adebf9c927aef96fe10bc079a2d9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::localColorChange </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>入力画像のマスク領域以外をグレースケールにする </p>
+<p>入力画像のマスク領域を保存し，入力画像をグレースケール化した対象画像にseamlessCloningする</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mask</td><td>… マスク画像</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 合成に成功した場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 不正な合成を行おうとした場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__converter__group.html#ga0106393335685307f2dc94e85957743b">mist::convert()</a>, と <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga20e213d2e6290329fa582d167b53b41f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::localColorChange </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const rgb&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>multiplier</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>入力画像のマスク領域だけ色成分を変更する </p>
+<p>入力画像のマスク領域内のオブジェクトのみ色成分を変更する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mask</td><td>… マスク画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">multiplier</td><td>… 各色成分の変更比率</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 合成に成功した場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 不正な合成を行おうとした場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structmist_1_1rgb.html#ad7b50bb9c0b7c543e9c2da0497c26432">mist::rgb&lt; T &gt;::b</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="structmist_1_1rgb.html#aa88b77759db38015f3557100e53fea10">mist::rgb&lt; T &gt;::g</a>, <a class="el" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea">mist::array2&lt; T, Allocator &gt;::height()</a>, <a class="el" href="structmist_1_1rgb.html#a4f388ac0061b809b9f7d853454215884">mist::rgb&lt; T &gt;::r</a>, と <a class="el" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99">mist::array2&lt; T, Allocator &gt;::width()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga0d5b20b4c80c94163ac99f45f0e47270"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 , class Array3 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::seamlessCloning </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Array2 &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array3 &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>offx</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>offy</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>mix</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>入力画像のマスク領域を対象画像に合成する </p>
+<p>入力画像のマスク領域を対象画像に，オフセットを加えて合成する </p>
+<dl class="section note"><dt>覚え書き</dt><dd>mixをtrueにすると入力画像と対象画像の両方の輝度勾配を保持する</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">src</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">target</td><td>… 対象画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mask</td><td>… マスク画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offx</td><td>… 入力画像から出力画像にマップする際のオフセットのx座標 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offy</td><td>… 入力画像から出力画像にマップする際のオフセットのy座標 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mix</td><td>… 対象画像の輝度勾配を保持するか否か</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 合成に成功した場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 不正な合成を行おうとした場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

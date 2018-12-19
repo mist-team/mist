@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>jpeg.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_693aed4c217c3209f853cada5eb38eec.html">io</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">jpeg.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>JPEG画像を読み書きするためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="color_8h_source.html">../config/color.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="limits_8h_source.html">../limits.h</a>&quot;</code><br/>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;jpeglib.h&gt;</code><br/>
+</div>
+<p><a href="jpeg_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gab118838f9b8a138ca28ab443692f6588"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gab118838f9b8a138ca28ab443692f6588"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__jpeg__group.html#gab118838f9b8a138ca28ab443692f6588">mist::read_jpeg</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename)</td></tr>
+<tr class="memdesc:gab118838f9b8a138ca28ab443692f6588"><td class="mdescLeft">&#160;</td><td class="mdescRight">JPEG画像をMISTコンテナに読み込む  <a href="group__image__jpeg__group.html#gab118838f9b8a138ca28ab443692f6588"></a><br/></td></tr>
+<tr class="memitem:ga27e9e380d70eb60aa370d30936dfda59"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga27e9e380d70eb60aa370d30936dfda59"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__jpeg__group.html#ga27e9e380d70eb60aa370d30936dfda59">mist::read_jpeg</a> (array2&lt; T, Allocator &gt; &amp;image, const std::wstring &amp;filename)</td></tr>
+<tr class="memdesc:ga27e9e380d70eb60aa370d30936dfda59"><td class="mdescLeft">&#160;</td><td class="mdescRight">JPEG画像をMISTコンテナに読み込む  <a href="group__image__jpeg__group.html#ga27e9e380d70eb60aa370d30936dfda59"></a><br/></td></tr>
+<tr class="memitem:ga945a77c07442858663ab07cfc90a48b4"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga945a77c07442858663ab07cfc90a48b4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__jpeg__group.html#ga945a77c07442858663ab07cfc90a48b4">mist::write_jpeg</a> (const array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, int quality=100)</td></tr>
+<tr class="memdesc:ga945a77c07442858663ab07cfc90a48b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナの画像をJPEG形式でファイルに出力する  <a href="group__image__jpeg__group.html#ga945a77c07442858663ab07cfc90a48b4"></a><br/></td></tr>
+<tr class="memitem:ga03435bd3790b76c2052019c533ad08ec"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga03435bd3790b76c2052019c533ad08ec"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__jpeg__group.html#ga03435bd3790b76c2052019c533ad08ec">mist::write_jpeg</a> (const array2&lt; T, Allocator &gt; &amp;image, const std::wstring &amp;filename, int quality=100)</td></tr>
+<tr class="memdesc:ga03435bd3790b76c2052019c533ad08ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナの画像をJPEG形式でファイルに出力する  <a href="group__image__jpeg__group.html#ga03435bd3790b76c2052019c533ad08ec"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>JPEG画像を読み書きするためのライブラリ </p>
+<p>JPEG2000画像を読み書きするためのライブラリ</p>
+<p>本ライブラリは，http://www.libpng.org/pub/png/ で開発が行われている libjpeg を利用している エンコードとデコードは本ライブラリのAPIを用いて実装されているため，別途ライブラリを用意する必要がある</p>
+<p>本ライブラリは，http://www.openjpeg.org/ で開発が行われている OpenJPEG ライブラリを利用している エンコードとデコードは本ライブラリのAPIを用いて実装されているため，別途ライブラリを用意する必要がある </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

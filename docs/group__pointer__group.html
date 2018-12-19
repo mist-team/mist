@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>メモリ領域の自動開放を行うポインタ</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">メモリ領域の自動開放を行うポインタ</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__ptr.html">mist::scoped_ptr&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">オブジェクトのスコープが切れると自動的にメモリ開放を行うポインタ  <a href="classmist_1_1scoped__ptr.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__array.html">mist::scoped_array&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">オブジェクトのスコープが切れると配列用に確保したメモリの自動開放を行うポインタ  <a href="classmist_1_1scoped__array.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1shared__ptr.html">mist::shared_ptr&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">オブジェクトへのポインタの参照カウントを管理し，どこからも参照されなくなったときにメモリを自動開放するポインタ  <a href="classmist_1_1shared__ptr.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1shared__array.html">mist::shared_array&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">配列へのポインタの参照カウントを管理し，どこからも参照されなくなったときにメモリを自動開放するポインタ  <a href="classmist_1_1shared__array.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html">mist::weak_ptr&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">参照カウント型のメモリに対する，弱参照を扱うポインタ  <a href="classmist_1_1weak__ptr.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gaf90e47036597033717e42b8286ccd5d3"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gaf90e47036597033717e42b8286ccd5d3"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__pointer__group.html#gaf90e47036597033717e42b8286ccd5d3">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const scoped_ptr&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:gaf90e47036597033717e42b8286ccd5d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームにデータを出力する  <a href="#gaf90e47036597033717e42b8286ccd5d3"></a><br/></td></tr>
+<tr class="memitem:gaa2b4fcbf7a35c25fac85ca1c0602233b"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gaa2b4fcbf7a35c25fac85ca1c0602233b"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__pointer__group.html#gaa2b4fcbf7a35c25fac85ca1c0602233b">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const scoped_array&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:gaa2b4fcbf7a35c25fac85ca1c0602233b"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームにデータを出力する  <a href="#gaa2b4fcbf7a35c25fac85ca1c0602233b"></a><br/></td></tr>
+<tr class="memitem:ga75565937dcb5994322a042afaaaacd88"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga75565937dcb5994322a042afaaaacd88"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__pointer__group.html#ga75565937dcb5994322a042afaaaacd88">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const shared_ptr&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:ga75565937dcb5994322a042afaaaacd88"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームにデータを出力する  <a href="#ga75565937dcb5994322a042afaaaacd88"></a><br/></td></tr>
+<tr class="memitem:ga03667d8703c1a984638bc5c6346a9fb9"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga03667d8703c1a984638bc5c6346a9fb9"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__pointer__group.html#ga03667d8703c1a984638bc5c6346a9fb9">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const weak_ptr&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:ga03667d8703c1a984638bc5c6346a9fb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームにデータを出力する  <a href="#ga03667d8703c1a984638bc5c6346a9fb9"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダを参照</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="pointer_8h.html" title="メモリの自動開放などを行うためのクラス">mist/config/pointer.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="gaf90e47036597033717e42b8286ccd5d3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; mist::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const scoped_ptr&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定されたストリームにデータを出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">out</td><td>… 入力と出力を行うストリーム </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>… <a class="el" href="classmist_1_1scoped__ptr.html" title="オブジェクトのスコープが切れると自動的にメモリ開放を行うポインタ">scoped_ptr</a> 配列</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力されたストリーム </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gaa2b4fcbf7a35c25fac85ca1c0602233b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; mist::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const scoped_array&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定されたストリームにデータを出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">out</td><td>… 入力と出力を行うストリーム </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>… <a class="el" href="classmist_1_1scoped__array.html" title="オブジェクトのスコープが切れると配列用に確保したメモリの自動開放を行うポインタ">scoped_array</a> 配列</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力されたストリーム </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga75565937dcb5994322a042afaaaacd88"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; mist::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const shared_ptr&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定されたストリームにデータを出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">out</td><td>… 入力と出力を行うストリーム </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>… <a class="el" href="classmist_1_1shared__ptr.html" title="オブジェクトへのポインタの参照カウントを管理し，どこからも参照されなくなったときにメモリを自動開放するポインタ">shared_ptr</a> 配列</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力されたストリーム </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga03667d8703c1a984638bc5c6346a9fb9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; mist::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const weak_ptr&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定されたストリームにデータを出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">out</td><td>… 入力と出力を行うストリーム </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>… <a class="el" href="classmist_1_1weak__ptr.html" title="参照カウント型のメモリに対する，弱参照を扱うポインタ">weak_ptr</a> 配列</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力されたストリーム </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

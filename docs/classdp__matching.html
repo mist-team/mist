@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート dp_matching&lt; Value_type, Functor &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート dp_matching&lt; Value_type, Functor &gt;<div class="ingroups"><a class="el" href="group__dp__matching__group.html">DPマッチング</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>DPマッチングを行うためのクラス  
+ <a href="classdp__matching.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="dp__matching_8h_source.html">dp_matching.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:aee91a3349bdafce3c43117d49d55457c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdp__matching.html#aee91a3349bdafce3c43117d49d55457c">dp_matching</a> (const <a class="el" href="classmist_1_1array.html">mist::array</a>&lt; Value_type &gt; &amp;pattern_a, const <a class="el" href="classmist_1_1array.html">mist::array</a>&lt; Value_type &gt; &amp;pattern_b, const double weight_0, const double weight_1, const double weight_2, const Functor func=__dp__::square_error&lt; Value_type &gt;())</td></tr>
+<tr class="memdesc:aee91a3349bdafce3c43117d49d55457c"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンストラクタ  <a href="#aee91a3349bdafce3c43117d49d55457c"></a><br/></td></tr>
+<tr class="memitem:a53d7e5f6bced04c418dc814f0a6cc715"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdp__matching.html#a53d7e5f6bced04c418dc814f0a6cc715">weights</a> (const double weight_0, const double weight_1, const double weight_2)</td></tr>
+<tr class="memdesc:a53d7e5f6bced04c418dc814f0a6cc715"><td class="mdescLeft">&#160;</td><td class="mdescRight">重みを変化させて対応付けをやり直す  <a href="#a53d7e5f6bced04c418dc814f0a6cc715"></a><br/></td></tr>
+<tr class="memitem:a8e13768388375bf82c53fc4818e92509"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1array.html">mist::array</a>&lt; dp_pair &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdp__matching.html#a8e13768388375bf82c53fc4818e92509">path</a> () const </td></tr>
+<tr class="memdesc:a8e13768388375bf82c53fc4818e92509"><td class="mdescLeft">&#160;</td><td class="mdescRight">対応付けられたパスを返す  <a href="#a8e13768388375bf82c53fc4818e92509"></a><br/></td></tr>
+<tr class="memitem:a9f7e7132dfd97800be55c84d9a310c68"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdp__matching.html#a9f7e7132dfd97800be55c84d9a310c68">length</a> () const </td></tr>
+<tr class="memdesc:a9f7e7132dfd97800be55c84d9a310c68"><td class="mdescLeft">&#160;</td><td class="mdescRight">対応付けられたパスの長さを返す  <a href="#a9f7e7132dfd97800be55c84d9a310c68"></a><br/></td></tr>
+<tr class="memitem:a164b6391cac4cea7c15df0b44e66e4da"><td class="memItemLeft" align="right" valign="top">distance_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdp__matching.html#a164b6391cac4cea7c15df0b44e66e4da">distance</a> () const </td></tr>
+<tr class="memdesc:a164b6391cac4cea7c15df0b44e66e4da"><td class="mdescLeft">&#160;</td><td class="mdescRight">対応付けられたパスを通る場合のパターン間の距離を返す  <a href="#a164b6391cac4cea7c15df0b44e66e4da"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;typename Value_type, typename Functor = __dp__::square_error&lt; Value_type &gt;&gt;<br/>
+class dp_matching&lt; Value_type, Functor &gt;</h3>
+
+<p>DPマッチングを行うためのクラス </p>
+<pre class="fragment">任意のサイズ，データ型の1次元データ同士の対応付け
+
+@attention 要素間の距離を返す関数をstd::binary_functionから継承したファンクタの形式で与える必要がある．
+@attention 算術型，mist::rgb&lt; 算術型 &gt;に対しては、デフォルトで2乗距離を返すファンクタを用意してある．
+
+@param Value_type  … 入力のデータ型（ double や mist::rgb&lt; unsigned char &gt; など ）
+@param Functor     … 要素間の距離を返すファンクタ( デフォルトは __dp__::square_error&lt; Value_type &gt; )
+
+@code 使用例
+</pre><p> // 対応付けたい2つのパターンを用意 char data0[ ] = { 'a', 'b', 'a', 'a', 'a', 'b', 'b', 'b', 'c', 'c' }; char data1[ ] = { 'a', 'a', 'a', 'b', 'a', 'b', 'b', 'c', 'c', 'c' }; mist::array&lt; char &gt; pattern0( 10 ), pattern1( 10 ); for( size_t i = 0 ; i &lt; pattern0.size( ) ; i ++ ) { pattern0[ i ] = data0[ i ]; pattern1[ i ] = data1[ i ]; }</p>
+<p>// 対応付け mist::dp_matching&lt; char &gt; dm0( pattern0, pattern1, 1.0, 2.0, 1.0 );</p>
+<p>// 結果の表示 std::cout &lt;&lt; dm0.path( ) &lt;&lt; std::endl; std::cout &lt;&lt; dm0.distance( ) &lt;&lt; std::endl;</p>
+<p>// 重みを変更して再度対応付け dm0.weights( 1.0, 1.0, 1.0 );</p>
+<p>// 結果の表示 std::cout &lt;&lt; dm0.path( ) &lt;&lt; std::endl; std::cout &lt;&lt; dm0.distance( ) &lt;&lt; std::endl;</p>
+<p>// 距離関数を指定して対応付け mist::dp_matching&lt; char, my_distance &gt; dm1( pattern0, pattern1, 1.0, 2.0, 1.0, my_distance( ) );</p>
+<p>// 結果の表示 std::cout &lt;&lt; dm1.path( ) &lt;&lt; std::endl; std::cout &lt;&lt; dm1.distance( ) &lt;&lt; std::endl; </p>
+<p>ここで、my_distanceは例えば以下のように定義できる．</p>
+<div class="fragment"><div class="line"> ファンクタの例</div>
+<div class="line">1 #include &lt;functional&gt;</div>
+<div class="line"> <span class="keyword">struct </span>my_distance : <span class="keyword">public</span> std::binary_function&lt; char, char, double &gt;</div>
+<div class="line"> {</div>
+<div class="line">    <span class="keywordtype">int</span> operator ( )( <span class="keyword">const</span> <span class="keywordtype">char</span> v0, <span class="keyword">const</span> <span class="keywordtype">char</span> v1 ) <span class="keyword">const</span></div>
+<div class="line">    {</div>
+<div class="line">        <span class="keywordflow">return</span> std::abs( static_cast&lt; double &gt;( v0 ) - v1 );</div>
+<div class="line">    }</div>
+<div class="line"> };</div>
+</div><!-- fragment --> </div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="aee91a3349bdafce3c43117d49d55457c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Functor  = __dp__::square_error&lt; Value_type &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdp__matching.html">dp_matching</a>&lt; Value_type, Functor &gt;::<a class="el" href="classdp__matching.html">dp_matching</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">mist::array</a>&lt; Value_type &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pattern_a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">mist::array</a>&lt; Value_type &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pattern_b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>weight_0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>weight_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>weight_2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Functor&#160;</td>
+          <td class="paramname"><em>func</em> = <code>__dp__::square_error&lt;&#160;Value_type&#160;&gt;(&#160;)</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンストラクタ </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pattern_a</td><td>… 入力パターンA </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pattern_b</td><td>… 入力パターンB </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">weight_0</td><td>… 横方向重み </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">weight_1</td><td>… 斜め方向重み </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">weight_2</td><td>… 縦方向重み </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">func</td><td>… 要素間の距離を返すファンクタ（デフォルト値：__dp__::square_error&lt; Value_type &gt;( )） </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="a164b6391cac4cea7c15df0b44e66e4da"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Functor  = __dp__::square_error&lt; Value_type &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">distance_type <a class="el" href="classdp__matching.html">dp_matching</a>&lt; Value_type, Functor &gt;::distance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>対応付けられたパスを通る場合のパターン間の距離を返す </p>
+<dl class="section return"><dt>戻り値</dt><dd>パターン間の距離 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9f7e7132dfd97800be55c84d9a310c68"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Functor  = __dp__::square_error&lt; Value_type &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="classdp__matching.html">dp_matching</a>&lt; Value_type, Functor &gt;::length </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>対応付けられたパスの長さを返す </p>
+<dl class="section return"><dt>戻り値</dt><dd>パスの長さ </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8e13768388375bf82c53fc4818e92509"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Functor  = __dp__::square_error&lt; Value_type &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1array.html">mist::array</a>&lt; dp_pair &gt;&amp; <a class="el" href="classdp__matching.html">dp_matching</a>&lt; Value_type, Functor &gt;::path </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>対応付けられたパスを返す </p>
+<dl class="section return"><dt>戻り値</dt><dd>対応付けられたパス </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a53d7e5f6bced04c418dc814f0a6cc715"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_type , typename Functor  = __dp__::square_error&lt; Value_type &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classdp__matching.html">dp_matching</a>&lt; Value_type, Functor &gt;::weights </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>weight_0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>weight_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>weight_2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>重みを変化させて対応付けをやり直す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">weight_0</td><td>… 横方向重み </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">weight_1</td><td>… 斜め方向重み </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">weight_2</td><td>… 縦方向重み </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="dp__matching_8h_source.html">dp_matching.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

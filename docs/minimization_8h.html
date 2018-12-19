@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>minimization.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">minimization.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>関数の最小化を扱うためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">config/mist_conf.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="matrix_8h_source.html">matrix.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="limits_8h_source.html">limits.h</a>&quot;</code><br/>
+<code>#include &lt;cmath&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;algorithm&gt;</code><br/>
+</div>
+<p><a href="minimization_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1gold"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gold.html">mist::gold</a></td></tr>
+<tr class="memdesc:namespacemist_1_1gold"><td class="mdescLeft">&#160;</td><td class="mdescRight">黄金分割を用いた極小値の1次元探索（1次収束） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1brent"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1brent.html">mist::brent</a></td></tr>
+<tr class="memdesc:namespacemist_1_1brent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Brent の放物線補間を用いた極小値の1次元探索（2次収束） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1Armijo"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1Armijo.html">mist::Armijo</a></td></tr>
+<tr class="memdesc:namespacemist_1_1Armijo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Armijoの基準を用いた極小値の一次元探索 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1gradient__with__vector"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient__with__vector.html">mist::gradient_with_vector</a></td></tr>
+<tr class="memdesc:namespacemist_1_1gradient__with__vector"><td class="mdescLeft">&#160;</td><td class="mdescRight">勾配関数をユーザーが定義する最急降下法（勾配を用いた多変数関数の極小値の探索） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1gradient"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient.html">mist::gradient</a></td></tr>
+<tr class="memdesc:namespacemist_1_1gradient"><td class="mdescLeft">&#160;</td><td class="mdescRight">最急降下法（勾配を用いた多変数関数の極小値の探索） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1conjugate__gradient"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1conjugate__gradient.html">mist::conjugate_gradient</a></td></tr>
+<tr class="memdesc:namespacemist_1_1conjugate__gradient"><td class="mdescLeft">&#160;</td><td class="mdescRight">共役勾配法（勾配を用いた多変数関数の極小値の探索） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1powell"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1powell.html">mist::powell</a></td></tr>
+<tr class="memdesc:namespacemist_1_1powell"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powell法（方向集合を用いた多変数関数の極小値の探索） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1lucidi"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1lucidi.html">mist::lucidi</a></td></tr>
+<tr class="memdesc:namespacemist_1_1lucidi"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lucidi法（方向集合を用いた多変数関数の極小値の探索） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1condor"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html">mist::condor</a></td></tr>
+<tr class="memdesc:namespacemist_1_1condor"><td class="mdescLeft">&#160;</td><td class="mdescRight">CONDOR法（多変数関数の極小値の探索） <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga28809be0c956f7387194e4d474ace7e3"><td class="memTemplParams" colspan="2">template&lt;class Functor &gt; </td></tr>
+<tr class="memitem:ga28809be0c956f7387194e4d474ace7e3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__minimization__group.html#ga28809be0c956f7387194e4d474ace7e3">mist::enclose</a> (double &amp;a, double &amp;b, double &amp;c, double &amp;fa, double &amp;fb, double &amp;fc, Functor f, size_t max_iterations=100)</td></tr>
+<tr class="memdesc:ga28809be0c956f7387194e4d474ace7e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">f(x)の一次元探索において，極小値を与える x を囲む区間を決定する  <a href="group__minimization__group.html#ga28809be0c956f7387194e4d474ace7e3"></a><br/></td></tr>
+<tr class="memitem:adb69f1d4d00e8930427bb3b78bb996e0"><td class="memTemplParams" colspan="2">template&lt;class Functor &gt; </td></tr>
+<tr class="memitem:adb69f1d4d00e8930427bb3b78bb996e0"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gold.html#adb69f1d4d00e8930427bb3b78bb996e0">mist::gold::minimization</a> (double a, double b, double &amp;x, Functor f, double tolerance, size_t &amp;iterations, size_t max_iterations, bool use_enclose=true)</td></tr>
+<tr class="memdesc:adb69f1d4d00e8930427bb3b78bb996e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">黄金分割を利用して，f(x)の極小値の一次元探索を行う（1次収束）  <a href="#adb69f1d4d00e8930427bb3b78bb996e0"></a><br/></td></tr>
+<tr class="memitem:a2d01ca5387ac3a166a33d2574375aab5"><td class="memTemplParams" colspan="2">template&lt;class Functor &gt; </td></tr>
+<tr class="memitem:a2d01ca5387ac3a166a33d2574375aab5"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gold.html#a2d01ca5387ac3a166a33d2574375aab5">mist::gold::minimization</a> (double a, double b, double &amp;x, Functor f, double tolerance, size_t max_iterations=1000, bool use_enclose=true)</td></tr>
+<tr class="memdesc:a2d01ca5387ac3a166a33d2574375aab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">黄金分割を利用して，f(x)の極小値の一次元探索を行う（1次収束）  <a href="#a2d01ca5387ac3a166a33d2574375aab5"></a><br/></td></tr>
+<tr class="memitem:a31e3f96cf4667950e7fdef0f5dbe55a3"><td class="memTemplParams" colspan="2">template&lt;class Functor &gt; </td></tr>
+<tr class="memitem:a31e3f96cf4667950e7fdef0f5dbe55a3"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1brent.html#a31e3f96cf4667950e7fdef0f5dbe55a3">mist::brent::minimization</a> (double a, double b, double &amp;x, Functor f, double tolerance, size_t &amp;iterations, size_t max_iterations, bool use_enclose=true)</td></tr>
+<tr class="memdesc:a31e3f96cf4667950e7fdef0f5dbe55a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Brent の放物線補間を用いて，指定された区間内の f(x) の極小値の一次元探索を行う（2次収束）  <a href="#a31e3f96cf4667950e7fdef0f5dbe55a3"></a><br/></td></tr>
+<tr class="memitem:a802b1b40e3b298af9ac5821f0ded9a97"><td class="memTemplParams" colspan="2">template&lt;class Functor &gt; </td></tr>
+<tr class="memitem:a802b1b40e3b298af9ac5821f0ded9a97"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1brent.html#a802b1b40e3b298af9ac5821f0ded9a97">mist::brent::minimization</a> (double a, double b, double &amp;x, Functor f, double tolerance, size_t max_iterations=1000, bool use_enclose=true)</td></tr>
+<tr class="memdesc:a802b1b40e3b298af9ac5821f0ded9a97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Brent の放物線補間を用いて，f(x)の極小値の一次元探索を行う（2次収束）  <a href="#a802b1b40e3b298af9ac5821f0ded9a97"></a><br/></td></tr>
+<tr class="memitem:a7c914d29c8a0e4e37de6511b76bd5739"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor , class T2 &gt; </td></tr>
+<tr class="memitem:a7c914d29c8a0e4e37de6511b76bd5739"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1Armijo.html#a7c914d29c8a0e4e37de6511b76bd5739">mist::Armijo::minimization</a> (array2&lt; T, Allocator &gt; &amp;p, Functor f, const array2&lt; T, Allocator &gt; &amp;grad, const array2&lt; T, Allocator &gt; &amp;d, T2 &amp;data, const double rho=0.7, const double c=0.1, const size_t max_iterations=10)</td></tr>
+<tr class="memdesc:a7c914d29c8a0e4e37de6511b76bd5739"><td class="mdescLeft">&#160;</td><td class="mdescRight">Armijoの基準を用いて，f(x)の極小値の一次元探索を行う  <a href="#a7c914d29c8a0e4e37de6511b76bd5739"></a><br/></td></tr>
+<tr class="memitem:a857d0012ed9ece8149a82c5cbbfc05a9"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a857d0012ed9ece8149a82c5cbbfc05a9"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1Armijo.html#a857d0012ed9ece8149a82c5cbbfc05a9">mist::Armijo::minimization</a> (array2&lt; T, Allocator &gt; &amp;p, Functor f, const array2&lt; T, Allocator &gt; &amp;grad, const array2&lt; T, Allocator &gt; &amp;d, const double rho=0.7, const double c=0.1, const size_t max_iterations=10)</td></tr>
+<tr class="memdesc:a857d0012ed9ece8149a82c5cbbfc05a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Armijoの基準を用いて，f(x)の極小値の一次元探索を行う  <a href="#a857d0012ed9ece8149a82c5cbbfc05a9"></a><br/></td></tr>
+<tr class="memitem:a2ed576bc72c7901235c9f76bd562dcab"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </td></tr>
+<tr class="memitem:a2ed576bc72c7901235c9f76bd562dcab"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient__with__vector.html#a2ed576bc72c7901235c9f76bd562dcab">mist::gradient_with_vector::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, Functor1 f, Functor2 g, double tolerance, size_t &amp;iterations, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a2ed576bc72c7901235c9f76bd562dcab"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#a2ed576bc72c7901235c9f76bd562dcab"></a><br/></td></tr>
+<tr class="memitem:a9edb7d4f8f787f2aedd34409faf881be"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </td></tr>
+<tr class="memitem:a9edb7d4f8f787f2aedd34409faf881be"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient__with__vector.html#a9edb7d4f8f787f2aedd34409faf881be">mist::gradient_with_vector::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, const matrix&lt; T, Allocator &gt; &amp;bound, Functor1 f, Functor2 g, double tolerance, size_t &amp;iterations, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a9edb7d4f8f787f2aedd34409faf881be"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#a9edb7d4f8f787f2aedd34409faf881be"></a><br/></td></tr>
+<tr class="memitem:a256102cef1204043ac75ad2b69ad9aee"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </td></tr>
+<tr class="memitem:a256102cef1204043ac75ad2b69ad9aee"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient__with__vector.html#a256102cef1204043ac75ad2b69ad9aee">mist::gradient_with_vector::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, const matrix&lt; T, Allocator &gt; &amp;bound, Functor1 f, Functor2 g, double tolerance, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a256102cef1204043ac75ad2b69ad9aee"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#a256102cef1204043ac75ad2b69ad9aee"></a><br/></td></tr>
+<tr class="memitem:a3e2a77d1a1bc30d25c21c958ed93e154"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </td></tr>
+<tr class="memitem:a3e2a77d1a1bc30d25c21c958ed93e154"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient__with__vector.html#a3e2a77d1a1bc30d25c21c958ed93e154">mist::gradient_with_vector::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, Functor1 f, Functor2 g, double tolerance, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a3e2a77d1a1bc30d25c21c958ed93e154"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#a3e2a77d1a1bc30d25c21c958ed93e154"></a><br/></td></tr>
+<tr class="memitem:ad8cd252b7422e9938fdc110d670af858"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ad8cd252b7422e9938fdc110d670af858"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient.html#ad8cd252b7422e9938fdc110d670af858">mist::gradient::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, Functor f, double tolerance, double distance, size_t &amp;iterations, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:ad8cd252b7422e9938fdc110d670af858"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，勾配を計算しながら最小値を探索する  <a href="#ad8cd252b7422e9938fdc110d670af858"></a><br/></td></tr>
+<tr class="memitem:a65d7c963880bf9bfa746c39e4b3128cf"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a65d7c963880bf9bfa746c39e4b3128cf"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient.html#a65d7c963880bf9bfa746c39e4b3128cf">mist::gradient::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, const matrix&lt; T, Allocator &gt; &amp;bound, Functor f, double tolerance, double distance, size_t &amp;iterations, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a65d7c963880bf9bfa746c39e4b3128cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，勾配を計算しながら最小値を探索する  <a href="#a65d7c963880bf9bfa746c39e4b3128cf"></a><br/></td></tr>
+<tr class="memitem:a7ba4263043283c7efadec569f6477173"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 , class T2 &gt; </td></tr>
+<tr class="memitem:a7ba4263043283c7efadec569f6477173"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient.html#a7ba4263043283c7efadec569f6477173">mist::gradient::minimization</a> (array2&lt; T, Allocator &gt; &amp;p, Functor1 f, Functor2 g, const T2 &amp;data, double tolerance, size_t &amp;iterations, const size_t max_iterations=12, const double armijo_rho=0.7, const double armijo_c=0.1, const size_t armijo_max_iteration=10)</td></tr>
+<tr class="memdesc:a7ba4263043283c7efadec569f6477173"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，最急降下法(Steepest descent method)によりユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#a7ba4263043283c7efadec569f6477173"></a><br/></td></tr>
+<tr class="memitem:afc28a76dc9c0b43b241ed8394958c77d"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </td></tr>
+<tr class="memitem:afc28a76dc9c0b43b241ed8394958c77d"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient.html#afc28a76dc9c0b43b241ed8394958c77d">mist::gradient::minimization</a> (array2&lt; T, Allocator &gt; &amp;p, Functor1 f, Functor2 g, double tolerance, size_t &amp;iterations, const size_t max_iterations=12, const double armijo_rho=0.7, const double armijo_c=0.1, const size_t armijo_max_iteration=10)</td></tr>
+<tr class="memdesc:afc28a76dc9c0b43b241ed8394958c77d"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，最急降下法(Steepest descent method)によりユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#afc28a76dc9c0b43b241ed8394958c77d"></a><br/></td></tr>
+<tr class="memitem:aeba60c580a0abd8486a1ae138dc8b4d5"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:aeba60c580a0abd8486a1ae138dc8b4d5"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient.html#aeba60c580a0abd8486a1ae138dc8b4d5">mist::gradient::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, Functor f, double tolerance, double distance=1.0, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:aeba60c580a0abd8486a1ae138dc8b4d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，勾配を計算しながら最小値を探索する  <a href="#aeba60c580a0abd8486a1ae138dc8b4d5"></a><br/></td></tr>
+<tr class="memitem:ae897d59b64c51a8c95b4b18f694a216d"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ae897d59b64c51a8c95b4b18f694a216d"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gradient.html#ae897d59b64c51a8c95b4b18f694a216d">mist::gradient::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, const matrix&lt; T, Allocator &gt; &amp;bound, Functor f, double tolerance, double distance=1.0, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:ae897d59b64c51a8c95b4b18f694a216d"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，勾配を計算しながら最小値を探索する  <a href="#ae897d59b64c51a8c95b4b18f694a216d"></a><br/></td></tr>
+<tr class="memitem:a9bc0a766ad8e1f229bb022c84e2f7951"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a9bc0a766ad8e1f229bb022c84e2f7951"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1conjugate__gradient.html#a9bc0a766ad8e1f229bb022c84e2f7951">mist::conjugate_gradient::Polak_Ribiere_Polyak</a> (const array2&lt; T &gt; &amp;g0, const array2&lt; T &gt; &amp;g1)</td></tr>
+<tr class="memdesc:a9bc0a766ad8e1f229bb022c84e2f7951"><td class="mdescLeft">&#160;</td><td class="mdescRight">共役勾配法(conjugate gradient method)のβをPolak-Ribiere-Polyakの公式で計算する  <a href="#a9bc0a766ad8e1f229bb022c84e2f7951"></a><br/></td></tr>
+<tr class="memitem:adf805f69a9afd66a57b8419c27b2dcf5"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:adf805f69a9afd66a57b8419c27b2dcf5"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1conjugate__gradient.html#adf805f69a9afd66a57b8419c27b2dcf5">mist::conjugate_gradient::Fletcher_Reeves</a> (const array2&lt; T &gt; &amp;g0, const array2&lt; T &gt; &amp;g1)</td></tr>
+<tr class="memdesc:adf805f69a9afd66a57b8419c27b2dcf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">共役勾配法(conjugate gradient method)のβをFletcher-Reevesの公式で計算する  <a href="#adf805f69a9afd66a57b8419c27b2dcf5"></a><br/></td></tr>
+<tr class="memitem:af5d907332e5b217fee180c8ee3d288bc"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 &gt; </td></tr>
+<tr class="memitem:af5d907332e5b217fee180c8ee3d288bc"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1conjugate__gradient.html#af5d907332e5b217fee180c8ee3d288bc">mist::conjugate_gradient::minimization</a> (array2&lt; T, Allocator &gt; &amp;p, Functor1 f, Functor2 g, double tolerance, size_t &amp;iterations, const size_t max_iterations=12, const double armijo_rho=0.7, const double armijo_c=0.1, const size_t armijo_max_iteration=10)</td></tr>
+<tr class="memdesc:af5d907332e5b217fee180c8ee3d288bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，共役勾配法(conjugate gradient method)によりユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#af5d907332e5b217fee180c8ee3d288bc"></a><br/></td></tr>
+<tr class="memitem:ac731e7d7d7491399c182ffb14a6e02c9"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor1 , class Functor2 , class T2 &gt; </td></tr>
+<tr class="memitem:ac731e7d7d7491399c182ffb14a6e02c9"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1conjugate__gradient.html#ac731e7d7d7491399c182ffb14a6e02c9">mist::conjugate_gradient::minimization</a> (array2&lt; T, Allocator &gt; &amp;p, Functor1 f, Functor2 g, const T2 &amp;data, double tolerance, size_t &amp;iterations, const size_t max_iterations=12, const double armijo_rho=0.7, const double armijo_c=0.1, const size_t armijo_max_iteration=10)</td></tr>
+<tr class="memdesc:ac731e7d7d7491399c182ffb14a6e02c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">探索の開始点を指定し，共役勾配法(conjugate gradient method)によりユーザーが指定した勾配計算関数を用いて最小値を探索する  <a href="#ac731e7d7d7491399c182ffb14a6e02c9"></a><br/></td></tr>
+<tr class="memitem:a3d21729dfea7665138693b3d7af5aca2"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a3d21729dfea7665138693b3d7af5aca2"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1powell.html#a3d21729dfea7665138693b3d7af5aca2">mist::powell::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, matrix&lt; T, Allocator &gt; &amp;dirs, Functor f, double tolerance, size_t &amp;iterations, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a3d21729dfea7665138693b3d7af5aca2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powell 法による多次元変数による極小値の探索を行う  <a href="#a3d21729dfea7665138693b3d7af5aca2"></a><br/></td></tr>
+<tr class="memitem:ae572e86f227ff0a602ab8789440914d5"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ae572e86f227ff0a602ab8789440914d5"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1powell.html#ae572e86f227ff0a602ab8789440914d5">mist::powell::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, matrix&lt; T, Allocator &gt; &amp;dirs, matrix&lt; T, Allocator &gt; &amp;bound, Functor f, double tolerance, size_t &amp;iterations, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:ae572e86f227ff0a602ab8789440914d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powell 法による多次元変数による極小値の探索を行う  <a href="#ae572e86f227ff0a602ab8789440914d5"></a><br/></td></tr>
+<tr class="memitem:adb4eaa4970d66e8ae5a7f2fefe7f1a4d"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:adb4eaa4970d66e8ae5a7f2fefe7f1a4d"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1powell.html#adb4eaa4970d66e8ae5a7f2fefe7f1a4d">mist::powell::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, matrix&lt; T, Allocator &gt; &amp;dirs, Functor f, double tolerance, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:adb4eaa4970d66e8ae5a7f2fefe7f1a4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powell 法による多次元変数による極小値の探索を行う  <a href="#adb4eaa4970d66e8ae5a7f2fefe7f1a4d"></a><br/></td></tr>
+<tr class="memitem:a5719a2dacba006719a9ea7b39b79dc8c"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a5719a2dacba006719a9ea7b39b79dc8c"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1powell.html#a5719a2dacba006719a9ea7b39b79dc8c">mist::powell::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, matrix&lt; T, Allocator &gt; &amp;dirs, matrix&lt; T, Allocator &gt; &amp;bound, Functor f, double tolerance, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a5719a2dacba006719a9ea7b39b79dc8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powell 法による多次元変数による極小値の探索を行う  <a href="#a5719a2dacba006719a9ea7b39b79dc8c"></a><br/></td></tr>
+<tr class="memitem:a264ba4d9639762ea4f6d8e1e3a1f0b2b"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a264ba4d9639762ea4f6d8e1e3a1f0b2b"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1lucidi.html#a264ba4d9639762ea4f6d8e1e3a1f0b2b">mist::lucidi::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, matrix&lt; T, Allocator &gt; &amp;dirs, Functor f, double tolerance, size_t &amp;iterations, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a264ba4d9639762ea4f6d8e1e3a1f0b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lucidi 提案の多変数関数の極小値探索  <a href="#a264ba4d9639762ea4f6d8e1e3a1f0b2b"></a><br/></td></tr>
+<tr class="memitem:a8bd5f6afb1009d9668c3bc418e940ca3"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a8bd5f6afb1009d9668c3bc418e940ca3"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1lucidi.html#a8bd5f6afb1009d9668c3bc418e940ca3">mist::lucidi::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, matrix&lt; T, Allocator &gt; &amp;dirs, Functor f, double tolerance, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a8bd5f6afb1009d9668c3bc418e940ca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powell 法による多次元変数による極小値の探索を行う  <a href="#a8bd5f6afb1009d9668c3bc418e940ca3"></a><br/></td></tr>
+<tr class="memitem:a394d593ee702dd9afcff730d7b215e48"><td class="memTemplParams" colspan="2">template&lt;class Matrix , class Functor &gt; </td></tr>
+<tr class="memitem:a394d593ee702dd9afcff730d7b215e48"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html#a394d593ee702dd9afcff730d7b215e48">mist::condor::generate_first_point_set</a> (const Matrix &amp;xbase, std::vector&lt; Matrix &gt; &amp;x, Matrix &amp;f, Functor func, double rho)</td></tr>
+<tr class="memdesc:a394d593ee702dd9afcff730d7b215e48"><td class="mdescLeft">&#160;</td><td class="mdescRight">CONDOR アルゴリズムの初期パラメータ群を求める関数  <a href="#a394d593ee702dd9afcff730d7b215e48"></a><br/></td></tr>
+<tr class="memitem:adb4b31a8eb8c1249b406adf50e5f29fa"><td class="memTemplParams" colspan="2">template&lt;class Matrix &gt; </td></tr>
+<tr class="memitem:adb4b31a8eb8c1249b406adf50e5f29fa"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html#adb4b31a8eb8c1249b406adf50e5f29fa">mist::condor::compute_polynomial_basis</a> (std::vector&lt; Matrix &gt; &amp;x, Matrix &amp;f, std::vector&lt; __condor_utility__::polynomial &gt; &amp;poly_bases, __condor_utility__::polynomial &amp;poly)</td></tr>
+<tr class="memdesc:adb4b31a8eb8c1249b406adf50e5f29fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定したパラメータと評価値からラグランジェ多項式を構成する  <a href="#adb4b31a8eb8c1249b406adf50e5f29fa"></a><br/></td></tr>
+<tr class="memitem:a3e6a3fdd4e3e0fd12cb4522fd7b87d77"><td class="memTemplParams" colspan="2">template&lt;class Matrix &gt; </td></tr>
+<tr class="memitem:a3e6a3fdd4e3e0fd12cb4522fd7b87d77"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html#a3e6a3fdd4e3e0fd12cb4522fd7b87d77">mist::condor::compute_lambda_function1</a> (const Matrix &amp;H)</td></tr>
+<tr class="memdesc:a3e6a3fdd4e3e0fd12cb4522fd7b87d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trust Region を求める際のλの上下限の計算に用いる補助関数  <a href="#a3e6a3fdd4e3e0fd12cb4522fd7b87d77"></a><br/></td></tr>
+<tr class="memitem:a7ca69bff36cede1039ffe9994b38af2f"><td class="memTemplParams" colspan="2">template&lt;class Matrix &gt; </td></tr>
+<tr class="memitem:a7ca69bff36cede1039ffe9994b38af2f"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html#a7ca69bff36cede1039ffe9994b38af2f">mist::condor::compute_lambda_function2</a> (const Matrix &amp;H, double alpha=1.0)</td></tr>
+<tr class="memdesc:a7ca69bff36cede1039ffe9994b38af2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trust Region を求める際のλの上下限の計算に用いる補助関数  <a href="#a7ca69bff36cede1039ffe9994b38af2f"></a><br/></td></tr>
+<tr class="memitem:a1aef4a06dd423116d16413ff8426fee7"><td class="memTemplParams" colspan="2">template&lt;class Matrix &gt; </td></tr>
+<tr class="memitem:a1aef4a06dd423116d16413ff8426fee7"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html#a1aef4a06dd423116d16413ff8426fee7">mist::condor::compute_lambda_lower_bound</a> (const Matrix &amp;H, double dg_delta)</td></tr>
+<tr class="memdesc:a1aef4a06dd423116d16413ff8426fee7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trust Region を求める際のλの下限の初期値  <a href="#a1aef4a06dd423116d16413ff8426fee7"></a><br/></td></tr>
+<tr class="memitem:a9f3d4720348c83a62c315c78388995bb"><td class="memTemplParams" colspan="2">template&lt;class Matrix &gt; </td></tr>
+<tr class="memitem:a9f3d4720348c83a62c315c78388995bb"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html#a9f3d4720348c83a62c315c78388995bb">mist::condor::compute_lambda_upper_bound</a> (const Matrix &amp;H, double dg_delta)</td></tr>
+<tr class="memdesc:a9f3d4720348c83a62c315c78388995bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trust Region を求める際のλの上限の初期値  <a href="#a9f3d4720348c83a62c315c78388995bb"></a><br/></td></tr>
+<tr class="memitem:a1e776afe8441c35362b7e1e0e1fe601e"><td class="memTemplParams" colspan="2">template&lt;class Matrix &gt; </td></tr>
+<tr class="memitem:a1e776afe8441c35362b7e1e0e1fe601e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html#a1e776afe8441c35362b7e1e0e1fe601e">mist::condor::compute_trust_region_step</a> (const Matrix &amp;xbest, Matrix &amp;s, __condor_utility__::polynomial &amp;poly, double delta, size_t max_loop=1000)</td></tr>
+<tr class="memdesc:a1e776afe8441c35362b7e1e0e1fe601e"><td class="mdescLeft">&#160;</td><td class="mdescRight">CONDOR アルゴリズム内で使用する Trust Region 内の最小値を与える方向を求める関数  <a href="#a1e776afe8441c35362b7e1e0e1fe601e"></a><br/></td></tr>
+<tr class="memitem:a954394a482fac9474433b39243837ab4"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a954394a482fac9474433b39243837ab4"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html#a954394a482fac9474433b39243837ab4">mist::condor::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, Functor func, double rho, double rho_end, double tolerance, size_t &amp;iterations, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a954394a482fac9474433b39243837ab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">CONDOR アルゴリズムを用いて評価関数の最小値を探索する  <a href="#a954394a482fac9474433b39243837ab4"></a><br/></td></tr>
+<tr class="memitem:a819d8df65034f30cd7c8582e50ee4f43"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a819d8df65034f30cd7c8582e50ee4f43"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html#a819d8df65034f30cd7c8582e50ee4f43">mist::condor::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, Functor f, double rho, double rho_end, size_t max_iterations)</td></tr>
+<tr class="memdesc:a819d8df65034f30cd7c8582e50ee4f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">CONDOR アルゴリズムを用いて評価関数の最小値を探索する  <a href="#a819d8df65034f30cd7c8582e50ee4f43"></a><br/></td></tr>
+<tr class="memitem:a2a87e6ae088ffdafd0be35a1fe67f932"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a2a87e6ae088ffdafd0be35a1fe67f932"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1condor.html#a2a87e6ae088ffdafd0be35a1fe67f932">mist::condor::minimization</a> (matrix&lt; T, Allocator &gt; &amp;p, Functor f, double tolerance, size_t max_iterations)</td></tr>
+<tr class="memdesc:a2a87e6ae088ffdafd0be35a1fe67f932"><td class="mdescLeft">&#160;</td><td class="mdescRight">CONDOR アルゴリズムを用いて評価関数の最小値を探索する  <a href="#a2a87e6ae088ffdafd0be35a1fe67f932"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>関数の最小化を扱うためのライブラリ </p>
+<ul>
+<li>関数の最小化<ul>
+<li>W. H. Press, S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery, <code>Numerical Recipes in C, The Art of Scientific Computing Second Edition,'' Cambridge University Press, pp. 321--336, 1999.</code></li>
+<li><code>Richard P. Brent,</code>Algorithms for Minimization Without Derivatives", DOVER PUBLICATIONS, Mineola, New York.</li>
+<li>F. V. Berghen, H. Bersini, ``CONDOR, a new parallel, constrained extension of Powell's UOBYQA algorithm: Experimental results and comparison with the DFO algorithm,'' Journal of Computational and Applied Mathematics, Elsevier, Volume 181, Issue 1, September 2005, pp. 157&ndash;175 </li>
+</ul>
+</li>
+</ul>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

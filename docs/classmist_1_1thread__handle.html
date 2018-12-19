@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::thread_handle</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1thread__handle.html">thread_handle</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::thread_handle<div class="ingroups"><a class="el" href="group__thread__group.html">スレッド</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>生成したスレッドを管理するクラス  
+ <a href="classmist_1_1thread__handle.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="thread_8h_source.html">thread.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:aedd8b3764d6da084c8750385257045a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedd8b3764d6da084c8750385257045a0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__handle.html#aedd8b3764d6da084c8750385257045a0">create</a> ()</td></tr>
+<tr class="memdesc:aedd8b3764d6da084c8750385257045a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドを作成する <br/></td></tr>
+<tr class="memitem:aabce8484d8bf02b848cb73eb49bfd686"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__handle.html#aabce8484d8bf02b848cb73eb49bfd686">wait</a> (unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:aabce8484d8bf02b848cb73eb49bfd686"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドが終了するか，タイムアウトが発生するまで待機する  <a href="#aabce8484d8bf02b848cb73eb49bfd686"></a><br/></td></tr>
+<tr class="memitem:abb460f9dc2a0e4b80a296368b39b3222"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb460f9dc2a0e4b80a296368b39b3222"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__handle.html#abb460f9dc2a0e4b80a296368b39b3222">close</a> ()</td></tr>
+<tr class="memdesc:abb460f9dc2a0e4b80a296368b39b3222"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドが使用していたリソースを開放する <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>生成したスレッドを管理するクラス </p>
+</div><h2>関数</h2>
+<a class="anchor" id="aabce8484d8bf02b848cb73eb49bfd686"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_handle::wait </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>dwMilliseconds</em> = <code>INFINITE</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッドが終了するか，タイムアウトが発生するまで待機する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">dwMilliseconds</td><td>… タイムアウト時間（ミリ秒単位） </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__thread__group.html#ga15b1f1c5d9e6494e6aca9071050a2ca7">mist::wait_thread()</a>.</p>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="thread_8h_source.html">thread.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

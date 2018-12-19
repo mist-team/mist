@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>tensor.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">tensor.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Tensor classes for higher-order singular value decomposition.  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="matrix_8h_source.html">matrix.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="numeric_8h_source.html">numeric.h</a>&quot;</code><br/>
+<code>#include &lt;numeric&gt;</code><br/>
+<code>#include &lt;functional&gt;</code><br/>
+</div>
+<p><a href="tensor_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1tensor.html">mist::tensor&lt; M, V, A &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tensor class.  <a href="classmist_1_1tensor.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ab9fb1569d902b877a7ad34c8ff42d650"><td class="memTemplParams" colspan="2">template&lt;int M, typename V , typename A &gt; </td></tr>
+<tr class="memitem:ab9fb1569d902b877a7ad34c8ff42d650"><td class="memTemplItemLeft" align="right" valign="top">tensor&lt; M, V, A &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#ab9fb1569d902b877a7ad34c8ff42d650">mist::operator+</a> (const tensor&lt; M, V, A &gt; &amp;t1, const tensor&lt; M, V, A &gt; &amp;t2)</td></tr>
+<tr class="memdesc:ab9fb1569d902b877a7ad34c8ff42d650"><td class="mdescLeft">&#160;</td><td class="mdescRight">addition operator to calculate summation of two tensors  <a href="#ab9fb1569d902b877a7ad34c8ff42d650"></a><br/></td></tr>
+<tr class="memitem:a37610ff35a42dc00727926aa2422603c"><td class="memTemplParams" colspan="2">template&lt;int M, typename V , typename A &gt; </td></tr>
+<tr class="memitem:a37610ff35a42dc00727926aa2422603c"><td class="memTemplItemLeft" align="right" valign="top">tensor&lt; M, V, A &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a37610ff35a42dc00727926aa2422603c">mist::operator-</a> (const tensor&lt; M, V, A &gt; &amp;t1, const tensor&lt; M, V, A &gt; &amp;t2)</td></tr>
+<tr class="memdesc:a37610ff35a42dc00727926aa2422603c"><td class="mdescLeft">&#160;</td><td class="mdescRight">subtraction operator to calculate difference betwwen two tensors  <a href="#a37610ff35a42dc00727926aa2422603c"></a><br/></td></tr>
+<tr class="memitem:ada03b8c07dc2afd518e2195778b69843"><td class="memTemplParams" colspan="2">template&lt;int M, typename V , typename A &gt; </td></tr>
+<tr class="memitem:ada03b8c07dc2afd518e2195778b69843"><td class="memTemplItemLeft" align="right" valign="top">tensor&lt; M, V, A &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#ada03b8c07dc2afd518e2195778b69843">mist::operator*</a> (const tensor&lt; M, V, A &gt; &amp;t, const typename type_trait&lt; V &gt;::value_type &amp;v)</td></tr>
+<tr class="memdesc:ada03b8c07dc2afd518e2195778b69843"><td class="mdescLeft">&#160;</td><td class="mdescRight">multiplication operator to calculate product of a tensor and a value  <a href="#ada03b8c07dc2afd518e2195778b69843"></a><br/></td></tr>
+<tr class="memitem:a694eede7a367296762843fd1a6d6c213"><td class="memTemplParams" colspan="2">template&lt;int M, typename V , typename A &gt; </td></tr>
+<tr class="memitem:a694eede7a367296762843fd1a6d6c213"><td class="memTemplItemLeft" align="right" valign="top">tensor&lt; M, V, A &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a694eede7a367296762843fd1a6d6c213">mist::operator*</a> (const typename type_trait&lt; V &gt;::value_type &amp;v, const tensor&lt; M, V, A &gt; &amp;t)</td></tr>
+<tr class="memdesc:a694eede7a367296762843fd1a6d6c213"><td class="mdescLeft">&#160;</td><td class="mdescRight">multiplication operator to calculate product of a value and a tensor  <a href="#a694eede7a367296762843fd1a6d6c213"></a><br/></td></tr>
+<tr class="memitem:ae76e32fb5ed29261feca6558fed16642"><td class="memTemplParams" colspan="2">template&lt;int M, typename V , typename A &gt; </td></tr>
+<tr class="memitem:ae76e32fb5ed29261feca6558fed16642"><td class="memTemplItemLeft" align="right" valign="top">tensor&lt; M, V, A &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#ae76e32fb5ed29261feca6558fed16642">mist::operator/</a> (const tensor&lt; M, V, A &gt; &amp;t, const typename type_trait&lt; V &gt;::value_type &amp;v)</td></tr>
+<tr class="memdesc:ae76e32fb5ed29261feca6558fed16642"><td class="mdescLeft">&#160;</td><td class="mdescRight">division operator to calculate quotient of a tensor and a value  <a href="#ae76e32fb5ed29261feca6558fed16642"></a><br/></td></tr>
+<tr class="memitem:abc313580631612db62b33ba97db28e82"><td class="memTemplParams" colspan="2">template&lt;int M, typename V , typename A &gt; </td></tr>
+<tr class="memitem:abc313580631612db62b33ba97db28e82"><td class="memTemplItemLeft" align="right" valign="top">inline::std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#abc313580631612db62b33ba97db28e82">mist::operator&lt;&lt;</a> (::std::ostream &amp;o, const tensor&lt; M, V, A &gt; &amp;t)</td></tr>
+<tr class="memdesc:abc313580631612db62b33ba97db28e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">output stream operator  <a href="#abc313580631612db62b33ba97db28e82"></a><br/></td></tr>
+<tr class="memitem:afeb4393ea1a69bfbabde03b68dace5c6"><td class="memTemplParams" colspan="2">template&lt;typename TV , typename TA , typename MV , typename MA &gt; </td></tr>
+<tr class="memitem:afeb4393ea1a69bfbabde03b68dace5c6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#afeb4393ea1a69bfbabde03b68dace5c6">mist::hosvd</a> (const tensor&lt; 2, TV, TA &gt; &amp;t, tensor&lt; 2, TV, TA &gt; &amp;z, matrix&lt; MV, MA &gt; &amp;u1, matrix&lt; MV, MA &gt; &amp;u2)</td></tr>
+<tr class="memdesc:afeb4393ea1a69bfbabde03b68dace5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">apply higher order singular value decomposition (HOSVD) to a 2nd order tensor  <a href="#afeb4393ea1a69bfbabde03b68dace5c6"></a><br/></td></tr>
+<tr class="memitem:a2264c6a7020ead7e633ab9d993414be3"><td class="memTemplParams" colspan="2">template&lt;typename TV , typename TA , typename MV , typename MA &gt; </td></tr>
+<tr class="memitem:a2264c6a7020ead7e633ab9d993414be3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a2264c6a7020ead7e633ab9d993414be3">mist::hosvd</a> (const tensor&lt; 3, TV, TA &gt; &amp;t, tensor&lt; 3, TV, TA &gt; &amp;z, matrix&lt; MV, MA &gt; &amp;u1, matrix&lt; MV, MA &gt; &amp;u2, matrix&lt; MV, MA &gt; &amp;u3)</td></tr>
+<tr class="memdesc:a2264c6a7020ead7e633ab9d993414be3"><td class="mdescLeft">&#160;</td><td class="mdescRight">apply higher order singular value decomposition (HOSVD) to a 3rd order tensor  <a href="#a2264c6a7020ead7e633ab9d993414be3"></a><br/></td></tr>
+<tr class="memitem:a84544efc033853ec645e806f2c61cc14"><td class="memTemplParams" colspan="2">template&lt;typename TV , typename TA , typename MV , typename MA &gt; </td></tr>
+<tr class="memitem:a84544efc033853ec645e806f2c61cc14"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a84544efc033853ec645e806f2c61cc14">mist::hosvd</a> (const tensor&lt; 4, TV, TA &gt; &amp;t, tensor&lt; 4, TV, TA &gt; &amp;z, matrix&lt; MV, MA &gt; &amp;u1, matrix&lt; MV, MA &gt; &amp;u2, matrix&lt; MV, MA &gt; &amp;u3, matrix&lt; MV, MA &gt; &amp;u4)</td></tr>
+<tr class="memdesc:a84544efc033853ec645e806f2c61cc14"><td class="mdescLeft">&#160;</td><td class="mdescRight">apply higher order singular value decomposition (HOSVD) to a 4th order tensor  <a href="#a84544efc033853ec645e806f2c61cc14"></a><br/></td></tr>
+<tr class="memitem:a42b408762e7f1956b79d9bf683d85a03"><td class="memTemplParams" colspan="2">template&lt;typename TV , typename TA , typename MV , typename MA &gt; </td></tr>
+<tr class="memitem:a42b408762e7f1956b79d9bf683d85a03"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a42b408762e7f1956b79d9bf683d85a03">mist::hosvd</a> (const tensor&lt; 5, TV, TA &gt; &amp;t, tensor&lt; 5, TV, TA &gt; &amp;z, matrix&lt; MV, MA &gt; &amp;u1, matrix&lt; MV, MA &gt; &amp;u2, matrix&lt; MV, MA &gt; &amp;u3, matrix&lt; MV, MA &gt; &amp;u4, matrix&lt; MV, MA &gt; &amp;u5)</td></tr>
+<tr class="memdesc:a42b408762e7f1956b79d9bf683d85a03"><td class="mdescLeft">&#160;</td><td class="mdescRight">apply higher order singular value decomposition (HOSVD) to a 5th order tensor  <a href="#a42b408762e7f1956b79d9bf683d85a03"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>Tensor classes for higher-order singular value decomposition. </p>
+<p>2nd, 3rd, 4th, and 5th order tensors are available. </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

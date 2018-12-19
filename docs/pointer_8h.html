@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>pointer.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_a2627e7237515a7c75baa232ceab4ab6.html">config</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">pointer.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>メモリの自動開放などを行うためのクラス  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">mist_conf.h</a>&quot;</code><br/>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;map&gt;</code><br/>
+</div>
+<p><a href="pointer_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__ptr.html">mist::scoped_ptr&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">オブジェクトのスコープが切れると自動的にメモリ開放を行うポインタ  <a href="classmist_1_1scoped__ptr.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__array.html">mist::scoped_array&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">オブジェクトのスコープが切れると配列用に確保したメモリの自動開放を行うポインタ  <a href="classmist_1_1scoped__array.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1shared__ptr.html">mist::shared_ptr&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">オブジェクトへのポインタの参照カウントを管理し，どこからも参照されなくなったときにメモリを自動開放するポインタ  <a href="classmist_1_1shared__ptr.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1shared__array.html">mist::shared_array&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">配列へのポインタの参照カウントを管理し，どこからも参照されなくなったときにメモリを自動開放するポインタ  <a href="classmist_1_1shared__array.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html">mist::weak_ptr&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">参照カウント型のメモリに対する，弱参照を扱うポインタ  <a href="classmist_1_1weak__ptr.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gaf90e47036597033717e42b8286ccd5d3"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gaf90e47036597033717e42b8286ccd5d3"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__pointer__group.html#gaf90e47036597033717e42b8286ccd5d3">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const scoped_ptr&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:gaf90e47036597033717e42b8286ccd5d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームにデータを出力する  <a href="group__pointer__group.html#gaf90e47036597033717e42b8286ccd5d3"></a><br/></td></tr>
+<tr class="memitem:gaa2b4fcbf7a35c25fac85ca1c0602233b"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gaa2b4fcbf7a35c25fac85ca1c0602233b"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__pointer__group.html#gaa2b4fcbf7a35c25fac85ca1c0602233b">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const scoped_array&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:gaa2b4fcbf7a35c25fac85ca1c0602233b"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームにデータを出力する  <a href="group__pointer__group.html#gaa2b4fcbf7a35c25fac85ca1c0602233b"></a><br/></td></tr>
+<tr class="memitem:ga75565937dcb5994322a042afaaaacd88"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga75565937dcb5994322a042afaaaacd88"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__pointer__group.html#ga75565937dcb5994322a042afaaaacd88">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const shared_ptr&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:ga75565937dcb5994322a042afaaaacd88"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームにデータを出力する  <a href="group__pointer__group.html#ga75565937dcb5994322a042afaaaacd88"></a><br/></td></tr>
+<tr class="memitem:ga03667d8703c1a984638bc5c6346a9fb9"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga03667d8703c1a984638bc5c6346a9fb9"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__pointer__group.html#ga03667d8703c1a984638bc5c6346a9fb9">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const weak_ptr&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:ga03667d8703c1a984638bc5c6346a9fb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームにデータを出力する  <a href="group__pointer__group.html#ga03667d8703c1a984638bc5c6346a9fb9"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>メモリの自動開放などを行うためのクラス </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

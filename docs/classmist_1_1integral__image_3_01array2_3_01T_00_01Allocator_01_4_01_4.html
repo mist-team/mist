@@ -1,0 +1,518 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::integral_image&lt; array2&lt; T, Allocator &gt; &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html">integral_image< array2< T, Allocator > ></a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::integral_image&lt; array2&lt; T, Allocator &gt; &gt;<div class="ingroups"><a class="el" href="group__integral__image__group.html">Integral Image</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>2次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス  
+ <a href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="integral__image_8h_source.html">integral_image.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a7cf366caea99f342a5d5ffb915e423c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7cf366caea99f342a5d5ffb915e423c2"></a>
+typedef <a class="el" href="classmist_1_1array2.html#aa5313c89ecfb31af506d776f332292c1">image_type::size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a></td></tr>
+<tr class="memdesc:a7cf366caea99f342a5d5ffb915e423c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:aae0fea31aca56d216b584f65bbfd7b7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae0fea31aca56d216b584f65bbfd7b7d"></a>
+typedef <a class="el" href="classmist_1_1array2.html#a0c3f03360936c12ddff3bbbe33257b84">image_type::difference_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d">difference_type</a></td></tr>
+<tr class="memdesc:aae0fea31aca56d216b584f65bbfd7b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:ab47feb72b1ac0cae53063651c6e69340"><td class="memItemLeft" align="right" valign="top">value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#ab47feb72b1ac0cae53063651c6e69340">operator()</a> (const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a> begin_i, const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a> begin_j, const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a> <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a486ebc4c6f858d57bd7dde6144e321d4">width</a>, const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a> <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a44541528432ff538414646e006a394a9">height</a>) const </td></tr>
+<tr class="memdesc:ab47feb72b1ac0cae53063651c6e69340"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の矩形領域内の画素の総和を返す：O(1)  <a href="#ab47feb72b1ac0cae53063651c6e69340"></a><br/></td></tr>
+<tr class="memitem:ad6c469de921e44dce75b87e4398d5b46"><td class="memItemLeft" align="right" valign="top">const value_type &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#ad6c469de921e44dce75b87e4398d5b46">operator()</a> (const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d">difference_type</a> i, const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d">difference_type</a> j) const </td></tr>
+<tr class="memdesc:ad6c469de921e44dce75b87e4398d5b46"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の位置の積分値を返す  <a href="#ad6c469de921e44dce75b87e4398d5b46"></a><br/></td></tr>
+<tr class="memitem:a1f67be7c08f1f46897312f320dfda7d8"><td class="memItemLeft" align="right" valign="top">value_type &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a1f67be7c08f1f46897312f320dfda7d8">operator()</a> (const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d">difference_type</a> i, const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d">difference_type</a> j)</td></tr>
+<tr class="memdesc:a1f67be7c08f1f46897312f320dfda7d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意の位置の積分値を返す  <a href="#a1f67be7c08f1f46897312f320dfda7d8"></a><br/></td></tr>
+<tr class="memitem:ab6fe913ffcf2dac0ca2355adedbf4e60"><td class="memItemLeft" align="right" valign="top">value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#ab6fe913ffcf2dac0ca2355adedbf4e60">overall</a> () const </td></tr>
+<tr class="memdesc:ab6fe913ffcf2dac0ca2355adedbf4e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">全ての画素値の総和を返す：O(1)  <a href="#ab6fe913ffcf2dac0ca2355adedbf4e60"></a><br/></td></tr>
+<tr class="memitem:a4c0f259d04d961472021f9bf51a3343e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a4c0f259d04d961472021f9bf51a3343e">size1</a> () const </td></tr>
+<tr class="memdesc:a4c0f259d04d961472021f9bf51a3343e"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像配列のi方向のサイズを返す  <a href="#a4c0f259d04d961472021f9bf51a3343e"></a><br/></td></tr>
+<tr class="memitem:a18273fae3a046bbeb4a3dbd621caa82b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a18273fae3a046bbeb4a3dbd621caa82b">size2</a> () const </td></tr>
+<tr class="memdesc:a18273fae3a046bbeb4a3dbd621caa82b"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像配列のj方向のサイズを返す  <a href="#a18273fae3a046bbeb4a3dbd621caa82b"></a><br/></td></tr>
+<tr class="memitem:a486ebc4c6f858d57bd7dde6144e321d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a486ebc4c6f858d57bd7dde6144e321d4">width</a> () const </td></tr>
+<tr class="memdesc:a486ebc4c6f858d57bd7dde6144e321d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像配列のi方向のサイズを返す  <a href="#a486ebc4c6f858d57bd7dde6144e321d4"></a><br/></td></tr>
+<tr class="memitem:a44541528432ff538414646e006a394a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a44541528432ff538414646e006a394a9">height</a> () const </td></tr>
+<tr class="memdesc:a44541528432ff538414646e006a394a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像配列のj方向のサイズを返す  <a href="#a44541528432ff538414646e006a394a9"></a><br/></td></tr>
+<tr class="memitem:a6078b39a077ceecec5be3a37a5b1c096"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a6078b39a077ceecec5be3a37a5b1c096">size</a> () const </td></tr>
+<tr class="memdesc:a6078b39a077ceecec5be3a37a5b1c096"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像配列のサイズを返す  <a href="#a6078b39a077ceecec5be3a37a5b1c096"></a><br/></td></tr>
+<tr class="memitem:af9cf960cb2f1bb6c80d92c5a31aad37d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#af9cf960cb2f1bb6c80d92c5a31aad37d">construct_integral_array</a> (const <a class="el" href="classmist_1_1array2.html">image_type</a> &amp;in)</td></tr>
+<tr class="memdesc:af9cf960cb2f1bb6c80d92c5a31aad37d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integral Image の構築：O(n)  <a href="#af9cf960cb2f1bb6c80d92c5a31aad37d"></a><br/></td></tr>
+<tr class="memitem:a24cfbfe2b1815e49158980702461b631"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a24cfbfe2b1815e49158980702461b631">integral_image</a> (const <a class="el" href="classmist_1_1array2.html">image_type</a> &amp;in)</td></tr>
+<tr class="memdesc:a24cfbfe2b1815e49158980702461b631"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンストラクタ  <a href="#a24cfbfe2b1815e49158980702461b631"></a><br/></td></tr>
+<tr class="memitem:ae7a6886f673842d08224bfcdbb470c99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7a6886f673842d08224bfcdbb470c99"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#ae7a6886f673842d08224bfcdbb470c99">integral_image</a> ()</td></tr>
+<tr class="memdesc:ae7a6886f673842d08224bfcdbb470c99"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトコンストラクタ <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;typename T, typename Allocator&gt;<br/>
+class mist::integral_image&lt; array2&lt; T, Allocator &gt; &gt;</h3>
+
+<p>2次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス </p>
+<p>画素数nに対してO(n)の前計算を行うことにより，任意の矩形領域の画素値の総和をO(1)で算出する 同一の画像配列中の複数の異なる矩形領域に対して、総和を計算する必要がある場合などに有効</p>
+<p><a class="el" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array</a>, <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">mist::array1</a>, <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>, mist::array3に対応． </p>
+<dl class="section attention"><dt>注意</dt><dd>入力のデータ型は、算術型，mist::rgb&lt; 算術型 &gt;のみ対応． </dd>
+<dd>
+得られる画素値の総和のデータ型は，入力のデータ型に依存して変化． </dd>
+<dd>
+入力型：符号無し整数 → 画素値の総和型：size_t </dd>
+<dd>
+入力型：符号付き整数 → 画素値の総和型：int </dd>
+<dd>
+入力型：浮動小数点 → 画素値の総和型：double </dd>
+<dd>
+<a class="el" href="structmist_1_1rgb.html" title="カラー画像用の画素">mist::rgb</a>&lt; 入力型 &gt; → <a class="el" href="structmist_1_1rgb.html" title="カラー画像用の画素">mist::rgb</a>&lt; 画素値の総和型 &gt;</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>… 入力のデータ型（ double や mist::rgb&lt; unsigned char &gt; など ） </td></tr>
+    <tr><td class="paramname">Allocator</td><td>… MISTコンテナで使用するアロケータ</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"> 使用例</div>
+<div class="line"><span class="comment">// 画像配列（1-3次元）の用意</span></div>
+<div class="line"><a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2&lt; unsigned char &gt;</a> img;</div>
+<div class="line"><a class="code" href="group__image__bmp__group.html#ga3148e2d706b35385b98790966f6ff022" title="BMP画像をMISTコンテナに読み込む">mist::read_bmp</a>( img, <span class="stringliteral">&quot;img.bmp&quot;</span> );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// Integral Image の構築：O(n) （テンプレートの引数として入力配列の型を指定）</span></div>
+<div class="line"><a class="code" href="classmist_1_1integral__image.html" title="1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス">mist::integral_image&lt; mist::array2&lt; unsigned char &gt;</a> &gt; i_img( img );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 始点( 100, 200 ), サイズ( 50, 60 )の領域の画素値の総和を出力：O(1)</span></div>
+<div class="line">std::cout &lt;&lt; i_img( 100, 200, 50, 60 ) &lt;&lt; std::endl;</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 始点( 200, 100 ), サイズ( 60, 50 )の領域の画素値の総和を出力：O(1)</span></div>
+<div class="line">std::cout &lt;&lt; i_img( 200, 100, 60, 50 ) &lt;&lt; std::endl;</div>
+</div><!-- fragment --> </div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="a24cfbfe2b1815e49158980702461b631"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1integral__image.html">mist::integral_image</a>&lt; <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &gt;::<a class="el" href="classmist_1_1integral__image.html">integral_image</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array2.html">image_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンストラクタ </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 画像配列 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="af9cf960cb2f1bb6c80d92c5a31aad37d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1integral__image.html">mist::integral_image</a>&lt; <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &gt;::construct_integral_array </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array2.html">image_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Integral Image の構築：O(n) </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 画像配列 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea">mist::array2&lt; T, Allocator &gt;::height()</a>, と <a class="el" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99">mist::array2&lt; T, Allocator &gt;::width()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a44541528432ff538414646e006a394a9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a> <a class="el" href="classmist_1_1integral__image.html">mist::integral_image</a>&lt; <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &gt;::height </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像配列のj方向のサイズを返す </p>
+<dl class="section return"><dt>戻り値</dt><dd>j方向のサイズ </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab47feb72b1ac0cae53063651c6e69340"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">value_type <a class="el" href="classmist_1_1integral__image.html">mist::integral_image</a>&lt; <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a>&#160;</td>
+          <td class="paramname"><em>begin_i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a>&#160;</td>
+          <td class="paramname"><em>begin_j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a>&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a>&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>任意の矩形領域内の画素の総和を返す：O(1) </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">begin_i</td><td>… i方向の始点 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">begin_j</td><td>… j方向の始点 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">width</td><td>… i方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">height</td><td>… i方向のサイズ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>画素値の総和 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad6c469de921e44dce75b87e4398d5b46"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const value_type&amp; <a class="el" href="classmist_1_1integral__image.html">mist::integral_image</a>&lt; <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d">difference_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d">difference_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>任意の位置の積分値を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… i方向の始点 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… j方向の始点</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>画素値の総和 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a1f67be7c08f1f46897312f320dfda7d8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">value_type&amp; <a class="el" href="classmist_1_1integral__image.html">mist::integral_image</a>&lt; <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d">difference_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d">difference_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>任意の位置の積分値を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… i方向の始点 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… j方向の始点</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>画素値の総和 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab6fe913ffcf2dac0ca2355adedbf4e60"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">value_type <a class="el" href="classmist_1_1integral__image.html">mist::integral_image</a>&lt; <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &gt;::overall </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>全ての画素値の総和を返す：O(1) </p>
+<dl class="section return"><dt>戻り値</dt><dd>画素値の総和 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6078b39a077ceecec5be3a37a5b1c096"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a> <a class="el" href="classmist_1_1integral__image.html">mist::integral_image</a>&lt; <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &gt;::size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像配列のサイズを返す </p>
+<dl class="section return"><dt>戻り値</dt><dd>サイズ </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4c0f259d04d961472021f9bf51a3343e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a> <a class="el" href="classmist_1_1integral__image.html">mist::integral_image</a>&lt; <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &gt;::size1 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像配列のi方向のサイズを返す </p>
+<dl class="section return"><dt>戻り値</dt><dd>i方向のサイズ </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a18273fae3a046bbeb4a3dbd621caa82b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a> <a class="el" href="classmist_1_1integral__image.html">mist::integral_image</a>&lt; <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &gt;::size2 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像配列のj方向のサイズを返す </p>
+<dl class="section return"><dt>戻り値</dt><dd>j方向のサイズ </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a486ebc4c6f858d57bd7dde6144e321d4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">size_type</a> <a class="el" href="classmist_1_1integral__image.html">mist::integral_image</a>&lt; <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &gt;::width </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像配列のi方向のサイズを返す </p>
+<dl class="section return"><dt>戻り値</dt><dd>i方向のサイズ </dd></dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="integral__image_8h_source.html">integral_image.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

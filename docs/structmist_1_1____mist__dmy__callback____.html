@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>構造体 mist::__mist_dmy_callback__</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="structmist_1_1____mist__dmy__callback____.html">__mist_dmy_callback__</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">構造体 mist::__mist_dmy_callback__<div class="ingroups"><a class="el" href="group__callback__group.html">MIST全般で利用できるコールバック関数</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>MISTのアルゴリズム全般で利用するダミーコールバックファンクタ  
+ <a href="structmist_1_1____mist__dmy__callback____.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="mist__conf_8h_source.html">mist_conf.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:af42ef888d5fb6d38e40f21667531a2c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1____mist__dmy__callback____.html#af42ef888d5fb6d38e40f21667531a2c4">operator()</a> (long double) const </td></tr>
+<tr class="memdesc:af42ef888d5fb6d38e40f21667531a2c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのアルゴリズムの進行状況を，0〜100パーセントで受け取り，何もしない関数．  <a href="#af42ef888d5fb6d38e40f21667531a2c4"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>MISTのアルゴリズム全般で利用するダミーコールバックファンクタ </p>
+<p>MISTのアルゴリズムが提供するコールバックは0〜100の間の数を返し，アルゴリズムが終了する際に100よりも大きい数値を返す また，コールバックファンクタの戻り値が false の場合はMISTのアルゴリズムは処理を中断できる場合は中断し，直ちに制御を返します． その際に，途中の処理結果は失われるかもしくは意味のない結果となる可能性があります </p>
+</div><h2>関数</h2>
+<a class="anchor" id="af42ef888d5fb6d38e40f21667531a2c4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::__mist_dmy_callback__::operator() </td>
+          <td>(</td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>double</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>MISTのアルゴリズムの進行状況を，0〜100パーセントで受け取り，何もしない関数． </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">percent</td><td>… アルゴリズムの進行状況</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>true … アルゴリズムの実行を継続 </dd>
+<dd>
+false … ユーザー側からのキャンセルにより，アルゴリズムの実行を中止 </dd></dl>
+
+</div>
+</div>
+<hr/>この構造体の説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="mist__conf_8h_source.html">mist_conf.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

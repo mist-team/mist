@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>インターレス除去</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">インターレス除去</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga364a727ba4aeb449a5baa42b3c61cb21"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga364a727ba4aeb449a5baa42b3c61cb21"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__interlace__group.html#ga364a727ba4aeb449a5baa42b3c61cb21">mist::interlace</a> (const array2&lt; T, Allocator &gt; &amp;in, array2&lt; T, Allocator &gt; &amp;out, bool is_odd_line=false, bool is_row_interlace=true)</td></tr>
+<tr class="memdesc:ga364a727ba4aeb449a5baa42b3c61cb21"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元画像のインターレス除去を行う  <a href="#ga364a727ba4aeb449a5baa42b3c61cb21"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="interlace_8h.html" title="インターレスの解除を行うためのライブラリ">mist/filter/interlace.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga364a727ba4aeb449a5baa42b3c61cb21"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::interlace </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_odd_line</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_row_interlace</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>2次元画像のインターレス除去を行う </p>
+<p>偶数ライン・奇数ラインのどちらかを補間する </p>
+<dl class="section attention"><dt>注意</dt><dd>インターレス除去を行うためには，画像が2行以上でなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">is_odd_line</td><td>… 奇数ラインを偶数ラインで補間する場合は true，偶数ラインを奇数ラインで補間する場合は false を指定する </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">is_row_interlace</td><td>… 行方向を補間する場合は true，列方向を補間する場合は false を指定する</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>インターレス除去がうまくいったかどうか </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ネームスペース mist::gold</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="namespaces.html"><span>ネームスペース一覧</span></a></li>
+      <li><a href="namespacemembers.html"><span>ネームスペースメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1gold.html">gold</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ネームスペース mist::gold<div class="ingroups"><a class="el" href="group__minimization__group.html">関数の最小化</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>黄金分割を用いた極小値の1次元探索（1次収束）  
+<a href="#details">[詳細]</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:adb69f1d4d00e8930427bb3b78bb996e0"><td class="memTemplParams" colspan="2">template&lt;class Functor &gt; </td></tr>
+<tr class="memitem:adb69f1d4d00e8930427bb3b78bb996e0"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gold.html#adb69f1d4d00e8930427bb3b78bb996e0">minimization</a> (double a, double b, double &amp;x, Functor f, double tolerance, size_t &amp;iterations, size_t max_iterations, bool use_enclose=true)</td></tr>
+<tr class="memdesc:adb69f1d4d00e8930427bb3b78bb996e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">黄金分割を利用して，f(x)の極小値の一次元探索を行う（1次収束）  <a href="#adb69f1d4d00e8930427bb3b78bb996e0"></a><br/></td></tr>
+<tr class="memitem:a2d01ca5387ac3a166a33d2574375aab5"><td class="memTemplParams" colspan="2">template&lt;class Functor &gt; </td></tr>
+<tr class="memitem:a2d01ca5387ac3a166a33d2574375aab5"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1gold.html#a2d01ca5387ac3a166a33d2574375aab5">minimization</a> (double a, double b, double &amp;x, Functor f, double tolerance, size_t max_iterations=1000, bool use_enclose=true)</td></tr>
+<tr class="memdesc:a2d01ca5387ac3a166a33d2574375aab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">黄金分割を利用して，f(x)の極小値の一次元探索を行う（1次収束）  <a href="#a2d01ca5387ac3a166a33d2574375aab5"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>黄金分割を用いた極小値の1次元探索（1次収束） </p>
+</div><h2>関数</h2>
+<a class="anchor" id="adb69f1d4d00e8930427bb3b78bb996e0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::gold::minimization </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>iterations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_iterations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_enclose</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>黄金分割を利用して，f(x)の極小値の一次元探索を行う（1次収束） </p>
+<p>初期の極小を含むと思われる区間 [a, b] を適切に設定することで，収束を早めることができる</p>
+<dl class="section note"><dt>覚え書き</dt><dd>指定された区間 [a, b] 内での極小値を探索する </dd>
+<dd>
+区間内に極小が存在しない場合は，区間内で最小となる位置を出力する </dd>
+<dd>
+use_enclose を真に指定した場合は，最初に区間を拡張して極小を探索する（本ヘッダ内の enclose 関数を利用する）</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 区間の左端 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 区間の右端 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 極小を与える座標値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 評価関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 許容誤差 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">iterations</td><td>… 実際の反復回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_iterations</td><td>… 最大反復回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">use_enclose</td><td>… 極小をはさむ区間の更新を行うかどうか</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>極小を与える座標値における評価値 </dd></dl>
+
+<p>参照先 <a class="el" href="group__minimization__group.html#ga28809be0c956f7387194e4d474ace7e3">mist::enclose()</a>.</p>
+
+<p>参照元 <a class="el" href="namespacemist_1_1Tsai.html#a48d221829c8f3f8d436da82579a9853e">mist::Tsai::calibration()</a>, <a class="el" href="namespacemist_1_1gold.html#a2d01ca5387ac3a166a33d2574375aab5">minimization()</a>, <a class="el" href="namespacemist_1_1brent.html#a802b1b40e3b298af9ac5821f0ded9a97">mist::brent::minimization()</a>, <a class="el" href="namespacemist_1_1gradient__with__vector.html#a2ed576bc72c7901235c9f76bd562dcab">mist::gradient_with_vector::minimization()</a>, <a class="el" href="namespacemist_1_1gradient.html#ad8cd252b7422e9938fdc110d670af858">mist::gradient::minimization()</a>, <a class="el" href="namespacemist_1_1conjugate__gradient.html#af5d907332e5b217fee180c8ee3d288bc">mist::conjugate_gradient::minimization()</a>, <a class="el" href="namespacemist_1_1powell.html#a3d21729dfea7665138693b3d7af5aca2">mist::powell::minimization()</a>, <a class="el" href="namespacemist_1_1lucidi.html#a8bd5f6afb1009d9668c3bc418e940ca3">mist::lucidi::minimization()</a>, と <a class="el" href="namespacemist_1_1condor.html#a819d8df65034f30cd7c8582e50ee4f43">mist::condor::minimization()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2d01ca5387ac3a166a33d2574375aab5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::gold::minimization </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_iterations</em> = <code>1000</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_enclose</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>黄金分割を利用して，f(x)の極小値の一次元探索を行う（1次収束） </p>
+<p>初期の極小を含むと思われる区間 [a, b] を適切に設定することで，収束を早めることができる</p>
+<dl class="section note"><dt>覚え書き</dt><dd>指定された区間 [a, b] 内での極小値を探索する </dd>
+<dd>
+区間内に極小が存在しない場合は，区間内で最小となる位置を出力する </dd>
+<dd>
+use_enclose を真に指定した場合は，最初に区間を拡張して極小を探索する（本ヘッダ内の enclose 関数を利用する）</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 区間の左端 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 区間の右端 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>… 極小を与える座標値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 評価関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 許容誤差 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_iterations</td><td>… 最大反復回数，実際の反復回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">use_enclose</td><td>… 極小をはさむ区間の更新を行うかどうか</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>極小を与える座標値における評価値 </dd></dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1gold.html#adb69f1d4d00e8930427bb3b78bb996e0">minimization()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

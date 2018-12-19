@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::spline&lt; T, Allocator &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1spline.html">spline</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-methods">Protected メソッド</a> &#124;
+<a href="#pro-attribs">Protected 変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::spline&lt; T, Allocator &gt;<div class="ingroups"><a class="el" href="group__spline__group.html">3次スプライン曲線</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>3次スプライン曲線を扱うためのクラス  
+ <a href="classmist_1_1spline.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="spline_8h_source.html">spline.h</a>&gt;</code></p>
+
+<p>std::vector&lt; T &gt;を継承しています。</p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a10fa966bb67658702b442a51683eb5ff"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#a10fa966bb67658702b442a51683eb5ff">SplineMode</a> { <a class="el" href="classmist_1_1spline.html#a10fa966bb67658702b442a51683eb5ffad1ff2663b1f696a0225a60cf3e9caf41">CLOSED</a>, 
+<a class="el" href="classmist_1_1spline.html#a10fa966bb67658702b442a51683eb5ffa66756c8abf0ed1b75fc567ad6d64eab9">OPEN</a>
+ }</td></tr>
+<tr class="memdesc:a10fa966bb67658702b442a51683eb5ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次スプラインを描画する際のパラメータ  <a href="classmist_1_1spline.html#a10fa966bb67658702b442a51683eb5ff">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a8fdf70b7340e9c23dc8ec612bc6fe039"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8fdf70b7340e9c23dc8ec612bc6fe039"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#a8fdf70b7340e9c23dc8ec612bc6fe039">construct_spline</a> ()</td></tr>
+<tr class="memdesc:a8fdf70b7340e9c23dc8ec612bc6fe039"><td class="mdescLeft">&#160;</td><td class="mdescRight">スプラインを描画する前に必ず呼び出す <br/></td></tr>
+<tr class="memitem:ad20d3efb90f9907d9a4d10f0e98356ed"><td class="memItemLeft" align="right" valign="top">value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#ad20d3efb90f9907d9a4d10f0e98356ed">operator()</a> (double t)</td></tr>
+<tr class="memdesc:ad20d3efb90f9907d9a4d10f0e98356ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定された位置（区間０〜１）に対応する，3次スプライン補間結果を返す  <a href="#ad20d3efb90f9907d9a4d10f0e98356ed"></a><br/></td></tr>
+<tr class="memitem:a3be7e3c278065475d0f39e6300480f81"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3be7e3c278065475d0f39e6300480f81"></a>
+<a class="el" href="classmist_1_1spline.html#a10fa966bb67658702b442a51683eb5ff">SplineMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#a3be7e3c278065475d0f39e6300480f81">mode</a> () const </td></tr>
+<tr class="memdesc:a3be7e3c278065475d0f39e6300480f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">スプライン曲線の種類を取得 <br/></td></tr>
+<tr class="memitem:a04062c6870dd5332197a903da5dae140"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a04062c6870dd5332197a903da5dae140"></a>
+<a class="el" href="classmist_1_1spline.html#a10fa966bb67658702b442a51683eb5ff">SplineMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#a04062c6870dd5332197a903da5dae140">mode</a> (<a class="el" href="classmist_1_1spline.html#a10fa966bb67658702b442a51683eb5ff">SplineMode</a> m)</td></tr>
+<tr class="memdesc:a04062c6870dd5332197a903da5dae140"><td class="mdescLeft">&#160;</td><td class="mdescRight">スプライン曲線の種類を設定 <br/></td></tr>
+<tr class="memitem:a8f5b11b6a7efd5325eefa85225418004"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f5b11b6a7efd5325eefa85225418004"></a>
+const <a class="el" href="classmist_1_1spline.html">spline</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#a8f5b11b6a7efd5325eefa85225418004">operator=</a> (const <a class="el" href="classmist_1_1spline.html">spline</a> &amp;b)</td></tr>
+<tr class="memdesc:a8f5b11b6a7efd5325eefa85225418004"><td class="mdescLeft">&#160;</td><td class="mdescRight">代入演算子 <br/></td></tr>
+<tr class="memitem:ab32ebabfc2afd22d6a36dec948c3062e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab32ebabfc2afd22d6a36dec948c3062e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#ab32ebabfc2afd22d6a36dec948c3062e">spline</a> (const <a class="el" href="classmist_1_1spline.html">spline</a> &amp;b)</td></tr>
+<tr class="memdesc:ab32ebabfc2afd22d6a36dec948c3062e"><td class="mdescLeft">&#160;</td><td class="mdescRight">コピーコンストラクタ <br/></td></tr>
+<tr class="memitem:a7eb196037491b8b0bf897be1dffb1bf7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#a7eb196037491b8b0bf897be1dffb1bf7">spline</a> ()</td></tr>
+<tr class="memdesc:a7eb196037491b8b0bf897be1dffb1bf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのコンストラクタ  <a href="#a7eb196037491b8b0bf897be1dffb1bf7"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr class="memitem:a9c445a96b4072692d26ab9ea200d52c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c445a96b4072692d26ab9ea200d52c8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#a9c445a96b4072692d26ab9ea200d52c8">closed_spline</a> ()</td></tr>
+<tr class="memdesc:a9c445a96b4072692d26ab9ea200d52c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">閉曲線の各制御点上での微係数を計算する <br/></td></tr>
+<tr class="memitem:ac7d676328f643ac56531b31608e36a8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7d676328f643ac56531b31608e36a8e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#ac7d676328f643ac56531b31608e36a8e">open_spline</a> ()</td></tr>
+<tr class="memdesc:ac7d676328f643ac56531b31608e36a8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">開曲線の各制御点上での1次微係数を計算する <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected 変数</h2></td></tr>
+<tr class="memitem:aaa2620805d1ec53f7d5e5d3c9cd533fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa2620805d1ec53f7d5e5d3c9cd533fc"></a>
+<a class="el" href="classmist_1_1spline.html#a10fa966bb67658702b442a51683eb5ff">SplineMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#aaa2620805d1ec53f7d5e5d3c9cd533fc">mode_</a></td></tr>
+<tr class="memdesc:aaa2620805d1ec53f7d5e5d3c9cd533fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">スプライン曲線の設定 <br/></td></tr>
+<tr class="memitem:a818bc67b08ae672d37ecf61f4ae75858"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a818bc67b08ae672d37ecf61f4ae75858"></a>
+point_list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1spline.html#a818bc67b08ae672d37ecf61f4ae75858">p1_</a></td></tr>
+<tr class="memdesc:a818bc67b08ae672d37ecf61f4ae75858"><td class="mdescLeft">&#160;</td><td class="mdescRight">各制御点上での微係数 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_classstd_1_1vector"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classstd_1_1vector')"><img src="closed.png" alt="-"/>&nbsp;変数 inherited from <a class="el" href="classstd_1_1vector.html">std::vector< T ></a></td></tr>
+<tr class="memitem:a2396209900e8f592db1f0b2467f7d899 inherit pub_attribs_classstd_1_1vector"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2396209900e8f592db1f0b2467f7d899"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>elements</b></td></tr>
+<tr class="memdesc:a2396209900e8f592db1f0b2467f7d899 inherit pub_attribs_classstd_1_1vector"><td class="mdescLeft">&#160;</td><td class="mdescRight">STL member. <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt;<br/>
+class mist::spline&lt; T, Allocator &gt;</h3>
+
+<p>3次スプライン曲線を扱うためのクラス </p>
+<p>3次スプライン曲線を描画可能．可変個数の制御点に対応し，開曲線と閉曲線の3次スプライン曲線を描画</p>
+<dl class="section attention"><dt>注意</dt><dd>入力されるデータ型が，四則演算（要素同士の点演算，単一のスカラー値を全てに代入する操作）をサポートする必要がある． </dd>
+<dd>
+ただし，vector2，vector3 は正しく動作するようになっている． </dd>
+<dd>
+array 等のMISTコンテナを利用する際には，オペレータを有効にする必要がある．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>… 各制御点・補間点を表すデータ構造を指定（double や <a class="el" href="classmist_1_1vector3.html">vector3&lt; double &gt;</a> など）</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"> 3次スプライン曲線の作成例</div>
+<div class="line"><span class="comment">// 3次で変数の型が double の3次スプラインを作成する</span></div>
+<div class="line"><a class="code" href="classmist_1_1spline.html" title="3次スプライン曲線を扱うためのクラス">mist::spline&lt; double &gt;</a> b;</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 制御点を追加</span></div>
+<div class="line">b.push_back( 2.0 );</div>
+<div class="line">b.push_back( 3.0 );</div>
+<div class="line">...</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 曲線の種類を以下の方法のいずれかを用いて設定</span></div>
+<div class="line"><span class="comment">// ・閉曲線の設定</span></div>
+<div class="line">b.<a class="code" href="classmist_1_1spline.html#a3be7e3c278065475d0f39e6300480f81" title="スプライン曲線の種類を取得">mode</a>( <a class="code" href="classmist_1_1spline.html" title="3次スプライン曲線を扱うためのクラス">mist::spline&lt; double &gt;::CLOSED</a> );</div>
+<div class="line"><span class="comment">// ・最初と最後の制御点を通る場合の設定</span></div>
+<div class="line">b.mode( <a class="code" href="classmist_1_1spline.html" title="3次スプライン曲線を扱うためのクラス">mist::spline&lt; double &gt;::OPEN</a> );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// スプラインを描画する前に必ず呼び出す</span></div>
+<div class="line">b.construct_spline( );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 補間点を計算（区間は０〜１）</span></div>
+<div class="line"><span class="keywordtype">double</span> p1 = b( 0.0 );</div>
+<div class="line"><span class="keywordtype">double</span> p2 = b( 0.4 );</div>
+<div class="line"><span class="keywordtype">double</span> p3 = b( 0.7 );</div>
+<div class="line">...</div>
+</div><!-- fragment --> </div><h2>列挙型</h2>
+<a class="anchor" id="a10fa966bb67658702b442a51683eb5ff"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator  = std::allocator&lt; T &gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classmist_1_1spline.html#a10fa966bb67658702b442a51683eb5ff">mist::spline::SplineMode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>3次スプラインを描画する際のパラメータ </p>
+<dl><dt><b>列挙型の値: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="a10fa966bb67658702b442a51683eb5ffad1ff2663b1f696a0225a60cf3e9caf41"></a>CLOSED</em>&nbsp;</td><td>
+<p>閉曲線の設定 </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a10fa966bb67658702b442a51683eb5ffa66756c8abf0ed1b75fc567ad6d64eab9"></a>OPEN</em>&nbsp;</td><td>
+<p>開曲線の設定 </p>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+</div>
+</div>
+<h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="a7eb196037491b8b0bf897be1dffb1bf7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator  = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1spline.html">mist::spline</a>&lt; T, Allocator &gt;::<a class="el" href="classmist_1_1spline.html">spline</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>デフォルトのコンストラクタ </p>
+<p>デフォルト値を「開曲線」に設定する </p>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="ad20d3efb90f9907d9a4d10f0e98356ed"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator  = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">value_type <a class="el" href="classmist_1_1spline.html">mist::spline</a>&lt; T, Allocator &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定された位置（区間０〜１）に対応する，3次スプライン補間結果を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>… 全体の曲線を区間０〜１とした時に，補間される点の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された点の位置に対応する3次スプライン曲線の補間結果 </dd></dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="spline_8h_source.html">spline.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

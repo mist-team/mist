@@ -1,0 +1,474 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>integral_image.h ソースファイル</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">integral_image.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="integral__image_8h.html">説明を見る。</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Copyright (c) 2003-2011, MIST Project, Nagoya University</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// All rights reserved.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// Redistribution and use in source and binary forms, with or without modification,</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// are permitted provided that the following conditions are met:</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// 1. Redistributions of source code must retain the above copyright notice,</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// this list of conditions and the following disclaimer.</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// 2. Redistributions in binary form must reproduce the above copyright notice,</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// this list of conditions and the following disclaimer in the documentation</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// and/or other materials provided with the distribution.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// 3. Neither the name of the Nagoya University nor the names of its contributors</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// may be used to endorse or promote products derived from this software</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// without specific prior written permission.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_INTEGRAL_IMAGE_H__</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __INCLUDE_INTEGRAL_IMAGE_H__</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_H__</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="mist_8h.html" title="MISTの基本となる音声・画像を扱うコンテナ">mist.h</a>&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="type__trait_8h.html" title="型の情報を取得・判定するためのライブラリ">config/type_trait.h</a>&quot;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_COLOR_H__</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="color_8h.html" title="カラーデータを扱うためのクラス群">config/color.h</a>&quot;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// mist名前空間の始まり</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<a class="code" href="mist__conf_8h.html#a7895efefff8bac18aad4afb2a3154927" title="MIST名前空間の始まり">_MIST_BEGIN</a></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// 入力のデータ型から画素値の総和のデータ型を決定するためのクラス</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">namespace </span>__integral_image__</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">class</span> T, <span class="keywordtype">bool</span> Is_decimal, <span class="keywordtype">bool</span> Is_color &gt; <span class="keyword">struct </span>integral_type                    { <span class="keyword">typedef</span> <span class="keyword">typename</span> T::template rebind&lt; double &gt;::other      type; };</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">class</span> T &gt;                                 <span class="keyword">struct </span>integral_type&lt; T, false, true &gt;  { <span class="keyword">typedef</span> <span class="keyword">typename</span> T::template rebind&lt; ptrdiff_t &gt;::other   type; };</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">class</span> T &gt;                                 <span class="keyword">struct </span>integral_type&lt; T, true,  false &gt; { <span class="keyword">typedef</span> <span class="keywordtype">double</span>            type; };</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">class</span> T &gt;                                 <span class="keyword">struct </span>integral_type&lt; T, false, false &gt; { <span class="keyword">typedef</span> ptrdiff_t         type; };</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> Array &gt;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image.html">   78</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmist_1_1integral__image.html" title="1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス">integral_image</a></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html">  125</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmist_1_1integral__image.html" title="1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス">integral_image</a>&lt; <a class="code" href="classmist_1_1array.html" title="要素数が可変の1次元配列">array</a>&lt; T, Allocator &gt; &gt;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;{</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> __integral_image__::integral_type&lt; T, is_float&lt; T &gt;::value, <a class="code" href="structmist_1_1is__color.html" title="入力された型がカラー画像かどうか調べる">is_color&lt; T &gt;::value</a> &gt;::type value_type;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classmist_1_1array.html">array&lt; value_type &gt;</a> <a class="code" href="classmist_1_1array.html">integral_image_type</a>;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classmist_1_1array.html" title="要素数が可変の1次元配列">array&lt; T, Allocator &gt;</a> <a class="code" href="classmist_1_1array.html" title="要素数が可変の1次元配列">image_type</a>;</div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a1c728e4e24fe2ade1945d3cb61bb5a7c">  131</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> <a class="code" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">image_type::size_type</a> <a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a1c728e4e24fe2ade1945d3cb61bb5a7c" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a>;               </div>
+<div class="line"><a name="l00132"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a8e4bf946f196ee339e25aa44cc39a7e1">  132</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> <a class="code" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">image_type::difference_type</a> <a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a8e4bf946f196ee339e25aa44cc39a7e1" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a>;   </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <a class="code" href="classmist_1_1array.html">integral_image_type</a> integral_;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a47dadf3ad4d83a3270024642aa74c820">  146</a></span>&#160;    value_type operator ( )( <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a1c728e4e24fe2ade1945d3cb61bb5a7c" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> begin, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a1c728e4e24fe2ade1945d3cb61bb5a7c" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> size ) <span class="keyword">const</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    {</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">return</span>( integral_( begin + size ) - integral_( begin ) );</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#ad74faaa0c898964ae3a99b6822308554">  157</a></span>&#160;    value_type operator ( )( <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a8e4bf946f196ee339e25aa44cc39a7e1" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> i ) <span class="keyword">const</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    {</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">return</span>( integral_( i + 1 ) );</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    }</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
+<div class="line"><a name="l00166"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a3323da0136fd394d25b6015f7cf7d551">  166</a></span>&#160;    value_type overall( )<span class="keyword"> const </span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="keywordflow">return</span>( integral_[ integral_.size( ) - 1 ] );</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a2ee996f46bcd4a1fa353e2c7eaadd3c6">  175</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a1c728e4e24fe2ade1945d3cb61bb5a7c" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> size( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="keywordflow">return</span>( integral_.size( ) - 1 );</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    }</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
+<div class="line"><a name="l00184"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#ab009bcca903947b43ff37cd6477ad100">  184</a></span>&#160;    <span class="keywordtype">void</span> construct_integral_array( <span class="keyword">const</span> <a class="code" href="classmist_1_1array.html" title="要素数が可変の1次元配列">image_type</a> &amp;in )</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    {</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        integral_.<a class="code" href="classmist_1_1array.html#ab2b09cc3b61f7dc9bb120ed876003705" title="コンテナ内の要素数を変更する">resize</a>( in.<a class="code" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4" title="コンテナに格納されているデータ数を返す">size</a>( ) + 1 ); </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <span class="keywordflow">for</span>( <a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a1c728e4e24fe2ade1945d3cb61bb5a7c" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> i = 1 ; i &lt; integral_.width( ) ; i ++ )</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        {</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            integral_[ i ] = in[ i - 1 ] + integral_[ i - 1 ];</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        }</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    }</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a8cf679120eb96901607d6339b0492ea0">  197</a></span>&#160;    <a class="code" href="classmist_1_1integral__image.html" title="1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス">integral_image</a>( <span class="keyword">const</span> <a class="code" href="classmist_1_1array.html" title="要素数が可変の1次元配列">image_type</a> &amp;in )</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    { </div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        construct_integral_array( in );</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00204"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array_3_01T_00_01Allocator_01_4_01_4.html#a238a88086afab3c4c2cfaee5bb93bba2">  204</a></span>&#160;    <a class="code" href="classmist_1_1integral__image.html" title="1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス">integral_image</a>( ) : integral_( )</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    {</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    }</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;};</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00242"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html">  242</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmist_1_1integral__image.html" title="1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス">integral_image</a>&lt; <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a>&lt; T, Allocator &gt; &gt;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;{</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> __integral_image__::integral_type&lt; T, is_float&lt; T &gt;::value, <a class="code" href="structmist_1_1is__color.html" title="入力された型がカラー画像かどうか調べる">is_color&lt; T &gt;::value</a> &gt;::type value_type;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classmist_1_1array2.html">array2&lt; value_type &gt;</a> <a class="code" href="classmist_1_1array2.html">integral_image_type</a>;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2&lt; T, Allocator &gt;</a> <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">image_type</a>;</div>
+<div class="line"><a name="l00248"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2">  248</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#aa5313c89ecfb31af506d776f332292c1" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">image_type::size_type</a> <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a>;               </div>
+<div class="line"><a name="l00249"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d">  249</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#a0c3f03360936c12ddff3bbbe33257b84" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">image_type::difference_type</a> <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a>;   </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <a class="code" href="classmist_1_1array2.html">integral_image_type</a> integral_;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00264"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#ab47feb72b1ac0cae53063651c6e69340">  264</a></span>&#160;    value_type operator ( )( <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> begin_i, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> begin_j, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> width, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> height ) <span class="keyword">const</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    {</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#ab6846872c76ea9653e33e9ff9c0c6a46" title="MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array&lt; data &gt; の場合，const data * となる">integral_image_type::const_pointer</a> p1 = &amp;integral_( begin_i, begin_j );</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#ab6846872c76ea9653e33e9ff9c0c6a46" title="MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array&lt; data &gt; の場合，const data * となる">integral_image_type::const_pointer</a> p2 = p1 + integral_.width( ) * height;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        <span class="keywordflow">return</span>( p2[ width] + p1[ 0 ] - p1[ width ] - p2[ 0 ] );</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <span class="comment">//return( integral_( begin_i + width, begin_j + height ) + integral_( begin_i, begin_j ) - integral_( begin_i + width, begin_j ) - integral_( begin_i, begin_j + height ) );</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    }</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00279"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#ad6c469de921e44dce75b87e4398d5b46">  279</a></span>&#160;    <span class="keyword">const</span> value_type &amp; operator ( )( <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> i, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> j ) <span class="keyword">const</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    {</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordflow">return</span>( integral_( i + 1, j + 1 ) );</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    }</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
+<div class="line"><a name="l00291"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a1f67be7c08f1f46897312f320dfda7d8">  291</a></span>&#160;    value_type &amp; operator ( )( <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> i, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#aae0fea31aca56d216b584f65bbfd7b7d" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> j )</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    {</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        <span class="keywordflow">return</span>( integral_( i + 1, j + 1 ) );</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    }</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
+<div class="line"><a name="l00300"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#ab6fe913ffcf2dac0ca2355adedbf4e60">  300</a></span>&#160;    value_type overall( )<span class="keyword"> const </span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keywordflow">return</span>( integral_[ integral_.size( ) - 1 ] );</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    }</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
+<div class="line"><a name="l00309"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a4c0f259d04d961472021f9bf51a3343e">  309</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> size1( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        <span class="keywordflow">return</span>( integral_.width( ) - 1 );</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    }</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
+<div class="line"><a name="l00318"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a18273fae3a046bbeb4a3dbd621caa82b">  318</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> size2( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        <span class="keywordflow">return</span>( integral_.height( ) - 1 );</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    }</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
+<div class="line"><a name="l00327"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a486ebc4c6f858d57bd7dde6144e321d4">  327</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> width( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <span class="keywordflow">return</span>( size1( ) );</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    }</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
+<div class="line"><a name="l00336"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a44541528432ff538414646e006a394a9">  336</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> height( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <span class="keywordflow">return</span>( size2( ) );</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    }</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
+<div class="line"><a name="l00345"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a6078b39a077ceecec5be3a37a5b1c096">  345</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> size( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        <span class="keywordflow">return</span>( width( ) * height( ) );</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    }</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
+<div class="line"><a name="l00354"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#af9cf960cb2f1bb6c80d92c5a31aad37d">  354</a></span>&#160;    <span class="keywordtype">void</span> construct_integral_array( <span class="keyword">const</span> <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">image_type</a> &amp;in )</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    { </div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        integral_.resize( in.<a class="code" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99" title="X軸方向のコンテナに格納されているデータ数を返す">width</a>( ) + 1, in.<a class="code" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea" title="Y軸方向のコンテナに格納されているデータ数を返す">height</a>( ) + 1 );  </div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="preprocessor">#if 0</span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="preprocessor"></span>        <span class="keywordtype">int</span> iw       = <span class="keyword">static_cast&lt;</span> <span class="keywordtype">int</span> <span class="keyword">&gt;</span>( in.<a class="code" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99" title="X軸方向のコンテナに格納されているデータ数を返す">width</a>( ) );</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        <span class="keywordtype">int</span> ih       = <span class="keyword">static_cast&lt;</span> <span class="keywordtype">int</span> <span class="keyword">&gt;</span>( in.<a class="code" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea" title="Y軸方向のコンテナに格納されているデータ数を返す">height</a>( ) );</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> ow = integral_.width( );</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="preprocessor">        #pragma omp parallel for firstprivate( iw, ih ) schedule( guided )</span></div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="preprocessor"></span>        <span class="keywordflow">for</span>( <span class="keywordtype">int</span> j = 0 ; j &lt; ih ; j++ )</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        {</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;            <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#ab6846872c76ea9653e33e9ff9c0c6a46" title="MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array&lt; data &gt; の場合，const data * となる">image_type::const_pointer</a>    ip = &amp;in( 0, j );</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;            <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#a429762090e5a54af821493778919dc91" title="MISTのコンテナ内に格納するデータ型のポインター型．mist::array&lt; data &gt; の場合，data * となる">integral_image_type::pointer</a> op = &amp;integral_( 1, j + 1 );</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            op[ 0 ] = ip[ 0 ];</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            <span class="keywordflow">for</span>( <span class="keywordtype">int</span> i = 1 ; i &lt; iw ; i++ )</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            {</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;                op[ i ] = op[ i - 1 ] + ip[ i ];</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            }</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        }</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="preprocessor">        #pragma omp parallel for firstprivate( iw, ih, ow ) schedule( guided )</span></div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="preprocessor"></span>        <span class="keywordflow">for</span>( <span class="keywordtype">int</span> i = 0 ; i &lt; iw ; i++ )</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        {</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;            <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#a429762090e5a54af821493778919dc91" title="MISTのコンテナ内に格納するデータ型のポインター型．mist::array&lt; data &gt; の場合，data * となる">integral_image_type::pointer</a>    op = &amp;integral_( i + 1, 1 );</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#aeb47d46d311ad06649861902c39d3ffa" title="MISTのコンテナ内に格納するデータ型．mist::array&lt; data &gt; の data と同じ">integral_image_type::value_type</a> ov = *op;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;            op += ow;</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;            <span class="keywordflow">for</span>( <span class="keywordtype">int</span> j = 1 ; j &lt; ih ; j++ )</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;            {</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;                ov  += *op;</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;                *op  = ov;</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;                op  += ow;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;            }</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        }</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;<span class="preprocessor"></span>        <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#ab6846872c76ea9653e33e9ff9c0c6a46" title="MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array&lt; data &gt; の場合，const data * となる">image_type::const_pointer</a>    ip = &amp;in[ 0 ];</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#a429762090e5a54af821493778919dc91" title="MISTのコンテナ内に格納するデータ型のポインター型．mist::array&lt; data &gt; の場合，data * となる">integral_image_type::pointer</a> op = &amp;integral_( 1, 1 );</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        op[ 0 ] = ip[ 0 ];</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        <span class="keywordflow">for</span>( <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> i = 1 ; i &lt; in.<a class="code" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99" title="X軸方向のコンテナに格納されているデータ数を返す">width</a>( ) ; i++ )</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        {</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;            op[ i ] = op[ i - 1 ] + ip[ i ];</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        }</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#a429762090e5a54af821493778919dc91" title="MISTのコンテナ内に格納するデータ型のポインター型．mist::array&lt; data &gt; の場合，data * となる">integral_image_type::pointer</a> oop = op;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        ip += in.<a class="code" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99" title="X軸方向のコンテナに格納されているデータ数を返す">width</a>( );</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        op += integral_.width( );</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        <span class="keywordflow">for</span>( <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> j = 1 ; j &lt; in.<a class="code" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea" title="Y軸方向のコンテナに格納されているデータ数を返す">height</a>( ) ; j++ )</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;        {</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;            value_type tmp = ip[ 0 ];</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;            op[ 0 ] = oop[ 0 ] + tmp;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;            <span class="keywordflow">for</span>( <a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a7cf366caea99f342a5d5ffb915e423c2" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> i = 1 ; i &lt; in.<a class="code" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99" title="X軸方向のコンテナに格納されているデータ数を返す">width</a>( ) ; i++ )</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;            {</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                tmp += ip[ i ];</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                op[ i ] = oop[ i ] + tmp;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;            }</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;            oop = op;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;            ip += in.<a class="code" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99" title="X軸方向のコンテナに格納されているデータ数を返す">width</a>( );</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;            op += integral_.width( );</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        }</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;<span class="preprocessor"></span>    }</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;</div>
+<div class="line"><a name="l00427"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#a24cfbfe2b1815e49158980702461b631">  427</a></span>&#160;    <a class="code" href="classmist_1_1integral__image.html" title="1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス">integral_image</a>( <span class="keyword">const</span> <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">image_type</a> &amp;in )</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    { </div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;        construct_integral_array( in );</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    }</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;</div>
+<div class="line"><a name="l00434"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array2_3_01T_00_01Allocator_01_4_01_4.html#ae7a6886f673842d08224bfcdbb470c99">  434</a></span>&#160;    <a class="code" href="classmist_1_1integral__image.html" title="1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス">integral_image</a>( ) : integral_( )</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;    {</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    }</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;};</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00472"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html">  472</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmist_1_1integral__image.html" title="1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス">integral_image</a>&lt; <a class="code" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a>&lt; T, Allocator &gt; &gt;</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;{</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> __integral_image__::integral_type&lt; T, is_float&lt; T &gt;::value, <a class="code" href="structmist_1_1is__color.html" title="入力された型がカラー画像かどうか調べる">is_color&lt; T &gt;::value</a> &gt;::type value_type;</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classmist_1_1array3.html">array3&lt; value_type &gt;</a> <a class="code" href="classmist_1_1array3.html">integral_image_type</a>;</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3&lt; T, Allocator &gt;</a> <a class="code" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">image_type</a>;</div>
+<div class="line"><a name="l00478"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb">  478</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> <a class="code" href="classmist_1_1array3.html#abce1aeaa0cff7c88d0692386bd28088e" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">image_type::size_type</a> <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a>;               </div>
+<div class="line"><a name="l00479"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ab484b75a1445fb8c3a75fa08caa94aae">  479</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> <a class="code" href="classmist_1_1array3.html#a870e1e7e41a9d09e2c04e195767b6077" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">image_type::difference_type</a> <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ab484b75a1445fb8c3a75fa08caa94aae" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a>;   </div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;    <a class="code" href="classmist_1_1array3.html">integral_image_type</a> integral_;</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00496"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#a92462d4a917b4f675a0449b37e9e9577">  496</a></span>&#160;    value_type operator ( )( <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> begin_i, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> begin_j, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> begin_k, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> width, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> height, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> depth ) <span class="keyword">const</span></div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;    {</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        <span class="keywordflow">return</span>( integral_( begin_i + width, begin_j + height, begin_k + depth ) + integral_( begin_i, begin_j, begin_k + depth ) + integral_( begin_i, begin_j + height, begin_k ) + integral_( begin_i + width, begin_j, begin_k ) - integral_( begin_i, begin_j + height, begin_k + depth ) - integral_( begin_i + width, begin_j, begin_k + depth ) - integral_( begin_i + width, begin_j + height, begin_k ) - integral_( begin_i, begin_j, begin_k ) );</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;    }</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;</div>
+<div class="line"><a name="l00509"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#a47b68a41858ec4c55586d223dd3dd9bd">  509</a></span>&#160;    value_type operator ( )( <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ab484b75a1445fb8c3a75fa08caa94aae" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> i, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ab484b75a1445fb8c3a75fa08caa94aae" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> j, <span class="keyword">const</span> <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ab484b75a1445fb8c3a75fa08caa94aae" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> k ) <span class="keyword">const</span></div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;    {</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;        <span class="keywordflow">return</span>( integral_( i + 1, j + 1, k + 1 ) );</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;    }</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;</div>
+<div class="line"><a name="l00518"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#adc7dcd1ae074692cf606756adebf107e">  518</a></span>&#160;    value_type overall( )<span class="keyword"> const </span></div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;        <span class="keywordflow">return</span>( integral_( integral_.width( ) - 1, integral_.height( ) - 1, integral_.depth( ) - 1 ) );</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;    }</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;</div>
+<div class="line"><a name="l00527"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#a10b4b4934c6941f8f08d0508b8e938b2">  527</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> size1( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;        <span class="keywordflow">return</span>( integral_.width( ) - 1 );</div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;    }</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;</div>
+<div class="line"><a name="l00536"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#a1f016b2a7cd43f59e16d00d0fdaf813c">  536</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> size2( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;        <span class="keywordflow">return</span>( integral_.height( ) - 1 );</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;    }</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;</div>
+<div class="line"><a name="l00545"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#a4dc9d2354b46848c53a7d36f95fac15a">  545</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> size3( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;        <span class="keywordflow">return</span>( integral_.depth( ) - 1 );</div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;    }</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;</div>
+<div class="line"><a name="l00554"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#aa846b6674e00eccc02f75fa420404d1b">  554</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> width( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;        <span class="keywordflow">return</span>( size1( ) );</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;    }</div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;</div>
+<div class="line"><a name="l00563"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#a37abe3560bf00fc67e5b24df60ef370f">  563</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> height( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;        <span class="keywordflow">return</span>( size2( ) );</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;    }</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;</div>
+<div class="line"><a name="l00572"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#acdbb733169f66c104f5cc5ab861e43f6">  572</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> depth( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;        <span class="keywordflow">return</span>( size3( ) );</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    }</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;</div>
+<div class="line"><a name="l00581"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#a823a00e2bbfab2b5141084425ca7cde0">  581</a></span>&#160;    <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> size( )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;        <span class="keywordflow">return</span>( width( ) * height( ) * depth( ) );</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;    }</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;</div>
+<div class="line"><a name="l00590"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#af2344fe6a9e0da25773d2533bf4980b7">  590</a></span>&#160;    <span class="keywordtype">void</span> construct_integral_array( <span class="keyword">const</span> <a class="code" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">image_type</a> &amp;in )</div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;    {</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;        integral_.<a class="code" href="classmist_1_1array3.html#a5a36dcc005da83a00b1275b949cd66c6" title="コンテナ内の要素数を変更する">resize</a>( in.<a class="code" href="classmist_1_1array3.html#ad117cd297930e233e426591478519913" title="X軸方向のコンテナに格納されているデータ数を返す">width</a>( ) + 1, in.<a class="code" href="classmist_1_1array3.html#a5a24ec70019f8004ef65f0ee02cc1caf" title="Y軸方向のコンテナに格納されているデータ数を返す">height</a>( ) + 1, in.<a class="code" href="classmist_1_1array3.html#ae1a3cc64ed3e2d8818d1dcdd1ed6e342" title="Z軸方向のコンテナに格納されているデータ数を返す">depth</a>( ) + 1 ); </div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;        <span class="keywordflow">for</span>( <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> k = 1 ; k &lt; integral_.depth( ) ; k ++  )</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        {</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;            <span class="keywordflow">for</span>( <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> j = 1 ; j &lt; integral_.height( ) ; j ++ )</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;            {</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;                <span class="keywordflow">for</span>( <a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#ac048d4d4bf1552d17946fe0118fd9ebb" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> i = 1 ; i &lt; integral_.width( ) ; i ++ )</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;                {</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;                    integral_( i, j, k ) = in( i - 1, j - 1, k - 1 ) + integral_( i - 1, j, k ) + integral_( i, j - 1, k ) + integral_( i, j, k - 1 ) + integral_( i - 1, j - 1, k - 1 ) - integral_( i - 1, j - 1, k ) - integral_( i - 1, j, k - 1 ) - integral_( i, j - 1, k - 1 );</div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;                }</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;            }</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;        }</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;    }</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;</div>
+<div class="line"><a name="l00609"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#a974b16d78ac192d9afa052a15fb56eb2">  609</a></span>&#160;    <a class="code" href="classmist_1_1integral__image.html" title="1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス">integral_image</a>( <span class="keyword">const</span> <a class="code" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">image_type</a> &amp;in )</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;    {</div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;        construct_integral_array( in );</div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;    }</div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;</div>
+<div class="line"><a name="l00616"></a><span class="lineno"><a class="code" href="classmist_1_1integral__image_3_01array3_3_01T_00_01Allocator_01_4_01_4.html#a84692ad23ba6349c80af9f0c92ee9401">  616</a></span>&#160;    <a class="code" href="classmist_1_1integral__image.html" title="1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス">integral_image</a>( ) : integral_( )</div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;    {</div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;    }</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;};</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;<span class="keyword">template</span> &lt; <span class="keyword">class</span> T, <span class="keyword">class</span> Allocator &gt;</div>
+<div class="line"><a name="l00634"></a><span class="lineno"><a class="code" href="group__integral__image__group.html#gaeab42f70d7c43acc83a82aac161a2488">  634</a></span>&#160;<span class="keyword">inline</span> std::ostream &amp;operator &lt;&lt;( std::ostream &amp;out, const integral_image&lt; array&lt; T, Allocator &gt; &gt; &amp;a )</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;{</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    <span class="keyword">typename</span> <a class="code" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">array&lt; T, Allocator &gt;::size_type</a> i;</div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;    <span class="keywordflow">for</span>( i = 0 ; i &lt; a.<a class="code" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4" title="コンテナに格納されているデータ数を返す">size</a>( ) ; i++ )</div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;    {</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        out &lt;&lt; a[ i ];</div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;        <span class="keywordflow">if</span>( i != a.<a class="code" href="classmist_1_1array.html#a6dcabd40f018657d56fa48565b07fa13" title="X軸方向のコンテナに格納されているデータ数を返す">size1</a>( ) - 1 ) out &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;    }</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;    <span class="keywordflow">return</span>( out );</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;}</div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;</div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;<span class="keyword">template</span> &lt; <span class="keyword">class</span> T, <span class="keyword">class</span> Allocator &gt;</div>
+<div class="line"><a name="l00659"></a><span class="lineno"><a class="code" href="group__integral__image__group.html#ga370a8bbe60dbfb864e4fefc2b097803a">  659</a></span>&#160;<span class="keyword">inline</span> std::ostream &amp;operator &lt;&lt;( std::ostream &amp;out, const integral_image&lt; array1&lt; T, Allocator &gt; &gt; &amp;a )</div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;{</div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;    <span class="keyword">typename</span> <a class="code" href="classmist_1_1array1.html#a5b3d1034033263a4ba98bcbb6475d37d" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">array1&lt; T, Allocator &gt;::size_type</a> i;</div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;    <span class="keywordflow">for</span>( i = 0 ; i &lt; a.<a class="code" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4" title="コンテナに格納されているデータ数を返す">size</a>( ) ; i++ )</div>
+<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;    {</div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;        out &lt;&lt; a[ i ];</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        <span class="keywordflow">if</span>( i != a.<a class="code" href="classmist_1_1array.html#a6dcabd40f018657d56fa48565b07fa13" title="X軸方向のコンテナに格納されているデータ数を返す">size1</a>( ) - 1 ) out &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;    }</div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;</div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;    <span class="keywordflow">return</span>( out );</div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;}</div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;</div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;</div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;<span class="keyword">template</span> &lt; <span class="keyword">class</span> T, <span class="keyword">class</span> Allocator &gt;</div>
+<div class="line"><a name="l00686"></a><span class="lineno"><a class="code" href="group__integral__image__group.html#gaac1067803553fdfb840d3c73790801ea">  686</a></span>&#160;<span class="keyword">inline</span> std::ostream &amp;operator &lt;&lt;( std::ostream &amp;out, const integral_image&lt; array2&lt; T, Allocator &gt; &gt; &amp;a )</div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;{</div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;    <span class="keyword">typename</span> <a class="code" href="classmist_1_1array2.html#aa5313c89ecfb31af506d776f332292c1" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">array2&lt; T, Allocator &gt;::size_type</a> i, j;</div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;    <span class="keywordflow">for</span>( j = 0 ; j &lt; a.<a class="code" href="classmist_1_1array2.html#a8c8a04c195a6b969accb6b80a874129f" title="Y軸方向のコンテナに格納されているデータ数を返す">size2</a>( ) ; j++ )</div>
+<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;    {</div>
+<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;        <span class="keywordflow">if</span>( j != 0 )</div>
+<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;        {</div>
+<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;            out &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;        }</div>
+<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;        <span class="keywordflow">for</span>( i = 0 ; i &lt; a.<a class="code" href="classmist_1_1array2.html#ab6ecb95961c8f9e8f0cfa3ec9964e356" title="X軸方向のコンテナに格納されているデータ数を返す">size1</a>( ) ; i++ )</div>
+<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;        {</div>
+<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;            out &lt;&lt; a( i, j );</div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;            <span class="keywordflow">if</span>( i != a.<a class="code" href="classmist_1_1array2.html#ab6ecb95961c8f9e8f0cfa3ec9964e356" title="X軸方向のコンテナに格納されているデータ数を返す">size1</a>( ) - 1 ) out &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;        }</div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;    }</div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;</div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;    <span class="keywordflow">return</span>( out );</div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;}</div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;</div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;</div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;<span class="keyword">template</span> &lt; <span class="keyword">class</span> T, <span class="keyword">class</span> Allocator &gt;</div>
+<div class="line"><a name="l00724"></a><span class="lineno"><a class="code" href="group__integral__image__group.html#gac3ea531d22a18c76da7fd2e6d2e724df">  724</a></span>&#160;<span class="keyword">inline</span> std::ostream &amp;operator &lt;&lt;( std::ostream &amp;out, const integral_image&lt; array3&lt; T, Allocator &gt; &gt; &amp;a )</div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;{</div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;    <span class="keyword">typename</span> <a class="code" href="classmist_1_1array3.html#abce1aeaa0cff7c88d0692386bd28088e" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">array3&lt; T, Allocator &gt;::size_type</a> i, j, k;</div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;    <span class="keywordflow">for</span>( k = 0 ; k &lt; a.<a class="code" href="classmist_1_1array3.html#a8e779970f1f14abe6a70bc87e2e1465e" title="Z軸方向のコンテナに格納されているデータ数を返す">size3</a>( ) ; k++ )</div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;    {</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;        <span class="keywordflow">for</span>( j = 0 ; j &lt; a.<a class="code" href="classmist_1_1array3.html#af610c89e037e6ef03fe488abe994b4fd" title="Y軸方向のコンテナに格納されているデータ数を返す">size2</a>( ) ; j++ )</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;        {</div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;            <span class="keywordflow">for</span>( i = 0 ; i &lt; a.<a class="code" href="classmist_1_1array3.html#a0d7b4197964d6eed9ce23aa24f016b79" title="X軸方向のコンテナに格納されているデータ数を返す">size1</a>( ) ; i++ )</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;            {</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;                out &lt;&lt; a( i, j, k );</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;                <span class="keywordflow">if</span>( i != a.<a class="code" href="classmist_1_1array3.html#a0d7b4197964d6eed9ce23aa24f016b79" title="X軸方向のコンテナに格納されているデータ数を返す">size1</a>( ) - 1 ) out &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;            }</div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;            out &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;        }</div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;        <span class="keywordflow">if</span>( k != a.<a class="code" href="classmist_1_1array3.html#a8e779970f1f14abe6a70bc87e2e1465e" title="Z軸方向のコンテナに格納されているデータ数を返す">size3</a>( ) - 1 )</div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        {</div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;            out &lt;&lt; <span class="stringliteral">&quot;----- separator -----&quot;</span>;</div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;        }</div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;        out &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    }</div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;</div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    <span class="keywordflow">return</span>( out );</div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;}</div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;</div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;</div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;<span class="comment">//  Integral Imageグループの終わり</span></div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;</div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;</div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;<span class="comment">// mist名前空間の終わり</span></div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;<a class="code" href="mist__conf_8h.html#a5782930a99d85de30831b223eb8df540" title="MIST名前空間の終わり">_MIST_END</a></div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;<span class="preprocessor">#endif // __INCLUDE_INTEGRAL_IMAGE_H__</span></div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;<span class="preprocessor"></span></div>
+</div><!-- fragment --></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:15 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

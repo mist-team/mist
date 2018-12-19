@@ -1,0 +1,782 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>スレッド</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">スレッド</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1simple__lock__object.html">mist::simple_lock_object</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドの排他制御をサポートする最も単純なクラス  <a href="structmist_1_1simple__lock__object.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1lock__object.html">mist::lock_object</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドの排他制御をサポートするクラス  <a href="structmist_1_1lock__object.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1lock.html">mist::lock</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドの排他制御を簡便に記述するためのヘルパクラス  <a href="classmist_1_1lock.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread.html">mist::thread&lt; thread_parameter &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">template 型のデータを扱うことができるスレッドクラス  <a href="classmist_1_1thread.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html">mist::thread_pool</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドプールを利用してスレッドの再利用を可能にするクラス  <a href="classmist_1_1thread__pool.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html">mist::worker_thread</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">バックグラウンドで実行するワーカースレッドを実現するクラス  <a href="classmist_1_1worker__thread.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__handle.html">mist::thread_handle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">生成したスレッドを管理するクラス  <a href="classmist_1_1thread__handle.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gadef82157796ad103bfc943dba8ef17e6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num</a> ()</td></tr>
+<tr class="memdesc:gadef82157796ad103bfc943dba8ef17e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">利用可能なCPU数を取得する  <a href="#gadef82157796ad103bfc943dba8ef17e6"></a><br/></td></tr>
+<tr class="memitem:ga969bde1c76b4f3cd6811fa709dd7b7e5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga969bde1c76b4f3cd6811fa709dd7b7e5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga969bde1c76b4f3cd6811fa709dd7b7e5">mist::sleep</a> (size_t dwMilliseconds)</td></tr>
+<tr class="memdesc:ga969bde1c76b4f3cd6811fa709dd7b7e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した時間だけスリープする（ミリ秒単位） <br/></td></tr>
+<tr class="memitem:ga0f635b9fa0dc3d181f41fa4830a18513"><td class="memTemplParams" colspan="2">template&lt;class Thread &gt; </td></tr>
+<tr class="memitem:ga0f635b9fa0dc3d181f41fa4830a18513"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_</a> (Thread *threads, size_t num_threads, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga0f635b9fa0dc3d181f41fa4830a18513"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う  <a href="#ga0f635b9fa0dc3d181f41fa4830a18513"></a><br/></td></tr>
+<tr class="memitem:ga928b8291ead96a17557ccc1b47eb858b"><td class="memTemplParams" colspan="2">template&lt;class Thread &gt; </td></tr>
+<tr class="memitem:ga928b8291ead96a17557ccc1b47eb858b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga928b8291ead96a17557ccc1b47eb858b">mist::do_threads_</a> (Thread **threads, size_t num_threads, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga928b8291ead96a17557ccc1b47eb858b"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う  <a href="#ga928b8291ead96a17557ccc1b47eb858b"></a><br/></td></tr>
+<tr class="memitem:ga8a2ddfc1cc10d1c045cea4005cb39cdf"><td class="memTemplParams" colspan="2">template&lt;class Thread &gt; </td></tr>
+<tr class="memitem:ga8a2ddfc1cc10d1c045cea4005cb39cdf"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga8a2ddfc1cc10d1c045cea4005cb39cdf">mist::do_threads</a> (Thread *threads, size_t num_threads, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga8a2ddfc1cc10d1c045cea4005cb39cdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う  <a href="#ga8a2ddfc1cc10d1c045cea4005cb39cdf"></a><br/></td></tr>
+<tr class="memitem:gafeb86244422915e0de6c7590e1234a2e"><td class="memTemplParams" colspan="2">template&lt;class Param , class Functor &gt; </td></tr>
+<tr class="memitem:gafeb86244422915e0de6c7590e1234a2e"><td class="memTemplItemLeft" align="right" valign="top">thread_handle&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#gafeb86244422915e0de6c7590e1234a2e">mist::create_thread</a> (Param &amp;param, Functor f)</td></tr>
+<tr class="memdesc:gafeb86244422915e0de6c7590e1234a2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定したスレッド関数を利用する，スレッドを作成する  <a href="#gafeb86244422915e0de6c7590e1234a2e"></a><br/></td></tr>
+<tr class="memitem:ga91b970d43d849a4601bf8ca51b48e936"><td class="memTemplParams" colspan="2">template&lt;class Param , class Functor &gt; </td></tr>
+<tr class="memitem:ga91b970d43d849a4601bf8ca51b48e936"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga91b970d43d849a4601bf8ca51b48e936">mist::create_threads</a> (thread_handle *handles, Param *param, size_t num_threads, Functor f)</td></tr>
+<tr class="memdesc:ga91b970d43d849a4601bf8ca51b48e936"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定したスレッド関数を利用する，スレッドを複数作成する  <a href="#ga91b970d43d849a4601bf8ca51b48e936"></a><br/></td></tr>
+<tr class="memitem:ga3b135ecb8667be3b833276de8e917c70"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga3b135ecb8667be3b833276de8e917c70">mist::close_thread</a> (thread_handle &amp;thread_)</td></tr>
+<tr class="memdesc:ga3b135ecb8667be3b833276de8e917c70"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドが使用していたリソースを開放する  <a href="#ga3b135ecb8667be3b833276de8e917c70"></a><br/></td></tr>
+<tr class="memitem:gae2fab43a6c76df8b610e8e0e02f1c741"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#gae2fab43a6c76df8b610e8e0e02f1c741">mist::close_threads</a> (thread_handle *handles, size_t num_threads)</td></tr>
+<tr class="memdesc:gae2fab43a6c76df8b610e8e0e02f1c741"><td class="mdescLeft">&#160;</td><td class="mdescRight">複数のスレッドが使用していたリソースを開放する  <a href="#gae2fab43a6c76df8b610e8e0e02f1c741"></a><br/></td></tr>
+<tr class="memitem:ga15b1f1c5d9e6494e6aca9071050a2ca7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga15b1f1c5d9e6494e6aca9071050a2ca7">mist::wait_thread</a> (thread_handle &amp;thread_, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga15b1f1c5d9e6494e6aca9071050a2ca7"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドが終了するか，タイムアウトが発生するまで待機する  <a href="#ga15b1f1c5d9e6494e6aca9071050a2ca7"></a><br/></td></tr>
+<tr class="memitem:gaa3852e271bf7bde41c25c236036b047f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#gaa3852e271bf7bde41c25c236036b047f">mist::wait_threads</a> (thread_handle *handles, size_t num_threads, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:gaa3852e271bf7bde41c25c236036b047f"><td class="mdescLeft">&#160;</td><td class="mdescRight">複数のスレッドが使用していたリソースを開放する  <a href="#gaa3852e271bf7bde41c25c236036b047f"></a><br/></td></tr>
+<tr class="memitem:ga07d201d0b1a6135e0f47fa2569be33f3"><td class="memTemplParams" colspan="2">template&lt;class Param , class Functor &gt; </td></tr>
+<tr class="memitem:ga07d201d0b1a6135e0f47fa2569be33f3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga07d201d0b1a6135e0f47fa2569be33f3">mist::do_thread</a> (Param &amp;param, Functor f, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga07d201d0b1a6135e0f47fa2569be33f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う  <a href="#ga07d201d0b1a6135e0f47fa2569be33f3"></a><br/></td></tr>
+<tr class="memitem:ga50ae7daac1beec2082919b1374dc39d1"><td class="memTemplParams" colspan="2">template&lt;class Param , class Functor &gt; </td></tr>
+<tr class="memitem:ga50ae7daac1beec2082919b1374dc39d1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga50ae7daac1beec2082919b1374dc39d1">mist::do_threads</a> (Param *params, size_t num_threads, Functor f, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga50ae7daac1beec2082919b1374dc39d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う  <a href="#ga50ae7daac1beec2082919b1374dc39d1"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="thread_8h.html" title="簡便にスレッドを利用可能にするためのライブラリ">mist/thread.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga3b135ecb8667be3b833276de8e917c70"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::close_thread </td>
+          <td>(</td>
+          <td class="paramtype">thread_handle &amp;&#160;</td>
+          <td class="paramname"><em>thread_</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッドが使用していたリソースを開放する </p>
+<p>スレッドを使用した後で，必ず呼び出す必要がある</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">thread_</td><td>… スレッドオブジェクト</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… リソースの開放に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… リソースの開放に失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1thread__handle.html#abb460f9dc2a0e4b80a296368b39b3222">mist::thread_handle::close()</a>.</p>
+
+<p>参照元 <a class="el" href="group__thread__group.html#ga07d201d0b1a6135e0f47fa2569be33f3">mist::do_thread()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gae2fab43a6c76df8b610e8e0e02f1c741"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::close_threads </td>
+          <td>(</td>
+          <td class="paramtype">thread_handle *&#160;</td>
+          <td class="paramname"><em>handles</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_threads</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>複数のスレッドが使用していたリソースを開放する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">handles</td><td>… スレッドオブジェクト </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… スレッド数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 全てのリソースの開放に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 全てのリソースの開放に失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__thread__group.html#ga50ae7daac1beec2082919b1374dc39d1">mist::do_threads()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gafeb86244422915e0de6c7590e1234a2e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Param , class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">thread_handle mist::create_thread </td>
+          <td>(</td>
+          <td class="paramtype">Param &amp;&#160;</td>
+          <td class="paramname"><em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定したスレッド関数を利用する，スレッドを作成する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>スレッドを管理する <a class="el" href="classmist_1_1thread__handle.html" title="生成したスレッドを管理するクラス">thread_handle</a> オブジェクト</dd></dl>
+<div class="fragment"><div class="line"> 使用例</div>
+<div class="line"><span class="keyword">struct </span>parameter{ ... 何らかのパラメータ ... };   <span class="comment">// スレッド関数に渡すパラメータ（特に構造体である必要は無い）</span></div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span> thread_function( <span class="keyword">const</span> parameter &amp;p );       <span class="comment">// スレッド関数（内部で何らかの処理をする）</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">// これ以降でスレッドを作成する</span></div>
+<div class="line">parameter param[ 作成スレッド数 ];</div>
+<div class="line"><a class="code" href="classmist_1_1thread__handle.html" title="生成したスレッドを管理するクラス">mist::thread_handle</a> t[ 作成スレッド数 ];</div>
+<div class="line"></div>
+<div class="line"><span class="keywordflow">for</span>( i = 0 ; i &lt; 作成スレッド数 ; i++ )</div>
+<div class="line">{</div>
+<div class="line">    パラメータに何らかの値を設定する</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordflow">for</span>( i = 0 ; i &lt; 作成スレッド数 ; i++ )</div>
+<div class="line">{</div>
+<div class="line">    <span class="comment">// スレッドを作成する</span></div>
+<div class="line">    t[ i ] = <a class="code" href="group__thread__group.html#gafeb86244422915e0de6c7590e1234a2e" title="指定したスレッド関数を利用する，スレッドを作成する">mist::create_thread</a>( param[ i ], thread_function );</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordflow">for</span>( i = 0 ; i &lt; 作成スレッド数 ; i++ )</div>
+<div class="line">{</div>
+<div class="line">    <span class="comment">// スレッドが終了するまで待ち続ける</span></div>
+<div class="line">    <a class="code" href="group__thread__group.html#ga15b1f1c5d9e6494e6aca9071050a2ca7" title="スレッドが終了するか，タイムアウトが発生するまで待機する">mist::wait_thread</a>( t[ i ] );</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordflow">for</span>( i = 0 ; i &lt; 作成スレッド数 ; i++ )</div>
+<div class="line">{</div>
+<div class="line">    <span class="comment">// スレッドが使用していたリソースを開放する</span></div>
+<div class="line">    <a class="code" href="group__thread__group.html#ga3b135ecb8667be3b833276de8e917c70" title="スレッドが使用していたリソースを開放する">mist::close_thread</a>( t[ i ] );</div>
+<div class="line">}</div>
+</div><!-- fragment --> 
+<p>参照先 <a class="el" href="classmist_1_1thread__handle.html#aedd8b3764d6da084c8750385257045a0">mist::thread_handle::create()</a>.</p>
+
+<p>参照元 <a class="el" href="group__thread__group.html#ga07d201d0b1a6135e0f47fa2569be33f3">mist::do_thread()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga91b970d43d849a4601bf8ca51b48e936"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Param , class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::create_threads </td>
+          <td>(</td>
+          <td class="paramtype">thread_handle *&#160;</td>
+          <td class="paramname"><em>handles</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param *&#160;</td>
+          <td class="paramname"><em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_threads</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定したスレッド関数を利用する，スレッドを複数作成する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">handles</td><td>… スレッドオブジェクト </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… スレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1thread__handle.html#aedd8b3764d6da084c8750385257045a0">mist::thread_handle::create()</a>.</p>
+
+<p>参照元 <a class="el" href="group__thread__group.html#ga50ae7daac1beec2082919b1374dc39d1">mist::do_threads()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga07d201d0b1a6135e0f47fa2569be33f3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Param , class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::do_thread </td>
+          <td>(</td>
+          <td class="paramtype">Param &amp;&#160;</td>
+          <td class="paramname"><em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>dwMilliseconds</em> = <code>INFINITE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dwMilliseconds</td><td>… タイムアウト時間（ミリ秒単位）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… スレッドの実行に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… スレッドの実行に失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga3b135ecb8667be3b833276de8e917c70">mist::close_thread()</a>, <a class="el" href="group__thread__group.html#gafeb86244422915e0de6c7590e1234a2e">mist::create_thread()</a>, と <a class="el" href="group__thread__group.html#ga15b1f1c5d9e6494e6aca9071050a2ca7">mist::wait_thread()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga8a2ddfc1cc10d1c045cea4005cb39cdf"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Thread &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::do_threads </td>
+          <td>(</td>
+          <td class="paramtype">Thread *&#160;</td>
+          <td class="paramname"><em>threads</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_threads</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>dwMilliseconds</em> = <code>INFINITE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">threads</td><td>… スレッドオブジェクト </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… スレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dwMilliseconds</td><td>… タイムアウト時間（ミリ秒単位）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 複数のスレッドの実行に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 複数のスレッドの実行に失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__fusion__group.html#ga94c17247408f52295a63372369cc03f1">mist::fusion()</a>, <a class="el" href="namespacemist_1_1nearest.html#aad0452b0a3601b1252c9e83e32ee7b19">mist::nearest::interpolate()</a>, <a class="el" href="namespacemist_1_1mean.html#a38cffb2c680d260aef074cd08643f4d4">mist::mean::interpolate()</a>, <a class="el" href="namespacemist_1_1linear.html#aebe0771229542cdeba0260f21d94da22">mist::linear::interpolate()</a>, <a class="el" href="namespacemist_1_1cubic.html#ac7e51c96515f3a977424a7264b600dc1">mist::cubic::interpolate()</a>, <a class="el" href="namespacemist_1_1BSpline.html#a38f32e7434c4422d9adf60214b491321">mist::BSpline::interpolate()</a>, と <a class="el" href="namespacemist_1_1sinc.html#aab90587eca67e728fcbc549c3fa422db">mist::sinc::interpolate()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga50ae7daac1beec2082919b1374dc39d1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Param , class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::do_threads </td>
+          <td>(</td>
+          <td class="paramtype">Param *&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_threads</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>dwMilliseconds</em> = <code>INFINITE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">params</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… スレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dwMilliseconds</td><td>… タイムアウト時間（ミリ秒単位）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 複数のスレッドの実行に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 複数のスレッドの実行に失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#gae2fab43a6c76df8b610e8e0e02f1c741">mist::close_threads()</a>, <a class="el" href="group__thread__group.html#ga91b970d43d849a4601bf8ca51b48e936">mist::create_threads()</a>, と <a class="el" href="group__thread__group.html#gaa3852e271bf7bde41c25c236036b047f">mist::wait_threads()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga0f635b9fa0dc3d181f41fa4830a18513"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Thread &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::do_threads_ </td>
+          <td>(</td>
+          <td class="paramtype">Thread *&#160;</td>
+          <td class="paramname"><em>threads</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_threads</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>dwMilliseconds</em> = <code>INFINITE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">threads</td><td>… スレッドオブジェクト </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… スレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dwMilliseconds</td><td>… タイムアウト時間（ミリ秒単位）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 複数のスレッドの実行に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 複数のスレッドの実行に失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__morphology__group.html#ga573121226332924e8d3a9a6aa80c7f07">mist::closing()</a>, <a class="el" href="group__morphology__group.html#gac856095b56c1a72f28f935246b52a265">mist::dilation()</a>, <a class="el" href="namespacemist_1_1saito.html#ad64e94405f47f6f460ed67cacf145537">mist::saito::distance_transform()</a>, <a class="el" href="namespacemist_1_1calvin.html#ac840bacdb89cabb99ed41e7bf55fc490">mist::calvin::distance_transform()</a>, <a class="el" href="namespacemist_1_1meijster.html#ab7660f352840a6d7b3ed1e95f9016c53">mist::meijster::distance_transform()</a>, <a class="el" href="group__morphology__group.html#ga4cfd75b7c98fa05078f0bc292d2d2b8f">mist::erosion()</a>, <a class="el" href="namespacemist_1_1linear.html#a4ad7ea3730d2a8aa1a406699c5cecc33">mist::linear::filter()</a>, <a class="el" href="namespacemist_1_1linear.html#a938336c95aa76afb20d2fe439bb1c790">mist::linear::filter1d()</a>, <a class="el" href="namespacemist_1_1saito.html#a4a18f11a2b12c8d1b97fbe68e2944cf6">mist::saito::inverse_distance_transform()</a>, <a class="el" href="group__median__group.html#gaf752af3c8108ec0769fc5821a21f79ed">mist::median()</a>, <a class="el" href="group__volumerendering__group.html#gaf8030793cad706695326d2b7da38e3b6">mist::mip()</a>, <a class="el" href="group__mode__group.html#ga8820313fa0f62e950e18a22083c2bc68">mist::mode()</a>, <a class="el" href="group__morphology__group.html#ga99d5819b28dfe92e222fa0147c1cf9f8">mist::opening()</a>, <a class="el" href="group__volumerendering__group.html#ga387d2cf52eb6e643c67922cd8cb140af">mist::volumerendering()</a>, と <a class="el" href="namespacemist_1_1calvin.html#a2356126093b9f70c5775cb2d003995db">mist::calvin::voronoi_distance_transform()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga928b8291ead96a17557ccc1b47eb858b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Thread &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::do_threads_ </td>
+          <td>(</td>
+          <td class="paramtype">Thread **&#160;</td>
+          <td class="paramname"><em>threads</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_threads</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>dwMilliseconds</em> = <code>INFINITE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">threads</td><td>… スレッドオブジェクト </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… スレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dwMilliseconds</td><td>… タイムアウト時間（ミリ秒単位）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 複数のスレッドの実行に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 複数のスレッドの実行に失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gadef82157796ad103bfc943dba8ef17e6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t mist::get_cpu_num </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>利用可能なCPU数を取得する </p>
+<p>Windowsの場合は GetSystemInfo 関数を利用してCPU数を取得する． Linux系の場合は，sysconf 関数を利用してCPU数を取得する．</p>
+<dl class="section return"><dt>戻り値</dt><dd>利用可能なCPU数 </dd></dl>
+
+<p>参照元 <a class="el" href="classmist_1_1non__rigid_1_1registration.html#a4953e118f8dc50b1a3fb0282b652c7c2">mist::non_rigid::registration&lt; TARGETTYPE &gt;::apply()</a>, <a class="el" href="group__morphology__group.html#ga573121226332924e8d3a9a6aa80c7f07">mist::closing()</a>, <a class="el" href="group__morphology__group.html#gac856095b56c1a72f28f935246b52a265">mist::dilation()</a>, <a class="el" href="namespacemist_1_1saito.html#ad64e94405f47f6f460ed67cacf145537">mist::saito::distance_transform()</a>, <a class="el" href="namespacemist_1_1calvin.html#ac840bacdb89cabb99ed41e7bf55fc490">mist::calvin::distance_transform()</a>, <a class="el" href="namespacemist_1_1meijster.html#ab7660f352840a6d7b3ed1e95f9016c53">mist::meijster::distance_transform()</a>, <a class="el" href="group__morphology__group.html#ga4cfd75b7c98fa05078f0bc292d2d2b8f">mist::erosion()</a>, <a class="el" href="namespacemist_1_1linear.html#a4ad7ea3730d2a8aa1a406699c5cecc33">mist::linear::filter()</a>, <a class="el" href="namespacemist_1_1linear.html#a938336c95aa76afb20d2fe439bb1c790">mist::linear::filter1d()</a>, <a class="el" href="group__fusion__group.html#ga94c17247408f52295a63372369cc03f1">mist::fusion()</a>, <a class="el" href="namespacemist_1_1nearest.html#aad0452b0a3601b1252c9e83e32ee7b19">mist::nearest::interpolate()</a>, <a class="el" href="namespacemist_1_1mean.html#a38cffb2c680d260aef074cd08643f4d4">mist::mean::interpolate()</a>, <a class="el" href="namespacemist_1_1linear.html#aebe0771229542cdeba0260f21d94da22">mist::linear::interpolate()</a>, <a class="el" href="namespacemist_1_1cubic.html#ac7e51c96515f3a977424a7264b600dc1">mist::cubic::interpolate()</a>, <a class="el" href="namespacemist_1_1BSpline.html#a38f32e7434c4422d9adf60214b491321">mist::BSpline::interpolate()</a>, <a class="el" href="namespacemist_1_1sinc.html#aab90587eca67e728fcbc549c3fa422db">mist::sinc::interpolate()</a>, <a class="el" href="namespacemist_1_1saito.html#a4a18f11a2b12c8d1b97fbe68e2944cf6">mist::saito::inverse_distance_transform()</a>, <a class="el" href="group__median__group.html#gaf752af3c8108ec0769fc5821a21f79ed">mist::median()</a>, <a class="el" href="group__volumerendering__group.html#gaf8030793cad706695326d2b7da38e3b6">mist::mip()</a>, <a class="el" href="group__mode__group.html#ga8820313fa0f62e950e18a22083c2bc68">mist::mode()</a>, <a class="el" href="group__morphology__group.html#ga99d5819b28dfe92e222fa0147c1cf9f8">mist::opening()</a>, <a class="el" href="group__volumerendering__group.html#ga387d2cf52eb6e643c67922cd8cb140af">mist::volumerendering()</a>, と <a class="el" href="namespacemist_1_1calvin.html#a2356126093b9f70c5775cb2d003995db">mist::calvin::voronoi_distance_transform()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga15b1f1c5d9e6494e6aca9071050a2ca7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::wait_thread </td>
+          <td>(</td>
+          <td class="paramtype">thread_handle &amp;&#160;</td>
+          <td class="paramname"><em>thread_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>dwMilliseconds</em> = <code>INFINITE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッドが終了するか，タイムアウトが発生するまで待機する </p>
+<p>タイムアウトを INFINITE に設定することで，スレッドが終了するまで待ち続ける</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">thread_</td><td>… スレッドオブジェクト </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dwMilliseconds</td><td>… タイムアウト時間（ミリ秒単位）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… スレッドがタイムアウト時間内に正常終了した場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… スレッドがタイムアウト時間内に終了しなかった場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1thread__handle.html#aabce8484d8bf02b848cb73eb49bfd686">mist::thread_handle::wait()</a>.</p>
+
+<p>参照元 <a class="el" href="group__thread__group.html#ga07d201d0b1a6135e0f47fa2569be33f3">mist::do_thread()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaa3852e271bf7bde41c25c236036b047f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::wait_threads </td>
+          <td>(</td>
+          <td class="paramtype">thread_handle *&#160;</td>
+          <td class="paramname"><em>handles</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_threads</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>dwMilliseconds</em> = <code>INFINITE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>複数のスレッドが使用していたリソースを開放する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">handles</td><td>… スレッドオブジェクト </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… スレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dwMilliseconds</td><td>… タイムアウト時間（ミリ秒単位）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 複数のスレッドがタイムアウト時間内に正常終了した場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 複数のスレッドがタイムアウト時間内に終了しなかった場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__thread__group.html#ga50ae7daac1beec2082919b1374dc39d1">mist::do_threads()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::mist_allocator&lt; T, Allocator &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1mist__allocator.html">mist_allocator</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::mist_allocator&lt; T, Allocator &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>MIST内部でSTLのアロケータを効果的に利用するための仕組み  
+ <a href="classmist_1_1mist__allocator.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="mist__alloc_8h_source.html">mist_alloc.h</a>&gt;</code></p>
+
+<p>Allocatorを継承しています。</p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:ac3a55ac03d739893db3509e616b838a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3a55ac03d739893db3509e616b838a7"></a>
+typedef Allocator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#ac3a55ac03d739893db3509e616b838a7">base</a></td></tr>
+<tr class="memdesc:ac3a55ac03d739893db3509e616b838a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナが利用するアロケータ型 <br/></td></tr>
+<tr class="memitem:a36f7f2bff6633016b35081da3794ed08"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a36f7f2bff6633016b35081da3794ed08"></a>
+typedef Allocator::reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a36f7f2bff6633016b35081da3794ed08">reference</a></td></tr>
+<tr class="memdesc:a36f7f2bff6633016b35081da3794ed08"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の参照．mist::array&lt; data &gt; の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:a8527cbeb8bacb5e71821980d30313af9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8527cbeb8bacb5e71821980d30313af9"></a>
+typedef Allocator::const_reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a8527cbeb8bacb5e71821980d30313af9">const_reference</a></td></tr>
+<tr class="memdesc:a8527cbeb8bacb5e71821980d30313af9"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const 参照．mist::array&lt; data &gt; の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:a5b0bcbb6c687513c6e8230ea0c96e277"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b0bcbb6c687513c6e8230ea0c96e277"></a>
+typedef Allocator::value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a5b0bcbb6c687513c6e8230ea0c96e277">value_type</a></td></tr>
+<tr class="memdesc:a5b0bcbb6c687513c6e8230ea0c96e277"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型．mist::array&lt; data &gt; の data と同じ <br/></td></tr>
+<tr class="memitem:a8ce8762e010b75ae3b93ca8e76c27a3d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ce8762e010b75ae3b93ca8e76c27a3d"></a>
+typedef Allocator::size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a></td></tr>
+<tr class="memdesc:a8ce8762e010b75ae3b93ca8e76c27a3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a4ea75cec80f89304af6c096f92cbe4db"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ea75cec80f89304af6c096f92cbe4db"></a>
+typedef Allocator::difference_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a4ea75cec80f89304af6c096f92cbe4db">difference_type</a></td></tr>
+<tr class="memdesc:a4ea75cec80f89304af6c096f92cbe4db"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:af47c3641354da2c385e5fa058d3c7b85"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af47c3641354da2c385e5fa058d3c7b85"></a>
+typedef Allocator::pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a></td></tr>
+<tr class="memdesc:af47c3641354da2c385e5fa058d3c7b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型のポインター型．mist::array&lt; data &gt; の場合，data * となる <br/></td></tr>
+<tr class="memitem:aa813d4199ea07115a86613df80c7f376"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa813d4199ea07115a86613df80c7f376"></a>
+typedef Allocator::const_pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#aa813d4199ea07115a86613df80c7f376">const_pointer</a></td></tr>
+<tr class="memdesc:aa813d4199ea07115a86613df80c7f376"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array&lt; data &gt; の場合，const data * となる <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a2b21c2560fa0ef28e61f7e110418aa99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b21c2560fa0ef28e61f7e110418aa99"></a>
+<a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a2b21c2560fa0ef28e61f7e110418aa99">allocate_objects</a> (<a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a> num)</td></tr>
+<tr class="memdesc:a2b21c2560fa0ef28e61f7e110418aa99"><td class="mdescLeft">&#160;</td><td class="mdescRight">num 個のオブジェクトのメモリを確保し初期化を行う（組み込み型かどうかで内部の実装を分岐） <br/></td></tr>
+<tr class="memitem:af3a35303e81a2b81e2d4e138aa6f2041"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3a35303e81a2b81e2d4e138aa6f2041"></a>
+<a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#af3a35303e81a2b81e2d4e138aa6f2041">allocate_objects</a> (<a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a> num, <a class="el" href="classmist_1_1mist__allocator.html#a8527cbeb8bacb5e71821980d30313af9">const_reference</a> obj)</td></tr>
+<tr class="memdesc:af3a35303e81a2b81e2d4e138aa6f2041"><td class="mdescLeft">&#160;</td><td class="mdescRight">num 個のオブジェクトのメモリを確保し obj を用いて初期化を行う（組み込み型かどうかで内部の実装を分岐） <br/></td></tr>
+<tr class="memitem:a4976579bc3924ccaa65dc822d8b4a618"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4976579bc3924ccaa65dc822d8b4a618"></a>
+<a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a4976579bc3924ccaa65dc822d8b4a618">allocate_objects</a> (<a class="el" href="classmist_1_1mist__allocator.html#aa813d4199ea07115a86613df80c7f376">const_pointer</a> s, <a class="el" href="classmist_1_1mist__allocator.html#aa813d4199ea07115a86613df80c7f376">const_pointer</a> e)</td></tr>
+<tr class="memdesc:a4976579bc3924ccaa65dc822d8b4a618"><td class="mdescLeft">&#160;</td><td class="mdescRight">num 個のオブジェクトを確保し，ポインタで囲まれた間のデータで初期化する(組み込み型のデータの場合は memcpy を利用する) <br/></td></tr>
+<tr class="memitem:ab892f6400ba964dd8114ee4ce78c4431"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab892f6400ba964dd8114ee4ce78c4431"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#ab892f6400ba964dd8114ee4ce78c4431">deallocate_objects</a> (<a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a> ptr, <a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a> num)</td></tr>
+<tr class="memdesc:ab892f6400ba964dd8114ee4ce78c4431"><td class="mdescLeft">&#160;</td><td class="mdescRight">num 個のオブジェクトのメモリを開放し，デストラクタを呼び出す（組み込み型の場合はデストラクタは呼ばない） <br/></td></tr>
+<tr class="memitem:a6075cc83f93288b1fcecb50ce18bd81b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6075cc83f93288b1fcecb50ce18bd81b"></a>
+<a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a6075cc83f93288b1fcecb50ce18bd81b">copy_objects</a> (<a class="el" href="classmist_1_1mist__allocator.html#aa813d4199ea07115a86613df80c7f376">const_pointer</a> s, <a class="el" href="classmist_1_1mist__allocator.html#aa813d4199ea07115a86613df80c7f376">const_pointer</a> e, <a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a> x) const </td></tr>
+<tr class="memdesc:a6075cc83f93288b1fcecb50ce18bd81b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタ s から e までの間のデータを x にコピーする <br/></td></tr>
+<tr class="memitem:a9a66aa124acf8945cc4f830a3509bd6b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a66aa124acf8945cc4f830a3509bd6b"></a>
+<a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a9a66aa124acf8945cc4f830a3509bd6b">copy_objects</a> (<a class="el" href="classmist_1_1mist__allocator.html#aa813d4199ea07115a86613df80c7f376">const_pointer</a> ptr, <a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a> num, <a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a> to) const </td></tr>
+<tr class="memdesc:a9a66aa124acf8945cc4f830a3509bd6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタ ptr から num 個のデータを to にコピーする <br/></td></tr>
+<tr class="memitem:a534be0d954b1946db82372dc5fc60d3d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a534be0d954b1946db82372dc5fc60d3d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a534be0d954b1946db82372dc5fc60d3d">fill_objects</a> (<a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a> ptr, <a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a> num, <a class="el" href="classmist_1_1mist__allocator.html#a8527cbeb8bacb5e71821980d30313af9">const_reference</a> obj) const </td></tr>
+<tr class="memdesc:a534be0d954b1946db82372dc5fc60d3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタ ptr から num 個のデータにobjを代入する <br/></td></tr>
+<tr class="memitem:af8d4a4e71f494ecb603dc88e3576d492"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8d4a4e71f494ecb603dc88e3576d492"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#af8d4a4e71f494ecb603dc88e3576d492">fill_objects</a> (<a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a> ptr, <a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a> num) const </td></tr>
+<tr class="memdesc:af8d4a4e71f494ecb603dc88e3576d492"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタ ptr から num 個のデータに初期値を代入する <br/></td></tr>
+<tr class="memitem:a873630d49e30124bd495e20082d6d1c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a873630d49e30124bd495e20082d6d1c0">trim_objects</a> (<a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a> ptr, <a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a> num, <a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a> dest_num)</td></tr>
+<tr class="memdesc:a873630d49e30124bd495e20082d6d1c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">ptr から始まり num 個存在するオブジェクトを dest_num 個まで縮め，全ての要素をデフォルトの値で初期化する  <a href="#a873630d49e30124bd495e20082d6d1c0"></a><br/></td></tr>
+<tr class="memitem:afa6f2145f8ab954473f5aec5486e6559"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#afa6f2145f8ab954473f5aec5486e6559">trim_objects</a> (<a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a> ptr, <a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a> num, <a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a> dest_num, <a class="el" href="classmist_1_1mist__allocator.html#a8527cbeb8bacb5e71821980d30313af9">const_reference</a> obj)</td></tr>
+<tr class="memdesc:afa6f2145f8ab954473f5aec5486e6559"><td class="mdescLeft">&#160;</td><td class="mdescRight">ptr から始まり num 個存在するオブジェクトを dest_num 個まで縮め，全ての要素を値 obj で初期化する  <a href="#afa6f2145f8ab954473f5aec5486e6559"></a><br/></td></tr>
+<tr class="memitem:a9ab5769180bd32b6db7ed84774cb4d51"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ab5769180bd32b6db7ed84774cb4d51"></a>
+<a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a9ab5769180bd32b6db7ed84774cb4d51">max_size</a> () const </td></tr>
+<tr class="memdesc:a9ab5769180bd32b6db7ed84774cb4d51"><td class="mdescLeft">&#160;</td><td class="mdescRight">使用しているアロケータが確保可能なメモリの最大値を返す <br/></td></tr>
+<tr class="memitem:a0ac5414f717ce91c464f38330959d692"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ac5414f717ce91c464f38330959d692"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a0ac5414f717ce91c464f38330959d692">is_memory_shared</a> () const </td></tr>
+<tr class="memdesc:a0ac5414f717ce91c464f38330959d692"><td class="mdescLeft">&#160;</td><td class="mdescRight">外部で割り当てられたメモリ領域を使用しているかどうか <br/></td></tr>
+<tr class="memitem:a27697df11de5186fdbe9528d655a4470"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27697df11de5186fdbe9528d655a4470"></a>
+const Allocator &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a27697df11de5186fdbe9528d655a4470">operator=</a> (const Allocator &amp;alloc)</td></tr>
+<tr class="memdesc:a27697df11de5186fdbe9528d655a4470"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のアロケータを代入する <br/></td></tr>
+<tr class="memitem:ac4a8bbf00a54effd1dc22b5fa8e0a929"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac4a8bbf00a54effd1dc22b5fa8e0a929"></a>
+const <a class="el" href="classmist_1_1mist__allocator.html">mist_allocator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#ac4a8bbf00a54effd1dc22b5fa8e0a929">operator=</a> (const <a class="el" href="classmist_1_1mist__allocator.html">mist_allocator</a> &amp;alloc)</td></tr>
+<tr class="memdesc:ac4a8bbf00a54effd1dc22b5fa8e0a929"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のアロケータを代入する <br/></td></tr>
+<tr class="memitem:aa45f6aa979fc179067035fda3d79dfd1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa45f6aa979fc179067035fda3d79dfd1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#aa45f6aa979fc179067035fda3d79dfd1">mist_allocator</a> ()</td></tr>
+<tr class="memdesc:aa45f6aa979fc179067035fda3d79dfd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトコンストラクタ <br/></td></tr>
+<tr class="memitem:a638714fc9374b972b270293c74154de3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a638714fc9374b972b270293c74154de3">mist_allocator</a> (<a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a> ptr, <a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a> mem_shared)</td></tr>
+<tr class="memdesc:a638714fc9374b972b270293c74154de3"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトコンストラクタ  <a href="#a638714fc9374b972b270293c74154de3"></a><br/></td></tr>
+<tr class="memitem:a0162221519042e92609e26b180be86b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0162221519042e92609e26b180be86b1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a0162221519042e92609e26b180be86b1">mist_allocator</a> (const Allocator &amp;alloc)</td></tr>
+<tr class="memdesc:a0162221519042e92609e26b180be86b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のアロケータを用いて初期化する <br/></td></tr>
+<tr class="memitem:a838c3fe9cf2cfc44dbf08d26b21a3d85"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a838c3fe9cf2cfc44dbf08d26b21a3d85"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__allocator.html#a838c3fe9cf2cfc44dbf08d26b21a3d85">mist_allocator</a> (const <a class="el" href="classmist_1_1mist__allocator.html">mist_allocator</a> &amp;alloc)</td></tr>
+<tr class="memdesc:a838c3fe9cf2cfc44dbf08d26b21a3d85"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のアロケータを用いて初期化する <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T, class Allocator&gt;<br/>
+class mist::mist_allocator&lt; T, Allocator &gt;</h3>
+
+<p>MIST内部でSTLのアロケータを効果的に利用するための仕組み </p>
+<p>データの型によって，メモリ操作を区別し高速化を図っている</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>… データ型 </td></tr>
+    <tr><td class="paramname">Allocator</td><td>… アロケータタイプ </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="a638714fc9374b972b270293c74154de3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1mist__allocator.html">mist::mist_allocator</a>&lt; T, Allocator &gt;::<a class="el" href="classmist_1_1mist__allocator.html">mist_allocator</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a>&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a>&#160;</td>
+          <td class="paramname"><em>mem_shared</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>デフォルトコンストラクタ </p>
+<dl class="section attention"><dt>注意</dt><dd>外部で割り当てたメモリ領域を利用する場合</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ptr</td><td>… 外部メモリの先頭のポインタ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mem_shared</td><td>… 外部メモリに割り当てたメモリ量 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="a873630d49e30124bd495e20082d6d1c0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a> <a class="el" href="classmist_1_1mist__allocator.html">mist::mist_allocator</a>&lt; T, Allocator &gt;::trim_objects </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a>&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a>&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a>&#160;</td>
+          <td class="paramname"><em>dest_num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ptr から始まり num 個存在するオブジェクトを dest_num 個まで縮め，全ての要素をデフォルトの値で初期化する </p>
+<dl class="section attention"><dt>注意</dt><dd>MSVCの場合は，メモリ領域のトリム操作が正しく動作しないため，メモリの再確保を行う </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="afa6f2145f8ab954473f5aec5486e6559"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a> <a class="el" href="classmist_1_1mist__allocator.html">mist::mist_allocator</a>&lt; T, Allocator &gt;::trim_objects </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1mist__allocator.html#af47c3641354da2c385e5fa058d3c7b85">pointer</a>&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a>&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1mist__allocator.html#a8ce8762e010b75ae3b93ca8e76c27a3d">size_type</a>&#160;</td>
+          <td class="paramname"><em>dest_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1mist__allocator.html#a8527cbeb8bacb5e71821980d30313af9">const_reference</a>&#160;</td>
+          <td class="paramname"><em>obj</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ptr から始まり num 個存在するオブジェクトを dest_num 個まで縮め，全ての要素を値 obj で初期化する </p>
+<dl class="section attention"><dt>注意</dt><dd>MSVCの場合は，メモリ領域のトリム操作が正しく動作しないため，メモリの再確保を行う </dd></dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="mist__alloc_8h_source.html">mist_alloc.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

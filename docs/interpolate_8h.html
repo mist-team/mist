@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>interpolate.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">interpolate.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>各次元の画像に対応した，画像補間ライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="limits_8h_source.html">limits.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="thread_8h_source.html">thread.h</a>&quot;</code><br/>
+<code>#include &lt;cmath&gt;</code><br/>
+</div>
+<p><a href="interpolate_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1nearest"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1nearest.html">mist::nearest</a></td></tr>
+<tr class="memdesc:namespacemist_1_1nearest"><td class="mdescLeft">&#160;</td><td class="mdescRight">最近傍型補間 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1mean"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mean.html">mist::mean</a></td></tr>
+<tr class="memdesc:namespacemist_1_1mean"><td class="mdescLeft">&#160;</td><td class="mdescRight">平均値型補間 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1linear"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html">mist::linear</a></td></tr>
+<tr class="memdesc:namespacemist_1_1linear"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般カーネルの線形フィルタの実装（コールバック関数を指定することが可能） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1cubic"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1cubic.html">mist::cubic</a></td></tr>
+<tr class="memdesc:namespacemist_1_1cubic"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次のsinc関数を用いた補間 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1BSpline"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1BSpline.html">mist::BSpline</a></td></tr>
+<tr class="memdesc:namespacemist_1_1BSpline"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次のBスプライン関数を用いた補間 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1sinc"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1sinc.html">mist::sinc</a></td></tr>
+<tr class="memdesc:namespacemist_1_1sinc"><td class="mdescLeft">&#160;</td><td class="mdescRight">sinc関数を用いた補間 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:aad0452b0a3601b1252c9e83e32ee7b19"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:aad0452b0a3601b1252c9e83e32ee7b19"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1nearest.html#aad0452b0a3601b1252c9e83e32ee7b19">mist::nearest::interpolate</a> (const array&lt; T1, Allocator1 &gt; &amp;in, array&lt; T2, Allocator2 &gt; &amp;out, typename array&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:aad0452b0a3601b1252c9e83e32ee7b19"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する最近傍型補間  <a href="#aad0452b0a3601b1252c9e83e32ee7b19"></a><br/></td></tr>
+<tr class="memitem:ac5cf1d8a2ab8d535b31226cf2e22dc9f"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ac5cf1d8a2ab8d535b31226cf2e22dc9f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1nearest.html#ac5cf1d8a2ab8d535b31226cf2e22dc9f">mist::nearest::interpolate</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out, typename array1&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ac5cf1d8a2ab8d535b31226cf2e22dc9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する最近傍型補間  <a href="#ac5cf1d8a2ab8d535b31226cf2e22dc9f"></a><br/></td></tr>
+<tr class="memitem:ad2325728a213e591ee7b2906d36e1d22"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ad2325728a213e591ee7b2906d36e1d22"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1nearest.html#ad2325728a213e591ee7b2906d36e1d22">mist::nearest::interpolate</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type width, typename array2&lt; T1, Allocator1 &gt;::size_type height, typename array2&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ad2325728a213e591ee7b2906d36e1d22"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元配列に対する最近傍型補間  <a href="#ad2325728a213e591ee7b2906d36e1d22"></a><br/></td></tr>
+<tr class="memitem:a1733b04174d70795203d111b9efe0e11"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a1733b04174d70795203d111b9efe0e11"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1nearest.html#a1733b04174d70795203d111b9efe0e11">mist::nearest::interpolate</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type width, typename array3&lt; T1, Allocator1 &gt;::size_type height, typename array3&lt; T1, Allocator1 &gt;::size_type depth, typename array3&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a1733b04174d70795203d111b9efe0e11"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元配列に対する最近傍型補間  <a href="#a1733b04174d70795203d111b9efe0e11"></a><br/></td></tr>
+<tr class="memitem:a38cffb2c680d260aef074cd08643f4d4"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a38cffb2c680d260aef074cd08643f4d4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mean.html#a38cffb2c680d260aef074cd08643f4d4">mist::mean::interpolate</a> (const array&lt; T1, Allocator1 &gt; &amp;in, array&lt; T2, Allocator2 &gt; &amp;out, typename array&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a38cffb2c680d260aef074cd08643f4d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する平均値型補間  <a href="#a38cffb2c680d260aef074cd08643f4d4"></a><br/></td></tr>
+<tr class="memitem:a830baa0bc42c0d64fc8ad7583fdb5cfb"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a830baa0bc42c0d64fc8ad7583fdb5cfb"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mean.html#a830baa0bc42c0d64fc8ad7583fdb5cfb">mist::mean::interpolate</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out, typename array1&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a830baa0bc42c0d64fc8ad7583fdb5cfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する線形補間  <a href="#a830baa0bc42c0d64fc8ad7583fdb5cfb"></a><br/></td></tr>
+<tr class="memitem:ad1e0c8322f8c4b299a26658f844b8745"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ad1e0c8322f8c4b299a26658f844b8745"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mean.html#ad1e0c8322f8c4b299a26658f844b8745">mist::mean::interpolate</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type width, typename array2&lt; T1, Allocator1 &gt;::size_type height, typename array2&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ad1e0c8322f8c4b299a26658f844b8745"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元配列に対する線形補間  <a href="#ad1e0c8322f8c4b299a26658f844b8745"></a><br/></td></tr>
+<tr class="memitem:ac79f152f1fe10fcdadc9797777ff058f"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ac79f152f1fe10fcdadc9797777ff058f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mean.html#ac79f152f1fe10fcdadc9797777ff058f">mist::mean::interpolate</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type width, typename array3&lt; T1, Allocator1 &gt;::size_type height, typename array3&lt; T1, Allocator1 &gt;::size_type depth, typename array3&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ac79f152f1fe10fcdadc9797777ff058f"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元配列に対する線形補間  <a href="#ac79f152f1fe10fcdadc9797777ff058f"></a><br/></td></tr>
+<tr class="memitem:aebe0771229542cdeba0260f21d94da22"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:aebe0771229542cdeba0260f21d94da22"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#aebe0771229542cdeba0260f21d94da22">mist::linear::interpolate</a> (const array&lt; T1, Allocator1 &gt; &amp;in, array&lt; T2, Allocator2 &gt; &amp;out, typename array&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:aebe0771229542cdeba0260f21d94da22"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する線形補間  <a href="#aebe0771229542cdeba0260f21d94da22"></a><br/></td></tr>
+<tr class="memitem:a9305b7a6f3d73b3e28fc2438df79b6ea"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a9305b7a6f3d73b3e28fc2438df79b6ea"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a9305b7a6f3d73b3e28fc2438df79b6ea">mist::linear::interpolate</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out, typename array1&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a9305b7a6f3d73b3e28fc2438df79b6ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する線形補間  <a href="#a9305b7a6f3d73b3e28fc2438df79b6ea"></a><br/></td></tr>
+<tr class="memitem:a07e4c8eaec57b5b1c9fbfa040ce3dab2"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a07e4c8eaec57b5b1c9fbfa040ce3dab2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a07e4c8eaec57b5b1c9fbfa040ce3dab2">mist::linear::interpolate</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type width, typename array2&lt; T1, Allocator1 &gt;::size_type height, typename array2&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a07e4c8eaec57b5b1c9fbfa040ce3dab2"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元配列に対する線形補間  <a href="#a07e4c8eaec57b5b1c9fbfa040ce3dab2"></a><br/></td></tr>
+<tr class="memitem:a34bf8729ae641085ffef7bd101228a1f"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a34bf8729ae641085ffef7bd101228a1f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#a34bf8729ae641085ffef7bd101228a1f">mist::linear::interpolate</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type width, typename array3&lt; T1, Allocator1 &gt;::size_type height, typename array3&lt; T1, Allocator1 &gt;::size_type depth, typename array3&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a34bf8729ae641085ffef7bd101228a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元配列に対する線形補間  <a href="#a34bf8729ae641085ffef7bd101228a1f"></a><br/></td></tr>
+<tr class="memitem:ac7e51c96515f3a977424a7264b600dc1"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ac7e51c96515f3a977424a7264b600dc1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1cubic.html#ac7e51c96515f3a977424a7264b600dc1">mist::cubic::interpolate</a> (const array&lt; T1, Allocator1 &gt; &amp;in, array&lt; T2, Allocator2 &gt; &amp;out, typename array&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ac7e51c96515f3a977424a7264b600dc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する3次のsinc関数を用いた補間  <a href="#ac7e51c96515f3a977424a7264b600dc1"></a><br/></td></tr>
+<tr class="memitem:a85557fec847bfdf39e9acdc2eb91306a"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a85557fec847bfdf39e9acdc2eb91306a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1cubic.html#a85557fec847bfdf39e9acdc2eb91306a">mist::cubic::interpolate</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out, typename array1&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a85557fec847bfdf39e9acdc2eb91306a"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する3次のsinc関数を用いた補間  <a href="#a85557fec847bfdf39e9acdc2eb91306a"></a><br/></td></tr>
+<tr class="memitem:a1fea63889b2a1eb5b435322639d34fc8"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a1fea63889b2a1eb5b435322639d34fc8"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1cubic.html#a1fea63889b2a1eb5b435322639d34fc8">mist::cubic::interpolate</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type width, typename array2&lt; T1, Allocator1 &gt;::size_type height, typename array2&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a1fea63889b2a1eb5b435322639d34fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元配列に対する3次のsinc関数を用いた補間  <a href="#a1fea63889b2a1eb5b435322639d34fc8"></a><br/></td></tr>
+<tr class="memitem:a19696544f4339145dceefb2df13739d2"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a19696544f4339145dceefb2df13739d2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1cubic.html#a19696544f4339145dceefb2df13739d2">mist::cubic::interpolate</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type width, typename array3&lt; T1, Allocator1 &gt;::size_type height, typename array3&lt; T1, Allocator1 &gt;::size_type depth, typename array3&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a19696544f4339145dceefb2df13739d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元配列に対する3次のsinc関数を用いた補間  <a href="#a19696544f4339145dceefb2df13739d2"></a><br/></td></tr>
+<tr class="memitem:a38f32e7434c4422d9adf60214b491321"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a38f32e7434c4422d9adf60214b491321"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1BSpline.html#a38f32e7434c4422d9adf60214b491321">mist::BSpline::interpolate</a> (const array&lt; T1, Allocator1 &gt; &amp;in, array&lt; T2, Allocator2 &gt; &amp;out, typename array&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a38f32e7434c4422d9adf60214b491321"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する3次のBスプライン関数を用いた補間  <a href="#a38f32e7434c4422d9adf60214b491321"></a><br/></td></tr>
+<tr class="memitem:ad3da21fb447cbfa28a0247265b1289e3"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ad3da21fb447cbfa28a0247265b1289e3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1BSpline.html#ad3da21fb447cbfa28a0247265b1289e3">mist::BSpline::interpolate</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out, typename array1&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ad3da21fb447cbfa28a0247265b1289e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対する3次のBスプライン関数を用いた補間  <a href="#ad3da21fb447cbfa28a0247265b1289e3"></a><br/></td></tr>
+<tr class="memitem:a6a55d9950d639d3fb1ffb12e8c3d17a4"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a6a55d9950d639d3fb1ffb12e8c3d17a4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1BSpline.html#a6a55d9950d639d3fb1ffb12e8c3d17a4">mist::BSpline::interpolate</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type width, typename array2&lt; T1, Allocator1 &gt;::size_type height, typename array2&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a6a55d9950d639d3fb1ffb12e8c3d17a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元配列に対する3次のBスプライン関数を用いた補間  <a href="#a6a55d9950d639d3fb1ffb12e8c3d17a4"></a><br/></td></tr>
+<tr class="memitem:a51478cfe2247d1b019e64d53099585df"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a51478cfe2247d1b019e64d53099585df"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1BSpline.html#a51478cfe2247d1b019e64d53099585df">mist::BSpline::interpolate</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type width, typename array3&lt; T1, Allocator1 &gt;::size_type height, typename array3&lt; T1, Allocator1 &gt;::size_type depth, typename array3&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a51478cfe2247d1b019e64d53099585df"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元配列に対する3次のBスプライン関数を用いた補間  <a href="#a51478cfe2247d1b019e64d53099585df"></a><br/></td></tr>
+<tr class="memitem:aab90587eca67e728fcbc549c3fa422db"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:aab90587eca67e728fcbc549c3fa422db"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1sinc.html#aab90587eca67e728fcbc549c3fa422db">mist::sinc::interpolate</a> (const array&lt; T1, Allocator1 &gt; &amp;in, array&lt; T2, Allocator2 &gt; &amp;out, typename array&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:aab90587eca67e728fcbc549c3fa422db"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対するsinc関数を用いた補間  <a href="#aab90587eca67e728fcbc549c3fa422db"></a><br/></td></tr>
+<tr class="memitem:afd7eff197982cada5a85e7b37294c393"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:afd7eff197982cada5a85e7b37294c393"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1sinc.html#afd7eff197982cada5a85e7b37294c393">mist::sinc::interpolate</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out, typename array1&lt; T1, Allocator1 &gt;::size_type width, typename array1&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:afd7eff197982cada5a85e7b37294c393"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元配列に対するsinc関数を用いた補間  <a href="#afd7eff197982cada5a85e7b37294c393"></a><br/></td></tr>
+<tr class="memitem:ab204ab4447236dc35c9dc83d5c0a0bb2"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ab204ab4447236dc35c9dc83d5c0a0bb2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1sinc.html#ab204ab4447236dc35c9dc83d5c0a0bb2">mist::sinc::interpolate</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out, typename array2&lt; T1, Allocator1 &gt;::size_type width, typename array2&lt; T1, Allocator1 &gt;::size_type height, typename array2&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ab204ab4447236dc35c9dc83d5c0a0bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元配列に対するsinc関数を用いた補間  <a href="#ab204ab4447236dc35c9dc83d5c0a0bb2"></a><br/></td></tr>
+<tr class="memitem:a9eb45aa341acb49178ad5d5caeecad7a"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a9eb45aa341acb49178ad5d5caeecad7a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1sinc.html#a9eb45aa341acb49178ad5d5caeecad7a">mist::sinc::interpolate</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out, typename array3&lt; T1, Allocator1 &gt;::size_type width, typename array3&lt; T1, Allocator1 &gt;::size_type height, typename array3&lt; T1, Allocator1 &gt;::size_type depth, typename array3&lt; T1, Allocator1 &gt;::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a9eb45aa341acb49178ad5d5caeecad7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元配列に対するsinc関数を用いた補間  <a href="#a9eb45aa341acb49178ad5d5caeecad7a"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>各次元の画像に対応した，画像補間ライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ビデオファイルの入出力を行うライブラリ</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a>  </div>
+  <div class="headertitle">
+<div class="title">ビデオファイルの入出力を行うライブラリ</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist_1_1video"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1video.html">mist::video</a></td></tr>
+<tr class="memdesc:namespacemist_1_1video"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビデオファイルを扱うライブラリ <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<p>本ライブラリは，http://ffmpeg.sourceforge.net/index.php で開発が行われている ffmpeg の libavcodec, libavformat を利用している エンコードとデコードはこのライブラリのAPIを用いて実装されているため，別途ライブラリを用意する必要がある</p>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="video_8h.html" title="さまざまなビデオストリームの入出力ライブラリ">mist/io/video.h</a>&gt;</span></div>
+</div><!-- fragment --><div class="fragment"><div class="line"> 使用例(ビデオストリームから連番bmpファイルを作成)</div>
+<div class="line">mist::array2&lt; mist::rgb&lt; <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> &gt; &gt; img;</div>
+<div class="line">mist::video::decoder iv( &quot;input.avi&quot; );</div>
+<div class="line"></div>
+<div class="line">iv.dump( );</div>
+<div class="line"><span class="keywordtype">char</span> fname[ 256 ];</div>
+<div class="line"><span class="keywordtype">int</span> i = 0;</div>
+<div class="line">while( !iv.is_eof( ) )</div>
+<div class="line">{</div>
+<div class="line">    iv &gt;&gt; img;</div>
+<div class="line">    sprintf( fname, <span class="stringliteral">&quot;%04d.bmp&quot;</span>, i++ );</div>
+<div class="line">    <a class="code" href="group__image__bmp__group.html#gaed6d24f0d1a35077c277e16df1775ea6" title="MISTコンテナの画像をBMP形式でファイルに出力する">mist::write_bmp</a>( img, fname );</div>
+<div class="line">}</div>
+<div class="line">iv.close( );</div>
+</div><!-- fragment --><div class="fragment"><div class="line"> 使用例(入力ビデオをmpeg1ビデオに変換)</div>
+<div class="line">mist::array2&lt; mist::rgb&lt; <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> &gt; &gt; img;</div>
+<div class="line">mist::video::decoder iv( &quot;input.avi&quot; );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// コンストラクタの引数を変更して圧縮パラメータの変更</span></div>
+<div class="line"><span class="comment">// （【注意！】ストリームを開く前に変更しなければならない）</span></div>
+<div class="line">mist::video::mpeg1::encoder ov( &quot;output.mpg&quot;, 320, 240 );</div>
+<div class="line">ov.dump( );</div>
+<div class="line"></div>
+<div class="line">while( !iv.is_eof( ) )</div>
+<div class="line">{</div>
+<div class="line">    std::cout &lt;&lt; iv.time( ) &lt;&lt; std::endl;</div>
+<div class="line">    iv &gt;&gt; img;</div>
+<div class="line">    <span class="comment">/* ここで img に何らかの画像処理を施すことも可能 */</span></div>
+<div class="line">    ov &lt;&lt; img;</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line">ov.close( );</div>
+<div class="line">iv.close( );</div>
+</div><!-- fragment --> </div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

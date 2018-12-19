@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>図形分割</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">図形分割</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gacbb7810e4010bb9b2ce368d2295e351d"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 , class Functor &gt; </td></tr>
+<tr class="memitem:gacbb7810e4010bb9b2ce368d2295e351d"><td class="memTemplItemLeft" align="right" valign="top">Array1::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__decomposition__group.html#gacbb7810e4010bb9b2ce368d2295e351d">mist::figure_decomposition</a> (const Array1 &amp;in, Array2 &amp;out, double max_distance, Functor f)</td></tr>
+<tr class="memdesc:gacbb7810e4010bb9b2ce368d2295e351d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド距離に基づく図形分割  <a href="#gacbb7810e4010bb9b2ce368d2295e351d"></a><br/></td></tr>
+<tr class="memitem:ga9260c265b84c8a0d2ee1c09050d33377"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga9260c265b84c8a0d2ee1c09050d33377"><td class="memTemplItemLeft" align="right" valign="top">Array1::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__decomposition__group.html#ga9260c265b84c8a0d2ee1c09050d33377">mist::figure_decomposition</a> (const Array1 &amp;in, Array2 &amp;out, double max_distance=-1)</td></tr>
+<tr class="memdesc:ga9260c265b84c8a0d2ee1c09050d33377"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド距離に基づく図形分割  <a href="#ga9260c265b84c8a0d2ee1c09050d33377"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="decomposition_8h.html" title="ユークリッド距離に基づく図形分割">mist/filter/decomposition.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="gacbb7810e4010bb9b2ce368d2295e351d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Array1::size_type mist::figure_decomposition </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>max_distance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ユークリッド距離に基づく図形分割 </p>
+<p>図形をくびれ部分で分割する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力データ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">out</td><td>… 出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_distance</td><td>… 最大距離値以上で発生するくびれは分割しないようにする </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 進行状況を与えるコールバック</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>分割された領域の数 </dd></dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1saito.html#ad64e94405f47f6f460ed67cacf145537">mist::saito::distance_transform()</a>, と <a class="el" href="namespacemist_1_1mode__filter.html#ab8f4385aa6d16689ce46e360d1342b4c">mist::mode_filter::sphere()</a>.</p>
+
+<p>参照元 <a class="el" href="group__decomposition__group.html#ga9260c265b84c8a0d2ee1c09050d33377">mist::figure_decomposition()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga9260c265b84c8a0d2ee1c09050d33377"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Array1::size_type mist::figure_decomposition </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>max_distance</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ユークリッド距離に基づく図形分割 </p>
+<p>図形をくびれ部分で分割する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力データ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">out</td><td>… 出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_distance</td><td>… 最大距離値以上で発生するくびれは分割しないようにする</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>分割された領域の数 </dd></dl>
+
+<p>参照先 <a class="el" href="group__decomposition__group.html#gacbb7810e4010bb9b2ce368d2295e351d">mist::figure_decomposition()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::hash_algorithm</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1hash__algorithm.html">hash_algorithm</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-methods">Protected メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::hash_algorithm<div class="ingroups"><a class="el" href="group__hash__group.html">ハッシュ関数</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>ハッシュ関数を計算する基底クラス  
+ <a href="classmist_1_1hash__algorithm.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="hash__algorithm_8h_source.html">hash_algorithm.h</a>&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> mist::hash_algorithmに対する継承グラフ</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+ <div class="center">
+  <img src="classmist_1_1hash__algorithm.png" usemap="#mist::hash_algorithm_map" alt=""/>
+  <map id="mist::hash_algorithm_map" name="mist::hash_algorithm_map">
+<area href="classmist_1_1md2.html" title="MD2 を生成するクラス" alt="mist::md2" shape="rect" coords="0,56,124,80"/>
+<area href="classmist_1_1md4.html" title="MD4 を生成するクラス" alt="mist::md4" shape="rect" coords="134,56,258,80"/>
+<area href="classmist_1_1md5.html" title="MD5 を生成するクラス" alt="mist::md5" shape="rect" coords="268,56,392,80"/>
+<area href="classmist_1_1sha1.html" title="SHA-1 を生成するクラス" alt="mist::sha1" shape="rect" coords="402,56,526,80"/>
+<area href="classmist_1_1sha256.html" title="SHA-256 を生成するクラス" alt="mist::sha256" shape="rect" coords="536,56,660,80"/>
+<area href="classmist_1_1sha384.html" title="SHA-384 を生成するクラス" alt="mist::sha384" shape="rect" coords="670,56,794,80"/>
+<area href="classmist_1_1sha512.html" title="SHA-512 を生成するクラス" alt="mist::sha512" shape="rect" coords="804,56,928,80"/>
+</map>
+ </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a0e025a3077c2047464a7c3f77f0c0057"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e025a3077c2047464a7c3f77f0c0057"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a0e025a3077c2047464a7c3f77f0c0057">size_type</a></td></tr>
+<tr class="memdesc:a0e025a3077c2047464a7c3f77f0c0057"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a1a4e9890c9bddf30fb912cde67e64b26"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a4e9890c9bddf30fb912cde67e64b26"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a1a4e9890c9bddf30fb912cde67e64b26">difference_type</a></td></tr>
+<tr class="memdesc:a1a4e9890c9bddf30fb912cde67e64b26"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:a4f179d027db86e3cab2dc675becba690"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4f179d027db86e3cab2dc675becba690"></a>
+typedef unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a4f179d027db86e3cab2dc675becba690">uint8</a></td></tr>
+<tr class="memdesc:a4f179d027db86e3cab2dc675becba690"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なし8ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned char 型と同じ． <br/></td></tr>
+<tr class="memitem:a5f6faf27db92a622c419788b5c27d5bb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f6faf27db92a622c419788b5c27d5bb"></a>
+typedef unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a5f6faf27db92a622c419788b5c27d5bb">uint32</a></td></tr>
+<tr class="memdesc:a5f6faf27db92a622c419788b5c27d5bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なし32ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned int 型と同じ． <br/></td></tr>
+<tr class="memitem:a7a7f9ff561f7ff9802a591747006b83f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a7f9ff561f7ff9802a591747006b83f"></a>
+typedef unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a7a7f9ff561f7ff9802a591747006b83f">uint64</a></td></tr>
+<tr class="memdesc:a7a7f9ff561f7ff9802a591747006b83f"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なし64ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned long long int 型と同じ． <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a29429ab4265df82548eff2b846ee9938"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29429ab4265df82548eff2b846ee9938"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a29429ab4265df82548eff2b846ee9938">compute_hash</a> (const void *bytes, <a class="el" href="classmist_1_1hash__algorithm.html#a7a7f9ff561f7ff9802a591747006b83f">uint64</a> len)=0</td></tr>
+<tr class="memdesc:a29429ab4265df82548eff2b846ee9938"><td class="mdescLeft">&#160;</td><td class="mdescRight">data[ 0 ] から data[ len - 1 ] の len バイトのハッシュ関数値を計算する． <br/></td></tr>
+<tr class="memitem:af0b234485520f1b0e6f08e34e6a509c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af0b234485520f1b0e6f08e34e6a509c3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#af0b234485520f1b0e6f08e34e6a509c3">compute_hash</a> (const std::string &amp;str)</td></tr>
+<tr class="memdesc:af0b234485520f1b0e6f08e34e6a509c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列 str のハッシュ関数値を計算する． <br/></td></tr>
+<tr class="memitem:a86c965b9d6828b5602bd2c0ed221c53c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a86c965b9d6828b5602bd2c0ed221c53c"></a>
+virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a86c965b9d6828b5602bd2c0ed221c53c">name</a> () const =0</td></tr>
+<tr class="memdesc:a86c965b9d6828b5602bd2c0ed221c53c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ハッシュ関数名を返す <br/></td></tr>
+<tr class="memitem:a2978cfaa0e41f66b21769b356337316e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2978cfaa0e41f66b21769b356337316e"></a>
+<a class="el" href="classmist_1_1hash__algorithm.html#a0e025a3077c2047464a7c3f77f0c0057">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a2978cfaa0e41f66b21769b356337316e">size</a> () const </td></tr>
+<tr class="memdesc:a2978cfaa0e41f66b21769b356337316e"><td class="mdescLeft">&#160;</td><td class="mdescRight">ダイジェストバイト列の長さ <br/></td></tr>
+<tr class="memitem:a4e903d4d3a9fb2edea6e9d9126d1c7ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e903d4d3a9fb2edea6e9d9126d1c7ac"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a4e903d4d3a9fb2edea6e9d9126d1c7ac">operator[]</a> (<a class="el" href="classmist_1_1hash__algorithm.html#a0e025a3077c2047464a7c3f77f0c0057">size_type</a> index) const </td></tr>
+<tr class="memdesc:a4e903d4d3a9fb2edea6e9d9126d1c7ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">ダイジェスト文字列の各バイトを取得する <br/></td></tr>
+<tr class="memitem:a5c03734ea539d195aee40cc8e5927185"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c03734ea539d195aee40cc8e5927185"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a5c03734ea539d195aee40cc8e5927185">to_string</a> () const </td></tr>
+<tr class="memdesc:a5c03734ea539d195aee40cc8e5927185"><td class="mdescLeft">&#160;</td><td class="mdescRight">ダイジェスト文字列を返す <br/></td></tr>
+<tr class="memitem:a46b176d4e3c3b6739b144ecb8d5e153c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46b176d4e3c3b6739b144ecb8d5e153c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a46b176d4e3c3b6739b144ecb8d5e153c">operator==</a> (const <a class="el" href="classmist_1_1hash__algorithm.html">hash_algorithm</a> &amp;h) const </td></tr>
+<tr class="memdesc:a46b176d4e3c3b6739b144ecb8d5e153c"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのハッシュ関数値が同一かどうかを判定する <br/></td></tr>
+<tr class="memitem:a8cefcb1c016f4a15880377bba25d08fb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8cefcb1c016f4a15880377bba25d08fb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a8cefcb1c016f4a15880377bba25d08fb">operator==</a> (const std::string &amp;str) const </td></tr>
+<tr class="memdesc:a8cefcb1c016f4a15880377bba25d08fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのダイジェスト文字列が同一かどうかを判定する <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr class="memitem:ab25619a8a0aab7b8e2aa20abbbc7de34"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab25619a8a0aab7b8e2aa20abbbc7de34"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#ab25619a8a0aab7b8e2aa20abbbc7de34">hash_algorithm</a> (<a class="el" href="classmist_1_1hash__algorithm.html#a0e025a3077c2047464a7c3f77f0c0057">size_type</a> num_digest_bytes)</td></tr>
+<tr class="memdesc:ab25619a8a0aab7b8e2aa20abbbc7de34"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたダイジェストのバイト数で初期化する（派生クラスでのみ利用可能） <br/></td></tr>
+<tr class="memitem:a915e25ded0c3485dec34d7b3493b817a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a915e25ded0c3485dec34d7b3493b817a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a915e25ded0c3485dec34d7b3493b817a">hash_algorithm</a> (const std::string &amp;str)</td></tr>
+<tr class="memdesc:a915e25ded0c3485dec34d7b3493b817a"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたダイジェスト文字列で初期化する（派生クラスでのみ利用可能） <br/></td></tr>
+<tr class="memitem:a172053b21821e77fc9dc61be2057e03d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a172053b21821e77fc9dc61be2057e03d"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1hash__algorithm.html#a172053b21821e77fc9dc61be2057e03d">~hash_algorithm</a> ()</td></tr>
+<tr class="memdesc:a172053b21821e77fc9dc61be2057e03d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ダイジェストに利用したデータを削除する <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>ハッシュ関数を計算する基底クラス </p>
+<p>MD2，MD4，MD5，SHA1，SHA-256，SHA-384，SHA-512 を計算するための基底クラス</p>
+<dl class="section attention"><dt>注意</dt><dd>SHA-384，SHA-512 を計算する際に 64 ビット整数を利用するため，コンパイラが 64 ビットをサポートする必要あり．</dd></dl>
+<div class="fragment"><div class="line"> ハッシュ関数の計算例</div>
+<div class="line"><span class="comment">// ハッシュ関数を SHA1 で初期化する</span></div>
+<div class="line"><a class="code" href="classmist_1_1hash__algorithm.html" title="ハッシュ関数を計算する基底クラス">mist::hash_algorithm</a> &amp;h = <a class="code" href="classmist_1_1sha1.html" title="SHA-1 を生成するクラス">mist::sha1</a>( <span class="stringliteral">&quot;a&quot;</span> );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// ハッシュ関数値のダイジェスト文字列を出力する</span></div>
+<div class="line">std::cout &lt;&lt; h &lt;&lt; std::endl;</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 別の文字列で再計算する</span></div>
+<div class="line">h.compute_hash( <span class="stringliteral">&quot;あいうえお&quot;</span> );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// ハッシュ関数値のダイジェスト文字列を出力する</span></div>
+<div class="line">std::cout &lt;&lt; h &lt;&lt; std::endl;</div>
+</div><!-- fragment --> </div><hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="hash__algorithm_8h_source.html">hash_algorithm.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

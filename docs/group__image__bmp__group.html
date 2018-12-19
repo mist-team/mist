@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>BMP 画像入出力</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">BMP 画像入出力</div>  </div>
+<div class="ingroups"><a class="el" href="group__image__group.html">画像入出力</a></div></div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga3148e2d706b35385b98790966f6ff022"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga3148e2d706b35385b98790966f6ff022"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__bmp__group.html#ga3148e2d706b35385b98790966f6ff022">mist::read_bmp</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename)</td></tr>
+<tr class="memdesc:ga3148e2d706b35385b98790966f6ff022"><td class="mdescLeft">&#160;</td><td class="mdescRight">BMP画像をMISTコンテナに読み込む  <a href="#ga3148e2d706b35385b98790966f6ff022"></a><br/></td></tr>
+<tr class="memitem:gace5138da5cc309ff328fe910427b7e41"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gace5138da5cc309ff328fe910427b7e41"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__bmp__group.html#gace5138da5cc309ff328fe910427b7e41">mist::read_bmp</a> (array2&lt; T, Allocator &gt; &amp;image, const std::wstring &amp;filename)</td></tr>
+<tr class="memdesc:gace5138da5cc309ff328fe910427b7e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">BMP画像をMISTコンテナに読み込む  <a href="#gace5138da5cc309ff328fe910427b7e41"></a><br/></td></tr>
+<tr class="memitem:gaed6d24f0d1a35077c277e16df1775ea6"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gaed6d24f0d1a35077c277e16df1775ea6"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__bmp__group.html#gaed6d24f0d1a35077c277e16df1775ea6">mist::write_bmp</a> (const array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array2&lt; T, Allocator &gt;::size_type bmp_bits=24)</td></tr>
+<tr class="memdesc:gaed6d24f0d1a35077c277e16df1775ea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナの画像をBMP形式でファイルに出力する  <a href="#gaed6d24f0d1a35077c277e16df1775ea6"></a><br/></td></tr>
+<tr class="memitem:gabe15517635af4f3fd6a6d5e3ba8f7dd4"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gabe15517635af4f3fd6a6d5e3ba8f7dd4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__bmp__group.html#gabe15517635af4f3fd6a6d5e3ba8f7dd4">mist::write_bmp</a> (const array2&lt; T, Allocator &gt; &amp;image, const std::wstring &amp;filename, typename array2&lt; T, Allocator &gt;::size_type bmp_bits=24)</td></tr>
+<tr class="memdesc:gabe15517635af4f3fd6a6d5e3ba8f7dd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナの画像をBMP形式でファイルに出力する  <a href="#gabe15517635af4f3fd6a6d5e3ba8f7dd4"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<p>BMPファイルを読み込んで，MISTコンテナへ格納する． また，MISTコンテナからBMPファイルへの書き出しをサポート． 1，4，8，24，32ビットのビットマップに対応． 圧縮されたビットマップは未サポート．</p>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="bmp_8h.html" title="ビットマップ画像を読み書きするためのライブラリ">mist/io/bmp.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga3148e2d706b35385b98790966f6ff022"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_bmp </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>BMP画像をMISTコンテナに読み込む </p>
+<dl class="section attention"><dt>注意</dt><dd>RLE圧縮のかかったBMPには未対応</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__bmp__group.html#gace5138da5cc309ff328fe910427b7e41">mist::read_bmp()</a>, と <a class="el" href="group__image__group.html#ga753d074332158a04c160ab1c29182967">mist::read_image()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gace5138da5cc309ff328fe910427b7e41"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_bmp </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>BMP画像をMISTコンテナに読み込む </p>
+<dl class="section attention"><dt>注意</dt><dd>RLE圧縮のかかったBMPには未対応</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__bmp__group.html#ga3148e2d706b35385b98790966f6ff022">mist::read_bmp()</a>, と <a class="el" href="namespacemist.html#ab2f799d2c98c030f7bc5ba23c8fb0380">mist::wstr2str()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaed6d24f0d1a35077c277e16df1775ea6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_bmp </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>bmp_bits</em> = <code>24</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナの画像をBMP形式でファイルに出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 出力画像を保持するMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 出力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bmp_bits</td><td>… 以下のビットマップのビット数のいずれか</td></tr>
+  </table>
+  </dd>
+</dl>
+<ol type="1">
+<li>1ビット … 白黒の2値ビットマップ</li>
+<li>4ビット … 8色のカラーテーブルを持つビットマップ</li>
+<li>8ビット … 256色のカラーテーブルを持つビットマップ</li>
+<li>24ビット … フルカラービットマップ</li>
+<li>32ビット … フルカラービットマップ（アルファチャンネル付）</li>
+</ol>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の書き込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の書き込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__bmp__group.html#gabe15517635af4f3fd6a6d5e3ba8f7dd4">mist::write_bmp()</a>, と <a class="el" href="group__image__group.html#ga0b247072df9e69c7ddddac0f60af66b2">mist::write_image()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gabe15517635af4f3fd6a6d5e3ba8f7dd4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_bmp </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>bmp_bits</em> = <code>24</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナの画像をBMP形式でファイルに出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 出力画像を保持するMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 出力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bmp_bits</td><td>… 以下のビットマップのビット数のいずれか</td></tr>
+  </table>
+  </dd>
+</dl>
+<ol type="1">
+<li>1ビット … 白黒の2値ビットマップ</li>
+<li>4ビット … 8色のカラーテーブルを持つビットマップ</li>
+<li>8ビット … 256色のカラーテーブルを持つビットマップ</li>
+<li>24ビット … フルカラービットマップ</li>
+<li>32ビット … フルカラービットマップ（アルファチャンネル付）</li>
+</ol>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の書き込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の書き込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__bmp__group.html#gaed6d24f0d1a35077c277e16df1775ea6">mist::write_bmp()</a>, と <a class="el" href="namespacemist.html#ab2f799d2c98c030f7bc5ba23c8fb0380">mist::wstr2str()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

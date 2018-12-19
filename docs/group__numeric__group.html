@@ -1,0 +1,920 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>行列演算</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">行列演算</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1matrix__style.html">mist::matrix_style</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列計算をする際の入力となる行列の形式  <a href="structmist_1_1matrix__style.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga8a0a5a446c3cbbcd71b22eed64ca5d24"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga8a0a5a446c3cbbcd71b22eed64ca5d24"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga8a0a5a446c3cbbcd71b22eed64ca5d24">mist::multiply</a> (const matrix&lt; T, Allocator &gt; &amp;a, const matrix&lt; T, Allocator &gt; &amp;b, matrix&lt; T, Allocator &gt; &amp;c, bool a_is_transpose, bool b_is_transpose, typename matrix&lt; T, Allocator &gt;::value_type alpha, typename matrix&lt; T, Allocator &gt;::value_type beta)</td></tr>
+<tr class="memdesc:ga8a0a5a446c3cbbcd71b22eed64ca5d24"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列×行列の演算を行う  <a href="#ga8a0a5a446c3cbbcd71b22eed64ca5d24"></a><br/></td></tr>
+<tr class="memitem:ga22ee45733586d329e0cc04b136f993b2"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga22ee45733586d329e0cc04b136f993b2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga22ee45733586d329e0cc04b136f993b2">mist::multiply</a> (const matrix&lt; T, Allocator &gt; &amp;a, const matrix&lt; T, Allocator &gt; &amp;b, matrix&lt; T, Allocator &gt; &amp;c, bool a_is_transpose=false, bool b_is_transpose=false)</td></tr>
+<tr class="memdesc:ga22ee45733586d329e0cc04b136f993b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列×行列の演算を行う  <a href="#ga22ee45733586d329e0cc04b136f993b2"></a><br/></td></tr>
+<tr class="memitem:gaf17f3062108a491ae28427bcacfffda9"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gaf17f3062108a491ae28427bcacfffda9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#gaf17f3062108a491ae28427bcacfffda9">mist::permutation_matrix</a> (const matrix&lt; T1, Allocator1 &gt; &amp;pivot, matrix&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:gaf17f3062108a491ae28427bcacfffda9"><td class="mdescLeft">&#160;</td><td class="mdescRight">LU分解などで得られるピボット配列からピボット行列を作成  <a href="#gaf17f3062108a491ae28427bcacfffda9"></a><br/></td></tr>
+<tr class="memitem:ga007686de5a5b2750f03f579e88efb2d3"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga007686de5a5b2750f03f579e88efb2d3"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt;<br class="typebreak"/>
+::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga007686de5a5b2750f03f579e88efb2d3">mist::trace</a> (const matrix&lt; T, Allocator &gt; &amp;a)</td></tr>
+<tr class="memdesc:ga007686de5a5b2750f03f579e88efb2d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">トレースの計算（対角成分の和）  <a href="#ga007686de5a5b2750f03f579e88efb2d3"></a><br/></td></tr>
+<tr class="memitem:ga4629afcc450bb6ad7ae8c2a387f28b50"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga4629afcc450bb6ad7ae8c2a387f28b50"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt;<br class="typebreak"/>
+::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga4629afcc450bb6ad7ae8c2a387f28b50">mist::det</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga4629afcc450bb6ad7ae8c2a387f28b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列式の計算  <a href="#ga4629afcc450bb6ad7ae8c2a387f28b50"></a><br/></td></tr>
+<tr class="memitem:ga6709a4d9733dafcb5fab51c0a6811f98"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga6709a4d9733dafcb5fab51c0a6811f98"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga6709a4d9733dafcb5fab51c0a6811f98">mist::solve</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix&lt; T, Allocator &gt; &amp;b, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga6709a4d9733dafcb5fab51c0a6811f98"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列の連立一次方程式を解く関数  <a href="#ga6709a4d9733dafcb5fab51c0a6811f98"></a><br/></td></tr>
+<tr class="memitem:ga09d4ad5b46a612d36d046f7dee47b065"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga09d4ad5b46a612d36d046f7dee47b065"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator1 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga09d4ad5b46a612d36d046f7dee47b065">mist::lu_factorization</a> (const matrix&lt; T, Allocator1 &gt; &amp;a, matrix&lt; __clapack__::integer, Allocator2 &gt; &amp;pivot, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga09d4ad5b46a612d36d046f7dee47b065"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列のLU分解を行う  <a href="#ga09d4ad5b46a612d36d046f7dee47b065"></a><br/></td></tr>
+<tr class="memitem:ga23643e8a2c7459bdc8821f97d1f5ac76"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga23643e8a2c7459bdc8821f97d1f5ac76"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga23643e8a2c7459bdc8821f97d1f5ac76">mist::lu_factorization</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix&lt; T, Allocator &gt; &amp;L, matrix&lt; T, Allocator &gt; &amp;U, matrix&lt; T, Allocator &gt; &amp;pivot, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga23643e8a2c7459bdc8821f97d1f5ac76"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列のLU分解を行う  <a href="#ga23643e8a2c7459bdc8821f97d1f5ac76"></a><br/></td></tr>
+<tr class="memitem:ga39bb1130779dc9a8d06c1193ba242b3d"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga39bb1130779dc9a8d06c1193ba242b3d"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga39bb1130779dc9a8d06c1193ba242b3d">mist::lu_factorization</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga39bb1130779dc9a8d06c1193ba242b3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列のLU分解を行う  <a href="#ga39bb1130779dc9a8d06c1193ba242b3d"></a><br/></td></tr>
+<tr class="memitem:ga93e574190cb6b2b799b080446bcc3d7b"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga93e574190cb6b2b799b080446bcc3d7b"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga93e574190cb6b2b799b080446bcc3d7b">mist::cholesky_factorization</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix_style::style style=matrix_style::sy)</td></tr>
+<tr class="memdesc:ga93e574190cb6b2b799b080446bcc3d7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">対称行列のコレスキー分解を行う  <a href="#ga93e574190cb6b2b799b080446bcc3d7b"></a><br/></td></tr>
+<tr class="memitem:ga9f2c1f0b1c0105313749a4a08779f98e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga9f2c1f0b1c0105313749a4a08779f98e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga9f2c1f0b1c0105313749a4a08779f98e">mist::qr_factorization</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix&lt; T, Allocator &gt; &amp;Q, matrix&lt; T, Allocator &gt; &amp;R, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga9f2c1f0b1c0105313749a4a08779f98e"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列のQR分解を行う  <a href="#ga9f2c1f0b1c0105313749a4a08779f98e"></a><br/></td></tr>
+<tr class="memitem:ga260dc839da68a5284bf1dabe2ede3cff"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga260dc839da68a5284bf1dabe2ede3cff"><td class="memTemplItemLeft" align="right" valign="top">matrix&lt; T, Allocator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga260dc839da68a5284bf1dabe2ede3cff">mist::inverse</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga260dc839da68a5284bf1dabe2ede3cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列の逆行列をLU分解を用いて計算する  <a href="#ga260dc839da68a5284bf1dabe2ede3cff"></a><br/></td></tr>
+<tr class="memitem:ga94da1e1c8dd4fdcac80077d86a8b417e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga94da1e1c8dd4fdcac80077d86a8b417e"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga94da1e1c8dd4fdcac80077d86a8b417e">mist::eigen</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix&lt; T, Allocator &gt; &amp;eigen_value, matrix&lt; T, Allocator &gt; &amp;eigen_vector, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga94da1e1c8dd4fdcac80077d86a8b417e"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列の固有値・固有ベクトルを計算する  <a href="#ga94da1e1c8dd4fdcac80077d86a8b417e"></a><br/></td></tr>
+<tr class="memitem:ga5f85b437b93dc620f245de814b76ba45"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga5f85b437b93dc620f245de814b76ba45"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T2, Allocator2 &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd</a> (const matrix&lt; T1, Allocator1 &gt; &amp;a, matrix&lt; T1, Allocator1 &gt; &amp;u, matrix&lt; T2, Allocator2 &gt; &amp;s, matrix&lt; T1, Allocator1 &gt; &amp;vt, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga5f85b437b93dc620f245de814b76ba45"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列の特異値分解を計算する  <a href="#ga5f85b437b93dc620f245de814b76ba45"></a><br/></td></tr>
+<tr class="memitem:ga79b15340c2aceca0d19497522c616722"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga79b15340c2aceca0d19497522c616722"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T2, Allocator2 &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga79b15340c2aceca0d19497522c616722">mist::svd</a> (const matrix&lt; T1, Allocator1 &gt; &amp;a, matrix&lt; T2, Allocator2 &gt; &amp;s, matrix&lt; T1, Allocator1 &gt; &amp;vt, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga79b15340c2aceca0d19497522c616722"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列の特異値分解を計算する  <a href="#ga79b15340c2aceca0d19497522c616722"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="numeric_8h.html" title="Lapackを用いた行列演算ライブラリ">mist/numeric.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga93e574190cb6b2b799b080446bcc3d7b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const matrix&lt; T, Allocator &gt; mist::cholesky_factorization </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix_style::style&#160;</td>
+          <td class="paramname"><em>style</em> = <code>matrix_style::sy</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>対称行列のコレスキー分解を行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力対称行列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… 入力行列の形式（デフォルトは一般行列を指定）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>コレスキー分解された結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga4629afcc450bb6ad7ae8c2a387f28b50"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const matrix&lt; T, Allocator &gt;::value_type mist::det </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix_style::style&#160;</td>
+          <td class="paramname"><em>style</em> = <code>matrix_style::ge</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>行列式の計算 </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left| {\bf A} \right| = \left| \begin{array}{ccccc} a_{11} &amp; \cdots &amp; a_{1j} &amp; \cdots &amp; a_{1n} \\ a_{21} &amp; \cdots &amp; a_{2j} &amp; \cdots &amp; a_{2n} \\ \vdots &amp; \cdots &amp; \vdots &amp; \cdots &amp; \vdots \\ a_{n1} &amp; \cdots &amp; a_{nj} &amp; \cdots &amp; a_{nn} \end{array} \right| = \sum^{n}_{j=1}{ \left( -1 \right)^{j+1} a_{1j} \left| \begin{array}{cccccc} a_{21} &amp; \cdots &amp; a_{2,j-1} &amp; a_{2,j+1} &amp; \cdots &amp; a_{2n} \\ \vdots &amp; \cdots &amp; \vdots &amp; \vdots &amp; \cdots &amp; \vdots \\ a_{n1} &amp; \cdots &amp; a_{n,j-1} &amp; a_{n,j+1} &amp; \cdots &amp; a_{nn} \end{array} \right| } \]" src="form_47.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… 入力行列の形式（デフォルトは一般行列を指定）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd><img class="formulaInl" alt="$\left| {\bf A} \right|$" src="form_48.png"/> </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684">mist::matrix&lt; T, Allocator &gt;::cols()</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="group__numeric__group.html#ga09d4ad5b46a612d36d046f7dee47b065">mist::lu_factorization()</a>, <a class="el" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f">mist::matrix&lt; T, Allocator &gt;::rows()</a>, と <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga94da1e1c8dd4fdcac80077d86a8b417e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const matrix&lt; T, Allocator &gt;&amp; mist::eigen </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>eigen_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>eigen_vector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix_style::style&#160;</td>
+          <td class="paramname"><em>style</em> = <code>matrix_style::ge</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>行列の固有値・固有ベクトルを計算する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\bf A}\mbox{\boldmath x} = \lambda\mbox{\boldmath x} \]" src="form_60.png"/>
+</p>
+<p>計算結果は，_DESCENDING_ORDER_EIGEN_VALUE_ の値によって，固有値が昇順・降順のどちらかで並ぶように変換される</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列 <img class="formulaInl" alt="${\bf A}$" src="form_41.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">eigen_value</td><td>… 固有値が昇順・降順のどちらかで入ったベクトル <img class="formulaInl" alt="$\lambda$" src="form_61.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">eigen_vector</td><td>… 固有値の昇順・降順のどちらかに対応し，左から固有ベクトルが並んだ行列 <img class="formulaInl" alt="$\mbox{\boldmath x}$" src="form_51.png"/> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… 入力行列の形式（デフォルトは一般行列を指定）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>固有値が並んだベクトル（eigen_valueと同じ） <img class="formulaInl" alt="$\lambda$" src="form_61.png"/> </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f">mist::matrix&lt; T, Allocator &gt;::rows()</a>, と <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+<p>参照元 <a class="el" href="epipolar_8h.html#a9d683a94aa13c4ef8172f3281f2e1c03">compute_fundamental_matrix()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga260dc839da68a5284bf1dabe2ede3cff"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">matrix&lt; T, Allocator &gt; mist::inverse </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix_style::style&#160;</td>
+          <td class="paramname"><em>style</em> = <code>matrix_style::ge</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>行列の逆行列をLU分解を用いて計算する </p>
+<p>正方行列で無い場合は，特異値分解を用いて一般化逆行列を計算する</p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\bf A}^{-1} \]" src="form_58.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… 入力行列の形式（デフォルトは一般行列を指定）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>逆行列 <img class="formulaInl" alt="$ {\bf A}^{-1} $" src="form_59.png"/> </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684">mist::matrix&lt; T, Allocator &gt;::cols()</a>, <a class="el" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f">mist::matrix&lt; T, Allocator &gt;::rows()</a>, と <a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd()</a>.</p>
+
+<p>参照元 <a class="el" href="namespacemist_1_1Tsai.html#a48d221829c8f3f8d436da82579a9853e">mist::Tsai::calibration()</a>, <a class="el" href="namespacemist_1_1nearest.html#a4b4b2f8f0cc9352bfd73b51b96a22781">mist::nearest::transform()</a>, <a class="el" href="namespacemist_1_1linear.html#ae4478e46710d156473ae8405bf21e7a4">mist::linear::transform()</a>, と <a class="el" href="namespacemist_1_1cubic.html#a7d76ddb06b8cdafe9254837268fd1438">mist::cubic::transform()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga09d4ad5b46a612d36d046f7dee47b065"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator1 , class Allocator2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const matrix&lt; T, Allocator1 &gt; mist::lu_factorization </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; __clapack__::integer, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pivot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix_style::style&#160;</td>
+          <td class="paramname"><em>style</em> = <code>matrix_style::ge</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>行列のLU分解を行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pivot</td><td>… ピボット選択を行った結果を代入するベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… 入力行列の形式（デフォルトは一般行列を指定）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>LU分解された結果 </dd></dl>
+
+<p>参照元 <a class="el" href="group__numeric__group.html#ga4629afcc450bb6ad7ae8c2a387f28b50">mist::det()</a>, と <a class="el" href="group__numeric__group.html#ga23643e8a2c7459bdc8821f97d1f5ac76">mist::lu_factorization()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga23643e8a2c7459bdc8821f97d1f5ac76"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::lu_factorization </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>L</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>U</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pivot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix_style::style&#160;</td>
+          <td class="paramname"><em>style</em> = <code>matrix_style::ge</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>行列のLU分解を行う </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\bf A} = {\bf P} \; \times \; {\bf L} \; \times \; {\bf U} \]" src="form_52.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列 <img class="formulaInl" alt="$\mbox{\bf A}$" src="form_53.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">L</td><td>… 下三角行列 <img class="formulaInl" alt="$\mbox{\bf L}$" src="form_54.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">U</td><td>… 上三角行列 <img class="formulaInl" alt="$\mbox{\bf U}$" src="form_55.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pivot</td><td>… ピボット選択を行った結果を元に戻す行列 <img class="formulaInl" alt="$\mbox{\bf P}$" src="form_56.png"/> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… 入力行列の形式（デフォルトは一般行列を指定）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>LU分解に成功したかどうか </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684">mist::matrix&lt; T, Allocator &gt;::cols()</a>, <a class="el" href="group__numeric__group.html#ga09d4ad5b46a612d36d046f7dee47b065">mist::lu_factorization()</a>, <a class="el" href="group__numeric__group.html#gaf17f3062108a491ae28427bcacfffda9">mist::permutation_matrix()</a>, <a class="el" href="classmist_1_1matrix.html#a344bfa81522dc2e3f5e2ddc92c785502">mist::matrix&lt; T, Allocator &gt;::resize()</a>, と <a class="el" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f">mist::matrix&lt; T, Allocator &gt;::rows()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga39bb1130779dc9a8d06c1193ba242b3d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const matrix&lt; T, Allocator &gt; mist::lu_factorization </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix_style::style&#160;</td>
+          <td class="paramname"><em>style</em> = <code>matrix_style::ge</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>行列のLU分解を行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… 入力行列の形式（デフォルトは一般行列を指定）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>LU分解された結果 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684">mist::matrix&lt; T, Allocator &gt;::cols()</a>, と <a class="el" href="group__numeric__group.html#ga09d4ad5b46a612d36d046f7dee47b065">mist::lu_factorization()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga8a0a5a446c3cbbcd71b22eed64ca5d24"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::multiply </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>a_is_transpose</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>b_is_transpose</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename matrix&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>alpha</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename matrix&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>beta</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>行列×行列の演算を行う </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C} \]" src="form_40.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列 <img class="formulaInl" alt="${\bf A}$" src="form_41.png"/> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 入力行列 <img class="formulaInl" alt="${\bf B}$" src="form_42.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">c</td><td>… 計算結果を出力する行列 <img class="formulaInl" alt="${\bf C}$" src="form_43.png"/> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">a_is_transpose</td><td>… 行列 <img class="formulaInl" alt="${\bf A}$" src="form_41.png"/> を転置行列として掛け算する場合は true とする </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">b_is_transpose</td><td>… 行列 <img class="formulaInl" alt="${\bf B}$" src="form_42.png"/> を転置行列として掛け算する場合は true とする </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alpha</td><td>… 行列演算の和を計算するときの係数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">beta</td><td>… 行列演算の和を計算するときの係数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>行列の積が正しく計算できたかどうか </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684">mist::matrix&lt; T, Allocator &gt;::cols()</a>, <a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">mist::array&lt; T, Allocator &gt;::empty()</a>, <a class="el" href="classmist_1_1array.html#abd2515c465b45953c06e996f06d57cb5">mist::array&lt; T, Allocator &gt;::fill()</a>, <a class="el" href="classmist_1_1matrix.html#a344bfa81522dc2e3f5e2ddc92c785502">mist::matrix&lt; T, Allocator &gt;::resize()</a>, と <a class="el" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f">mist::matrix&lt; T, Allocator &gt;::rows()</a>.</p>
+
+<p>参照元 <a class="el" href="group__numeric__group.html#ga22ee45733586d329e0cc04b136f993b2">mist::multiply()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga22ee45733586d329e0cc04b136f993b2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::multiply </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>a_is_transpose</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>b_is_transpose</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>行列×行列の演算を行う </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\bf C} = {\bf A} \times {\bf B} \]" src="form_44.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列 <img class="formulaInl" alt="${\bf A}$" src="form_41.png"/> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>… 入力行列 <img class="formulaInl" alt="${\bf B}$" src="form_42.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">c</td><td>… 計算結果を出力する行列 <img class="formulaInl" alt="${\bf C}$" src="form_43.png"/> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">a_is_transpose</td><td>… 行列 <img class="formulaInl" alt="${\bf A}$" src="form_41.png"/> を転置行列として掛け算する場合は true とする（デフォルトは false ） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">b_is_transpose</td><td>… 行列 <img class="formulaInl" alt="${\bf B}$" src="form_42.png"/> を転置行列として掛け算する場合は true とする（デフォルトは false ）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>行列の積が正しく計算できたかどうか </dd></dl>
+
+<p>参照先 <a class="el" href="group__numeric__group.html#ga8a0a5a446c3cbbcd71b22eed64ca5d24">mist::multiply()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaf17f3062108a491ae28427bcacfffda9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::permutation_matrix </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pivot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>LU分解などで得られるピボット配列からピボット行列を作成 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pivot</td><td>… ピボット配列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… ピボット行列</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>ピボット行列 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array.html#abd2515c465b45953c06e996f06d57cb5">mist::array&lt; T, Allocator &gt;::fill()</a>, <a class="el" href="classmist_1_1matrix.html#a344bfa81522dc2e3f5e2ddc92c785502">mist::matrix&lt; T, Allocator &gt;::resize()</a>, と <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+<p>参照元 <a class="el" href="group__numeric__group.html#ga23643e8a2c7459bdc8821f97d1f5ac76">mist::lu_factorization()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga9f2c1f0b1c0105313749a4a08779f98e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::qr_factorization </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>Q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>R</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix_style::style&#160;</td>
+          <td class="paramname"><em>style</em> = <code>matrix_style::ge</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>行列のQR分解を行う </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\bf A} = {\bf Q} \; {\bf R} \]" src="form_57.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">Q</td><td>… 行列Q </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">R</td><td>… 行列R </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… 入力行列の形式（デフォルトは一般行列を指定） </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ga6709a4d9733dafcb5fab51c0a6811f98"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const matrix&lt; T, Allocator &gt;&amp; mist::solve </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix_style::style&#160;</td>
+          <td class="paramname"><em>style</em> = <code>matrix_style::ge</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>行列の連立一次方程式を解く関数 </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\bf A}\mbox{\boldmath x} = \mbox{\boldmath b} \]" src="form_49.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 行列 <img class="formulaInl" alt="${\bf A}$" src="form_41.png"/> </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">b</td><td>… ベクトル <img class="formulaInl" alt="$\mbox{\boldmath b}$" src="form_50.png"/> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… 入力行列の形式（デフォルトは一般行列を指定）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>ベクトル <img class="formulaInl" alt="$\mbox{\boldmath x}$" src="form_51.png"/> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga5f85b437b93dc620f245de814b76ba45"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const matrix&lt; T2, Allocator2 &gt;&amp; mist::svd </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>u</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix_style::style&#160;</td>
+          <td class="paramname"><em>style</em> = <code>matrix_style::ge</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>行列の特異値分解を計算する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\bf A} = {\bf U}{\bf \Sigma}{\bf V}^T \]" src="form_62.png"/>
+</p>
+<dl class="section note"><dt>覚え書き</dt><dd>対角行列の成分は，左上から値の大きい順に並ぶ</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列 <img class="formulaInl" alt="$ {\bf A} $" src="form_63.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">u</td><td>… 列直行行列 <img class="formulaInl" alt="$ {\bf U} $" src="form_64.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">s</td><td>… 対角行列 <img class="formulaInl" alt="$ {\bf \Sigma} $" src="form_65.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">vt</td><td>… 直行行列の転置 <img class="formulaInl" alt="$ {\bf V}^T $" src="form_66.png"/> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… 入力行列の形式（デフォルトは一般行列を指定）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>対角行列 <img class="formulaInl" alt="$ {\bf \Sigma} $" src="form_65.png"/> </dd></dl>
+
+<p>参照元 <a class="el" href="epipolar_8h.html#a7b1729bf32621abe1b9fe2cbbd317e3f">compute_epipole()</a>, <a class="el" href="epipolar_8h.html#a95dccfb1802b6bdc6b704563ba114c17">compute_trifocal_tensor()</a>, <a class="el" href="epipolar_8h.html#a086d5456d3c73fb73d3840ae095eaefc">factorize_essential_matrix()</a>, <a class="el" href="namespacemist.html#ac621dd7adbc4d81ad1d16e2d64968f23">mist::homography_matrix()</a>, <a class="el" href="classmist_1_1tensor.html#a63ee82385cbbc7ac6bf1eb9ae9b8fad6">mist::tensor&lt; M, V, A &gt;::hosvd()</a>, <a class="el" href="group__numeric__group.html#ga260dc839da68a5284bf1dabe2ede3cff">mist::inverse()</a>, <a class="el" href="group__numeric__group.html#ga79b15340c2aceca0d19497522c616722">mist::svd()</a>, <a class="el" href="epipolar_8h.html#ad10ca54e4c8ea7b90a150fa3089e5609">triangulation_dlt()</a>, と <a class="el" href="epipolar_8h.html#a5caeb918a21f351d1cb560af83a13a2d">trifocal_tensor_to_epipoles()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga79b15340c2aceca0d19497522c616722"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const matrix&lt; T2, Allocator2 &gt;&amp; mist::svd </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T2, Allocator2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T1, Allocator1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix_style::style&#160;</td>
+          <td class="paramname"><em>style</em> = <code>matrix_style::ge</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>行列の特異値分解を計算する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\bf A} = {\bf U}{\bf \Sigma}{\bf V}^T \]" src="form_62.png"/>
+</p>
+<p><img class="formulaInl" alt="$ {\bf \Sigma} $" src="form_65.png"/> の体格成分と <img class="formulaInl" alt="$ {\bf V}^T $" src="form_66.png"/> のみを計算する</p>
+<dl class="section note"><dt>覚え書き</dt><dd>対角行列の成分は，左上から値の大きい順に並ぶ</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列 <img class="formulaInl" alt="$ {\bf A} $" src="form_63.png"/> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">s</td><td>… 対角行列 <img class="formulaInl" alt="$ {\bf \Sigma} $" src="form_65.png"/> の体格成分のみのベクトル </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">vt</td><td>… 直行行列の転置 <img class="formulaInl" alt="$ {\bf V}^T $" src="form_66.png"/> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">style</td><td>… 入力行列の形式（デフォルトは一般行列を指定）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>対角行列 <img class="formulaInl" alt="$ {\bf \Sigma} $" src="form_65.png"/> </dd></dl>
+
+<p>参照先 <a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga007686de5a5b2750f03f579e88efb2d3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const matrix&lt; T, Allocator &gt;::value_type mist::trace </td>
+          <td>(</td>
+          <td class="paramtype">const matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>トレースの計算（対角成分の和） </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ tr\left( {\bf A} \right) = \sum^{n}_{i=1}{ a_{ii} } \]" src="form_45.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 入力行列</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd><img class="formulaInl" alt="$tr\left( {\bf A} \right)$" src="form_46.png"/> </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684">mist::matrix&lt; T, Allocator &gt;::cols()</a>, と <a class="el" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f">mist::matrix&lt; T, Allocator &gt;::rows()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>draw.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">draw.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>２次元画像をOpenGLを用いて描画するライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="color_8h_source.html">config/color.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="vector_8h_source.html">vector.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="bitmap_8h_source.html">bitmap.h</a>&quot;</code><br/>
+<code>#include &lt;GL/gl.h&gt;</code><br/>
+<code>#include &lt;GL/glu.h&gt;</code><br/>
+<code>#include &lt;cmath&gt;</code><br/>
+</div>
+<p><a href="draw_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga41301cb16d180b6477d6df33b3d0391b"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga41301cb16d180b6477d6df33b3d0391b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__draw__group.html#ga41301cb16d180b6477d6df33b3d0391b">mist::draw_buffer</a> (const Array &amp;image, typename Array::size_type image_width, typename Array::size_type image_height, typename Array::size_type window_width, typename Array::size_type window_height, double zoom=1.0, double xpos=0.0, double ypos=0.0, bool interpolate=true)</td></tr>
+<tr class="memdesc:ga41301cb16d180b6477d6df33b3d0391b"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元画像をOpenGLを用いてウィンドウに描画する  <a href="group__image__draw__group.html#ga41301cb16d180b6477d6df33b3d0391b"></a><br/></td></tr>
+<tr class="memitem:ga50420a9b668fee543c580ed44d93f8fe"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga50420a9b668fee543c580ed44d93f8fe"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__draw__group.html#ga50420a9b668fee543c580ed44d93f8fe">mist::draw_image</a> (const Array &amp;image, typename Array::size_type window_width, typename Array::size_type window_height, double zoom=1.0, double xpos=0.0, double ypos=0.0, double back_r=0.0, double back_g=0.0, double back_b=0.0, bool interpolate=true, bool blend=false)</td></tr>
+<tr class="memdesc:ga50420a9b668fee543c580ed44d93f8fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元画像をOpenGLを用いてウィンドウに描画する  <a href="group__image__draw__group.html#ga50420a9b668fee543c580ed44d93f8fe"></a><br/></td></tr>
+<tr class="memitem:ga79ddde040455f3bfc08ffb1258a49349"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga79ddde040455f3bfc08ffb1258a49349"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__draw__group.html#ga79ddde040455f3bfc08ffb1258a49349">mist::draw_pixels</a> (const Array &amp;image, typename Array::size_type window_width, typename Array::size_type window_height, typename Array::difference_type xpos=0, typename Array::difference_type ypos=0, bool blend=false)</td></tr>
+<tr class="memdesc:ga79ddde040455f3bfc08ffb1258a49349"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元画像をOpenGLを用いてウィンドウに描画する  <a href="group__image__draw__group.html#ga79ddde040455f3bfc08ffb1258a49349"></a><br/></td></tr>
+<tr class="memitem:gac4d706f551b839fb7619c8c3c5c43a55"><td class="memItemLeft" align="right" valign="top">vector2&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__image__draw__group.html#gac4d706f551b839fb7619c8c3c5c43a55">mist::screen2point</a> (const vector2&lt; double &gt; &amp;pt, double imgX, double imgY, double aspect, double winW, double winH, double zoom, double posx, double posy)</td></tr>
+<tr class="memdesc:gac4d706f551b839fb7619c8c3c5c43a55"><td class="mdescLeft">&#160;</td><td class="mdescRight">ウィンドウ座標系の点を画像座標系の点に変換する  <a href="group__image__draw__group.html#gac4d706f551b839fb7619c8c3c5c43a55"></a><br/></td></tr>
+<tr class="memitem:gafd46aa022954b5b5b7511d078a60e6a3"><td class="memItemLeft" align="right" valign="top">vector2&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__image__draw__group.html#gafd46aa022954b5b5b7511d078a60e6a3">mist::point2screen</a> (const vector2&lt; double &gt; &amp;pt, double imgX, double imgY, double aspect, double winW, double winH, double zoom, double posx, double posy)</td></tr>
+<tr class="memdesc:gafd46aa022954b5b5b7511d078a60e6a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像座標系の点をウィンドウ座標系の点に変換する  <a href="group__image__draw__group.html#gafd46aa022954b5b5b7511d078a60e6a3"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>２次元画像をOpenGLを用いて描画するライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::facet&lt; T &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1facet.html">facet</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pub-attribs">変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::facet&lt; T &gt;<div class="ingroups"><a class="el" href="group__facet__group.html">ポリゴンを扱うクラス</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>ポリゴン（三角形）を扱うクラス  
+ <a href="classmist_1_1facet.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="facet_8h_source.html">facet.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a47464b464a20bcb3389a3727ccd7467e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47464b464a20bcb3389a3727ccd7467e"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#a47464b464a20bcb3389a3727ccd7467e">value_type</a></td></tr>
+<tr class="memdesc:a47464b464a20bcb3389a3727ccd7467e"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型．mist::array&lt; data &gt; の data と同じ <br/></td></tr>
+<tr class="memitem:a68fd6351168aab8d3a4cacd255ecaeb6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a68fd6351168aab8d3a4cacd255ecaeb6"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#a68fd6351168aab8d3a4cacd255ecaeb6">size_type</a></td></tr>
+<tr class="memdesc:a68fd6351168aab8d3a4cacd255ecaeb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a0bc3abb6cb94050c7f10421deb4ca7eb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0bc3abb6cb94050c7f10421deb4ca7eb"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#a0bc3abb6cb94050c7f10421deb4ca7eb">difference_type</a></td></tr>
+<tr class="memdesc:a0bc3abb6cb94050c7f10421deb4ca7eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:ad8d390249b14f307eb91bd0e77c99331"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8d390249b14f307eb91bd0e77c99331"></a>
+typedef <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a></td></tr>
+<tr class="memdesc:ad8d390249b14f307eb91bd0e77c99331"><td class="mdescLeft">&#160;</td><td class="mdescRight">頂点などを表す3次元ベクトル型 <br/></td></tr>
+<tr class="memitem:a344ad6550d4197e9a30e8629e9da2712"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a344ad6550d4197e9a30e8629e9da2712"></a>
+typedef <a class="el" href="classmist_1_1facet.html#a344ad6550d4197e9a30e8629e9da2712">float_type</a>&lt; T &gt;::<a class="el" href="classmist_1_1facet.html#a47464b464a20bcb3389a3727ccd7467e">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#a344ad6550d4197e9a30e8629e9da2712">float_type</a></td></tr>
+<tr class="memdesc:a344ad6550d4197e9a30e8629e9da2712"><td class="mdescLeft">&#160;</td><td class="mdescRight">長さなどを計算するときに用いる浮動小数点型 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a886d4252ccbe49fca649619f24ab5e66"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a886d4252ccbe49fca649619f24ab5e66"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#a886d4252ccbe49fca649619f24ab5e66">facet</a> ()</td></tr>
+<tr class="memdesc:a886d4252ccbe49fca649619f24ab5e66"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトコンストラクタ（全要素をデフォルト値で初期化する） <br/></td></tr>
+<tr class="memitem:a99e5a8cbd6769a6522a55a3adf6234dc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99e5a8cbd6769a6522a55a3adf6234dc"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#a99e5a8cbd6769a6522a55a3adf6234dc">facet</a> (const <a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a> &amp;N, const <a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a> &amp;P1, const <a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a> &amp;P2, const <a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a> &amp;P3)</td></tr>
+<tr class="memdesc:a99e5a8cbd6769a6522a55a3adf6234dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した値を用いて初期化する <br/></td></tr>
+<tr class="memitem:ac06ee957c42785902b761a503518f0ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac06ee957c42785902b761a503518f0ba"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#ac06ee957c42785902b761a503518f0ba">facet</a> (const <a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a> &amp;P1, const <a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a> &amp;P2, const <a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a> &amp;P3)</td></tr>
+<tr class="memdesc:ac06ee957c42785902b761a503518f0ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した値を用いて初期化する（点の並び順は反時計回りを仮定） <br/></td></tr>
+<tr class="memitem:ae9dfaf315f513db23988ea1b0e1b5782"><td class="memTemplParams" colspan="2"><a class="anchor" id="ae9dfaf315f513db23988ea1b0e1b5782"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:ae9dfaf315f513db23988ea1b0e1b5782"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#ae9dfaf315f513db23988ea1b0e1b5782">facet</a> (const <a class="el" href="classmist_1_1facet.html">facet</a>&lt; TT &gt; &amp;f)</td></tr>
+<tr class="memdesc:ae9dfaf315f513db23988ea1b0e1b5782"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のポリゴンオブジェクトを用いて初期化する <br/></td></tr>
+<tr class="memitem:ac470af5e0c11934d192b67039b340714"><td class="memTemplParams" colspan="2"><a class="anchor" id="ac470af5e0c11934d192b67039b340714"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:ac470af5e0c11934d192b67039b340714"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1facet.html">facet</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#ac470af5e0c11934d192b67039b340714">operator=</a> (const <a class="el" href="classmist_1_1facet.html">facet</a>&lt; TT &gt; &amp;f)</td></tr>
+<tr class="memdesc:ac470af5e0c11934d192b67039b340714"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のポリゴンオブジェクトを代入する <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
+変数</h2></td></tr>
+<tr class="memitem:a9b4eb8a1dbb7be85069657917dd9603e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9b4eb8a1dbb7be85069657917dd9603e"></a>
+<a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#a9b4eb8a1dbb7be85069657917dd9603e">normal</a></td></tr>
+<tr class="memdesc:a9b4eb8a1dbb7be85069657917dd9603e"><td class="mdescLeft">&#160;</td><td class="mdescRight">法線 <br/></td></tr>
+<tr class="memitem:a934c6a77c94c767fc2ff36c986b2a1d1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a934c6a77c94c767fc2ff36c986b2a1d1"></a>
+<a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#a934c6a77c94c767fc2ff36c986b2a1d1">p1</a></td></tr>
+<tr class="memdesc:a934c6a77c94c767fc2ff36c986b2a1d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">座標1 <br/></td></tr>
+<tr class="memitem:a878f8ce2e1e1d3c010af68ec5068354c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a878f8ce2e1e1d3c010af68ec5068354c"></a>
+<a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#a878f8ce2e1e1d3c010af68ec5068354c">p2</a></td></tr>
+<tr class="memdesc:a878f8ce2e1e1d3c010af68ec5068354c"><td class="mdescLeft">&#160;</td><td class="mdescRight">座標2 <br/></td></tr>
+<tr class="memitem:a2ee7753d236c0ee6f8f327b2cf53a4ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ee7753d236c0ee6f8f327b2cf53a4ed"></a>
+<a class="el" href="classmist_1_1facet.html#ad8d390249b14f307eb91bd0e77c99331">vector_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html#a2ee7753d236c0ee6f8f327b2cf53a4ed">p3</a></td></tr>
+<tr class="memdesc:a2ee7753d236c0ee6f8f327b2cf53a4ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">座標3 <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br/>
+class mist::facet&lt; T &gt;</h3>
+
+<p>ポリゴン（三角形）を扱うクラス </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>… 内部で用いるデータ型 </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="facet_8h_source.html">facet.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

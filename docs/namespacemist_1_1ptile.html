@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ネームスペース mist::ptile</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="namespaces.html"><span>ネームスペース一覧</span></a></li>
+      <li><a href="namespacemembers.html"><span>ネームスペースメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1ptile.html">ptile</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ネームスペース mist::ptile<div class="ingroups"><a class="el" href="group__threshold__group.html">しきい値</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Pタイル法に基づくしきい値決定  
+<a href="#details">[詳細]</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:adac80a62f2adcc1d47a42f45423dc937"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:adac80a62f2adcc1d47a42f45423dc937"><td class="memTemplItemLeft" align="right" valign="top">Array::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1ptile.html#adac80a62f2adcc1d47a42f45423dc937">threshold</a> (const Array &amp;in, double ratio)</td></tr>
+<tr class="memdesc:adac80a62f2adcc1d47a42f45423dc937"><td class="mdescLeft">&#160;</td><td class="mdescRight">p-tile法によるしきい値決定  <a href="#adac80a62f2adcc1d47a42f45423dc937"></a><br/></td></tr>
+<tr class="memitem:af82cdd462a064cb7ba69aab67ea1d1bb"><td class="memTemplParams" colspan="2">template&lt;class Array , class Mask &gt; </td></tr>
+<tr class="memitem:af82cdd462a064cb7ba69aab67ea1d1bb"><td class="memTemplItemLeft" align="right" valign="top">Array::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1ptile.html#af82cdd462a064cb7ba69aab67ea1d1bb">threshold</a> (const Array &amp;in, const Mask &amp;mask, double ratio)</td></tr>
+<tr class="memdesc:af82cdd462a064cb7ba69aab67ea1d1bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">p-tile法によるしきい値決定  <a href="#af82cdd462a064cb7ba69aab67ea1d1bb"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>Pタイル法に基づくしきい値決定 </p>
+</div><h2>関数</h2>
+<a class="anchor" id="adac80a62f2adcc1d47a42f45423dc937"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Array::value_type mist::ptile::threshold </td>
+          <td>(</td>
+          <td class="paramtype">const Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ratio</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>p-tile法によるしきい値決定 </p>
+<p>ratio は 0 〜 100％の範囲で指定する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力データ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ratio</td><td>… 濃度値の累積分布が全体に占める割合</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>p-tile法によって決定されたしきい値 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af82cdd462a064cb7ba69aab67ea1d1bb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array , class Mask &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Array::value_type mist::ptile::threshold </td>
+          <td>(</td>
+          <td class="paramtype">const Array &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Mask &amp;&#160;</td>
+          <td class="paramname"><em>mask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ratio</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>p-tile法によるしきい値決定 </p>
+<p>ratio は 0 〜 100％の範囲で指定する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力データ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mask</td><td>… マスクデータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ratio</td><td>… 濃度値の累積分布が全体に占める割合</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>p-tile法によって決定されたしきい値 </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

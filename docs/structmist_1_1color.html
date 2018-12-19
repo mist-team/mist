@@ -1,0 +1,445 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>構造体 テンプレート mist::color&lt; T, NDIM &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="structmist_1_1color.html">color</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">構造体 テンプレート mist::color&lt; T, NDIM &gt;<div class="ingroups"><a class="el" href="group__color__group.html">MIST全般で利用可能な色を表現するクラス</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>カラー画素の和  
+ <a href="structmist_1_1color.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="color_8h_source.html">color.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color_1_1rebind.html">rebind</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の変換を行う  <a href="structmist_1_1color_1_1rebind.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a1f09f4f61ec4067bd6cffc92de074b59"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f09f4f61ec4067bd6cffc92de074b59"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a1f09f4f61ec4067bd6cffc92de074b59">size_type</a></td></tr>
+<tr class="memdesc:a1f09f4f61ec4067bd6cffc92de074b59"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:ad0a0347989351792f9bebdc6eb36369d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0a0347989351792f9bebdc6eb36369d"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#ad0a0347989351792f9bebdc6eb36369d">difference_type</a></td></tr>
+<tr class="memdesc:ad0a0347989351792f9bebdc6eb36369d"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:a52a67cb5b3275b200657b813e0da968c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52a67cb5b3275b200657b813e0da968c"></a>
+typedef T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a52a67cb5b3275b200657b813e0da968c">reference</a></td></tr>
+<tr class="memdesc:a52a67cb5b3275b200657b813e0da968c"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の参照．data の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:ad87944b52e0cbe449d72be1de5fd8f0a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad87944b52e0cbe449d72be1de5fd8f0a"></a>
+typedef const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#ad87944b52e0cbe449d72be1de5fd8f0a">const_reference</a></td></tr>
+<tr class="memdesc:ad87944b52e0cbe449d72be1de5fd8f0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const 参照．data の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:ac7338c1676e9858b494a48f36e563e68"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7338c1676e9858b494a48f36e563e68"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#ac7338c1676e9858b494a48f36e563e68">value_type</a></td></tr>
+<tr class="memdesc:ac7338c1676e9858b494a48f36e563e68"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部データ型．T と同じ <br/></td></tr>
+<tr class="memitem:a4b7e84752ce5a62550773e15a48c5be1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b7e84752ce5a62550773e15a48c5be1"></a>
+typedef T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a4b7e84752ce5a62550773e15a48c5be1">pointer</a></td></tr>
+<tr class="memdesc:a4b7e84752ce5a62550773e15a48c5be1"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型のポインター型．data の場合，data * となる <br/></td></tr>
+<tr class="memitem:aba51a02824340869620ffb801c404f13"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba51a02824340869620ffb801c404f13"></a>
+typedef const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#aba51a02824340869620ffb801c404f13">const_pointer</a></td></tr>
+<tr class="memdesc:aba51a02824340869620ffb801c404f13"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const ポインター型．data の場合，const data * となる <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a474570618d5ecbb90fb1375ae615c58b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a474570618d5ecbb90fb1375ae615c58b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a474570618d5ecbb90fb1375ae615c58b">color</a> (const <a class="el" href="structmist_1_1color.html#ac7338c1676e9858b494a48f36e563e68">value_type</a> &amp;pix=0)</td></tr>
+<tr class="memdesc:a474570618d5ecbb90fb1375ae615c58b"><td class="mdescLeft">&#160;</td><td class="mdescRight">全ての成分を pix で初期化する <br/></td></tr>
+<tr class="memitem:aac9f7092a6e4587657b9b8a9705a934e"><td class="memTemplParams" colspan="2"><a class="anchor" id="aac9f7092a6e4587657b9b8a9705a934e"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:aac9f7092a6e4587657b9b8a9705a934e"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#aac9f7092a6e4587657b9b8a9705a934e">color</a> (const <a class="el" href="structmist_1_1color.html">color</a>&lt; TT, NDIM &gt; &amp;c)</td></tr>
+<tr class="memdesc:aac9f7092a6e4587657b9b8a9705a934e"><td class="mdescLeft">&#160;</td><td class="mdescRight">異なる型のカラー画素を用いて初期化する <br/></td></tr>
+<tr class="memitem:ad50a55e1bc17aca7c0e8c737504611a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad50a55e1bc17aca7c0e8c737504611a0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#ad50a55e1bc17aca7c0e8c737504611a0">color</a> (const <a class="el" href="structmist_1_1color.html">color</a>&lt; T, NDIM &gt; &amp;c)</td></tr>
+<tr class="memdesc:ad50a55e1bc17aca7c0e8c737504611a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のカラー画素を用いて初期化する <br/></td></tr>
+<tr class="memitem:a111cf17f730bcd9567216938f8262aff"><td class="memTemplParams" colspan="2"><a class="anchor" id="a111cf17f730bcd9567216938f8262aff"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a111cf17f730bcd9567216938f8262aff"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a111cf17f730bcd9567216938f8262aff">operator=</a> (const <a class="el" href="structmist_1_1color.html">color</a>&lt; TT, NDIM &gt; &amp;c)</td></tr>
+<tr class="memdesc:a111cf17f730bcd9567216938f8262aff"><td class="mdescLeft">&#160;</td><td class="mdescRight">異なる型の他のカラー画素を代入する <br/></td></tr>
+<tr class="memitem:a1b2bb211557d6a67af3d62ade4addeb8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1b2bb211557d6a67af3d62ade4addeb8"></a>
+const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a1b2bb211557d6a67af3d62ade4addeb8">operator=</a> (const <a class="el" href="structmist_1_1color.html">color</a>&lt; T, NDIM &gt; &amp;c)</td></tr>
+<tr class="memdesc:a1b2bb211557d6a67af3d62ade4addeb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のカラー画素を代入する <br/></td></tr>
+<tr class="memitem:aecc40fd01e4947c1bb17a055128e3cce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aecc40fd01e4947c1bb17a055128e3cce"></a>
+const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#aecc40fd01e4947c1bb17a055128e3cce">operator=</a> (const <a class="el" href="structmist_1_1color.html#ac7338c1676e9858b494a48f36e563e68">value_type</a> &amp;pix)</td></tr>
+<tr class="memdesc:aecc40fd01e4947c1bb17a055128e3cce"><td class="mdescLeft">&#160;</td><td class="mdescRight">全ての要素に pix を代入する <br/></td></tr>
+<tr class="memitem:ad4d08e15a18dcfe66699ce14278a4017"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad4d08e15a18dcfe66699ce14278a4017"></a>
+const <a class="el" href="structmist_1_1color.html">color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#ad4d08e15a18dcfe66699ce14278a4017">operator-</a> () const </td></tr>
+<tr class="memdesc:ad4d08e15a18dcfe66699ce14278a4017"><td class="mdescLeft">&#160;</td><td class="mdescRight">全要素の符号反転 <br/></td></tr>
+<tr class="memitem:a768f024a52f21eff645fff800b08ab02"><td class="memTemplParams" colspan="2"><a class="anchor" id="a768f024a52f21eff645fff800b08ab02"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a768f024a52f21eff645fff800b08ab02"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a768f024a52f21eff645fff800b08ab02">operator+=</a> (const <a class="el" href="structmist_1_1color.html">color</a>&lt; TT, NDIM &gt; &amp;c)</td></tr>
+<tr class="memdesc:a768f024a52f21eff645fff800b08ab02"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分の和 <br/></td></tr>
+<tr class="memitem:a27acc14f27576fa028e4b20ce596973f"><td class="memTemplParams" colspan="2"><a class="anchor" id="a27acc14f27576fa028e4b20ce596973f"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a27acc14f27576fa028e4b20ce596973f"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a27acc14f27576fa028e4b20ce596973f">operator-=</a> (const <a class="el" href="structmist_1_1color.html">color</a>&lt; TT, NDIM &gt; &amp;c)</td></tr>
+<tr class="memdesc:a27acc14f27576fa028e4b20ce596973f"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分の差 <br/></td></tr>
+<tr class="memitem:af487ceb8283cd4c0e989e265ba34e2cf"><td class="memTemplParams" colspan="2"><a class="anchor" id="af487ceb8283cd4c0e989e265ba34e2cf"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:af487ceb8283cd4c0e989e265ba34e2cf"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#af487ceb8283cd4c0e989e265ba34e2cf">operator*=</a> (const <a class="el" href="structmist_1_1color.html">color</a>&lt; TT, NDIM &gt; &amp;c)</td></tr>
+<tr class="memdesc:af487ceb8283cd4c0e989e265ba34e2cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分の積 <br/></td></tr>
+<tr class="memitem:af209d90ba4549b7e14354c77363c9555"><td class="memTemplParams" colspan="2"><a class="anchor" id="af209d90ba4549b7e14354c77363c9555"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:af209d90ba4549b7e14354c77363c9555"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#af209d90ba4549b7e14354c77363c9555">operator/=</a> (const <a class="el" href="structmist_1_1color.html">color</a>&lt; TT, NDIM &gt; &amp;c)</td></tr>
+<tr class="memdesc:af209d90ba4549b7e14354c77363c9555"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分の割り算 <br/></td></tr>
+<tr class="memitem:a1a84576331ada19a445e8a2e6cb9d30a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a84576331ada19a445e8a2e6cb9d30a"></a>
+const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a1a84576331ada19a445e8a2e6cb9d30a">operator%=</a> (const <a class="el" href="structmist_1_1color.html">color</a> &amp;c)</td></tr>
+<tr class="memdesc:a1a84576331ada19a445e8a2e6cb9d30a"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分の剰余 <br/></td></tr>
+<tr class="memitem:a5f43248a82b19f2f528c01f7b09c3d73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f43248a82b19f2f528c01f7b09c3d73"></a>
+const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a5f43248a82b19f2f528c01f7b09c3d73">operator|=</a> (const <a class="el" href="structmist_1_1color.html">color</a> &amp;c)</td></tr>
+<tr class="memdesc:a5f43248a82b19f2f528c01f7b09c3d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分の | 演算 <br/></td></tr>
+<tr class="memitem:ac173193ec4bd1f304b2ab2910e8cf5b2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac173193ec4bd1f304b2ab2910e8cf5b2"></a>
+const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#ac173193ec4bd1f304b2ab2910e8cf5b2">operator&amp;=</a> (const <a class="el" href="structmist_1_1color.html">color</a> &amp;c)</td></tr>
+<tr class="memdesc:ac173193ec4bd1f304b2ab2910e8cf5b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分の &amp; 演算 <br/></td></tr>
+<tr class="memitem:a7334b630504f3033e04f2bfe2e4ed798"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7334b630504f3033e04f2bfe2e4ed798"></a>
+const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a7334b630504f3033e04f2bfe2e4ed798">operator^=</a> (const <a class="el" href="structmist_1_1color.html">color</a> &amp;c)</td></tr>
+<tr class="memdesc:a7334b630504f3033e04f2bfe2e4ed798"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分の ^ 演算 <br/></td></tr>
+<tr class="memitem:adce2738a2e3d6ade71282b0f8312fb84"><td class="memTemplParams" colspan="2"><a class="anchor" id="adce2738a2e3d6ade71282b0f8312fb84"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:adce2738a2e3d6ade71282b0f8312fb84"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#adce2738a2e3d6ade71282b0f8312fb84">operator+=</a> (const TT &amp;pix)</td></tr>
+<tr class="memdesc:adce2738a2e3d6ade71282b0f8312fb84"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分に pix 値を足す <br/></td></tr>
+<tr class="memitem:ae864f91b56997368a212d95ee9d83061"><td class="memTemplParams" colspan="2"><a class="anchor" id="ae864f91b56997368a212d95ee9d83061"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:ae864f91b56997368a212d95ee9d83061"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#ae864f91b56997368a212d95ee9d83061">operator-=</a> (const TT &amp;pix)</td></tr>
+<tr class="memdesc:ae864f91b56997368a212d95ee9d83061"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分から pix 値を引く <br/></td></tr>
+<tr class="memitem:a58b88191e091b441a87745cab9b4bcd1"><td class="memTemplParams" colspan="2"><a class="anchor" id="a58b88191e091b441a87745cab9b4bcd1"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a58b88191e091b441a87745cab9b4bcd1"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a58b88191e091b441a87745cab9b4bcd1">operator*=</a> (const TT &amp;pix)</td></tr>
+<tr class="memdesc:a58b88191e091b441a87745cab9b4bcd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分に pix 値を掛ける <br/></td></tr>
+<tr class="memitem:a352c138f8c4cb9f3f53fcbe0d02ecdfb"><td class="memTemplParams" colspan="2"><a class="anchor" id="a352c138f8c4cb9f3f53fcbe0d02ecdfb"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a352c138f8c4cb9f3f53fcbe0d02ecdfb"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1color.html">color</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a352c138f8c4cb9f3f53fcbe0d02ecdfb">operator/=</a> (const TT &amp;pix)</td></tr>
+<tr class="memdesc:a352c138f8c4cb9f3f53fcbe0d02ecdfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB成分を pix 値で割る <br/></td></tr>
+<tr class="memitem:a254fa8b0f39de91d74ae8b76d10d97ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a254fa8b0f39de91d74ae8b76d10d97ab">operator==</a> (const <a class="el" href="structmist_1_1color.html">color</a> &amp;c) const </td></tr>
+<tr class="memdesc:a254fa8b0f39de91d74ae8b76d10d97ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する  <a href="#a254fa8b0f39de91d74ae8b76d10d97ab"></a><br/></td></tr>
+<tr class="memitem:a67b965687d561a5bb6a4c418f66e599b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a67b965687d561a5bb6a4c418f66e599b">operator!=</a> (const <a class="el" href="structmist_1_1color.html">color</a> &amp;c) const </td></tr>
+<tr class="memdesc:a67b965687d561a5bb6a4c418f66e599b"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのカラー画素が等しくない（全要素が同じ値を持つ）かどうかを判定する  <a href="#a67b965687d561a5bb6a4c418f66e599b"></a><br/></td></tr>
+<tr class="memitem:a9b91a4675812ff23789717d5418bafb0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a9b91a4675812ff23789717d5418bafb0">operator&lt;</a> (const <a class="el" href="structmist_1_1color.html">color</a> &amp;c) const </td></tr>
+<tr class="memdesc:a9b91a4675812ff23789717d5418bafb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのカラー画素の &lt; を判定する  <a href="#a9b91a4675812ff23789717d5418bafb0"></a><br/></td></tr>
+<tr class="memitem:af83b2581ae9bd5a2d34f72a20e860c1c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#af83b2581ae9bd5a2d34f72a20e860c1c">operator&lt;=</a> (const <a class="el" href="structmist_1_1color.html">color</a> &amp;c) const </td></tr>
+<tr class="memdesc:af83b2581ae9bd5a2d34f72a20e860c1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのカラー画素の &lt;= を判定する  <a href="#af83b2581ae9bd5a2d34f72a20e860c1c"></a><br/></td></tr>
+<tr class="memitem:af0cea631994f7c2073b7f9cf3510cc69"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#af0cea631994f7c2073b7f9cf3510cc69">operator&gt;</a> (const <a class="el" href="structmist_1_1color.html">color</a> &amp;c) const </td></tr>
+<tr class="memdesc:af0cea631994f7c2073b7f9cf3510cc69"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのカラー画素の &gt; を判定する  <a href="#af0cea631994f7c2073b7f9cf3510cc69"></a><br/></td></tr>
+<tr class="memitem:a6d62a6f2719b5922b75bb45e84675340"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#a6d62a6f2719b5922b75bb45e84675340">operator&gt;=</a> (const <a class="el" href="structmist_1_1color.html">color</a> &amp;c) const </td></tr>
+<tr class="memdesc:a6d62a6f2719b5922b75bb45e84675340"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのカラー画素の &gt;= を判定する  <a href="#a6d62a6f2719b5922b75bb45e84675340"></a><br/></td></tr>
+<tr class="memitem:af0f1b019063598ae62d9f7645ae3f0ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af0f1b019063598ae62d9f7645ae3f0ac"></a>
+<a class="el" href="structmist_1_1color.html#ac7338c1676e9858b494a48f36e563e68">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html#af0f1b019063598ae62d9f7645ae3f0ac">get_value</a> () const </td></tr>
+<tr class="memdesc:af0f1b019063598ae62d9f7645ae3f0ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">NTSC系加重平均法により，グレースケールへ変換する <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T, size_t NDIM = 9&gt;<br/>
+struct mist::color&lt; T, NDIM &gt;</h3>
+
+<p>カラー画素の和 </p>
+<p>カラー画素と定数の和 定数とカラー画素の和 カラー画素の差 カラー画素と定数の差 定数とカラー画素の差 カラー画素の積 カラー画素と定数の積 定数とカラー画素の積 カラー画素の割り算 カラー画素を定数で割る カラー画素の剰余 カラー画素の | 演算 カラー画素の &amp; 演算 カラー画素の ^ 演算 カラー画像用の画素</p>
+<div class="fragment"><div class="line"> カラー画像の作成例</div>
+<div class="line"><a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2&lt; mist::color&lt; unsigned char, 9 &gt;</a> &gt; image;</div>
+</div><!-- fragment --><dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>… 各色成分のデータ型 </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2>関数</h2>
+<a class="anchor" id="a67b965687d561a5bb6a4c418f66e599b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, size_t NDIM = 9&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1color.html">mist::color</a>&lt; T, NDIM &gt;::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1color.html">color</a>&lt; T, NDIM &gt; &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのカラー画素が等しくない（全要素が同じ値を持つ）かどうかを判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b } \]" src="form_1.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 2つのカラー画素が異なる場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 2つのカラー画素が等しい場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a9b91a4675812ff23789717d5418bafb0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, size_t NDIM = 9&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1color.html">mist::color</a>&lt; T, NDIM &gt;::operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1color.html">color</a>&lt; T, NDIM &gt; &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのカラー画素の &lt; を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b } \]" src="form_2.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… c1 &lt; c2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… c1 &gt;= c2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="af83b2581ae9bd5a2d34f72a20e860c1c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, size_t NDIM = 9&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1color.html">mist::color</a>&lt; T, NDIM &gt;::operator&lt;= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1color.html">color</a>&lt; T, NDIM &gt; &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのカラー画素の &lt;= を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b \]" src="form_3.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… c1 &lt;= c2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… c1 &gt; c2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a254fa8b0f39de91d74ae8b76d10d97ab"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, size_t NDIM = 9&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1color.html">mist::color</a>&lt; T, NDIM &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1color.html">color</a>&lt; T, NDIM &gt; &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b \]" src="form_0.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 2つのカラー画素が等しい場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 2つのカラー画素が異なる場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="af0cea631994f7c2073b7f9cf3510cc69"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, size_t NDIM = 9&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1color.html">mist::color</a>&lt; T, NDIM &gt;::operator&gt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1color.html">color</a>&lt; T, NDIM &gt; &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのカラー画素の &gt; を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b } \]" src="form_4.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… c1 &gt; c2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… c1 &lt;= c2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a6d62a6f2719b5922b75bb45e84675340"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, size_t NDIM = 9&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1color.html">mist::color</a>&lt; T, NDIM &gt;::operator&gt;= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1color.html">color</a>&lt; T, NDIM &gt; &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのカラー画素の &gt;= を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b \]" src="form_5.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… c1 &gt;= c2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… c1 &lt; c2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>この構造体の説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="color_8h_source.html">color.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

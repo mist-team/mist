@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>構造体 テンプレート mist::stereo&lt; T &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="structmist_1_1stereo.html">stereo</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pub-attribs">変数</a>  </div>
+  <div class="headertitle">
+<div class="title">構造体 テンプレート mist::stereo&lt; T &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>ステレオ音声用のデータ型  
+ <a href="structmist_1_1stereo.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="stereo_8h_source.html">stereo.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a6b45373db424635d45ae9a76d1c534b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6b45373db424635d45ae9a76d1c534b8"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a6b45373db424635d45ae9a76d1c534b8">size_type</a></td></tr>
+<tr class="memdesc:a6b45373db424635d45ae9a76d1c534b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a07072ecdd17b004ed3528f709318a62e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a07072ecdd17b004ed3528f709318a62e"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a07072ecdd17b004ed3528f709318a62e">difference_type</a></td></tr>
+<tr class="memdesc:a07072ecdd17b004ed3528f709318a62e"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:a17009ea785ab132b0580df54657df3cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a17009ea785ab132b0580df54657df3cd"></a>
+typedef T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a17009ea785ab132b0580df54657df3cd">reference</a></td></tr>
+<tr class="memdesc:a17009ea785ab132b0580df54657df3cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の参照．data の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:aee4ab344fc278836b5eab1d77bff3f82"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aee4ab344fc278836b5eab1d77bff3f82"></a>
+typedef const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#aee4ab344fc278836b5eab1d77bff3f82">const_reference</a></td></tr>
+<tr class="memdesc:aee4ab344fc278836b5eab1d77bff3f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const 参照．data の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:a0ffb041bc38854757b555d4dd82626c0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ffb041bc38854757b555d4dd82626c0"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a0ffb041bc38854757b555d4dd82626c0">value_type</a></td></tr>
+<tr class="memdesc:a0ffb041bc38854757b555d4dd82626c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部データ型．T と同じ <br/></td></tr>
+<tr class="memitem:aef12701e20eb5161f32ca51620c483a2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef12701e20eb5161f32ca51620c483a2"></a>
+typedef T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#aef12701e20eb5161f32ca51620c483a2">pointer</a></td></tr>
+<tr class="memdesc:aef12701e20eb5161f32ca51620c483a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型のポインター型．data の場合，data * となる <br/></td></tr>
+<tr class="memitem:a337d6a183d2406d0ce924c85d9cdfbb8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a337d6a183d2406d0ce924c85d9cdfbb8"></a>
+typedef const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a337d6a183d2406d0ce924c85d9cdfbb8">const_pointer</a></td></tr>
+<tr class="memdesc:a337d6a183d2406d0ce924c85d9cdfbb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const ポインター型．data の場合，const data * となる <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:ab95838ed90fdc967b43075f8e9d0cc5f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab95838ed90fdc967b43075f8e9d0cc5f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#ab95838ed90fdc967b43075f8e9d0cc5f">stereo</a> ()</td></tr>
+<tr class="memdesc:ab95838ed90fdc967b43075f8e9d0cc5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトコンストラクタ（全ての要素を0で初期化する） <br/></td></tr>
+<tr class="memitem:a87274e7ae6515cb2e851e4c68b40efcf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87274e7ae6515cb2e851e4c68b40efcf"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a87274e7ae6515cb2e851e4c68b40efcf">stereo</a> (const <a class="el" href="structmist_1_1stereo.html#a0ffb041bc38854757b555d4dd82626c0">value_type</a> &amp;mono)</td></tr>
+<tr class="memdesc:a87274e7ae6515cb2e851e4c68b40efcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">全ての成分を mono で初期化する <br/></td></tr>
+<tr class="memitem:a55effd418fe019022eda26a6e497bee1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55effd418fe019022eda26a6e497bee1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a55effd418fe019022eda26a6e497bee1">stereo</a> (const <a class="el" href="structmist_1_1stereo.html#a0ffb041bc38854757b555d4dd82626c0">value_type</a> &amp;left, const <a class="el" href="structmist_1_1stereo.html#a0ffb041bc38854757b555d4dd82626c0">value_type</a> &amp;right)</td></tr>
+<tr class="memdesc:a55effd418fe019022eda26a6e497bee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">左 left，右 right を用いて初期化する <br/></td></tr>
+<tr class="memitem:a8c8a5b7ad70c37b104a2514a30fb853e"><td class="memTemplParams" colspan="2"><a class="anchor" id="a8c8a5b7ad70c37b104a2514a30fb853e"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a8c8a5b7ad70c37b104a2514a30fb853e"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a8c8a5b7ad70c37b104a2514a30fb853e">stereo</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; TT &gt; &amp;s)</td></tr>
+<tr class="memdesc:a8c8a5b7ad70c37b104a2514a30fb853e"><td class="mdescLeft">&#160;</td><td class="mdescRight">異なる型のステレオ音声データを用いて初期化する <br/></td></tr>
+<tr class="memitem:a6bfbf8938c8a9e8809a6718f9217dec0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6bfbf8938c8a9e8809a6718f9217dec0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a6bfbf8938c8a9e8809a6718f9217dec0">stereo</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; T &gt; &amp;s)</td></tr>
+<tr class="memdesc:a6bfbf8938c8a9e8809a6718f9217dec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のステレオ音声データを用いて初期化する <br/></td></tr>
+<tr class="memitem:a715ec423df8432fa23a9e2b278a894b3"><td class="memTemplParams" colspan="2"><a class="anchor" id="a715ec423df8432fa23a9e2b278a894b3"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a715ec423df8432fa23a9e2b278a894b3"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a715ec423df8432fa23a9e2b278a894b3">operator=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; TT &gt; &amp;s)</td></tr>
+<tr class="memdesc:a715ec423df8432fa23a9e2b278a894b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の音声成分を代入する <br/></td></tr>
+<tr class="memitem:aaff56f8d853f3a7be7c8d23765320b64"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaff56f8d853f3a7be7c8d23765320b64"></a>
+const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#aaff56f8d853f3a7be7c8d23765320b64">operator=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; T &gt; &amp;s)</td></tr>
+<tr class="memdesc:aaff56f8d853f3a7be7c8d23765320b64"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の音声成分を代入する <br/></td></tr>
+<tr class="memitem:a52ec0277ff1bfbce6a6f8891b9af4a9a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52ec0277ff1bfbce6a6f8891b9af4a9a"></a>
+const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a52ec0277ff1bfbce6a6f8891b9af4a9a">operator=</a> (const <a class="el" href="structmist_1_1stereo.html#a0ffb041bc38854757b555d4dd82626c0">value_type</a> &amp;mono)</td></tr>
+<tr class="memdesc:a52ec0277ff1bfbce6a6f8891b9af4a9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">全ての要素に mono を代入する <br/></td></tr>
+<tr class="memitem:a1d3193a8f43f8dbfde975e2e98b33b16"><td class="memTemplParams" colspan="2"><a class="anchor" id="a1d3193a8f43f8dbfde975e2e98b33b16"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a1d3193a8f43f8dbfde975e2e98b33b16"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a1d3193a8f43f8dbfde975e2e98b33b16">operator+=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; TT &gt; &amp;s)</td></tr>
+<tr class="memdesc:a1d3193a8f43f8dbfde975e2e98b33b16"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分の和 <br/></td></tr>
+<tr class="memitem:a3fd6effa66f47c622f8b84674481e93d"><td class="memTemplParams" colspan="2"><a class="anchor" id="a3fd6effa66f47c622f8b84674481e93d"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a3fd6effa66f47c622f8b84674481e93d"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a3fd6effa66f47c622f8b84674481e93d">operator-=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; TT &gt; &amp;s)</td></tr>
+<tr class="memdesc:a3fd6effa66f47c622f8b84674481e93d"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分の差 <br/></td></tr>
+<tr class="memitem:ab7fa4451b36b4fd4936bbe8ab2e1d8a3"><td class="memTemplParams" colspan="2"><a class="anchor" id="ab7fa4451b36b4fd4936bbe8ab2e1d8a3"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:ab7fa4451b36b4fd4936bbe8ab2e1d8a3"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#ab7fa4451b36b4fd4936bbe8ab2e1d8a3">operator*=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; TT &gt; &amp;s)</td></tr>
+<tr class="memdesc:ab7fa4451b36b4fd4936bbe8ab2e1d8a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分の積 <br/></td></tr>
+<tr class="memitem:a3d571d78e8723a02befc32f9ce58ba6b"><td class="memTemplParams" colspan="2"><a class="anchor" id="a3d571d78e8723a02befc32f9ce58ba6b"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a3d571d78e8723a02befc32f9ce58ba6b"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a3d571d78e8723a02befc32f9ce58ba6b">operator/=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; TT &gt; &amp;s)</td></tr>
+<tr class="memdesc:a3d571d78e8723a02befc32f9ce58ba6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分の割り算 <br/></td></tr>
+<tr class="memitem:ab8d4ada8c87af2fb10304e06dccc2940"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8d4ada8c87af2fb10304e06dccc2940"></a>
+const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#ab8d4ada8c87af2fb10304e06dccc2940">operator%=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;s)</td></tr>
+<tr class="memdesc:ab8d4ada8c87af2fb10304e06dccc2940"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分の剰余 <br/></td></tr>
+<tr class="memitem:aced4f25206868d8cdffdb30fc7992d94"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aced4f25206868d8cdffdb30fc7992d94"></a>
+const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#aced4f25206868d8cdffdb30fc7992d94">operator|=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;s)</td></tr>
+<tr class="memdesc:aced4f25206868d8cdffdb30fc7992d94"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分の | 演算 <br/></td></tr>
+<tr class="memitem:a0d930d4eaa72d3d96692b3329e0b3d5d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d930d4eaa72d3d96692b3329e0b3d5d"></a>
+const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a0d930d4eaa72d3d96692b3329e0b3d5d">operator&amp;=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;s)</td></tr>
+<tr class="memdesc:a0d930d4eaa72d3d96692b3329e0b3d5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分の &amp; 演算 <br/></td></tr>
+<tr class="memitem:a02aebc12a821d4f9202cba2fff286e8c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02aebc12a821d4f9202cba2fff286e8c"></a>
+const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a02aebc12a821d4f9202cba2fff286e8c">operator^=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;s)</td></tr>
+<tr class="memdesc:a02aebc12a821d4f9202cba2fff286e8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分の &amp; 演算 <br/></td></tr>
+<tr class="memitem:a86becfd5e5ad8bf16223408308ed6af0"><td class="memTemplParams" colspan="2"><a class="anchor" id="a86becfd5e5ad8bf16223408308ed6af0"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a86becfd5e5ad8bf16223408308ed6af0"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a86becfd5e5ad8bf16223408308ed6af0">operator+=</a> (const TT &amp;mono)</td></tr>
+<tr class="memdesc:a86becfd5e5ad8bf16223408308ed6af0"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分に mono 値を足す <br/></td></tr>
+<tr class="memitem:ac17b28c29b96709e41c090fe0282e396"><td class="memTemplParams" colspan="2"><a class="anchor" id="ac17b28c29b96709e41c090fe0282e396"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:ac17b28c29b96709e41c090fe0282e396"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#ac17b28c29b96709e41c090fe0282e396">operator-=</a> (const TT &amp;mono)</td></tr>
+<tr class="memdesc:ac17b28c29b96709e41c090fe0282e396"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分から mono 値を引く <br/></td></tr>
+<tr class="memitem:ae2bbf318e0448a4a90886faa1a8565fa"><td class="memTemplParams" colspan="2"><a class="anchor" id="ae2bbf318e0448a4a90886faa1a8565fa"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:ae2bbf318e0448a4a90886faa1a8565fa"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#ae2bbf318e0448a4a90886faa1a8565fa">operator*=</a> (const TT &amp;mono)</td></tr>
+<tr class="memdesc:ae2bbf318e0448a4a90886faa1a8565fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分に mono 値を掛ける <br/></td></tr>
+<tr class="memitem:ac95e633c5b97a2c954fdd8195aa8bd2e"><td class="memTemplParams" colspan="2"><a class="anchor" id="ac95e633c5b97a2c954fdd8195aa8bd2e"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:ac95e633c5b97a2c954fdd8195aa8bd2e"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#ac95e633c5b97a2c954fdd8195aa8bd2e">operator/=</a> (const TT &amp;mono)</td></tr>
+<tr class="memdesc:ac95e633c5b97a2c954fdd8195aa8bd2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">各音声成分を mono 値で割る <br/></td></tr>
+<tr class="memitem:a4e232e3f2eedb7dd28743fd0571bb6e9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a4e232e3f2eedb7dd28743fd0571bb6e9">operator==</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;s) const </td></tr>
+<tr class="memdesc:a4e232e3f2eedb7dd28743fd0571bb6e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つの音声成分が等しい（全要素が同じ値を持つ）かどうかを判定する  <a href="#a4e232e3f2eedb7dd28743fd0571bb6e9"></a><br/></td></tr>
+<tr class="memitem:a2ca689d781086c38f7d014ca7871a000"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a2ca689d781086c38f7d014ca7871a000">operator!=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;s) const </td></tr>
+<tr class="memdesc:a2ca689d781086c38f7d014ca7871a000"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つの音声成分が等しくない（全要素が同じ値を持つ）かどうかを判定する  <a href="#a2ca689d781086c38f7d014ca7871a000"></a><br/></td></tr>
+<tr class="memitem:a0b58490bf3226e865db02ac862b1e363"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a0b58490bf3226e865db02ac862b1e363">operator&lt;</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;s) const </td></tr>
+<tr class="memdesc:a0b58490bf3226e865db02ac862b1e363"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つの音声成分の &lt; を判定する  <a href="#a0b58490bf3226e865db02ac862b1e363"></a><br/></td></tr>
+<tr class="memitem:a433cad1c3d9daf039ed5ab79ef1c8747"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a433cad1c3d9daf039ed5ab79ef1c8747">operator&lt;=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;s) const </td></tr>
+<tr class="memdesc:a433cad1c3d9daf039ed5ab79ef1c8747"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つの音声成分の &lt;= を判定する  <a href="#a433cad1c3d9daf039ed5ab79ef1c8747"></a><br/></td></tr>
+<tr class="memitem:aa76a9e9ec3b6f37dd48bca12cfe61ae9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#aa76a9e9ec3b6f37dd48bca12cfe61ae9">operator&gt;</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;s) const </td></tr>
+<tr class="memdesc:aa76a9e9ec3b6f37dd48bca12cfe61ae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つの音声成分の &gt; を判定する  <a href="#aa76a9e9ec3b6f37dd48bca12cfe61ae9"></a><br/></td></tr>
+<tr class="memitem:a49fea2f1e789130464371bfca7eaae48"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a49fea2f1e789130464371bfca7eaae48">operator&gt;=</a> (const <a class="el" href="structmist_1_1stereo.html">stereo</a> &amp;s) const </td></tr>
+<tr class="memdesc:a49fea2f1e789130464371bfca7eaae48"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つの音声成分の &gt;= を判定する  <a href="#a49fea2f1e789130464371bfca7eaae48"></a><br/></td></tr>
+<tr class="memitem:a335f12738398f17b89788c1a924e40cc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a335f12738398f17b89788c1a924e40cc"></a>
+<a class="el" href="structmist_1_1stereo.html#a0ffb041bc38854757b555d4dd82626c0">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a335f12738398f17b89788c1a924e40cc">get_value</a> () const </td></tr>
+<tr class="memdesc:a335f12738398f17b89788c1a924e40cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">ステレオ音声からモノラル音声に変換する <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
+変数</h2></td></tr>
+<tr class="memitem:a20fee0557fd7ba4d7a3a933e1012d26b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20fee0557fd7ba4d7a3a933e1012d26b"></a>
+<a class="el" href="structmist_1_1stereo.html#a0ffb041bc38854757b555d4dd82626c0">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#a20fee0557fd7ba4d7a3a933e1012d26b">l</a></td></tr>
+<tr class="memdesc:a20fee0557fd7ba4d7a3a933e1012d26b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Leftチャンネルく <br/></td></tr>
+<tr class="memitem:abbe6ed494ad50e42bf3ea5a17bae9906"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abbe6ed494ad50e42bf3ea5a17bae9906"></a>
+<a class="el" href="structmist_1_1stereo.html#a0ffb041bc38854757b555d4dd82626c0">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1stereo.html#abbe6ed494ad50e42bf3ea5a17bae9906">r</a></td></tr>
+<tr class="memdesc:abbe6ed494ad50e42bf3ea5a17bae9906"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rightチャンネル <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br/>
+struct mist::stereo&lt; T &gt;</h3>
+
+<p>ステレオ音声用のデータ型 </p>
+<div class="fragment"><div class="line"> ステレオ音声の作成例</div>
+<div class="line"><a class="code" href="classmist_1_1array.html" title="要素数が可変の1次元配列">mist::array&lt; mist::stereo&lt; double &gt;</a> &gt; sound;</div>
+</div><!-- fragment --><dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>… 各音声成分のデータ型 </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2>関数</h2>
+<a class="anchor" id="a2ca689d781086c38f7d014ca7871a000"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1stereo.html">mist::stereo</a>&lt; T &gt;::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つの音声成分が等しくない（全要素が同じ値を持つ）かどうかを判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_l = q_l \; \wedge \; p_r = q_r } \]" src="form_16.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 2つの音声成分が異なる場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 2つの音声成分が等しい場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a0b58490bf3226e865db02ac862b1e363"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1stereo.html">mist::stereo</a>&lt; T &gt;::operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つの音声成分の &lt; を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_l \ge q_l \; \wedge \; p_r \ge q_r } \]" src="form_17.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… s1 &lt; s2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… s1 &gt;= s2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structmist_1_1stereo.html#a20fee0557fd7ba4d7a3a933e1012d26b">mist::stereo&lt; T &gt;::l</a>, と <a class="el" href="structmist_1_1stereo.html#abbe6ed494ad50e42bf3ea5a17bae9906">mist::stereo&lt; T &gt;::r</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a433cad1c3d9daf039ed5ab79ef1c8747"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1stereo.html">mist::stereo</a>&lt; T &gt;::operator&lt;= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つの音声成分の &lt;= を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_l \le q_l \; \wedge \; p_r \le q_r \]" src="form_18.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… s1 &lt;= s2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… s1 &gt; s2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a4e232e3f2eedb7dd28743fd0571bb6e9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1stereo.html">mist::stereo</a>&lt; T &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つの音声成分が等しい（全要素が同じ値を持つ）かどうかを判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_l = q_l \; \wedge \; p_r = q_r \]" src="form_15.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 2つの音声成分が等しい場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 2つの音声成分が異なる場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="structmist_1_1stereo.html#a20fee0557fd7ba4d7a3a933e1012d26b">mist::stereo&lt; T &gt;::l</a>, と <a class="el" href="structmist_1_1stereo.html#abbe6ed494ad50e42bf3ea5a17bae9906">mist::stereo&lt; T &gt;::r</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa76a9e9ec3b6f37dd48bca12cfe61ae9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1stereo.html">mist::stereo</a>&lt; T &gt;::operator&gt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つの音声成分の &gt; を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_l \le q_l \; \wedge \; p_r \le q_r } \]" src="form_19.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… s1 &gt; s2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… s1 &lt;= s2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a49fea2f1e789130464371bfca7eaae48"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structmist_1_1stereo.html">mist::stereo</a>&lt; T &gt;::operator&gt;= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmist_1_1stereo.html">stereo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つの音声成分の &gt;= を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_l \ge q_l \; \wedge \; p_r \ge q_r \]" src="form_20.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… s1 &gt;= s2 の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… s1 &lt; s2 の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>この構造体の説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="stereo_8h_source.html">stereo.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

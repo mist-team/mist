@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>dct.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_bec4273047a049cd76c9f4544f227a71.html">fft</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">dct.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>離散コサイン変換のアルゴリズム  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;fft_util.h&quot;</code><br/>
+<code>#include &quot;fftsg.h&quot;</code><br/>
+<code>#include &quot;fftsg2d.h&quot;</code><br/>
+<code>#include &quot;fftsg3d.h&quot;</code><br/>
+</div>
+<p><a href="dct_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga44a5e3b7768c1caf46f4f28f56478973"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga44a5e3b7768c1caf46f4f28f56478973"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__dct__group.html#ga44a5e3b7768c1caf46f4f28f56478973">mist::dct</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:ga44a5e3b7768c1caf46f4f28f56478973"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元高速コサイン変換  <a href="group__dct__group.html#ga44a5e3b7768c1caf46f4f28f56478973"></a><br/></td></tr>
+<tr class="memitem:gab5af9a67045a653b0f899c2aee50089b"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gab5af9a67045a653b0f899c2aee50089b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__dct__group.html#gab5af9a67045a653b0f899c2aee50089b">mist::idct</a> (const array1&lt; T1, Allocator1 &gt; &amp;in, array1&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:gab5af9a67045a653b0f899c2aee50089b"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元高速コサイン逆変換  <a href="group__dct__group.html#gab5af9a67045a653b0f899c2aee50089b"></a><br/></td></tr>
+<tr class="memitem:ga980a33e81d05cefda74199dd6f60fa20"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga980a33e81d05cefda74199dd6f60fa20"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__dct__group.html#ga980a33e81d05cefda74199dd6f60fa20">mist::dct</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:ga980a33e81d05cefda74199dd6f60fa20"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元高速コサイン変換  <a href="group__dct__group.html#ga980a33e81d05cefda74199dd6f60fa20"></a><br/></td></tr>
+<tr class="memitem:gae848441f1a5a337894da7279d1b69a9d"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gae848441f1a5a337894da7279d1b69a9d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__dct__group.html#gae848441f1a5a337894da7279d1b69a9d">mist::idct</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:gae848441f1a5a337894da7279d1b69a9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元高速コサイン逆変換  <a href="group__dct__group.html#gae848441f1a5a337894da7279d1b69a9d"></a><br/></td></tr>
+<tr class="memitem:gaada0a0f1f12d2b0a8a7a3a2483e48dd9"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gaada0a0f1f12d2b0a8a7a3a2483e48dd9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__dct__group.html#gaada0a0f1f12d2b0a8a7a3a2483e48dd9">mist::dct</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:gaada0a0f1f12d2b0a8a7a3a2483e48dd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元高速コサイン変換  <a href="group__dct__group.html#gaada0a0f1f12d2b0a8a7a3a2483e48dd9"></a><br/></td></tr>
+<tr class="memitem:gafd69c9250a4c585c213138a861dbdd16"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gafd69c9250a4c585c213138a861dbdd16"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__dct__group.html#gafd69c9250a4c585c213138a861dbdd16">mist::idct</a> (const array3&lt; T1, Allocator1 &gt; &amp;in, array3&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:gafd69c9250a4c585c213138a861dbdd16"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元高速コサイン逆変換  <a href="group__dct__group.html#gafd69c9250a4c585c213138a861dbdd16"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>離散コサイン変換のアルゴリズム </p>
+<p>東京大学の Takuya OOURA 氏が開発された，DCTのパッケージを利用しています．</p>
+<p><a href="http://momonga.t.u-tokyo.ac.jp/~ooura/fft.html">http://momonga.t.u-tokyo.ac.jp/~ooura/fft.html</a> </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

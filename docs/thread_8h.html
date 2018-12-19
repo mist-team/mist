@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>thread.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">thread.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>簡便にスレッドを利用可能にするためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">config/mist_conf.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="singleton_8h_source.html">singleton.h</a>&quot;</code><br/>
+<code>#include &lt;pthread.h&gt;</code><br/>
+<code>#include &lt;unistd.h&gt;</code><br/>
+<code>#include &lt;time.h&gt;</code><br/>
+<code>#include &lt;errno.h&gt;</code><br/>
+<code>#include &lt;sys/time.h&gt;</code><br/>
+<code>#include &lt;map&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;list&gt;</code><br/>
+<code>#include &lt;string&gt;</code><br/>
+</div>
+<p><a href="thread_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1simple__lock__object.html">mist::simple_lock_object</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドの排他制御をサポートする最も単純なクラス  <a href="structmist_1_1simple__lock__object.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1lock__object.html">mist::lock_object</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドの排他制御をサポートするクラス  <a href="structmist_1_1lock__object.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1lock.html">mist::lock</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドの排他制御を簡便に記述するためのヘルパクラス  <a href="classmist_1_1lock.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread.html">mist::thread&lt; thread_parameter &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">template 型のデータを扱うことができるスレッドクラス  <a href="classmist_1_1thread.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html">mist::thread_pool</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドプールを利用してスレッドの再利用を可能にするクラス  <a href="classmist_1_1thread__pool.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html">mist::worker_thread</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">バックグラウンドで実行するワーカースレッドを実現するクラス  <a href="classmist_1_1worker__thread.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__handle.html">mist::thread_handle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">生成したスレッドを管理するクラス  <a href="classmist_1_1thread__handle.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gadef82157796ad103bfc943dba8ef17e6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num</a> ()</td></tr>
+<tr class="memdesc:gadef82157796ad103bfc943dba8ef17e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">利用可能なCPU数を取得する  <a href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6"></a><br/></td></tr>
+<tr class="memitem:ga969bde1c76b4f3cd6811fa709dd7b7e5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga969bde1c76b4f3cd6811fa709dd7b7e5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga969bde1c76b4f3cd6811fa709dd7b7e5">mist::sleep</a> (size_t dwMilliseconds)</td></tr>
+<tr class="memdesc:ga969bde1c76b4f3cd6811fa709dd7b7e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した時間だけスリープする（ミリ秒単位） <br/></td></tr>
+<tr class="memitem:ga0f635b9fa0dc3d181f41fa4830a18513"><td class="memTemplParams" colspan="2">template&lt;class Thread &gt; </td></tr>
+<tr class="memitem:ga0f635b9fa0dc3d181f41fa4830a18513"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_</a> (Thread *threads, size_t num_threads, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga0f635b9fa0dc3d181f41fa4830a18513"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う  <a href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513"></a><br/></td></tr>
+<tr class="memitem:ga928b8291ead96a17557ccc1b47eb858b"><td class="memTemplParams" colspan="2">template&lt;class Thread &gt; </td></tr>
+<tr class="memitem:ga928b8291ead96a17557ccc1b47eb858b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga928b8291ead96a17557ccc1b47eb858b">mist::do_threads_</a> (Thread **threads, size_t num_threads, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga928b8291ead96a17557ccc1b47eb858b"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う  <a href="group__thread__group.html#ga928b8291ead96a17557ccc1b47eb858b"></a><br/></td></tr>
+<tr class="memitem:ga8a2ddfc1cc10d1c045cea4005cb39cdf"><td class="memTemplParams" colspan="2">template&lt;class Thread &gt; </td></tr>
+<tr class="memitem:ga8a2ddfc1cc10d1c045cea4005cb39cdf"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga8a2ddfc1cc10d1c045cea4005cb39cdf">mist::do_threads</a> (Thread *threads, size_t num_threads, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga8a2ddfc1cc10d1c045cea4005cb39cdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う  <a href="group__thread__group.html#ga8a2ddfc1cc10d1c045cea4005cb39cdf"></a><br/></td></tr>
+<tr class="memitem:gafeb86244422915e0de6c7590e1234a2e"><td class="memTemplParams" colspan="2">template&lt;class Param , class Functor &gt; </td></tr>
+<tr class="memitem:gafeb86244422915e0de6c7590e1234a2e"><td class="memTemplItemLeft" align="right" valign="top">thread_handle&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#gafeb86244422915e0de6c7590e1234a2e">mist::create_thread</a> (Param &amp;param, Functor f)</td></tr>
+<tr class="memdesc:gafeb86244422915e0de6c7590e1234a2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定したスレッド関数を利用する，スレッドを作成する  <a href="group__thread__group.html#gafeb86244422915e0de6c7590e1234a2e"></a><br/></td></tr>
+<tr class="memitem:ga91b970d43d849a4601bf8ca51b48e936"><td class="memTemplParams" colspan="2">template&lt;class Param , class Functor &gt; </td></tr>
+<tr class="memitem:ga91b970d43d849a4601bf8ca51b48e936"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga91b970d43d849a4601bf8ca51b48e936">mist::create_threads</a> (thread_handle *handles, Param *param, size_t num_threads, Functor f)</td></tr>
+<tr class="memdesc:ga91b970d43d849a4601bf8ca51b48e936"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定したスレッド関数を利用する，スレッドを複数作成する  <a href="group__thread__group.html#ga91b970d43d849a4601bf8ca51b48e936"></a><br/></td></tr>
+<tr class="memitem:ga3b135ecb8667be3b833276de8e917c70"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga3b135ecb8667be3b833276de8e917c70">mist::close_thread</a> (thread_handle &amp;thread_)</td></tr>
+<tr class="memdesc:ga3b135ecb8667be3b833276de8e917c70"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドが使用していたリソースを開放する  <a href="group__thread__group.html#ga3b135ecb8667be3b833276de8e917c70"></a><br/></td></tr>
+<tr class="memitem:gae2fab43a6c76df8b610e8e0e02f1c741"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#gae2fab43a6c76df8b610e8e0e02f1c741">mist::close_threads</a> (thread_handle *handles, size_t num_threads)</td></tr>
+<tr class="memdesc:gae2fab43a6c76df8b610e8e0e02f1c741"><td class="mdescLeft">&#160;</td><td class="mdescRight">複数のスレッドが使用していたリソースを開放する  <a href="group__thread__group.html#gae2fab43a6c76df8b610e8e0e02f1c741"></a><br/></td></tr>
+<tr class="memitem:ga15b1f1c5d9e6494e6aca9071050a2ca7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga15b1f1c5d9e6494e6aca9071050a2ca7">mist::wait_thread</a> (thread_handle &amp;thread_, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga15b1f1c5d9e6494e6aca9071050a2ca7"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドが終了するか，タイムアウトが発生するまで待機する  <a href="group__thread__group.html#ga15b1f1c5d9e6494e6aca9071050a2ca7"></a><br/></td></tr>
+<tr class="memitem:gaa3852e271bf7bde41c25c236036b047f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__thread__group.html#gaa3852e271bf7bde41c25c236036b047f">mist::wait_threads</a> (thread_handle *handles, size_t num_threads, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:gaa3852e271bf7bde41c25c236036b047f"><td class="mdescLeft">&#160;</td><td class="mdescRight">複数のスレッドが使用していたリソースを開放する  <a href="group__thread__group.html#gaa3852e271bf7bde41c25c236036b047f"></a><br/></td></tr>
+<tr class="memitem:ga07d201d0b1a6135e0f47fa2569be33f3"><td class="memTemplParams" colspan="2">template&lt;class Param , class Functor &gt; </td></tr>
+<tr class="memitem:ga07d201d0b1a6135e0f47fa2569be33f3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga07d201d0b1a6135e0f47fa2569be33f3">mist::do_thread</a> (Param &amp;param, Functor f, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga07d201d0b1a6135e0f47fa2569be33f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う  <a href="group__thread__group.html#ga07d201d0b1a6135e0f47fa2569be33f3"></a><br/></td></tr>
+<tr class="memitem:ga50ae7daac1beec2082919b1374dc39d1"><td class="memTemplParams" colspan="2">template&lt;class Param , class Functor &gt; </td></tr>
+<tr class="memitem:ga50ae7daac1beec2082919b1374dc39d1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__thread__group.html#ga50ae7daac1beec2082919b1374dc39d1">mist::do_threads</a> (Param *params, size_t num_threads, Functor f, unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:ga50ae7daac1beec2082919b1374dc39d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う  <a href="group__thread__group.html#ga50ae7daac1beec2082919b1374dc39d1"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>簡便にスレッドを利用可能にするためのライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

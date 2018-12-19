@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ネームスペース mist::Armijo</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="namespaces.html"><span>ネームスペース一覧</span></a></li>
+      <li><a href="namespacemembers.html"><span>ネームスペースメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1Armijo.html">Armijo</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ネームスペース mist::Armijo<div class="ingroups"><a class="el" href="group__minimization__group.html">関数の最小化</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Armijoの基準を用いた極小値の一次元探索  
+<a href="#details">[詳細]</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a7c914d29c8a0e4e37de6511b76bd5739"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor , class T2 &gt; </td></tr>
+<tr class="memitem:a7c914d29c8a0e4e37de6511b76bd5739"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1Armijo.html#a7c914d29c8a0e4e37de6511b76bd5739">minimization</a> (<a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;p, Functor f, const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;grad, const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;d, T2 &amp;data, const double rho=0.7, const double c=0.1, const size_t max_iterations=10)</td></tr>
+<tr class="memdesc:a7c914d29c8a0e4e37de6511b76bd5739"><td class="mdescLeft">&#160;</td><td class="mdescRight">Armijoの基準を用いて，f(x)の極小値の一次元探索を行う  <a href="#a7c914d29c8a0e4e37de6511b76bd5739"></a><br/></td></tr>
+<tr class="memitem:a857d0012ed9ece8149a82c5cbbfc05a9"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a857d0012ed9ece8149a82c5cbbfc05a9"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1Armijo.html#a857d0012ed9ece8149a82c5cbbfc05a9">minimization</a> (<a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;p, Functor f, const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;grad, const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;d, const double rho=0.7, const double c=0.1, const size_t max_iterations=10)</td></tr>
+<tr class="memdesc:a857d0012ed9ece8149a82c5cbbfc05a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Armijoの基準を用いて，f(x)の極小値の一次元探索を行う  <a href="#a857d0012ed9ece8149a82c5cbbfc05a9"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>Armijoの基準を用いた極小値の一次元探索 </p>
+</div><h2>関数</h2>
+<a class="anchor" id="a7c914d29c8a0e4e37de6511b76bd5739"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor , class T2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::Armijo::minimization </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>grad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T2 &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>rho</em> = <code>0.7</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>c</em> = <code>0.1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>max_iterations</em> = <code>10</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Armijoの基準を用いて，f(x)の極小値の一次元探索を行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">p</td><td>… 極小を与える座標値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 評価関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">grad</td><td>… 勾配方向ベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d</td><td>… 探索方向ベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>… 評価関数,勾配関数の計算に必要なデータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rho</td><td>… 減少率 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>… 条件数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_iterations</td><td>… 最大反復回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>極小を与える座標値における評価値 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a857d0012ed9ece8149a82c5cbbfc05a9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::Armijo::minimization </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>grad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>rho</em> = <code>0.7</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>c</em> = <code>0.1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>max_iterations</em> = <code>10</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Armijoの基準を用いて，f(x)の極小値の一次元探索を行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">p</td><td>… 極小を与える座標値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 評価関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">grad</td><td>… 勾配方向ベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d</td><td>… 探索方向ベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rho</td><td>… 減少率 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>… 条件数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_iterations</td><td>… 最大反復回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>極小を与える座標値における評価値 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

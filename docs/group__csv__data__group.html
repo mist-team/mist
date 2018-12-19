@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>CSVデータ入出力</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">CSVデータ入出力</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga9597ed0246bc731d10fbaad029dba4e1"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga9597ed0246bc731d10fbaad029dba4e1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__csv__data__group.html#ga9597ed0246bc731d10fbaad029dba4e1">mist::read_csv</a> (Array &amp;csv, const std::string &amp;filename, const std::string &amp;separator=&quot;, &quot;)</td></tr>
+<tr class="memdesc:ga9597ed0246bc731d10fbaad029dba4e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">CSV形式のファイルをSTLコンテナに読み込む  <a href="#ga9597ed0246bc731d10fbaad029dba4e1"></a><br/></td></tr>
+<tr class="memitem:ga44ea8d02b256a85839078c63511dc5c7"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga44ea8d02b256a85839078c63511dc5c7"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__csv__data__group.html#ga44ea8d02b256a85839078c63511dc5c7">mist::read_csv</a> (Array &amp;csv, const std::wstring &amp;filename, const std::wstring &amp;separator=&quot;, &quot;)</td></tr>
+<tr class="memdesc:ga44ea8d02b256a85839078c63511dc5c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">CSV形式のファイルをSTLコンテナに読み込む  <a href="#ga44ea8d02b256a85839078c63511dc5c7"></a><br/></td></tr>
+<tr class="memitem:ga3fe2f6ed46bae0682605a14629909932"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga3fe2f6ed46bae0682605a14629909932"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__csv__data__group.html#ga3fe2f6ed46bae0682605a14629909932">mist::read_csv</a> (matrix&lt; T, Allocator &gt; &amp;csv, const std::string &amp;filename, const std::string &amp;separator=&quot;, &quot;)</td></tr>
+<tr class="memdesc:ga3fe2f6ed46bae0682605a14629909932"><td class="mdescLeft">&#160;</td><td class="mdescRight">CSV形式のファイルをMISTコンテナ（mist::matrix）に読み込む  <a href="#ga3fe2f6ed46bae0682605a14629909932"></a><br/></td></tr>
+<tr class="memitem:ga2af779be83eec6373ec6ea47492b823d"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga2af779be83eec6373ec6ea47492b823d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__csv__data__group.html#ga2af779be83eec6373ec6ea47492b823d">mist::read_csv</a> (matrix&lt; T, Allocator &gt; &amp;csv, const std::wstring &amp;filename, const std::string &amp;separator=&quot;, &quot;)</td></tr>
+<tr class="memdesc:ga2af779be83eec6373ec6ea47492b823d"><td class="mdescLeft">&#160;</td><td class="mdescRight">CSV形式のファイルをMISTコンテナ（mist::matrix）に読み込む  <a href="#ga2af779be83eec6373ec6ea47492b823d"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<p>CSV形式のファイルを読み込んで，MISTコンテナもしくはSTLのコンテナへ格納する．</p>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="csv_8h.html" title="CSVファイルを読み込むためのライブラリ">mist/io/csv.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga9597ed0246bc731d10fbaad029dba4e1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_csv </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>csv</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>separator</em> = <code>&quot;,&#160;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CSV形式のファイルをSTLコンテナに読み込む </p>
+<p>データの区切りとして，コンマもしくは半角空白をデフォルトで識別するようになっている． データの区切りを変更する場合は，separator 引数を変更する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">csv</td><td>… CSV形式のファイルを読み込む先のSTLコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">separator</td><td>… データの区切り記号</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… CSV形式データの読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… CSV形式データの読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__csv__data__group.html#ga44ea8d02b256a85839078c63511dc5c7">mist::read_csv()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga44ea8d02b256a85839078c63511dc5c7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_csv </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>csv</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>separator</em> = <code>&quot;,&#160;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CSV形式のファイルをSTLコンテナに読み込む </p>
+<p>データの区切りとして，コンマもしくは半角空白をデフォルトで識別するようになっている． データの区切りを変更する場合は，separator 引数を変更する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">csv</td><td>… CSV形式のファイルを読み込む先のSTLコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">separator</td><td>… データの区切り記号</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… CSV形式データの読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… CSV形式データの読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__csv__data__group.html#ga9597ed0246bc731d10fbaad029dba4e1">mist::read_csv()</a>, と <a class="el" href="namespacemist.html#ab2f799d2c98c030f7bc5ba23c8fb0380">mist::wstr2str()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga3fe2f6ed46bae0682605a14629909932"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_csv </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>csv</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>separator</em> = <code>&quot;,&#160;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CSV形式のファイルをMISTコンテナ（mist::matrix）に読み込む </p>
+<p>データの区切りとして，コンマもしくは半角空白をデフォルトで識別するようになっている． データの区切りを変更する場合は，separator 引数を変更する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">csv</td><td>… CSV形式のファイルを読み込む先の行列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">separator</td><td>… データの区切り記号</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… CSV形式データの読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… CSV形式データの読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__csv__data__group.html#ga9597ed0246bc731d10fbaad029dba4e1">mist::read_csv()</a>, と <a class="el" href="classmist_1_1matrix.html#a344bfa81522dc2e3f5e2ddc92c785502">mist::matrix&lt; T, Allocator &gt;::resize()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga2af779be83eec6373ec6ea47492b823d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_csv </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>csv</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>separator</em> = <code>&quot;,&#160;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CSV形式のファイルをMISTコンテナ（mist::matrix）に読み込む </p>
+<p>データの区切りとして，コンマもしくは半角空白をデフォルトで識別するようになっている． データの区切りを変更する場合は，separator 引数を変更する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">csv</td><td>… CSV形式のファイルを読み込む先の行列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">separator</td><td>… データの区切り記号</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… CSV形式データの読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… CSV形式データの読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__csv__data__group.html#ga9597ed0246bc731d10fbaad029dba4e1">mist::read_csv()</a>, と <a class="el" href="namespacemist.html#ab2f799d2c98c030f7bc5ba23c8fb0380">mist::wstr2str()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

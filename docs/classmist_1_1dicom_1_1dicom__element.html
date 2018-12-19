@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::dicom::dicom_element</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1dicom.html">dicom</a></li><li class="navelem"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html">dicom_element</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pub-attribs">変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::dicom::dicom_element</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>DICOMのタグとその要素を管理するクラス  
+ <a href="classmist_1_1dicom_1_1dicom__element.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="dicom__info_8h_source.html">dicom_info.h</a>&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> mist::dicom::dicom_elementに対する継承グラフ</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+ <div class="center">
+  <img src="classmist_1_1dicom_1_1dicom__element.png" usemap="#mist::dicom::dicom_element_map" alt=""/>
+  <map id="mist::dicom::dicom_element_map" name="mist::dicom::dicom_element_map">
+<area href="classmist_1_1dicom_1_1dicom__tag.html" title="DICOMタグ（DICOMデータの内容を表すもの）" alt="mist::dicom::dicom_tag" shape="rect" coords="0,0,161,24"/>
+</map>
+ </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:ac96b0c5ef2afacdd11252f9a7311278a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac96b0c5ef2afacdd11252f9a7311278a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#ac96b0c5ef2afacdd11252f9a7311278a">create</a> (const size_type nbytes)</td></tr>
+<tr class="memdesc:ac96b0c5ef2afacdd11252f9a7311278a"><td class="mdescLeft">&#160;</td><td class="mdescRight">nbytes バイト分のメモリ領域を確保する <br/></td></tr>
+<tr class="memitem:adf1a72ee9192d46bb915bc79928c229c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adf1a72ee9192d46bb915bc79928c229c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#adf1a72ee9192d46bb915bc79928c229c">copy</a> (const unsigned char *p, const size_type nbytes)</td></tr>
+<tr class="memdesc:adf1a72ee9192d46bb915bc79928c229c"><td class="mdescLeft">&#160;</td><td class="mdescRight">p から nbytes バイト分だけデータをコピーする <br/></td></tr>
+<tr class="memitem:a3f875a74f981f73581569b7731135851"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f875a74f981f73581569b7731135851"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a3f875a74f981f73581569b7731135851">swap</a> (<a class="el" href="classmist_1_1dicom_1_1dicom__element.html">dicom_element</a> &amp;dicm)</td></tr>
+<tr class="memdesc:a3f875a74f981f73581569b7731135851"><td class="mdescLeft">&#160;</td><td class="mdescRight">タグのデータの中身を交換する <br/></td></tr>
+<tr class="memitem:abd90a968957058aa1ac0064fd16af3e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd90a968957058aa1ac0064fd16af3e7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#abd90a968957058aa1ac0064fd16af3e7">update</a> ()</td></tr>
+<tr class="memdesc:abd90a968957058aa1ac0064fd16af3e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOM タグの条件に合うようにデータを更新する <br/></td></tr>
+<tr class="memitem:a28107b6155d77b040338e816f1bae80d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28107b6155d77b040338e816f1bae80d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a28107b6155d77b040338e816f1bae80d">release</a> ()</td></tr>
+<tr class="memdesc:a28107b6155d77b040338e816f1bae80d"><td class="mdescLeft">&#160;</td><td class="mdescRight">確保しているメモリ領域を開放する <br/></td></tr>
+<tr class="memitem:a3ecdafd68eb2f70df4a11da08ae3ce76"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ecdafd68eb2f70df4a11da08ae3ce76"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a3ecdafd68eb2f70df4a11da08ae3ce76">operator&lt;</a> (const <a class="el" href="classmist_1_1dicom_1_1dicom__element.html">dicom_element</a> &amp;dicm) const </td></tr>
+<tr class="memdesc:a3ecdafd68eb2f70df4a11da08ae3ce76"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグの大小関係を調べる <br/></td></tr>
+<tr class="memitem:a758baef40e26821a49ca7e404f459fde"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a758baef40e26821a49ca7e404f459fde"></a>
+const <a class="el" href="classmist_1_1dicom_1_1dicom__element.html">dicom_element</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a758baef40e26821a49ca7e404f459fde">operator=</a> (const <a class="el" href="classmist_1_1dicom_1_1dicom__element.html">dicom_element</a> &amp;dicm)</td></tr>
+<tr class="memdesc:a758baef40e26821a49ca7e404f459fde"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のDICOM要素を代入する <br/></td></tr>
+<tr class="memitem:a0f4318bed1856ef524ba8c46d25c9b12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0f4318bed1856ef524ba8c46d25c9b12"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a0f4318bed1856ef524ba8c46d25c9b12">modify</a> (const std::string &amp;value)</td></tr>
+<tr class="memdesc:a0f4318bed1856ef524ba8c46d25c9b12"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のDICOM要素を代入する <br/></td></tr>
+<tr class="memitem:aea642d3ef52d2170646aedc5269aeb22"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aea642d3ef52d2170646aedc5269aeb22"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#aea642d3ef52d2170646aedc5269aeb22">to_double</a> () const </td></tr>
+<tr class="memdesc:aea642d3ef52d2170646aedc5269aeb22"><td class="mdescLeft">&#160;</td><td class="mdescRight">double 型のデータに変換する（DICOMタグの内容が double 型をあらわしている必要がある） <br/></td></tr>
+<tr class="memitem:a03fc2afc1fb31f60d7d3a5eb2c8b457e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a03fc2afc1fb31f60d7d3a5eb2c8b457e"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a03fc2afc1fb31f60d7d3a5eb2c8b457e">to_float</a> () const </td></tr>
+<tr class="memdesc:a03fc2afc1fb31f60d7d3a5eb2c8b457e"><td class="mdescLeft">&#160;</td><td class="mdescRight">float 型のデータに変換する（DICOMタグの内容が float 型をあらわしている必要がある） <br/></td></tr>
+<tr class="memitem:aa759677d99ccbfc9a3d148a5da260738"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa759677d99ccbfc9a3d148a5da260738"></a>
+signed int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#aa759677d99ccbfc9a3d148a5da260738">to_int</a> () const </td></tr>
+<tr class="memdesc:aa759677d99ccbfc9a3d148a5da260738"><td class="mdescLeft">&#160;</td><td class="mdescRight">signed int 型のデータに変換する（DICOMタグの内容が signed int 型をあらわしている必要がある） <br/></td></tr>
+<tr class="memitem:a2ee7e8f7c3a337f799d9c29fdff2c856"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ee7e8f7c3a337f799d9c29fdff2c856"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a2ee7e8f7c3a337f799d9c29fdff2c856">to_uint</a> () const </td></tr>
+<tr class="memdesc:a2ee7e8f7c3a337f799d9c29fdff2c856"><td class="mdescLeft">&#160;</td><td class="mdescRight">unsigned int 型のデータに変換する（DICOMタグの内容が unsigned int 型をあらわしている必要がある） <br/></td></tr>
+<tr class="memitem:a3e40badbe285486e6f3d9632070f54cc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e40badbe285486e6f3d9632070f54cc"></a>
+signed short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a3e40badbe285486e6f3d9632070f54cc">to_short</a> () const </td></tr>
+<tr class="memdesc:a3e40badbe285486e6f3d9632070f54cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">signed short 型のデータに変換する（DICOMタグの内容が signed short 型をあらわしている必要がある） <br/></td></tr>
+<tr class="memitem:a09249da28fc619d72d98eab5f360c4bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09249da28fc619d72d98eab5f360c4bd"></a>
+unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a09249da28fc619d72d98eab5f360c4bd">to_ushort</a> () const </td></tr>
+<tr class="memdesc:a09249da28fc619d72d98eab5f360c4bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">unsigned short 型のデータに変換する（DICOMタグの内容が ushort 型をあらわしている必要がある） <br/></td></tr>
+<tr class="memitem:a70f4dfaae62eedab4a67ddf8931412a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70f4dfaae62eedab4a67ddf8931412a5"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a70f4dfaae62eedab4a67ddf8931412a5">to_string</a> () const </td></tr>
+<tr class="memdesc:a70f4dfaae62eedab4a67ddf8931412a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">string 型のデータに変換する（DICOMタグの内容が string 型をあらわしている必要がある） <br/></td></tr>
+<tr class="memitem:a5deb9811b4d3419521860d2f722e7f50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5deb9811b4d3419521860d2f722e7f50"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a5deb9811b4d3419521860d2f722e7f50">show_tag</a> () const </td></tr>
+<tr class="memdesc:a5deb9811b4d3419521860d2f722e7f50"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグの内容を表示する <br/></td></tr>
+<tr class="memitem:aab8e1ff6acb7c64d8e5eaa0aab49bfae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab8e1ff6acb7c64d8e5eaa0aab49bfae"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#aab8e1ff6acb7c64d8e5eaa0aab49bfae">dicom_element</a> ()</td></tr>
+<tr class="memdesc:aab8e1ff6acb7c64d8e5eaa0aab49bfae"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのコンストラクタ <br/></td></tr>
+<tr class="memitem:a6c9fa6e1e104d68f51abe8a3c8da5578"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c9fa6e1e104d68f51abe8a3c8da5578"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a6c9fa6e1e104d68f51abe8a3c8da5578">dicom_element</a> (const <a class="el" href="classmist_1_1dicom_1_1dicom__element.html">dicom_element</a> &amp;dicm)</td></tr>
+<tr class="memdesc:a6c9fa6e1e104d68f51abe8a3c8da5578"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のDICOMタグを用いて初期化する <br/></td></tr>
+<tr class="memitem:a12b29d8ddb3536d2bfd1fff6c0d1bbbb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a12b29d8ddb3536d2bfd1fff6c0d1bbbb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a12b29d8ddb3536d2bfd1fff6c0d1bbbb">dicom_element</a> (unsigned short group, unsigned short element, const unsigned char *d=NULL, size_type nbytes=0)</td></tr>
+<tr class="memdesc:a12b29d8ddb3536d2bfd1fff6c0d1bbbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">group，element，データ d，データのバイト数 nbytes をを用いて初期化する <br/></td></tr>
+<tr class="memitem:a56182308921c8ce6851110a07aa79ff0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56182308921c8ce6851110a07aa79ff0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a56182308921c8ce6851110a07aa79ff0">dicom_element</a> (const <a class="el" href="classmist_1_1dicom_1_1dicom__tag.html">dicom_tag</a> &amp;t, const unsigned char *d=NULL, size_type nbytes=0)</td></tr>
+<tr class="memdesc:a56182308921c8ce6851110a07aa79ff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグ tag，データ d，データのバイト数 nbytes をを用いて初期化する <br/></td></tr>
+<tr class="memitem:a09f300548866143e6c7e3f1eaccbb2ee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09f300548866143e6c7e3f1eaccbb2ee"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a09f300548866143e6c7e3f1eaccbb2ee">~dicom_element</a> ()</td></tr>
+<tr class="memdesc:a09f300548866143e6c7e3f1eaccbb2ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグ用に確保したデータをすべて開放する <br/></td></tr>
+<tr class="inherit_header pub_methods_classmist_1_1dicom_1_1dicom__tag"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmist_1_1dicom_1_1dicom__tag')"><img src="closed.png" alt="-"/>&nbsp;Public メソッド inherited from <a class="el" href="classmist_1_1dicom_1_1dicom__tag.html">mist::dicom::dicom_tag</a></td></tr>
+<tr class="memitem:a858de47f50e79c4bffa0f2dcc39f196b inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a858de47f50e79c4bffa0f2dcc39f196b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#a858de47f50e79c4bffa0f2dcc39f196b">dicom_tag</a> (unsigned int t=0xffffffff, dicom_vr vvr=UNKNOWN, int vvm=1, const std::string &amp;text=&quot;&quot;, bool b=true)</td></tr>
+<tr class="memdesc:a858de47f50e79c4bffa0f2dcc39f196b inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを作成する <br/></td></tr>
+<tr class="memitem:a751d0c75f434142fce2c5e0cafebd9f4 inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a751d0c75f434142fce2c5e0cafebd9f4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#a751d0c75f434142fce2c5e0cafebd9f4">dicom_tag</a> (unsigned int t, const std::string &amp;vvr, int vvm, const std::string &amp;text, bool b)</td></tr>
+<tr class="memdesc:a751d0c75f434142fce2c5e0cafebd9f4 inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを作成する <br/></td></tr>
+<tr class="memitem:a041e081466d6eadb259fff344d00d144 inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a041e081466d6eadb259fff344d00d144"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#a041e081466d6eadb259fff344d00d144">dicom_tag</a> (const <a class="el" href="classmist_1_1dicom_1_1dicom__tag.html">dicom_tag</a> &amp;t)</td></tr>
+<tr class="memdesc:a041e081466d6eadb259fff344d00d144 inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のDICOMタグで初期化する <br/></td></tr>
+<tr class="memitem:ad50a047b7a138b815ca46d3c24721c8d inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad50a047b7a138b815ca46d3c24721c8d"></a>
+const <a class="el" href="classmist_1_1dicom_1_1dicom__tag.html">dicom_tag</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#ad50a047b7a138b815ca46d3c24721c8d">operator=</a> (const <a class="el" href="classmist_1_1dicom_1_1dicom__tag.html">dicom_tag</a> &amp;t)</td></tr>
+<tr class="memdesc:ad50a047b7a138b815ca46d3c24721c8d inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のDICOMタグを代入する <br/></td></tr>
+<tr class="memitem:a81bdb1f83ffb4b2f684cec194da47256 inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81bdb1f83ffb4b2f684cec194da47256"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#a81bdb1f83ffb4b2f684cec194da47256">operator&lt;</a> (const <a class="el" href="classmist_1_1dicom_1_1dicom__tag.html">dicom_tag</a> &amp;t) const </td></tr>
+<tr class="memdesc:a81bdb1f83ffb4b2f684cec194da47256 inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグのIDで大小関係を決定する <br/></td></tr>
+<tr class="memitem:aaf67a09e61a30683eeca263da4b50152 inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf67a09e61a30683eeca263da4b50152"></a>
+unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#aaf67a09e61a30683eeca263da4b50152">get_group</a> () const </td></tr>
+<tr class="memdesc:aaf67a09e61a30683eeca263da4b50152 inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグのグループIDを取得する <br/></td></tr>
+<tr class="memitem:a80a4a3c974e6662fbc3338a0016cc54c inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80a4a3c974e6662fbc3338a0016cc54c"></a>
+unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#a80a4a3c974e6662fbc3338a0016cc54c">get_element</a> () const </td></tr>
+<tr class="memdesc:a80a4a3c974e6662fbc3338a0016cc54c inherit pub_methods_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグのエレメントIDを取得する <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
+変数</h2></td></tr>
+<tr class="memitem:aeda6bad233fa5c3509c74ad381a94ccf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeda6bad233fa5c3509c74ad381a94ccf"></a>
+unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#aeda6bad233fa5c3509c74ad381a94ccf">data</a></td></tr>
+<tr class="memdesc:aeda6bad233fa5c3509c74ad381a94ccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグの内容を指すポインタ <br/></td></tr>
+<tr class="memitem:a27210bb7e7ba913ebf82d3347b2db312"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27210bb7e7ba913ebf82d3347b2db312"></a>
+size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a27210bb7e7ba913ebf82d3347b2db312">num_bytes</a></td></tr>
+<tr class="memdesc:a27210bb7e7ba913ebf82d3347b2db312"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグの内容に必要なバイト数 <br/></td></tr>
+<tr class="inherit_header pub_attribs_classmist_1_1dicom_1_1dicom__tag"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classmist_1_1dicom_1_1dicom__tag')"><img src="closed.png" alt="-"/>&nbsp;変数 inherited from <a class="el" href="classmist_1_1dicom_1_1dicom__tag.html">mist::dicom::dicom_tag</a></td></tr>
+<tr class="memitem:a359e897a7b61a691639caec34cc6376a inherit pub_attribs_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a359e897a7b61a691639caec34cc6376a"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#a359e897a7b61a691639caec34cc6376a">tag</a></td></tr>
+<tr class="memdesc:a359e897a7b61a691639caec34cc6376a inherit pub_attribs_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグID. <br/></td></tr>
+<tr class="memitem:a20edba4a330641ac6a85dc802f285b48 inherit pub_attribs_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20edba4a330641ac6a85dc802f285b48"></a>
+<a class="el" href="namespacemist_1_1dicom.html#a1beb77bab459d87a4764d0b57f0a34a2">dicom_vr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#a20edba4a330641ac6a85dc802f285b48">vr</a></td></tr>
+<tr class="memdesc:a20edba4a330641ac6a85dc802f285b48 inherit pub_attribs_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">VRタグ <br/></td></tr>
+<tr class="memitem:aefd4371852abbf53b53224bbb8b5b948 inherit pub_attribs_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aefd4371852abbf53b53224bbb8b5b948"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#aefd4371852abbf53b53224bbb8b5b948">vm</a></td></tr>
+<tr class="memdesc:aefd4371852abbf53b53224bbb8b5b948 inherit pub_attribs_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">VMタグ <br/></td></tr>
+<tr class="memitem:a7cf0f954a8b9051e2174aaac5f908abe inherit pub_attribs_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7cf0f954a8b9051e2174aaac5f908abe"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#a7cf0f954a8b9051e2174aaac5f908abe">comment</a></td></tr>
+<tr class="memdesc:a7cf0f954a8b9051e2174aaac5f908abe inherit pub_attribs_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">コメント <br/></td></tr>
+<tr class="memitem:a1a5b9d2a54d9e7ecd8c1f85678697896 inherit pub_attribs_classmist_1_1dicom_1_1dicom__tag"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a5b9d2a54d9e7ecd8c1f85678697896"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag.html#a1a5b9d2a54d9e7ecd8c1f85678697896">enable</a></td></tr>
+<tr class="memdesc:a1a5b9d2a54d9e7ecd8c1f85678697896 inherit pub_attribs_classmist_1_1dicom_1_1dicom__tag"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグを保存するかどうか（個人情報に関するタグはデフォルトで false ） <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>DICOMのタグとその要素を管理するクラス </p>
+</div><hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="dicom__info_8h_source.html">dicom_info.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

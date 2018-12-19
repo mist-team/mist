@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::region_growing_utility::greater&lt; T &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1region__growing__utility.html">region_growing_utility</a></li><li class="navelem"><a class="el" href="classmist_1_1region__growing__utility_1_1greater.html">greater</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-attribs">Protected 変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::region_growing_utility::greater&lt; T &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>領域拡張法で用いる拡張条件  
+ <a href="classmist_1_1region__growing__utility_1_1greater.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="region__growing_8h_source.html">region_growing.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:ae3fb780a0977596127706c86c754b0ed"><td class="memTemplParams" colspan="2"><a class="anchor" id="ae3fb780a0977596127706c86c754b0ed"></a>
+template&lt;class VerifyList &gt; </td></tr>
+<tr class="memitem:ae3fb780a0977596127706c86c754b0ed"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1region__growing__utility_1_1greater.html#ae3fb780a0977596127706c86c754b0ed">operator()</a> (const VerifyList &amp;elements, size_type num) const </td></tr>
+<tr class="memdesc:ae3fb780a0977596127706c86c754b0ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">条件判定リスト内の画素が条件を満たすかどうかを調べる <br/></td></tr>
+<tr class="memitem:a5aece8ac65eb845909f86bd17098cb87"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5aece8ac65eb845909f86bd17098cb87"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1region__growing__utility_1_1greater.html#a5aece8ac65eb845909f86bd17098cb87">require_all_elements</a> () const </td></tr>
+<tr class="memdesc:a5aece8ac65eb845909f86bd17098cb87"><td class="mdescLeft">&#160;</td><td class="mdescRight">条件判定を行う際に，構造要素内の全画素が必要な場合は true を返す <br/></td></tr>
+<tr class="memitem:ae3edc9507d2cdc2c1ae973e3564db82e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3edc9507d2cdc2c1ae973e3564db82e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1region__growing__utility_1_1greater.html#ae3edc9507d2cdc2c1ae973e3564db82e">greater</a> (value_type threshold)</td></tr>
+<tr class="memdesc:ae3edc9507d2cdc2c1ae973e3564db82e"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意のしきい値で初期化 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected 変数</h2></td></tr>
+<tr class="memitem:ab440e4d82e516ac6e668fb97578fa9c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab440e4d82e516ac6e668fb97578fa9c9"></a>
+value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1region__growing__utility_1_1greater.html#ab440e4d82e516ac6e668fb97578fa9c9">th_</a></td></tr>
+<tr class="memdesc:ab440e4d82e516ac6e668fb97578fa9c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">しきい値 <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br/>
+class mist::region_growing_utility::greater&lt; T &gt;</h3>
+
+<p>領域拡張法で用いる拡張条件 </p>
+<p>条件判定リスト内の全ての画素がある値より大きい </p>
+</div><hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="region__growing_8h_source.html">region_growing.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

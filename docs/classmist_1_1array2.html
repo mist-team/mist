@@ -1,0 +1,1471 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::array2&lt; T, Allocator &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1array2.html">array2</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-methods">Protected メソッド</a> &#124;
+<a href="#pro-attribs">Protected 変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::array2&lt; T, Allocator &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>要素数が可変の解像度付き2次元配列  
+ <a href="classmist_1_1array2.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="mist_8h_source.html">mist.h</a>&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> mist::array2&lt; T, Allocator &gt;に対する継承グラフ</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+ <div class="center">
+  <img src="classmist_1_1array2.png" usemap="#mist::array2&lt; T, Allocator &gt;_map" alt=""/>
+  <map id="mist::array2&lt; T, Allocator &gt;_map" name="mist::array2&lt; T, Allocator &gt;_map">
+<area href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列" alt="mist::array1&lt; T, Allocator &gt;" shape="rect" coords="0,56,168,80"/>
+<area href="classmist_1_1array.html" title="要素数が可変の1次元配列" alt="mist::array&lt; T, Allocator &gt;" shape="rect" coords="0,0,168,24"/>
+<area href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列" alt="mist::array3&lt; T, Allocator &gt;" shape="rect" coords="0,168,168,192"/>
+</map>
+ </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1array2_1_1rebind.html">rebind</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の変換を行う  <a href="structmist_1_1array2_1_1rebind.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a863698856e419b57582f873067414f3e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a863698856e419b57582f873067414f3e"></a>
+typedef Allocator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a863698856e419b57582f873067414f3e">allocator_type</a></td></tr>
+<tr class="memdesc:a863698856e419b57582f873067414f3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナが利用するアロケータ型 <br/></td></tr>
+<tr class="memitem:a6f6441c9916cc853cbab9ab8f6d60cdd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f6441c9916cc853cbab9ab8f6d60cdd"></a>
+typedef Allocator::reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a6f6441c9916cc853cbab9ab8f6d60cdd">reference</a></td></tr>
+<tr class="memdesc:a6f6441c9916cc853cbab9ab8f6d60cdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の参照．mist::array&lt; data &gt; の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:ab6711af3827c452a6f0ce17362be1fb9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6711af3827c452a6f0ce17362be1fb9"></a>
+typedef Allocator::const_reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#ab6711af3827c452a6f0ce17362be1fb9">const_reference</a></td></tr>
+<tr class="memdesc:ab6711af3827c452a6f0ce17362be1fb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const 参照．mist::array&lt; data &gt; の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:aeb47d46d311ad06649861902c39d3ffa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb47d46d311ad06649861902c39d3ffa"></a>
+typedef Allocator::value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#aeb47d46d311ad06649861902c39d3ffa">value_type</a></td></tr>
+<tr class="memdesc:aeb47d46d311ad06649861902c39d3ffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型．mist::array&lt; data &gt; の data と同じ <br/></td></tr>
+<tr class="memitem:aa5313c89ecfb31af506d776f332292c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa5313c89ecfb31af506d776f332292c1"></a>
+typedef Allocator::size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#aa5313c89ecfb31af506d776f332292c1">size_type</a></td></tr>
+<tr class="memdesc:aa5313c89ecfb31af506d776f332292c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a0c3f03360936c12ddff3bbbe33257b84"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0c3f03360936c12ddff3bbbe33257b84"></a>
+typedef Allocator::difference_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a0c3f03360936c12ddff3bbbe33257b84">difference_type</a></td></tr>
+<tr class="memdesc:a0c3f03360936c12ddff3bbbe33257b84"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:a429762090e5a54af821493778919dc91"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a429762090e5a54af821493778919dc91"></a>
+typedef Allocator::pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a429762090e5a54af821493778919dc91">pointer</a></td></tr>
+<tr class="memdesc:a429762090e5a54af821493778919dc91"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型のポインター型．mist::array&lt; data &gt; の場合，data * となる <br/></td></tr>
+<tr class="memitem:ab6846872c76ea9653e33e9ff9c0c6a46"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6846872c76ea9653e33e9ff9c0c6a46"></a>
+typedef Allocator::const_pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#ab6846872c76ea9653e33e9ff9c0c6a46">const_pointer</a></td></tr>
+<tr class="memdesc:ab6846872c76ea9653e33e9ff9c0c6a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array&lt; data &gt; の場合，const data * となる <br/></td></tr>
+<tr class="memitem:acb52689f7403388ef17b646a89d803b7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb52689f7403388ef17b646a89d803b7"></a>
+typedef <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, <br class="typebreak"/>
+ptrdiff_t, <a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a>, <a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#acb52689f7403388ef17b646a89d803b7">iterator</a></td></tr>
+<tr class="memdesc:acb52689f7403388ef17b646a89d803b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ <br/></td></tr>
+<tr class="memitem:a4b6c1aa49d1eee44fb522956a083375e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b6c1aa49d1eee44fb522956a083375e"></a>
+typedef <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, <br class="typebreak"/>
+ptrdiff_t, <a class="el" href="classmist_1_1array.html#aee5a3bcf64382963b508e30e6448fa45">const_pointer</a>, <br class="typebreak"/>
+<a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a4b6c1aa49d1eee44fb522956a083375e">const_iterator</a></td></tr>
+<tr class="memdesc:a4b6c1aa49d1eee44fb522956a083375e"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版 <br/></td></tr>
+<tr class="memitem:a9b0e1dfed22367ba2ea61cd56ce5578f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9b0e1dfed22367ba2ea61cd56ce5578f"></a>
+typedef <a class="el" href="classmist_1_1mist__reverse__iterator.html">mist_reverse_iterator</a><br class="typebreak"/>
+&lt; <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, ptrdiff_t, <br class="typebreak"/>
+<a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a>, <a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a9b0e1dfed22367ba2ea61cd56ce5578f">reverse_iterator</a></td></tr>
+<tr class="memdesc:a9b0e1dfed22367ba2ea61cd56ce5578f"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ <br/></td></tr>
+<tr class="memitem:a34c15ed4a43e8fd9b3b1914f3fabb6fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34c15ed4a43e8fd9b3b1914f3fabb6fd"></a>
+typedef <a class="el" href="classmist_1_1mist__reverse__iterator.html">mist_reverse_iterator</a><br class="typebreak"/>
+&lt; <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, ptrdiff_t, <br class="typebreak"/>
+<a class="el" href="classmist_1_1array.html#aee5a3bcf64382963b508e30e6448fa45">const_pointer</a>, <a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a34c15ed4a43e8fd9b3b1914f3fabb6fd">const_reverse_iterator</a></td></tr>
+<tr class="memdesc:a34c15ed4a43e8fd9b3b1914f3fabb6fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版 <br/></td></tr>
+<tr class="inherit_header pub_types_classmist_1_1array1"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classmist_1_1array1')"><img src="closed.png" alt="-"/>&nbsp;Public 型 inherited from <a class="el" href="classmist_1_1array1.html">mist::array1< T, Allocator ></a></td></tr>
+<tr class="memitem:a6cfc40c5067c84dba98552e18cd96b43 inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6cfc40c5067c84dba98552e18cd96b43"></a>
+typedef Allocator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a6cfc40c5067c84dba98552e18cd96b43">allocator_type</a></td></tr>
+<tr class="memdesc:a6cfc40c5067c84dba98552e18cd96b43 inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナが利用するアロケータ型 <br/></td></tr>
+<tr class="memitem:a1e63d018f7c8ba20a1da5b12ee47b64c inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e63d018f7c8ba20a1da5b12ee47b64c"></a>
+typedef Allocator::reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a1e63d018f7c8ba20a1da5b12ee47b64c">reference</a></td></tr>
+<tr class="memdesc:a1e63d018f7c8ba20a1da5b12ee47b64c inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の参照．mist::array&lt; data &gt; の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:a72ee9d994cf4debf5afca53255fd2a1e inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72ee9d994cf4debf5afca53255fd2a1e"></a>
+typedef Allocator::const_reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a72ee9d994cf4debf5afca53255fd2a1e">const_reference</a></td></tr>
+<tr class="memdesc:a72ee9d994cf4debf5afca53255fd2a1e inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const 参照．mist::array&lt; data &gt; の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:a4992be9d465ecda78200e7fbc7c498d0 inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4992be9d465ecda78200e7fbc7c498d0"></a>
+typedef Allocator::value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a4992be9d465ecda78200e7fbc7c498d0">value_type</a></td></tr>
+<tr class="memdesc:a4992be9d465ecda78200e7fbc7c498d0 inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型．mist::array&lt; data &gt; の data と同じ <br/></td></tr>
+<tr class="memitem:a5b3d1034033263a4ba98bcbb6475d37d inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b3d1034033263a4ba98bcbb6475d37d"></a>
+typedef Allocator::size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a5b3d1034033263a4ba98bcbb6475d37d">size_type</a></td></tr>
+<tr class="memdesc:a5b3d1034033263a4ba98bcbb6475d37d inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a4ef7666b3a60262fef7aa6c6b5990a08 inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ef7666b3a60262fef7aa6c6b5990a08"></a>
+typedef Allocator::difference_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a4ef7666b3a60262fef7aa6c6b5990a08">difference_type</a></td></tr>
+<tr class="memdesc:a4ef7666b3a60262fef7aa6c6b5990a08 inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:a9dd8281bb3dfcacd127f16c7be2bb810 inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9dd8281bb3dfcacd127f16c7be2bb810"></a>
+typedef Allocator::pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a9dd8281bb3dfcacd127f16c7be2bb810">pointer</a></td></tr>
+<tr class="memdesc:a9dd8281bb3dfcacd127f16c7be2bb810 inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型のポインター型．mist::array&lt; data &gt; の場合，data * となる <br/></td></tr>
+<tr class="memitem:aac140a4d106e14925d46d0bc8c083870 inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac140a4d106e14925d46d0bc8c083870"></a>
+typedef Allocator::const_pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#aac140a4d106e14925d46d0bc8c083870">const_pointer</a></td></tr>
+<tr class="memdesc:aac140a4d106e14925d46d0bc8c083870 inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array&lt; data &gt; の場合，const data * となる <br/></td></tr>
+<tr class="memitem:a9637b129a09d3a41455a1287c63683f2 inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9637b129a09d3a41455a1287c63683f2"></a>
+typedef <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, <br class="typebreak"/>
+ptrdiff_t, <a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a>, <a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a9637b129a09d3a41455a1287c63683f2">iterator</a></td></tr>
+<tr class="memdesc:a9637b129a09d3a41455a1287c63683f2 inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ <br/></td></tr>
+<tr class="memitem:abd0b8363a9bdcb0393fb93ba1b93b9bd inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd0b8363a9bdcb0393fb93ba1b93b9bd"></a>
+typedef <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, <br class="typebreak"/>
+ptrdiff_t, <a class="el" href="classmist_1_1array.html#aee5a3bcf64382963b508e30e6448fa45">const_pointer</a>, <br class="typebreak"/>
+<a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#abd0b8363a9bdcb0393fb93ba1b93b9bd">const_iterator</a></td></tr>
+<tr class="memdesc:abd0b8363a9bdcb0393fb93ba1b93b9bd inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版 <br/></td></tr>
+<tr class="memitem:afaeb70f16021890502848329b83d72c4 inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afaeb70f16021890502848329b83d72c4"></a>
+typedef <a class="el" href="classmist_1_1mist__reverse__iterator.html">mist_reverse_iterator</a><br class="typebreak"/>
+&lt; <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, ptrdiff_t, <br class="typebreak"/>
+<a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a>, <a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#afaeb70f16021890502848329b83d72c4">reverse_iterator</a></td></tr>
+<tr class="memdesc:afaeb70f16021890502848329b83d72c4 inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ <br/></td></tr>
+<tr class="memitem:ad9e874fa57affcf89db4f7282369bf7b inherit pub_types_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9e874fa57affcf89db4f7282369bf7b"></a>
+typedef <a class="el" href="classmist_1_1mist__reverse__iterator.html">mist_reverse_iterator</a><br class="typebreak"/>
+&lt; <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, ptrdiff_t, <br class="typebreak"/>
+<a class="el" href="classmist_1_1array.html#aee5a3bcf64382963b508e30e6448fa45">const_pointer</a>, <a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#ad9e874fa57affcf89db4f7282369bf7b">const_reverse_iterator</a></td></tr>
+<tr class="memdesc:ad9e874fa57affcf89db4f7282369bf7b inherit pub_types_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版 <br/></td></tr>
+<tr class="inherit_header pub_types_classmist_1_1array"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classmist_1_1array')"><img src="closed.png" alt="-"/>&nbsp;Public 型 inherited from <a class="el" href="classmist_1_1array.html">mist::array< T, Allocator ></a></td></tr>
+<tr class="memitem:a3fe55afab06d9059a6ca27acdd7ffb9b inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3fe55afab06d9059a6ca27acdd7ffb9b"></a>
+typedef Allocator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a3fe55afab06d9059a6ca27acdd7ffb9b">allocator_type</a></td></tr>
+<tr class="memdesc:a3fe55afab06d9059a6ca27acdd7ffb9b inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナが利用するアロケータ型 <br/></td></tr>
+<tr class="memitem:a7a0674bced83f8577ff0ceff441fa9f3 inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a0674bced83f8577ff0ceff441fa9f3"></a>
+typedef Allocator::reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a></td></tr>
+<tr class="memdesc:a7a0674bced83f8577ff0ceff441fa9f3 inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の参照．mist::array&lt; data &gt; の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:a28626f763de355dddc392d4536043ad6 inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28626f763de355dddc392d4536043ad6"></a>
+typedef Allocator::const_reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a></td></tr>
+<tr class="memdesc:a28626f763de355dddc392d4536043ad6 inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const 参照．mist::array&lt; data &gt; の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:ad671f5ddddd08ce786071aba232daf67 inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad671f5ddddd08ce786071aba232daf67"></a>
+typedef Allocator::value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a></td></tr>
+<tr class="memdesc:ad671f5ddddd08ce786071aba232daf67 inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型．mist::array&lt; data &gt; の data と同じ <br/></td></tr>
+<tr class="memitem:a8e7d66b039fc6f7d4bdfc278eff06427 inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e7d66b039fc6f7d4bdfc278eff06427"></a>
+typedef Allocator::size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a></td></tr>
+<tr class="memdesc:a8e7d66b039fc6f7d4bdfc278eff06427 inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:ad244900bcb732ffc62470d8b3dafeb4f inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad244900bcb732ffc62470d8b3dafeb4f"></a>
+typedef Allocator::difference_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a></td></tr>
+<tr class="memdesc:ad244900bcb732ffc62470d8b3dafeb4f inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:affb52cf900d457662a40f9e0a755d022 inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="affb52cf900d457662a40f9e0a755d022"></a>
+typedef Allocator::pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a></td></tr>
+<tr class="memdesc:affb52cf900d457662a40f9e0a755d022 inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型のポインター型．mist::array&lt; data &gt; の場合，data * となる <br/></td></tr>
+<tr class="memitem:aee5a3bcf64382963b508e30e6448fa45 inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aee5a3bcf64382963b508e30e6448fa45"></a>
+typedef Allocator::const_pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#aee5a3bcf64382963b508e30e6448fa45">const_pointer</a></td></tr>
+<tr class="memdesc:aee5a3bcf64382963b508e30e6448fa45 inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array&lt; data &gt; の場合，const data * となる <br/></td></tr>
+<tr class="memitem:a9d6821e0f35457001f8540d12a11f14b inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d6821e0f35457001f8540d12a11f14b"></a>
+typedef <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, <br class="typebreak"/>
+ptrdiff_t, <a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a>, <a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b">iterator</a></td></tr>
+<tr class="memdesc:a9d6821e0f35457001f8540d12a11f14b inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ <br/></td></tr>
+<tr class="memitem:affb18c4db9f5b8ee20b155a1435e501f inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="affb18c4db9f5b8ee20b155a1435e501f"></a>
+typedef <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, <br class="typebreak"/>
+ptrdiff_t, <a class="el" href="classmist_1_1array.html#aee5a3bcf64382963b508e30e6448fa45">const_pointer</a>, <br class="typebreak"/>
+<a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a></td></tr>
+<tr class="memdesc:affb18c4db9f5b8ee20b155a1435e501f inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版 <br/></td></tr>
+<tr class="memitem:afd24b5c5eb6ea960c1c26e0e6a2606f0 inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd24b5c5eb6ea960c1c26e0e6a2606f0"></a>
+typedef <a class="el" href="classmist_1_1mist__reverse__iterator.html">mist_reverse_iterator</a><br class="typebreak"/>
+&lt; <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, ptrdiff_t, <br class="typebreak"/>
+<a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a>, <a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0">reverse_iterator</a></td></tr>
+<tr class="memdesc:afd24b5c5eb6ea960c1c26e0e6a2606f0 inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ <br/></td></tr>
+<tr class="memitem:a359fff39183f644115858c3b8ec52498 inherit pub_types_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a359fff39183f644115858c3b8ec52498"></a>
+typedef <a class="el" href="classmist_1_1mist__reverse__iterator.html">mist_reverse_iterator</a><br class="typebreak"/>
+&lt; <a class="el" href="classmist_1_1mist__iterator1.html">mist_iterator1</a>&lt; T, ptrdiff_t, <br class="typebreak"/>
+<a class="el" href="classmist_1_1array.html#aee5a3bcf64382963b508e30e6448fa45">const_pointer</a>, <a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a359fff39183f644115858c3b8ec52498">const_reverse_iterator</a></td></tr>
+<tr class="memdesc:a359fff39183f644115858c3b8ec52498 inherit pub_types_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a63fa884381a82e70d5381875fa4c85d5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a63fa884381a82e70d5381875fa4c85d5">resize</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>=0)</td></tr>
+<tr class="memdesc:a63fa884381a82e70d5381875fa4c85d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素数を変更する  <a href="#a63fa884381a82e70d5381875fa4c85d5"></a><br/></td></tr>
+<tr class="memitem:a0a8cd2bde345d9aef05228c7918f4293"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a0a8cd2bde345d9aef05228c7918f4293">trim</a> (<a class="el" href="classmist_1_1array2.html">array2</a> &amp;out, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> x, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> y, <a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a> w=-1, <a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a> h=-1) const </td></tr>
+<tr class="memdesc:a0a8cd2bde345d9aef05228c7918f4293"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素をトリミングする  <a href="#a0a8cd2bde345d9aef05228c7918f4293"></a><br/></td></tr>
+<tr class="memitem:a4977895054ca86384ca1bfa653602647"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a4977895054ca86384ca1bfa653602647">trim</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> x, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> y, <a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a> w=-1, <a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a> h=-1)</td></tr>
+<tr class="memdesc:a4977895054ca86384ca1bfa653602647"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素をトリミングする  <a href="#a4977895054ca86384ca1bfa653602647"></a><br/></td></tr>
+<tr class="memitem:a73c3ee36b880226580762d1d03a9856a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a73c3ee36b880226580762d1d03a9856a">swap</a> (<a class="el" href="classmist_1_1array2.html">array2</a> &amp;a)</td></tr>
+<tr class="memdesc:a73c3ee36b880226580762d1d03a9856a"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の全ての内容を入れ替える．  <a href="#a73c3ee36b880226580762d1d03a9856a"></a><br/></td></tr>
+<tr class="memitem:a28c29095c35ba9d400739e2b808eb003"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a28c29095c35ba9d400739e2b808eb003">clear</a> ()</td></tr>
+<tr class="memdesc:a28c29095c35ba9d400739e2b808eb003"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナの要素を空にする  <a href="#a28c29095c35ba9d400739e2b808eb003"></a><br/></td></tr>
+<tr class="memitem:ab6ecb95961c8f9e8f0cfa3ec9964e356"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6ecb95961c8f9e8f0cfa3ec9964e356"></a>
+<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#ab6ecb95961c8f9e8f0cfa3ec9964e356">size1</a> () const </td></tr>
+<tr class="memdesc:ab6ecb95961c8f9e8f0cfa3ec9964e356"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:a8c8a04c195a6b969accb6b80a874129f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c8a04c195a6b969accb6b80a874129f"></a>
+<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a8c8a04c195a6b969accb6b80a874129f">size2</a> () const </td></tr>
+<tr class="memdesc:a8c8a04c195a6b969accb6b80a874129f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:aa35a246d9f1e5ed7e7e86fcf3612da99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa35a246d9f1e5ed7e7e86fcf3612da99"></a>
+<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99">width</a> () const </td></tr>
+<tr class="memdesc:aa35a246d9f1e5ed7e7e86fcf3612da99"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:a07c0dc0ad3bc6d8cac93534ada9b46ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a07c0dc0ad3bc6d8cac93534ada9b46ea"></a>
+<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea">height</a> () const </td></tr>
+<tr class="memdesc:a07c0dc0ad3bc6d8cac93534ada9b46ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:afd5ba81c6f44bf7fe1412ca032d6be33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd5ba81c6f44bf7fe1412ca032d6be33"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">reso2</a> (double r2)</td></tr>
+<tr class="memdesc:afd5ba81c6f44bf7fe1412ca032d6be33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向の解像度を r2 に設定し，設定後の値を返す <br/></td></tr>
+<tr class="memitem:a65435cc52b0bcbbc43d437248e450d57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65435cc52b0bcbbc43d437248e450d57"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a65435cc52b0bcbbc43d437248e450d57">reso2</a> () const </td></tr>
+<tr class="memdesc:a65435cc52b0bcbbc43d437248e450d57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向の解像度を返す <br/></td></tr>
+<tr class="memitem:adb038b9e34b30e2a3a26cd416c1c493f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#adb038b9e34b30e2a3a26cd416c1c493f">reso</a> (double r1, double r2, double=1.0)</td></tr>
+<tr class="memdesc:adb038b9e34b30e2a3a26cd416c1c493f"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸とY軸方向の解像度を1度に設定する  <a href="#adb038b9e34b30e2a3a26cd416c1c493f"></a><br/></td></tr>
+<tr class="memitem:a88e2b08477fcc87fdb0f5b6643d6d15b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a88e2b08477fcc87fdb0f5b6643d6d15b">x_begin</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i)</td></tr>
+<tr class="memdesc:a88e2b08477fcc87fdb0f5b6643d6d15b"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向を固定した時の，Y軸方向の先頭を指すランダムアクセスイテレータを返す  <a href="#a88e2b08477fcc87fdb0f5b6643d6d15b"></a><br/></td></tr>
+<tr class="memitem:a3ba433d66f78ffbeebb1c4efa0eccf7e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ba433d66f78ffbeebb1c4efa0eccf7e"></a>
+<a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a3ba433d66f78ffbeebb1c4efa0eccf7e">x_begin</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i) const </td></tr>
+<tr class="memdesc:a3ba433d66f78ffbeebb1c4efa0eccf7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向を固定した時の，Y軸方向の先頭を指すコンスト型のランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a14f55b43438be13c62aa5efaab9c01ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a14f55b43438be13c62aa5efaab9c01ec"></a>
+<a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a14f55b43438be13c62aa5efaab9c01ec">x_end</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i)</td></tr>
+<tr class="memdesc:a14f55b43438be13c62aa5efaab9c01ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向を固定した時の，Y軸方向の末尾を指すランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a8a64ff26e48773428000c85733dcd169"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a64ff26e48773428000c85733dcd169"></a>
+<a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a8a64ff26e48773428000c85733dcd169">x_end</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i) const </td></tr>
+<tr class="memdesc:a8a64ff26e48773428000c85733dcd169"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向を固定した時の，Y軸方向の末尾を指すコンスト型のランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:ac1ec0c5fd39041e3d0f7998edce03c84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0">reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#ac1ec0c5fd39041e3d0f7998edce03c84">x_rbegin</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i)</td></tr>
+<tr class="memdesc:ac1ec0c5fd39041e3d0f7998edce03c84"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向を固定した時の，Y軸方向の末尾を指す逆方向ランダムアクセスイテレータを返す  <a href="#ac1ec0c5fd39041e3d0f7998edce03c84"></a><br/></td></tr>
+<tr class="memitem:a3c0acb439dfec872c2d432bc81f3da6c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3c0acb439dfec872c2d432bc81f3da6c"></a>
+<a class="el" href="classmist_1_1array.html#a359fff39183f644115858c3b8ec52498">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a3c0acb439dfec872c2d432bc81f3da6c">x_rbegin</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i) const </td></tr>
+<tr class="memdesc:a3c0acb439dfec872c2d432bc81f3da6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向を固定した時の，Y軸方向の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a62aafb3ced0c1c2ee585d2c1a0ef311c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a62aafb3ced0c1c2ee585d2c1a0ef311c"></a>
+<a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0">reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a62aafb3ced0c1c2ee585d2c1a0ef311c">x_rend</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i)</td></tr>
+<tr class="memdesc:a62aafb3ced0c1c2ee585d2c1a0ef311c"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向を固定した時の，Y軸方向の末尾を指す逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a2e04109127c24555ee79ae688cbedbc6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e04109127c24555ee79ae688cbedbc6"></a>
+<a class="el" href="classmist_1_1array.html#a359fff39183f644115858c3b8ec52498">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a2e04109127c24555ee79ae688cbedbc6">x_rend</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i) const </td></tr>
+<tr class="memdesc:a2e04109127c24555ee79ae688cbedbc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向を固定した時の，Y軸方向の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:adae574ee602bc1e7b917732f68c3871a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#adae574ee602bc1e7b917732f68c3871a">y_begin</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j)</td></tr>
+<tr class="memdesc:adae574ee602bc1e7b917732f68c3871a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向を固定した時の，X軸方向の先頭を指すランダムアクセスイテレータを返す  <a href="#adae574ee602bc1e7b917732f68c3871a"></a><br/></td></tr>
+<tr class="memitem:a5a781cf5a5febfece8989707da4f80ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a781cf5a5febfece8989707da4f80ec"></a>
+<a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a5a781cf5a5febfece8989707da4f80ec">y_begin</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j) const </td></tr>
+<tr class="memdesc:a5a781cf5a5febfece8989707da4f80ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向を固定した時の，X軸方向の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a1b75e1e15c03d14c07d0f49b2257df77"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1b75e1e15c03d14c07d0f49b2257df77"></a>
+<a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a1b75e1e15c03d14c07d0f49b2257df77">y_end</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j)</td></tr>
+<tr class="memdesc:a1b75e1e15c03d14c07d0f49b2257df77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向を固定した時の，X軸方向の末尾を指すランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a8e7a410596550cb6db773dfd7de2cded"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e7a410596550cb6db773dfd7de2cded"></a>
+<a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a8e7a410596550cb6db773dfd7de2cded">y_end</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j) const </td></tr>
+<tr class="memdesc:a8e7a410596550cb6db773dfd7de2cded"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向を固定した時の，X軸方向の末尾を指すコンスト型のランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a6ed9211e9105a6b2e2f6753b1afc3a48"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0">reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a6ed9211e9105a6b2e2f6753b1afc3a48">y_rbegin</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j)</td></tr>
+<tr class="memdesc:a6ed9211e9105a6b2e2f6753b1afc3a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向を固定した時の，X軸方向の先頭を指す逆方向ランダムアクセスイテレータを返す  <a href="#a6ed9211e9105a6b2e2f6753b1afc3a48"></a><br/></td></tr>
+<tr class="memitem:af2fc457550913a4ee13de8ae50f3699b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2fc457550913a4ee13de8ae50f3699b"></a>
+<a class="el" href="classmist_1_1array.html#a359fff39183f644115858c3b8ec52498">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#af2fc457550913a4ee13de8ae50f3699b">y_rbegin</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j) const </td></tr>
+<tr class="memdesc:af2fc457550913a4ee13de8ae50f3699b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向を固定した時の，X軸方向の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:aaf9af308346aa8cf90b845f04f9e7829"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf9af308346aa8cf90b845f04f9e7829"></a>
+<a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0">reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#aaf9af308346aa8cf90b845f04f9e7829">y_rend</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j)</td></tr>
+<tr class="memdesc:aaf9af308346aa8cf90b845f04f9e7829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向を固定した時の，X軸方向の末尾を指す逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a692b43d3c052efffbfb408168524f2a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a692b43d3c052efffbfb408168524f2a0"></a>
+<a class="el" href="classmist_1_1array.html#a359fff39183f644115858c3b8ec52498">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a692b43d3c052efffbfb408168524f2a0">y_rend</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j) const </td></tr>
+<tr class="memdesc:a692b43d3c052efffbfb408168524f2a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向を固定した時の，X軸方向の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a1c41ee758f179484970d8f879fa54daf"><td class="memTemplParams" colspan="2">template&lt;class TT , class AAlocator &gt; </td></tr>
+<tr class="memitem:a1c41ee758f179484970d8f879fa54daf"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1array2.html">array2</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a1c41ee758f179484970d8f879fa54daf">operator=</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; TT, AAlocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a1c41ee758f179484970d8f879fa54daf"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なるコンテナを代入する  <a href="#a1c41ee758f179484970d8f879fa54daf"></a><br/></td></tr>
+<tr class="memitem:ae0bd052f66526941fe3dda62ae8d03ad"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1array2.html">array2</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#ae0bd052f66526941fe3dda62ae8d03ad">operator=</a> (const <a class="el" href="classmist_1_1array2.html">array2</a> &amp;o)</td></tr>
+<tr class="memdesc:ae0bd052f66526941fe3dda62ae8d03ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なるコンテナを代入する  <a href="#ae0bd052f66526941fe3dda62ae8d03ad"></a><br/></td></tr>
+<tr class="memitem:a6574eb0438b635dcc4952b85c84e948b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a6574eb0438b635dcc4952b85c84e948b">at</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> dmy=0)</td></tr>
+<tr class="memdesc:a6574eb0438b635dcc4952b85c84e948b"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j ) で示される位置の要素の参照を返す  <a href="#a6574eb0438b635dcc4952b85c84e948b"></a><br/></td></tr>
+<tr class="memitem:a2d048dd3a366d26d4148c251a08dfb54"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a2d048dd3a366d26d4148c251a08dfb54">at</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> dmy=0) const </td></tr>
+<tr class="memdesc:a2d048dd3a366d26d4148c251a08dfb54"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j ) で示される位置の要素の const 参照を返す  <a href="#a2d048dd3a366d26d4148c251a08dfb54"></a><br/></td></tr>
+<tr class="memitem:adaacb132a18b787f30dbc61c00a2a846"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#adaacb132a18b787f30dbc61c00a2a846">operator()</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>=0)</td></tr>
+<tr class="memdesc:adaacb132a18b787f30dbc61c00a2a846"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j ) で示される位置の要素の参照を返す  <a href="#adaacb132a18b787f30dbc61c00a2a846"></a><br/></td></tr>
+<tr class="memitem:a669919db3ae7174a1d37cb143d9ba5b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a669919db3ae7174a1d37cb143d9ba5b3">operator()</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>=0) const </td></tr>
+<tr class="memdesc:a669919db3ae7174a1d37cb143d9ba5b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j ) で示される位置の要素の const 参照を返す  <a href="#a669919db3ae7174a1d37cb143d9ba5b3"></a><br/></td></tr>
+<tr class="memitem:a0ed302b28ee6d0f29b632aaa5e6a83f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ed302b28ee6d0f29b632aaa5e6a83f9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a0ed302b28ee6d0f29b632aaa5e6a83f9">array2</a> ()</td></tr>
+<tr class="memdesc:a0ed302b28ee6d0f29b632aaa5e6a83f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">ディフォルトコンストラクタ．要素数 0，解像度 1.0 × 1.0 のコンテナを作成する <br/></td></tr>
+<tr class="memitem:ac838cd809a644dd686238e66429d062d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac838cd809a644dd686238e66429d062d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#ac838cd809a644dd686238e66429d062d">array2</a> (const Allocator &amp;a)</td></tr>
+<tr class="memdesc:ac838cd809a644dd686238e66429d062d"><td class="mdescLeft">&#160;</td><td class="mdescRight">アロケータ a のコピーを利用する <br/></td></tr>
+<tr class="memitem:a5aac3e816752a97fe789e03c7e6cd072"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5aac3e816752a97fe789e03c7e6cd072"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a5aac3e816752a97fe789e03c7e6cd072">array2</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2)</td></tr>
+<tr class="memdesc:a5aac3e816752a97fe789e03c7e6cd072"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num1 × num2 個のコンテナを作成し，デフォルト値で要素を初期化する <br/></td></tr>
+<tr class="memitem:a45139d69580dde75ad986fb54f606258"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45139d69580dde75ad986fb54f606258"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a45139d69580dde75ad986fb54f606258">array2</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2, double r1, double r2)</td></tr>
+<tr class="memdesc:a45139d69580dde75ad986fb54f606258"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定する <br/></td></tr>
+<tr class="memitem:af2500f5bfb785a19a047029292f75359"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2500f5bfb785a19a047029292f75359"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#af2500f5bfb785a19a047029292f75359">array2</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2, const Allocator &amp;a)</td></tr>
+<tr class="memdesc:af2500f5bfb785a19a047029292f75359"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num1 × num2 個のコンテナを作成し，使用するアロケータを a に設定する <br/></td></tr>
+<tr class="memitem:ac977f3e6c7c94d29f1942c8cdba178f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac977f3e6c7c94d29f1942c8cdba178f2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#ac977f3e6c7c94d29f1942c8cdba178f2">array2</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2, double r1, double r2, const Allocator &amp;a)</td></tr>
+<tr class="memdesc:ac977f3e6c7c94d29f1942c8cdba178f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，使用するアロケータを a に設定する <br/></td></tr>
+<tr class="memitem:aadb99dc1cce691ee0c3e22cbddf4d3a6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aadb99dc1cce691ee0c3e22cbddf4d3a6"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#aadb99dc1cce691ee0c3e22cbddf4d3a6">array2</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val)</td></tr>
+<tr class="memdesc:aadb99dc1cce691ee0c3e22cbddf4d3a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num1 × num2 個のコンテナを作成し，解像度を 1.0 × 1.0 に設定し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:a59e2d727dd90ea51daa2b430619fad3b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a59e2d727dd90ea51daa2b430619fad3b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a59e2d727dd90ea51daa2b430619fad3b">array2</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2, double r1, double r2, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val)</td></tr>
+<tr class="memdesc:a59e2d727dd90ea51daa2b430619fad3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:aa88ab34b0bbc487c7567149c6c6d4793"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa88ab34b0bbc487c7567149c6c6d4793"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#aa88ab34b0bbc487c7567149c6c6d4793">array2</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val, const Allocator &amp;a)</td></tr>
+<tr class="memdesc:aa88ab34b0bbc487c7567149c6c6d4793"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，使用するアロケータを a に設定する <br/></td></tr>
+<tr class="memitem:a580514fcdcbec858ad6a2fc86188b05c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a580514fcdcbec858ad6a2fc86188b05c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a580514fcdcbec858ad6a2fc86188b05c">array2</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2, double r1, double r2, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val, const Allocator &amp;a)</td></tr>
+<tr class="memdesc:a580514fcdcbec858ad6a2fc86188b05c"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2，使用するアロケータを a に設定し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:ad0996cc3b314bd4e08d0ee389254eb18"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0996cc3b314bd4e08d0ee389254eb18"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#ad0996cc3b314bd4e08d0ee389254eb18">array2</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2, <a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a> ptr, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> mem_available)</td></tr>
+<tr class="memdesc:ad0996cc3b314bd4e08d0ee389254eb18"><td class="mdescLeft">&#160;</td><td class="mdescRight">ptr が指すメモリ領域に，要素数 num1 × num2 個のコンテナを作成する（ptr が指す先の利用可能なメモリ量は mem_available ） <br/></td></tr>
+<tr class="memitem:a5acd21fc20bd3db9b894ff23603785f3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5acd21fc20bd3db9b894ff23603785f3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a5acd21fc20bd3db9b894ff23603785f3">array2</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2, double r1, double r2, <a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a> ptr, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> mem_available)</td></tr>
+<tr class="memdesc:a5acd21fc20bd3db9b894ff23603785f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">ptr が指すメモリ領域に，要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定する（ptr が指す先の利用可能なメモリ量は mem_available ） <br/></td></tr>
+<tr class="memitem:ae053adeda249bbd62efd8a6db48ce30b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae053adeda249bbd62efd8a6db48ce30b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#ae053adeda249bbd62efd8a6db48ce30b">array2</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num1, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num2, double r1, double r2, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val, <a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a> ptr, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> mem_available)</td></tr>
+<tr class="memdesc:ae053adeda249bbd62efd8a6db48ce30b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ptr が指すメモリ領域に，要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2，値 val で初期化する（ptr が指す先の利用可能なメモリ量は mem_available ） <br/></td></tr>
+<tr class="memitem:a4ceec9b223ae83152400ec9fde4fbd67"><td class="memTemplParams" colspan="2">template&lt;class TT , class AAlocator &gt; </td></tr>
+<tr class="memitem:a4ceec9b223ae83152400ec9fde4fbd67"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a4ceec9b223ae83152400ec9fde4fbd67">array2</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; TT, AAlocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a4ceec9b223ae83152400ec9fde4fbd67"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> 配列で要素の型が異なるものから同じ要素数の配列を作成する  <a href="#a4ceec9b223ae83152400ec9fde4fbd67"></a><br/></td></tr>
+<tr class="memitem:af32ec6868e1498e2372f3afd8fcdcd7f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af32ec6868e1498e2372f3afd8fcdcd7f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#af32ec6868e1498e2372f3afd8fcdcd7f">array2</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:af32ec6868e1498e2372f3afd8fcdcd7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> 配列で同じ要素型のものを用いて初期化する <br/></td></tr>
+<tr class="inherit_header pub_methods_classmist_1_1array1"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmist_1_1array1')"><img src="closed.png" alt="-"/>&nbsp;Public メソッド inherited from <a class="el" href="classmist_1_1array1.html">mist::array1< T, Allocator ></a></td></tr>
+<tr class="memitem:ad189b6476ed2486c42552499f1a28aa2 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad189b6476ed2486c42552499f1a28aa2"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">reso1</a> (double r1)</td></tr>
+<tr class="memdesc:ad189b6476ed2486c42552499f1a28aa2 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の解像度を返す <br/></td></tr>
+<tr class="memitem:af6dde96ba348ebed1a4640b16ab086aa inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af6dde96ba348ebed1a4640b16ab086aa"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#af6dde96ba348ebed1a4640b16ab086aa">reso1</a> () const </td></tr>
+<tr class="memdesc:af6dde96ba348ebed1a4640b16ab086aa inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の解像度を設定する <br/></td></tr>
+<tr class="memitem:aec1270636113bb0132a9634b6fa77713 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#aec1270636113bb0132a9634b6fa77713">x_begin</a> ()</td></tr>
+<tr class="memdesc:aec1270636113bb0132a9634b6fa77713 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の先頭を指すランダムアクセスイテレータを返す  <a href="#aec1270636113bb0132a9634b6fa77713"></a><br/></td></tr>
+<tr class="memitem:a33babac1e77e8c31104becd705708d43 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33babac1e77e8c31104becd705708d43"></a>
+<a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a33babac1e77e8c31104becd705708d43">x_begin</a> () const </td></tr>
+<tr class="memdesc:a33babac1e77e8c31104becd705708d43 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の先頭を指すコンスト型のコンテナを操作するランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a312f43e01a4260d368e91798fcf13cdc inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a312f43e01a4260d368e91798fcf13cdc"></a>
+<a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a312f43e01a4260d368e91798fcf13cdc">x_end</a> ()</td></tr>
+<tr class="memdesc:a312f43e01a4260d368e91798fcf13cdc inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の末尾を指すランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a1a74c7c3514602698a6331aa1bf69804 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a74c7c3514602698a6331aa1bf69804"></a>
+<a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a1a74c7c3514602698a6331aa1bf69804">x_end</a> () const </td></tr>
+<tr class="memdesc:a1a74c7c3514602698a6331aa1bf69804 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の末尾を指すコンスト型のコンテナを操作するランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a19bd417522a61c3131601fe78d75c0bc inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0">reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a19bd417522a61c3131601fe78d75c0bc">x_rbegin</a> ()</td></tr>
+<tr class="memdesc:a19bd417522a61c3131601fe78d75c0bc inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の末尾を指す逆方向ランダムアクセスイテレータを返す  <a href="#a19bd417522a61c3131601fe78d75c0bc"></a><br/></td></tr>
+<tr class="memitem:a4c500dc3ea5ff6f60038762cd6318536 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c500dc3ea5ff6f60038762cd6318536"></a>
+<a class="el" href="classmist_1_1array.html#a359fff39183f644115858c3b8ec52498">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a4c500dc3ea5ff6f60038762cd6318536">x_rbegin</a> () const </td></tr>
+<tr class="memdesc:a4c500dc3ea5ff6f60038762cd6318536 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の末尾を指すコンスト型のコンテナを操作する逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a978ba32799b1c698e612a9e4dfe7a54a inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a978ba32799b1c698e612a9e4dfe7a54a"></a>
+<a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0">reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a978ba32799b1c698e612a9e4dfe7a54a">x_rend</a> ()</td></tr>
+<tr class="memdesc:a978ba32799b1c698e612a9e4dfe7a54a inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の先頭を指す逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:af9408e8e17fd4ebc26f36065dbb92d65 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9408e8e17fd4ebc26f36065dbb92d65"></a>
+<a class="el" href="classmist_1_1array.html#a359fff39183f644115858c3b8ec52498">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#af9408e8e17fd4ebc26f36065dbb92d65">x_rend</a> () const </td></tr>
+<tr class="memdesc:af9408e8e17fd4ebc26f36065dbb92d65 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の先頭を指すコンスト型のコンテナを操作する逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a3270261ebfb1a93eaf8948c349d5e7b3 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a3270261ebfb1a93eaf8948c349d5e7b3">trim</a> (<a class="el" href="classmist_1_1array1.html">array1</a> &amp;out, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> index, <a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a> num=-1) const </td></tr>
+<tr class="memdesc:a3270261ebfb1a93eaf8948c349d5e7b3 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素をトリミングする  <a href="#a3270261ebfb1a93eaf8948c349d5e7b3"></a><br/></td></tr>
+<tr class="memitem:aa12794cadb06243730aae9023f365bcf inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#aa12794cadb06243730aae9023f365bcf">trim</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> index, <a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a> num=-1)</td></tr>
+<tr class="memdesc:aa12794cadb06243730aae9023f365bcf inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素をトリミングする  <a href="#aa12794cadb06243730aae9023f365bcf"></a><br/></td></tr>
+<tr class="memitem:a437e634cfbdeb9311e34f9fc22f575b4 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a437e634cfbdeb9311e34f9fc22f575b4">swap</a> (<a class="el" href="classmist_1_1array1.html">array1</a> &amp;a)</td></tr>
+<tr class="memdesc:a437e634cfbdeb9311e34f9fc22f575b4 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の全ての内容を入れ替える．  <a href="#a437e634cfbdeb9311e34f9fc22f575b4"></a><br/></td></tr>
+<tr class="memitem:a1b28bdef9e0e79f9ed560616487144e7 inherit pub_methods_classmist_1_1array1"><td class="memTemplParams" colspan="2">template&lt;class TT , class AAlocator &gt; </td></tr>
+<tr class="memitem:a1b28bdef9e0e79f9ed560616487144e7"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1array1.html">array1</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a1b28bdef9e0e79f9ed560616487144e7">operator=</a> (const <a class="el" href="classmist_1_1array1.html">array1</a>&lt; TT, AAlocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a1b28bdef9e0e79f9ed560616487144e7 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なるコンテナを代入する  <a href="#a1b28bdef9e0e79f9ed560616487144e7"></a><br/></td></tr>
+<tr class="memitem:a758d017e4f5a008774efd62e06419223 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1array1.html">array1</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a758d017e4f5a008774efd62e06419223">operator=</a> (const <a class="el" href="classmist_1_1array1.html">array1</a> &amp;o)</td></tr>
+<tr class="memdesc:a758d017e4f5a008774efd62e06419223 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なるコンテナを代入する  <a href="#a758d017e4f5a008774efd62e06419223"></a><br/></td></tr>
+<tr class="memitem:a0c9d7620f047507cae6490194edc074b inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0c9d7620f047507cae6490194edc074b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a0c9d7620f047507cae6490194edc074b">array1</a> ()</td></tr>
+<tr class="memdesc:a0c9d7620f047507cae6490194edc074b inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">ディフォルトコンストラクタ．要素数 0，解像度 1.0 のコンテナを作成する <br/></td></tr>
+<tr class="memitem:ac1a3dd188a7a509602f837846520d74b inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1a3dd188a7a509602f837846520d74b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#ac1a3dd188a7a509602f837846520d74b">array1</a> (const Allocator &amp;a)</td></tr>
+<tr class="memdesc:ac1a3dd188a7a509602f837846520d74b inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">アロケータ a のコピーを利用する <br/></td></tr>
+<tr class="memitem:a625067529e2c9be6d6f1684d2d0ef76a inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a625067529e2c9be6d6f1684d2d0ef76a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a625067529e2c9be6d6f1684d2d0ef76a">array1</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num)</td></tr>
+<tr class="memdesc:a625067529e2c9be6d6f1684d2d0ef76a inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num 個のコンテナを作成し，デフォルト値で要素を初期化する <br/></td></tr>
+<tr class="memitem:ac81b477a154e59394c1fef74bbe103ae inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac81b477a154e59394c1fef74bbe103ae"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#ac81b477a154e59394c1fef74bbe103ae">array1</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, double r1)</td></tr>
+<tr class="memdesc:ac81b477a154e59394c1fef74bbe103ae inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num 個のコンテナを作成し，解像度を r1 に設定する <br/></td></tr>
+<tr class="memitem:a57e75b5d8eb46d2e6129cb14817769df inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57e75b5d8eb46d2e6129cb14817769df"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a57e75b5d8eb46d2e6129cb14817769df">array1</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, const Allocator &amp;a)</td></tr>
+<tr class="memdesc:a57e75b5d8eb46d2e6129cb14817769df inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num 個のコンテナを作成し，使用するアロケータを a に設定する <br/></td></tr>
+<tr class="memitem:a7bb31559b5ef7f2419b5ee9f698cf8a9 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7bb31559b5ef7f2419b5ee9f698cf8a9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a7bb31559b5ef7f2419b5ee9f698cf8a9">array1</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, double r1, const Allocator &amp;a)</td></tr>
+<tr class="memdesc:a7bb31559b5ef7f2419b5ee9f698cf8a9 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num 個のコンテナを作成し，解像度を r1，アロケータを a に設定する <br/></td></tr>
+<tr class="memitem:abb2fd9bed8d725a21afa8202c4eefdbf inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb2fd9bed8d725a21afa8202c4eefdbf"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#abb2fd9bed8d725a21afa8202c4eefdbf">array1</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, double r1, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val)</td></tr>
+<tr class="memdesc:abb2fd9bed8d725a21afa8202c4eefdbf inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num 個のコンテナを作成し，解像度を r1 に設定し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:aedc317433129f3418369631d28685d6c inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedc317433129f3418369631d28685d6c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#aedc317433129f3418369631d28685d6c">array1</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val, const Allocator &amp;a)</td></tr>
+<tr class="memdesc:aedc317433129f3418369631d28685d6c inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num 個のコンテナを作成し，解像度を r1 に設定し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:abe4cb68ef92f58e7dc655fbf53f590b8 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe4cb68ef92f58e7dc655fbf53f590b8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#abe4cb68ef92f58e7dc655fbf53f590b8">array1</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, double r1, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val, const Allocator &amp;a)</td></tr>
+<tr class="memdesc:abe4cb68ef92f58e7dc655fbf53f590b8 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num 個のコンテナを作成し，解像度を r1，アロケータを a に設定し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:a69e36d394908d70e51eafe521e7c91b2 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69e36d394908d70e51eafe521e7c91b2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a69e36d394908d70e51eafe521e7c91b2">array1</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, <a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a> ptr, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> mem_available)</td></tr>
+<tr class="memdesc:a69e36d394908d70e51eafe521e7c91b2 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">ptr が指すメモリ領域に，要素数 num 個のコンテナを作成する（ptr が指す先の利用可能なメモリ量は mem_available ） <br/></td></tr>
+<tr class="memitem:aa0ece3c8e78867897174deb3fb2849d5 inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0ece3c8e78867897174deb3fb2849d5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#aa0ece3c8e78867897174deb3fb2849d5">array1</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, double r1, <a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a> ptr, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> mem_available)</td></tr>
+<tr class="memdesc:aa0ece3c8e78867897174deb3fb2849d5 inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">ptr が指すメモリ領域に，要素数 num 個のコンテナを作成し，解像度を r1 に設定する（ptr が指す先の利用可能なメモリ量は mem_available ） <br/></td></tr>
+<tr class="memitem:a87c65a9215a3bcb9297c6c2950cd7deb inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87c65a9215a3bcb9297c6c2950cd7deb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a87c65a9215a3bcb9297c6c2950cd7deb">array1</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, double r1, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val, <a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a> ptr, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> mem_available)</td></tr>
+<tr class="memdesc:a87c65a9215a3bcb9297c6c2950cd7deb inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">ptr が指すメモリ領域に，要素数 num 個のコンテナを作成し，解像度を r1，値 val で初期化する（ptr が指す先の利用可能なメモリ量は mem_available ） <br/></td></tr>
+<tr class="memitem:a169d0b3f4a19ec14e44ec3df7fc8275c inherit pub_methods_classmist_1_1array1"><td class="memTemplParams" colspan="2">template&lt;class TT , class AAlocator &gt; </td></tr>
+<tr class="memitem:a169d0b3f4a19ec14e44ec3df7fc8275c"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a169d0b3f4a19ec14e44ec3df7fc8275c">array1</a> (const <a class="el" href="classmist_1_1array1.html">array1</a>&lt; TT, AAlocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a169d0b3f4a19ec14e44ec3df7fc8275c inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1</a> 配列で要素の型が異なるものから同じ要素数の配列を作成する  <a href="#a169d0b3f4a19ec14e44ec3df7fc8275c"></a><br/></td></tr>
+<tr class="memitem:acf90574c2237a0a8a10bb9857c41f06f inherit pub_methods_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf90574c2237a0a8a10bb9857c41f06f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#acf90574c2237a0a8a10bb9857c41f06f">array1</a> (const <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:acf90574c2237a0a8a10bb9857c41f06f inherit pub_methods_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1</a> 配列で同じ要素型のものを用いて初期化する <br/></td></tr>
+<tr class="inherit_header pub_methods_classmist_1_1array"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmist_1_1array')"><img src="closed.png" alt="-"/>&nbsp;Public メソッド inherited from <a class="el" href="classmist_1_1array.html">mist::array< T, Allocator ></a></td></tr>
+<tr class="memitem:adf5f5ae1566f6521868401d0a9c97d42 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#adf5f5ae1566f6521868401d0a9c97d42">trim</a> (<a class="el" href="classmist_1_1array.html">array</a> &amp;out, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> index, <a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a> num=-1) const </td></tr>
+<tr class="memdesc:adf5f5ae1566f6521868401d0a9c97d42 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素をトリミングする  <a href="#adf5f5ae1566f6521868401d0a9c97d42"></a><br/></td></tr>
+<tr class="memitem:aa3dd3b5c9f5761c385b71b8d14d52f8a inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#aa3dd3b5c9f5761c385b71b8d14d52f8a">swap</a> (<a class="el" href="classmist_1_1array.html">array</a> &amp;a)</td></tr>
+<tr class="memdesc:aa3dd3b5c9f5761c385b71b8d14d52f8a inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の全ての内容を入れ替える．  <a href="#aa3dd3b5c9f5761c385b71b8d14d52f8a"></a><br/></td></tr>
+<tr class="memitem:abd2515c465b45953c06e996f06d57cb5 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#abd2515c465b45953c06e996f06d57cb5">fill</a> ()</td></tr>
+<tr class="memdesc:abd2515c465b45953c06e996f06d57cb5 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内のデータ要素をデフォルト値で初期化する  <a href="#abd2515c465b45953c06e996f06d57cb5"></a><br/></td></tr>
+<tr class="memitem:a6d19e6891364845a819938d517099d3f inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a6d19e6891364845a819938d517099d3f">fill</a> (const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val)</td></tr>
+<tr class="memdesc:a6d19e6891364845a819938d517099d3f inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内のデータ要素を指定された値で初期化する  <a href="#a6d19e6891364845a819938d517099d3f"></a><br/></td></tr>
+<tr class="memitem:a0eb79443f83a14da4f4f53ca1a3a1be0 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a0eb79443f83a14da4f4f53ca1a3a1be0">empty</a> () const </td></tr>
+<tr class="memdesc:a0eb79443f83a14da4f4f53ca1a3a1be0 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナが空かどうかを判定  <a href="#a0eb79443f83a14da4f4f53ca1a3a1be0"></a><br/></td></tr>
+<tr class="memitem:ab44cda26c6af5e5276b12faee45881c4 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab44cda26c6af5e5276b12faee45881c4"></a>
+<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">size</a> () const </td></tr>
+<tr class="memdesc:ab44cda26c6af5e5276b12faee45881c4 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:a185c9fb8591256938eacef67f1f7d522 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a185c9fb8591256938eacef67f1f7d522"></a>
+<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a185c9fb8591256938eacef67f1f7d522">size3</a> () const </td></tr>
+<tr class="memdesc:a185c9fb8591256938eacef67f1f7d522 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す） <br/></td></tr>
+<tr class="memitem:a814083a4a1ae113ff23a094f36692a2b inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a814083a4a1ae113ff23a094f36692a2b"></a>
+<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a814083a4a1ae113ff23a094f36692a2b">depth</a> () const </td></tr>
+<tr class="memdesc:a814083a4a1ae113ff23a094f36692a2b inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す） <br/></td></tr>
+<tr class="memitem:a90cdfeecb82a93d09fce19f75d6aaad4 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90cdfeecb82a93d09fce19f75d6aaad4"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a90cdfeecb82a93d09fce19f75d6aaad4">reso3</a> (double)</td></tr>
+<tr class="memdesc:a90cdfeecb82a93d09fce19f75d6aaad4 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z軸方向の解像度を返す <br/></td></tr>
+<tr class="memitem:a41078508aee4c3401433beeaf982f0c5 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41078508aee4c3401433beeaf982f0c5"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a41078508aee4c3401433beeaf982f0c5">reso3</a> () const </td></tr>
+<tr class="memdesc:a41078508aee4c3401433beeaf982f0c5 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z軸方向の解像度を設定する） <br/></td></tr>
+<tr class="memitem:aa03c405ab7aa6b055d59937b72be9106 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa03c405ab7aa6b055d59937b72be9106"></a>
+<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#aa03c405ab7aa6b055d59937b72be9106">byte</a> () const </td></tr>
+<tr class="memdesc:aa03c405ab7aa6b055d59937b72be9106 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素が占めるデータ量をバイト単位で返す <br/></td></tr>
+<tr class="memitem:aff028700fe9c645dc67b436bbd51c845 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff028700fe9c645dc67b436bbd51c845"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#aff028700fe9c645dc67b436bbd51c845">is_memory_shared</a> () const </td></tr>
+<tr class="memdesc:aff028700fe9c645dc67b436bbd51c845 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">外部で割り当てられたメモリ領域を使用しているかどうか <br/></td></tr>
+<tr class="memitem:a38c6b918f0ae02e92c99d9e1d065e5f0 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a38c6b918f0ae02e92c99d9e1d065e5f0">begin</a> ()</td></tr>
+<tr class="memdesc:a38c6b918f0ae02e92c99d9e1d065e5f0 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナの先頭を指すランダムアクセスイテレータを返す  <a href="#a38c6b918f0ae02e92c99d9e1d065e5f0"></a><br/></td></tr>
+<tr class="memitem:a0bb5f2bcc6dd4f4f323f1e05d065f6bd inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0bb5f2bcc6dd4f4f323f1e05d065f6bd"></a>
+<a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a0bb5f2bcc6dd4f4f323f1e05d065f6bd">begin</a> () const </td></tr>
+<tr class="memdesc:a0bb5f2bcc6dd4f4f323f1e05d065f6bd inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナの先頭を指すコンスト型のコンテナを操作するランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a4a9614c5640c4a305671e591319d74ad inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a9614c5640c4a305671e591319d74ad"></a>
+<a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a4a9614c5640c4a305671e591319d74ad">end</a> ()</td></tr>
+<tr class="memdesc:a4a9614c5640c4a305671e591319d74ad inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナの末尾を指すランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:a6038dc90a6ce5925cfb441b31734fada inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6038dc90a6ce5925cfb441b31734fada"></a>
+<a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a6038dc90a6ce5925cfb441b31734fada">end</a> () const </td></tr>
+<tr class="memdesc:a6038dc90a6ce5925cfb441b31734fada inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナの末尾を指すコンスト型のコンテナを操作するランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:ad2d6a6c4b7d0ec3edd5132e4fae0f7c4 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0">reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#ad2d6a6c4b7d0ec3edd5132e4fae0f7c4">rbegin</a> ()</td></tr>
+<tr class="memdesc:ad2d6a6c4b7d0ec3edd5132e4fae0f7c4 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナの末尾を指す逆方向ランダムアクセスイテレータを返す  <a href="#ad2d6a6c4b7d0ec3edd5132e4fae0f7c4"></a><br/></td></tr>
+<tr class="memitem:a884b70da76f750df186b01946213fdd2 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a884b70da76f750df186b01946213fdd2"></a>
+<a class="el" href="classmist_1_1array.html#a359fff39183f644115858c3b8ec52498">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a884b70da76f750df186b01946213fdd2">rbegin</a> () const </td></tr>
+<tr class="memdesc:a884b70da76f750df186b01946213fdd2 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナの末尾を指すコンスト型のコンテナを操作する逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:aa442b9688cd49db87da4bac4d559d702 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa442b9688cd49db87da4bac4d559d702"></a>
+<a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0">reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#aa442b9688cd49db87da4bac4d559d702">rend</a> ()</td></tr>
+<tr class="memdesc:aa442b9688cd49db87da4bac4d559d702 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナの先頭を指す逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:aa83c513451e14e025bb4eb12904908e6 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa83c513451e14e025bb4eb12904908e6"></a>
+<a class="el" href="classmist_1_1array.html#a359fff39183f644115858c3b8ec52498">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#aa83c513451e14e025bb4eb12904908e6">rend</a> () const </td></tr>
+<tr class="memdesc:aa83c513451e14e025bb4eb12904908e6 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナの先頭を指すコンスト型のコンテナを操作する逆方向ランダムアクセスイテレータを返す <br/></td></tr>
+<tr class="memitem:ae4d1e7955a4fe031804dfd36afcabb12 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae4d1e7955a4fe031804dfd36afcabb12"></a>
+<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#ae4d1e7955a4fe031804dfd36afcabb12">max_size</a> () const </td></tr>
+<tr class="memdesc:ae4d1e7955a4fe031804dfd36afcabb12 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">使用しているアロケータが確保可能なメモリの最大値を返す <br/></td></tr>
+<tr class="memitem:a6c901b4fd0ece52a720ed0fa12520366 inherit pub_methods_classmist_1_1array"><td class="memTemplParams" colspan="2">template&lt;class TT , class AAlocator &gt; </td></tr>
+<tr class="memitem:a6c901b4fd0ece52a720ed0fa12520366"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1array.html">array</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a6c901b4fd0ece52a720ed0fa12520366">operator=</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; TT, AAlocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a6c901b4fd0ece52a720ed0fa12520366 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なるコンテナを代入する  <a href="#a6c901b4fd0ece52a720ed0fa12520366"></a><br/></td></tr>
+<tr class="memitem:af902444996bb979de0c2cf13d6fc01c8 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1array.html">array</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#af902444996bb979de0c2cf13d6fc01c8">operator=</a> (const <a class="el" href="classmist_1_1array.html">array</a> &amp;o)</td></tr>
+<tr class="memdesc:af902444996bb979de0c2cf13d6fc01c8 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なるコンテナを代入する  <a href="#af902444996bb979de0c2cf13d6fc01c8"></a><br/></td></tr>
+<tr class="memitem:a4ae829acc763b16b913b5079bf3d3851 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a4ae829acc763b16b913b5079bf3d3851">operator[]</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> index)</td></tr>
+<tr class="memdesc:a4ae829acc763b16b913b5079bf3d3851 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">index で示される位置の要素の参照を返す  <a href="#a4ae829acc763b16b913b5079bf3d3851"></a><br/></td></tr>
+<tr class="memitem:ae4eae3b4cfcd40d2b4b380b095d09da8 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#ae4eae3b4cfcd40d2b4b380b095d09da8">operator[]</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> index) const </td></tr>
+<tr class="memdesc:ae4eae3b4cfcd40d2b4b380b095d09da8 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">index で示される位置の要素の const 参照を返す  <a href="#ae4eae3b4cfcd40d2b4b380b095d09da8"></a><br/></td></tr>
+<tr class="memitem:a3ffd4b6d7ca3cf3f28adbcf0b4927268 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ffd4b6d7ca3cf3f28adbcf0b4927268"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a3ffd4b6d7ca3cf3f28adbcf0b4927268">array</a> ()</td></tr>
+<tr class="memdesc:a3ffd4b6d7ca3cf3f28adbcf0b4927268 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">ディフォルトコンストラクタ．要素数 0 のコンテナを作成する <br/></td></tr>
+<tr class="memitem:ac616e36cb5b5b1c666da45205beb64a6 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac616e36cb5b5b1c666da45205beb64a6"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#ac616e36cb5b5b1c666da45205beb64a6">array</a> (const Allocator &amp;a)</td></tr>
+<tr class="memdesc:ac616e36cb5b5b1c666da45205beb64a6 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">アロケータ a のコピーを利用する <br/></td></tr>
+<tr class="memitem:a80d9c91bd594d6c19efe877c8ac5df34 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80d9c91bd594d6c19efe877c8ac5df34"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a80d9c91bd594d6c19efe877c8ac5df34">array</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num)</td></tr>
+<tr class="memdesc:a80d9c91bd594d6c19efe877c8ac5df34 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num 個のコンテナを作成し，デフォルト値で要素を初期化する <br/></td></tr>
+<tr class="memitem:a0e43f6de1e5a37a702772e08ef617d48 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e43f6de1e5a37a702772e08ef617d48"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a0e43f6de1e5a37a702772e08ef617d48">array</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, const Allocator &amp;a)</td></tr>
+<tr class="memdesc:a0e43f6de1e5a37a702772e08ef617d48 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num 個のコンテナを作成し，アロケータ a のコピーを利用する <br/></td></tr>
+<tr class="memitem:a0bba43efc7f0580602038dd9fe8b1718 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0bba43efc7f0580602038dd9fe8b1718"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a0bba43efc7f0580602038dd9fe8b1718">array</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val)</td></tr>
+<tr class="memdesc:a0bba43efc7f0580602038dd9fe8b1718 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num 個のコンテナを作成し，値 val で初期化する <br/></td></tr>
+<tr class="memitem:a564fcae39d636098865f5aa079d7f48d inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a564fcae39d636098865f5aa079d7f48d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a564fcae39d636098865f5aa079d7f48d">array</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val, const Allocator &amp;a)</td></tr>
+<tr class="memdesc:a564fcae39d636098865f5aa079d7f48d inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素数 num 個のコンテナを作成し，値 val で初期化し，アロケータ a のコピーを利用する <br/></td></tr>
+<tr class="memitem:a60ff2be0e98de5a716a340a4fd8deea3 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a60ff2be0e98de5a716a340a4fd8deea3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a60ff2be0e98de5a716a340a4fd8deea3">array</a> (<a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a> s, <a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a> e)</td></tr>
+<tr class="memdesc:a60ff2be0e98de5a716a340a4fd8deea3 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">イテレータ s と e の範囲の値を用いて，配列を初期化する <br/></td></tr>
+<tr class="memitem:a39bcd6ba0d08bae36ef425d676740d56 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a39bcd6ba0d08bae36ef425d676740d56"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a39bcd6ba0d08bae36ef425d676740d56">array</a> (<a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a> s, <a class="el" href="classmist_1_1array.html#affb18c4db9f5b8ee20b155a1435e501f">const_iterator</a> e, const Allocator &amp;a)</td></tr>
+<tr class="memdesc:a39bcd6ba0d08bae36ef425d676740d56 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">イテレータ s と e の範囲の値を用いて，配列を初期化し，アロケータ a のコピーを利用する <br/></td></tr>
+<tr class="memitem:aa464a5f49718cc1996dbdc02e7811583 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa464a5f49718cc1996dbdc02e7811583"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#aa464a5f49718cc1996dbdc02e7811583">array</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, <a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a> ptr, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> mem_available)</td></tr>
+<tr class="memdesc:aa464a5f49718cc1996dbdc02e7811583 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">ptr が指すメモリ領域に，要素数 num 個のコンテナを作成する（ptr が指す先の利用可能なメモリ量は mem_available ） <br/></td></tr>
+<tr class="memitem:a8e539d5209b48a14fc62283799f9a13b inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e539d5209b48a14fc62283799f9a13b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a8e539d5209b48a14fc62283799f9a13b">array</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> num, const <a class="el" href="classmist_1_1array.html#ad671f5ddddd08ce786071aba232daf67">value_type</a> &amp;val, <a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a> ptr, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> mem_available)</td></tr>
+<tr class="memdesc:a8e539d5209b48a14fc62283799f9a13b inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">ptr が指すメモリ領域に，要素数 num 個のコンテナを作成し値 val で初期化する（ptr が指す先の利用可能なメモリ量は mem_available ） <br/></td></tr>
+<tr class="memitem:a865869dcea19b415fbd00d22b64022ec inherit pub_methods_classmist_1_1array"><td class="memTemplParams" colspan="2">template&lt;class TT , class AAlocator &gt; </td></tr>
+<tr class="memitem:a865869dcea19b415fbd00d22b64022ec"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a865869dcea19b415fbd00d22b64022ec">array</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; TT, AAlocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a865869dcea19b415fbd00d22b64022ec inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の array 配列で要素の型が異なるものから同じ要素数の配列を作成する  <a href="#a865869dcea19b415fbd00d22b64022ec"></a><br/></td></tr>
+<tr class="memitem:ab6ba0f2206fd7342300556cfc7fa8b09 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6ba0f2206fd7342300556cfc7fa8b09"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#ab6ba0f2206fd7342300556cfc7fa8b09">array</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:ab6ba0f2206fd7342300556cfc7fa8b09 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の array 配列で同じ要素型のものを用いて初期化する <br/></td></tr>
+<tr class="memitem:ac29dc4829deaa53f8fe0b2a2a190a959 inherit pub_methods_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac29dc4829deaa53f8fe0b2a2a190a959"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#ac29dc4829deaa53f8fe0b2a2a190a959">~array</a> ()</td></tr>
+<tr class="memdesc:ac29dc4829deaa53f8fe0b2a2a190a959 inherit pub_methods_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナが利用しているリソースを全て開放する <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr class="memitem:ad14fccc8ef8ed14cd71bbd9a35c8dffe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#ad14fccc8ef8ed14cd71bbd9a35c8dffe">paccess</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j)</td></tr>
+<tr class="memdesc:ad14fccc8ef8ed14cd71bbd9a35c8dffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">index で示される位置の要素のポインタを返す  <a href="#ad14fccc8ef8ed14cd71bbd9a35c8dffe"></a><br/></td></tr>
+<tr class="memitem:a9a6f37119c81187566fd47c96f15688e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1array.html#aee5a3bcf64382963b508e30e6448fa45">const_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a9a6f37119c81187566fd47c96f15688e">paccess</a> (<a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> i, <a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a> j) const </td></tr>
+<tr class="memdesc:a9a6f37119c81187566fd47c96f15688e"><td class="mdescLeft">&#160;</td><td class="mdescRight">index で示される位置の要素の const ポインタを返す  <a href="#a9a6f37119c81187566fd47c96f15688e"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected 変数</h2></td></tr>
+<tr class="memitem:a43db0be7a622cccd56016962e7d40a5f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43db0be7a622cccd56016962e7d40a5f"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array2.html#a43db0be7a622cccd56016962e7d40a5f">reso2_</a></td></tr>
+<tr class="memdesc:a43db0be7a622cccd56016962e7d40a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向の解像度 <br/></td></tr>
+<tr class="inherit_header pro_attribs_classmist_1_1array1"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classmist_1_1array1')"><img src="closed.png" alt="-"/>&nbsp;Protected 変数 inherited from <a class="el" href="classmist_1_1array1.html">mist::array1< T, Allocator ></a></td></tr>
+<tr class="memitem:a6d1e2e478ec61ca1528bfc040708e8df inherit pro_attribs_classmist_1_1array1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d1e2e478ec61ca1528bfc040708e8df"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array1.html#a6d1e2e478ec61ca1528bfc040708e8df">reso1_</a></td></tr>
+<tr class="memdesc:a6d1e2e478ec61ca1528bfc040708e8df inherit pro_attribs_classmist_1_1array1"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素の解像度（ミリや周波数など） <br/></td></tr>
+<tr class="inherit_header pro_attribs_classmist_1_1array"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classmist_1_1array')"><img src="closed.png" alt="-"/>&nbsp;Protected 変数 inherited from <a class="el" href="classmist_1_1array.html">mist::array< T, Allocator ></a></td></tr>
+<tr class="memitem:a6279725b7c13171f94e72db1588f49cb inherit pro_attribs_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6279725b7c13171f94e72db1588f49cb"></a>
+<a class="el" href="classmist_1_1mist__allocator.html">mist_allocator</a>&lt; T, Allocator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a6279725b7c13171f94e72db1588f49cb">allocator_</a></td></tr>
+<tr class="memdesc:a6279725b7c13171f94e72db1588f49cb inherit pro_attribs_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">各コンテナで利用するアロケータオブジェクト <br/></td></tr>
+<tr class="memitem:a71e41563fccc309beb2f4fc9dba1df40 inherit pro_attribs_classmist_1_1array"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71e41563fccc309beb2f4fc9dba1df40"></a>
+T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1array.html#a71e41563fccc309beb2f4fc9dba1df40">data_</a></td></tr>
+<tr class="memdesc:a71e41563fccc309beb2f4fc9dba1df40 inherit pro_attribs_classmist_1_1array"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナで扱うデータの先頭を表すポインタ <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt;<br/>
+class mist::array2&lt; T, Allocator &gt;</h3>
+
+<p>要素数が可変の解像度付き2次元配列 </p>
+<p>2次元画像を扱うための基本クラス （<a class="el" href="mist_8h.html">mist/mist.h</a> をインクルードする）</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>… MISTのコンテナ内に格納するデータ型 </td></tr>
+    <tr><td class="paramname">Allocator</td><td>… MISTコンテナが利用するアロケータ型．省略した場合は，STLのデフォルトアロケータを使用する </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="a4ceec9b223ae83152400ec9fde4fbd67"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;class TT , class AAlocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::<a class="el" href="classmist_1_1array2.html">array2</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; TT, AAlocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>他の <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> 配列で要素の型が異なるものから同じ要素数の配列を作成する </p>
+<dl class="section attention"><dt>注意</dt><dd>異なる要素型間でデータの変換が可能でなくてはならない </dd></dl>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="a6574eb0438b635dcc4952b85c84e948b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a> <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::at </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>dmy</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j ) で示される位置の要素の参照を返す </p>
+<p>DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j ) が有効な範囲内にあるかをチェックする</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dmy</td><td>… 使用しない</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す参照 </dd></dl>
+
+<p><a class="el" href="classmist_1_1array.html#a18f007459998c14019aae74a76ab5636">mist::array&lt; T, Allocator &gt;</a>を再定義しています。</p>
+
+<p><a class="el" href="classmist_1_1array3.html#a96a85c12a97a86eeaa49efbd24b51e79">mist::array3&lt; T, Allocator &gt;</a>, <a class="el" href="classmist_1_1array3.html#a96a85c12a97a86eeaa49efbd24b51e79">mist::array3&lt; vector_type &gt;</a>, <a class="el" href="classmist_1_1array3.html#a96a85c12a97a86eeaa49efbd24b51e79">mist::array3&lt; value_type &gt;</a>, と <a class="el" href="classmist_1_1array3.html#a96a85c12a97a86eeaa49efbd24b51e79">mist::array3&lt; ivector_type &gt;</a>で再定義されています。</p>
+
+</div>
+</div>
+<a class="anchor" id="a2d048dd3a366d26d4148c251a08dfb54"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a> <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::at </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>dmy</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j ) で示される位置の要素の const 参照を返す </p>
+<p>DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j ) が有効な範囲内にあるかをチェックする</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dmy</td><td>… 使用しない</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す const 参照 </dd></dl>
+
+<p><a class="el" href="classmist_1_1array.html#a5cf5c80f9406df13be933b546aa88da8">mist::array&lt; T, Allocator &gt;</a>を再定義しています。</p>
+
+<p><a class="el" href="classmist_1_1array3.html#ab5bd6f8b4664a0df92a6fedb611ec2ec">mist::array3&lt; T, Allocator &gt;</a>, <a class="el" href="classmist_1_1array3.html#ab5bd6f8b4664a0df92a6fedb611ec2ec">mist::array3&lt; vector_type &gt;</a>, <a class="el" href="classmist_1_1array3.html#ab5bd6f8b4664a0df92a6fedb611ec2ec">mist::array3&lt; value_type &gt;</a>, と <a class="el" href="classmist_1_1array3.html#ab5bd6f8b4664a0df92a6fedb611ec2ec">mist::array3&lt; ivector_type &gt;</a>で再定義されています。</p>
+
+</div>
+</div>
+<a class="anchor" id="a28c29095c35ba9d400739e2b808eb003"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナの要素を空にする </p>
+<p>コンテナに格納されているデータを全て削除し，コンテナを空（要素数0）にする </p>
+
+<p><a class="el" href="classmist_1_1array.html#aa0d41a3b715ab7f5a5c56d2e9ac1980c">mist::array&lt; T, Allocator &gt;</a>を再定義しています。</p>
+
+<p><a class="el" href="classmist_1_1marray.html#ad37fefe8e84f29d4263e2c594b7a0799">mist::marray&lt; array3&lt; vector_type &gt; &gt;</a>, <a class="el" href="classmist_1_1array3.html#a3a522574a57aa925112c9b9378442ba9">mist::array3&lt; T, Allocator &gt;</a>, <a class="el" href="classmist_1_1array3.html#a3a522574a57aa925112c9b9378442ba9">mist::array3&lt; vector_type &gt;</a>, <a class="el" href="classmist_1_1array3.html#a3a522574a57aa925112c9b9378442ba9">mist::array3&lt; value_type &gt;</a>, と <a class="el" href="classmist_1_1array3.html#a3a522574a57aa925112c9b9378442ba9">mist::array3&lt; ivector_type &gt;</a>で再定義されています。</p>
+
+<p>参照元 <a class="el" href="group__facet__group.html#gaeeaa0e1c6ffe913f8992308642ee8858">mist::convert_to_vertex_face_list()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adaacb132a18b787f30dbc61c00a2a846"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1array.html#a7a0674bced83f8577ff0ceff441fa9f3">reference</a> <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j ) で示される位置の要素の参照を返す </p>
+<p>DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j ) が有効な範囲内にあるかをチェックする</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dmy</td><td>… 使用しない</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す参照 </dd></dl>
+
+<p><a class="el" href="classmist_1_1array.html#a93dce615330ce778b174699b10ad5d64">mist::array&lt; T, Allocator &gt;</a>を再定義しています。</p>
+
+<p><a class="el" href="classmist_1_1array3.html#ac5495c63a5ac9ff3de1900077ba2abf4">mist::array3&lt; T, Allocator &gt;</a>, <a class="el" href="classmist_1_1array3.html#ac5495c63a5ac9ff3de1900077ba2abf4">mist::array3&lt; vector_type &gt;</a>, <a class="el" href="classmist_1_1array3.html#ac5495c63a5ac9ff3de1900077ba2abf4">mist::array3&lt; value_type &gt;</a>, と <a class="el" href="classmist_1_1array3.html#ac5495c63a5ac9ff3de1900077ba2abf4">mist::array3&lt; ivector_type &gt;</a>で再定義されています。</p>
+
+</div>
+</div>
+<a class="anchor" id="a669919db3ae7174a1d37cb143d9ba5b3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1array.html#a28626f763de355dddc392d4536043ad6">const_reference</a> <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j ) で示される位置の要素の const 参照を返す </p>
+<p>DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j ) が有効な範囲内にあるかをチェックする</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dmy</td><td>… 使用しない</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す const 参照 </dd></dl>
+
+<p><a class="el" href="classmist_1_1array.html#a56c90b8298bdd1fa5c79ffd893a58c04">mist::array&lt; T, Allocator &gt;</a>を再定義しています。</p>
+
+<p><a class="el" href="classmist_1_1array3.html#a53f0913f932ca3fa1b458198871d2064">mist::array3&lt; T, Allocator &gt;</a>, <a class="el" href="classmist_1_1array3.html#a53f0913f932ca3fa1b458198871d2064">mist::array3&lt; vector_type &gt;</a>, <a class="el" href="classmist_1_1array3.html#a53f0913f932ca3fa1b458198871d2064">mist::array3&lt; value_type &gt;</a>, と <a class="el" href="classmist_1_1array3.html#a53f0913f932ca3fa1b458198871d2064">mist::array3&lt; ivector_type &gt;</a>で再定義されています。</p>
+
+</div>
+</div>
+<a class="anchor" id="a1c41ee758f179484970d8f879fa54daf"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<div class="memtemplate">
+template&lt;class TT , class AAlocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1array2.html">array2</a>&amp; <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; TT, AAlocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>要素の型が異なるコンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する． コピー元とコピー先でデータ型（array&lt; data &gt; の data）が異なる場合の代入を行う．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元のコンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae0bd052f66526941fe3dda62ae8d03ad"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1array2.html">array2</a>&amp; <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>要素の型が異なるコンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元のコンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+<p><a class="el" href="classmist_1_1marray.html#a3e20486efeb909c4bc5564c4be578372">mist::marray&lt; array3&lt; vector_type &gt; &gt;</a>で再定義されています。</p>
+
+</div>
+</div>
+<a class="anchor" id="ad14fccc8ef8ed14cd71bbd9a35c8dffe"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1array.html#affb52cf900d457662a40f9e0a755d022">pointer</a> <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::paccess </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>index で示される位置の要素のポインタを返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示すポインタ </dd></dl>
+
+<p>参照元 <a class="el" href="classmist_1_1array2.html#a0a8cd2bde345d9aef05228c7918f4293">mist::array2&lt; ivector_type, std::allocator&lt; ivector_type &gt; &gt;::trim()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9a6f37119c81187566fd47c96f15688e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1array.html#aee5a3bcf64382963b508e30e6448fa45">const_pointer</a> <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::paccess </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>index で示される位置の要素の const ポインタを返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示すポインタ </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a63fa884381a82e70d5381875fa4c85d5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>num1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>num2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の要素数を変更する </p>
+<p>要素数を num1 × num2 個に変更し，要素数が変更された場合のみ全ての要素を値デフォルト値で初期化する．</p>
+<dl class="section attention"><dt>注意</dt><dd>必ず要素を初期化するためには，fill 関数を利用してください．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num1</td><td>… リサイズ後のX軸方向の要素数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num2</td><td>… リサイズ後のY軸方向の要素数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dmy1</td><td>… ダミー変数（使用しない）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 正常にリサイズが終了 </td></tr>
+    <tr><td class="paramname">false</td><td>… リサイズ後のメモリを確保できなかった場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p><a class="el" href="classmist_1_1array.html#ab2b09cc3b61f7dc9bb120ed876003705">mist::array&lt; T, Allocator &gt;</a>を再定義しています。</p>
+
+<p><a class="el" href="classmist_1_1marray.html#abe6025a808cfa5b19aeec78dee75b5d7">mist::marray&lt; array3&lt; vector_type &gt; &gt;</a>, <a class="el" href="classmist_1_1array3.html#a5a36dcc005da83a00b1275b949cd66c6">mist::array3&lt; T, Allocator &gt;</a>, <a class="el" href="classmist_1_1array3.html#a5a36dcc005da83a00b1275b949cd66c6">mist::array3&lt; vector_type &gt;</a>, <a class="el" href="classmist_1_1array3.html#a5a36dcc005da83a00b1275b949cd66c6">mist::array3&lt; value_type &gt;</a>, と <a class="el" href="classmist_1_1array3.html#a5a36dcc005da83a00b1275b949cd66c6">mist::array3&lt; ivector_type &gt;</a>で再定義されています。</p>
+
+<p>参照元 <a class="el" href="group__edge__group.html#ga28a5402c2799df009c0cfee3cb5cb2ce">mist::canny()</a>, <a class="el" href="group__dct__group.html#ga980a33e81d05cefda74199dd6f60fa20">mist::dct()</a>, <a class="el" href="group__dst__group.html#gaa06a88453dac85377ccd485bc0a52250">mist::dst()</a>, <a class="el" href="group__fft__group.html#ga107d069c519780f194df0a7c93e52511">mist::fft()</a>, <a class="el" href="namespacemist_1_1linear.html#a4ad7ea3730d2a8aa1a406699c5cecc33">mist::linear::filter()</a>, <a class="el" href="namespacemist_1_1linear.html#a938336c95aa76afb20d2fe439bb1c790">mist::linear::filter1d()</a>, <a class="el" href="group__statistics__group.html#ga6b409a7251e3503efbd6f549fcda0ae7">mist::statistics::generate_histogram()</a>, <a class="el" href="group__dct__group.html#gae848441f1a5a337894da7279d1b69a9d">mist::idct()</a>, <a class="el" href="group__dst__group.html#ga10bf60abb0c1921c2bb363b82ac89d87">mist::idst()</a>, <a class="el" href="group__fft__group.html#ga439af1a554c441934f03df5cb2a32bd2">mist::ifft()</a>, <a class="el" href="namespacemist_1_1nearest.html#ad2325728a213e591ee7b2906d36e1d22">mist::nearest::interpolate()</a>, <a class="el" href="namespacemist_1_1mean.html#ad1e0c8322f8c4b299a26658f844b8745">mist::mean::interpolate()</a>, <a class="el" href="namespacemist_1_1linear.html#a07e4c8eaec57b5b1c9fbfa040ce3dab2">mist::linear::interpolate()</a>, <a class="el" href="namespacemist_1_1cubic.html#a1fea63889b2a1eb5b435322639d34fc8">mist::cubic::interpolate()</a>, <a class="el" href="namespacemist_1_1BSpline.html#a6a55d9950d639d3fb1ffb12e8c3d17a4">mist::BSpline::interpolate()</a>, <a class="el" href="namespacemist_1_1sinc.html#ab204ab4447236dc35c9dc83d5c0a0bb2">mist::sinc::interpolate()</a>, <a class="el" href="group__labeling__group.html#ga4525d91ad64550cb609f29c1943e78fc">mist::labeling4()</a>, <a class="el" href="group__labeling__group.html#gacb7346f9b644c8a8314fb069b725c9a8">mist::labeling8()</a>, <a class="el" href="group__labeling__group.html#gab4988aad0f149ad38fdc1fe6e728474b">mist::maximum_region()</a>, <a class="el" href="group__median__group.html#gaf752af3c8108ec0769fc5821a21f79ed">mist::median()</a>, <a class="el" href="classmist_1_1video_1_1decoder.html#a6da124ac8216bfbd120f71b5ef92c8af">mist::video::decoder::read_buffer()</a>, <a class="el" href="group__dicom__group.html#gae9f3cde0162d4864f3cc1097ff3e7aec">mist::read_dicom()</a>, <a class="el" href="group__labeling__group.html#gab1b35af94b40a90520ec3c12adfac3e8">mist::remove_hole_region()</a>, <a class="el" href="group__thinning__group.html#gadf3d10f3bbcf4f5e096b45f77c03413b">mist::hilditch::thinning()</a>, <a class="el" href="group__thinning__group.html#ga9f0cac1b00dfd9f6f6fb4602a4926abe">mist::euclidean::thinning8()</a>, と <a class="el" href="classmist_1_1array2.html#a0a8cd2bde345d9aef05228c7918f4293">mist::array2&lt; ivector_type, std::allocator&lt; ivector_type &gt; &gt;::trim()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adb038b9e34b30e2a3a26cd416c1c493f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::reso </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>r1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>r2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"> = <code>1.0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>X軸とY軸方向の解像度を1度に設定する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">r1</td><td>… 新しいX軸方向の解像度 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">r2</td><td>… 新しいY軸方向の解像度 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dmy</td><td>… 利用しない </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p><a class="el" href="classmist_1_1array1.html">mist::array1&lt; T, Allocator &gt;</a>を再定義しています。</p>
+
+<p><a class="el" href="classmist_1_1array3.html#ad8a18f52ea7672e63951c0c6e114bda5">mist::array3&lt; T, Allocator &gt;</a>, <a class="el" href="classmist_1_1array3.html#ad8a18f52ea7672e63951c0c6e114bda5">mist::array3&lt; vector_type &gt;</a>, <a class="el" href="classmist_1_1array3.html#ad8a18f52ea7672e63951c0c6e114bda5">mist::array3&lt; value_type &gt;</a>, と <a class="el" href="classmist_1_1array3.html#ad8a18f52ea7672e63951c0c6e114bda5">mist::array3&lt; ivector_type &gt;</a>で再定義されています。</p>
+
+<p>参照元 <a class="el" href="group__edge__group.html#ga28a5402c2799df009c0cfee3cb5cb2ce">mist::canny()</a>, と <a class="el" href="classmist_1_1array2.html#a0a8cd2bde345d9aef05228c7918f4293">mist::array2&lt; ivector_type, std::allocator&lt; ivector_type &gt; &gt;::trim()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a73c3ee36b880226580762d1d03a9856a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の全ての内容を入れ替える． </p>
+<dl class="section attention"><dt>注意</dt><dd>どちらかのコンテナが外部メモリを利用している場合は，スワップは必ず失敗する</dd></dl>
+<p>入れ替え元のコンテナ a の中身と全て入れ替える</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 内容を入れ替える対象</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… データのスワップに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… データのスワップに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a0a8cd2bde345d9aef05228c7918f4293"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::trim </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a>&#160;</td>
+          <td class="paramname"><em>w</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a>&#160;</td>
+          <td class="paramname"><em>h</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の要素をトリミングする </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… トリミング結果の画像を格納するオブジェクト（画像のサイズは自動で変更されます） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… トリミングのX軸方向の開始位置（ゼロから始まるインデックス） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>… トリミングのY軸方向の開始位置（ゼロから始まるインデックス） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>… トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… トリミングに成功した場合（元とサイズが変わらない場合も含む） </td></tr>
+    <tr><td class="paramname">false</td><td>… 不正なトリミングを行おうとした場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="classmist_1_1array2.html#a4977895054ca86384ca1bfa653602647">mist::array2&lt; ivector_type, std::allocator&lt; ivector_type &gt; &gt;::trim()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4977895054ca86384ca1bfa653602647"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::trim </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a>&#160;</td>
+          <td class="paramname"><em>w</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#ad244900bcb732ffc62470d8b3dafeb4f">difference_type</a>&#160;</td>
+          <td class="paramname"><em>h</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の要素をトリミングする </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… トリミングのX軸方向の開始位置（ゼロから始まるインデックス） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>… トリミングのY軸方向の開始位置（ゼロから始まるインデックス） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>… トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… トリミングに成功した場合（元とサイズが変わらない場合も含む） </td></tr>
+    <tr><td class="paramname">false</td><td>… 不正なトリミングを行おうとした場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a88e2b08477fcc87fdb0f5b6643d6d15b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b">iterator</a> <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::x_begin </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>X軸方向を固定した時の，Y軸方向の先頭を指すランダムアクセスイテレータを返す </p>
+<pre class="fragment">   @code X軸方向を固定し，Y軸方向の先頭を指すランダムアクセスイテレータの使用例
+</pre><p> std::cout &lt;&lt; "順方向ランダムアクセスイテレータ" &lt;&lt; std::endl; <a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b" title="MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ">mist::array&lt; int &gt;::iterator</a> ite1 = a.x_begin( 1 ); for( ; ite1 != a.x_end( 1 ) ; ite1++ ) { std::cout &lt;&lt; *ite1 &lt;&lt; " "; } std::cout &lt;&lt; std::endl &lt;&lt; std::endl;  </p>
+
+<p><a class="el" href="classmist_1_1array3.html#a500e07535307ac59fb4b018614fca54e">mist::array3&lt; T, Allocator &gt;</a>, <a class="el" href="classmist_1_1array3.html#a500e07535307ac59fb4b018614fca54e">mist::array3&lt; vector_type &gt;</a>, <a class="el" href="classmist_1_1array3.html#a500e07535307ac59fb4b018614fca54e">mist::array3&lt; value_type &gt;</a>, と <a class="el" href="classmist_1_1array3.html#a500e07535307ac59fb4b018614fca54e">mist::array3&lt; ivector_type &gt;</a>で再定義されています。</p>
+
+</div>
+</div>
+<a class="anchor" id="ac1ec0c5fd39041e3d0f7998edce03c84"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0">reverse_iterator</a> <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::x_rbegin </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>X軸方向を固定した時の，Y軸方向の末尾を指す逆方向ランダムアクセスイテレータを返す </p>
+<pre class="fragment">   @code X軸方向を固定した時の，Y軸方向の逆方向ランダムアクセスイテレータの使用例
+</pre><p> std::cout &lt;&lt; "逆方向ランダムアクセスイテレータ" &lt;&lt; std::endl; <a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0" title="MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ">mist::array&lt; int &gt;::reverse_iterator</a> ite2 = a.x_rbegin( 2 ); for( ; ite2 != a.x_rend( 2 ) ; ite2++ ) { std::cout &lt;&lt; *ite2 &lt;&lt; " "; } std::cout &lt;&lt; std::endl;  </p>
+
+<p><a class="el" href="classmist_1_1array3.html#a5c2740d2be625c340e4199a5bf6c35f4">mist::array3&lt; T, Allocator &gt;</a>, <a class="el" href="classmist_1_1array3.html#a5c2740d2be625c340e4199a5bf6c35f4">mist::array3&lt; vector_type &gt;</a>, <a class="el" href="classmist_1_1array3.html#a5c2740d2be625c340e4199a5bf6c35f4">mist::array3&lt; value_type &gt;</a>, と <a class="el" href="classmist_1_1array3.html#a5c2740d2be625c340e4199a5bf6c35f4">mist::array3&lt; ivector_type &gt;</a>で再定義されています。</p>
+
+</div>
+</div>
+<a class="anchor" id="adae574ee602bc1e7b917732f68c3871a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b">iterator</a> <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::y_begin </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>j</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Y軸方向を固定した時の，X軸方向の先頭を指すランダムアクセスイテレータを返す </p>
+<pre class="fragment">   @code Y軸方向を固定した時の，X軸方向の先頭を指すランダムアクセスイテレータの使用例
+</pre><p> std::cout &lt;&lt; "順方向ランダムアクセスイテレータ" &lt;&lt; std::endl; <a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b" title="MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ">mist::array&lt; int &gt;::iterator</a> ite1 = a.y_begin( 1 ); for( ; ite1 != a.y_end( 1 ) ; ite1++ ) { std::cout &lt;&lt; *ite1 &lt;&lt; " "; } std::cout &lt;&lt; std::endl &lt;&lt; std::endl;  </p>
+
+<p><a class="el" href="classmist_1_1array3.html#a827586869c8da728b5fd5be2e7abe942">mist::array3&lt; T, Allocator &gt;</a>, <a class="el" href="classmist_1_1array3.html#a827586869c8da728b5fd5be2e7abe942">mist::array3&lt; vector_type &gt;</a>, <a class="el" href="classmist_1_1array3.html#a827586869c8da728b5fd5be2e7abe942">mist::array3&lt; value_type &gt;</a>, と <a class="el" href="classmist_1_1array3.html#a827586869c8da728b5fd5be2e7abe942">mist::array3&lt; ivector_type &gt;</a>で再定義されています。</p>
+
+</div>
+</div>
+<a class="anchor" id="a6ed9211e9105a6b2e2f6753b1afc3a48"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class Allocator = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1array.html#afd24b5c5eb6ea960c1c26e0e6a2606f0">reverse_iterator</a> <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; T, Allocator &gt;::y_rbegin </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array.html#a8e7d66b039fc6f7d4bdfc278eff06427">size_type</a>&#160;</td>
+          <td class="paramname"><em>j</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Y軸方向を固定した時の，X軸方向の先頭を指す逆方向ランダムアクセスイテレータを返す </p>
+<pre class="fragment">   @code Y軸方向を固定した時の，X軸方向の先頭を指す逆方向ランダムアクセスイテレータの使用例
+</pre><p> std::cout &lt;&lt; "逆方向ランダムアクセスイテレータ" &lt;&lt; std::endl; <a class="el" href="classmist_1_1array.html#a9d6821e0f35457001f8540d12a11f14b" title="MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ">mist::array&lt; int &gt;::iterator</a> ite1 = a.y_rbegin( 1 ); for( ; ite1 != a.y_rend( 1 ) ; ite1++ ) { std::cout &lt;&lt; *ite1 &lt;&lt; " "; } std::cout &lt;&lt; std::endl &lt;&lt; std::endl;  </p>
+
+<p><a class="el" href="classmist_1_1array3.html#a708361ed6b3472bb4bfed198f0314908">mist::array3&lt; T, Allocator &gt;</a>, <a class="el" href="classmist_1_1array3.html#a708361ed6b3472bb4bfed198f0314908">mist::array3&lt; vector_type &gt;</a>, <a class="el" href="classmist_1_1array3.html#a708361ed6b3472bb4bfed198f0314908">mist::array3&lt; value_type &gt;</a>, と <a class="el" href="classmist_1_1array3.html#a708361ed6b3472bb4bfed198f0314908">mist::array3&lt; ivector_type &gt;</a>で再定義されています。</p>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="mist_8h_source.html">mist.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

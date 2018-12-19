@@ -1,0 +1,817 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::thread_pool</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1thread__pool.html">thread_pool</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-methods">Protected メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::thread_pool<div class="ingroups"><a class="el" href="group__thread__group.html">スレッド</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>スレッドプールを利用してスレッドの再利用を可能にするクラス  
+ <a href="classmist_1_1thread__pool.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="thread_8h_source.html">thread.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a74a02008ee0568354bf627140e866f2a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a74a02008ee0568354bf627140e866f2a"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a74a02008ee0568354bf627140e866f2a">size_type</a></td></tr>
+<tr class="memdesc:a74a02008ee0568354bf627140e866f2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:ab0cae53136b37826ef1fc82688595087"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab0cae53136b37826ef1fc82688595087"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#ab0cae53136b37826ef1fc82688595087">difference_type</a></td></tr>
+<tr class="memdesc:ab0cae53136b37826ef1fc82688595087"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a66579afb0081216f627f41daf23b2d51"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66579afb0081216f627f41daf23b2d51"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a66579afb0081216f627f41daf23b2d51">thread_pool</a> ()</td></tr>
+<tr class="memdesc:a66579afb0081216f627f41daf23b2d51"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドプール内のオブジェクトを作成するが，スレッドプール内のスレッドは0の状態で初期化する（initialize関数を呼び出す必要あり） <br/></td></tr>
+<tr class="memitem:a7a2efe34b6520d0272aa16de3381b928"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a2efe34b6520d0272aa16de3381b928"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a7a2efe34b6520d0272aa16de3381b928">thread_pool</a> (<a class="el" href="classmist_1_1thread__pool.html#a74a02008ee0568354bf627140e866f2a">size_type</a> number_of_max_threads)</td></tr>
+<tr class="memdesc:a7a2efe34b6520d0272aa16de3381b928"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドプール内のスレッド数を指定し，すぐにスレッドプールを使える状態で初期化する <br/></td></tr>
+<tr class="memitem:a83f9e1b3009d5bc1043e80381050e9e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83f9e1b3009d5bc1043e80381050e9e0"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a83f9e1b3009d5bc1043e80381050e9e0">~thread_pool</a> ()</td></tr>
+<tr class="memdesc:a83f9e1b3009d5bc1043e80381050e9e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドプールで使用している全てのリソースを開放する <br/></td></tr>
+<tr class="memitem:ab7a2c7f091b49f76618886b70d4cd11f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#ab7a2c7f091b49f76618886b70d4cd11f">initialize</a> (<a class="el" href="classmist_1_1thread__pool.html#a74a02008ee0568354bf627140e866f2a">size_type</a> number_of_max_threads)</td></tr>
+<tr class="memdesc:ab7a2c7f091b49f76618886b70d4cd11f"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドプール内で使用するスレッドの数を指定してスレッドプールを初期化する  <a href="#ab7a2c7f091b49f76618886b70d4cd11f"></a><br/></td></tr>
+<tr class="memitem:a7e1f96105059a1d86d9bf10351b9396a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a7e1f96105059a1d86d9bf10351b9396a">uninitialize</a> ()</td></tr>
+<tr class="memdesc:a7e1f96105059a1d86d9bf10351b9396a"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドプールで使用しているリソースを全て開放する  <a href="#a7e1f96105059a1d86d9bf10351b9396a"></a><br/></td></tr>
+<tr class="memitem:a60a2f30d95f3a406395d40a685e9522a"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param &gt; </td></tr>
+<tr class="memitem:a60a2f30d95f3a406395d40a685e9522a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a60a2f30d95f3a406395d40a685e9522a">execute</a> (Functor f, Param p)</td></tr>
+<tr class="memdesc:a60a2f30d95f3a406395d40a685e9522a"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを指定してスレッドを実行する  <a href="#a60a2f30d95f3a406395d40a685e9522a"></a><br/></td></tr>
+<tr class="memitem:a782cf5f23383f359b74cd2bcc0aba78f"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param1 , class Param2 &gt; </td></tr>
+<tr class="memitem:a782cf5f23383f359b74cd2bcc0aba78f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a782cf5f23383f359b74cd2bcc0aba78f">execute</a> (Functor f, Param1 p1, Param2 p2)</td></tr>
+<tr class="memdesc:a782cf5f23383f359b74cd2bcc0aba78f"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを指定してスレッドを実行する  <a href="#a782cf5f23383f359b74cd2bcc0aba78f"></a><br/></td></tr>
+<tr class="memitem:a359a1eef678f790a7863a5bc15bb81bc"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param1 , class Param2 , class Param3 &gt; </td></tr>
+<tr class="memitem:a359a1eef678f790a7863a5bc15bb81bc"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a359a1eef678f790a7863a5bc15bb81bc">execute</a> (Functor f, Param1 p1, Param2 p2, Param3 p3)</td></tr>
+<tr class="memdesc:a359a1eef678f790a7863a5bc15bb81bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを指定してスレッドを実行する  <a href="#a359a1eef678f790a7863a5bc15bb81bc"></a><br/></td></tr>
+<tr class="memitem:ab118c55787212b1e010cde3742add0fb"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param1 , class Param2 , class Param3 , class Param4 &gt; </td></tr>
+<tr class="memitem:ab118c55787212b1e010cde3742add0fb"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#ab118c55787212b1e010cde3742add0fb">execute</a> (Functor f, Param1 p1, Param2 p2, Param3 p3, Param4 p4)</td></tr>
+<tr class="memdesc:ab118c55787212b1e010cde3742add0fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを指定してスレッドを実行する  <a href="#ab118c55787212b1e010cde3742add0fb"></a><br/></td></tr>
+<tr class="memitem:a3bfdcdf301af77e3ccacfbeee1de779e"><td class="memTemplParams" colspan="2">template&lt;class Functor &gt; </td></tr>
+<tr class="memitem:a3bfdcdf301af77e3ccacfbeee1de779e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a3bfdcdf301af77e3ccacfbeee1de779e">execute</a> (Functor f)</td></tr>
+<tr class="memdesc:a3bfdcdf301af77e3ccacfbeee1de779e"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを指定してスレッドを実行する  <a href="#a3bfdcdf301af77e3ccacfbeee1de779e"></a><br/></td></tr>
+<tr class="memitem:a2a46714ff66743bb176184fc0fb7d8d3"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param &gt; </td></tr>
+<tr class="memitem:a2a46714ff66743bb176184fc0fb7d8d3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a2a46714ff66743bb176184fc0fb7d8d3">executes</a> (Functor f, Param *param, size_t num_threads)</td></tr>
+<tr class="memdesc:a2a46714ff66743bb176184fc0fb7d8d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを複数指定してスレッドを実行する  <a href="#a2a46714ff66743bb176184fc0fb7d8d3"></a><br/></td></tr>
+<tr class="memitem:a44f60f30f857800dfcb6ff69d50a6f9b"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param1 , class Param2 &gt; </td></tr>
+<tr class="memitem:a44f60f30f857800dfcb6ff69d50a6f9b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a44f60f30f857800dfcb6ff69d50a6f9b">executes</a> (Functor f, Param1 *param1, Param2 *param2, size_t num_threads)</td></tr>
+<tr class="memdesc:a44f60f30f857800dfcb6ff69d50a6f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを複数指定してスレッドを実行する  <a href="#a44f60f30f857800dfcb6ff69d50a6f9b"></a><br/></td></tr>
+<tr class="memitem:a71ec180c2e9bd24d74f8e319b87e5e2a"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param1 , class Param2 , class Param3 &gt; </td></tr>
+<tr class="memitem:a71ec180c2e9bd24d74f8e319b87e5e2a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a71ec180c2e9bd24d74f8e319b87e5e2a">executes</a> (Functor f, Param1 *param1, Param2 *param2, Param3 *param3, size_t num_threads)</td></tr>
+<tr class="memdesc:a71ec180c2e9bd24d74f8e319b87e5e2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを複数指定してスレッドを実行する  <a href="#a71ec180c2e9bd24d74f8e319b87e5e2a"></a><br/></td></tr>
+<tr class="memitem:a22a452861ee65249b3b131182597c7cb"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param1 , class Param2 , class Param3 , class Param4 &gt; </td></tr>
+<tr class="memitem:a22a452861ee65249b3b131182597c7cb"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a22a452861ee65249b3b131182597c7cb">executes</a> (Functor f, Param1 *param1, Param2 *param2, Param3 *param3, Param4 *param4, size_t num_threads)</td></tr>
+<tr class="memdesc:a22a452861ee65249b3b131182597c7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを複数指定してスレッドを実行する  <a href="#a22a452861ee65249b3b131182597c7cb"></a><br/></td></tr>
+<tr class="memitem:afe912d1506c8879cb626c210c809c78d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#afe912d1506c8879cb626c210c809c78d">wait</a> (unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:afe912d1506c8879cb626c210c809c78d"><td class="mdescLeft">&#160;</td><td class="mdescRight">全てのスレッドが終了するか，タイムアウトになるまで待機する  <a href="#afe912d1506c8879cb626c210c809c78d"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr class="memitem:a7a390b46c3f28a56cc2709dae3532944"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#a7a390b46c3f28a56cc2709dae3532944">exec</a> (__thread_controller__::__thread_pool_functor__ *func)</td></tr>
+<tr class="memdesc:a7a390b46c3f28a56cc2709dae3532944"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数をスレッドプール内のスレッドに割り当てて実行する  <a href="#a7a390b46c3f28a56cc2709dae3532944"></a><br/></td></tr>
+<tr class="memitem:ab6fe93d1a7d36b5e6f4b1b3aabf7ed37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1thread__pool.html#ab6fe93d1a7d36b5e6f4b1b3aabf7ed37">resume_thread_from_queue</a> (<a class="el" href="classmist_1_1thread__pool.html#a74a02008ee0568354bf627140e866f2a">size_type</a> num_threads)</td></tr>
+<tr class="memdesc:ab6fe93d1a7d36b5e6f4b1b3aabf7ed37"><td class="mdescLeft">&#160;</td><td class="mdescRight">スレッドプールから必要な数だけスレッドを再開する  <a href="#ab6fe93d1a7d36b5e6f4b1b3aabf7ed37"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>スレッドプールを利用してスレッドの再利用を可能にするクラス </p>
+<p>スレッドプールを利用して処理を実行した場合，処理用にスレッドプール内のスレッドを割り当てます． 処理が終了した場合は，スレッドはスレッドプールに回収され，別の処理へ割り当てられます． スレッドを再利用することにより，スレッドの生成破棄に必要なオーバーヘッドを削減します．</p>
+<dl class="section attention"><dt>注意</dt><dd>初回起動時はスレッド生成に伴うオーバーヘッドがあります</dd></dl>
+<div class="fragment"><div class="line"> 使用例</div>
+<div class="line"><span class="keyword">struct </span>parameter{ ... 何らかのパラメータ ... };   <span class="comment">// スレッド関数に渡すパラメータ（特に構造体である必要は無い）</span></div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span> thread_function( <span class="keyword">const</span> parameter &amp;p );       <span class="comment">// スレッド関数（内部で何らかの処理をする）</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">// これ以降でスレッドを作成する</span></div>
+<div class="line">parameter param[ 処理を行う数 ];</div>
+<div class="line"></div>
+<div class="line"><span class="keywordflow">for</span>( i = 0 ; i &lt; 処理を行う数 ; i++ )</div>
+<div class="line">{</div>
+<div class="line">    パラメータに何らかの値を設定する</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// スレッドプール内のスレッド数を指定して初期化</span></div>
+<div class="line"><a class="code" href="classmist_1_1thread__pool.html" title="スレッドプールを利用してスレッドの再利用を可能にするクラス">mist::thread_pool</a> pool( 2 );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 関数をパラメータを変えて複数回処理する</span></div>
+<div class="line">pool.executes( thread_function, param, 処理を行う数 );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// スレッドプール内のスレッドが実行している処理が全て終了するまで待機</span></div>
+<div class="line">pool.wait( );</div>
+</div><!-- fragment --> </div><h2>関数</h2>
+<a class="anchor" id="a7a390b46c3f28a56cc2709dae3532944"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::exec </td>
+          <td>(</td>
+          <td class="paramtype">__thread_controller__::__thread_pool_functor__ *&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数をスレッドプール内のスレッドに割り当てて実行する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">func</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a60a2f30d95f3a406395d40a685e9522a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::execute </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを指定してスレッドを実行する </p>
+<p>スレッドプールの初期化が終了していない場合は false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a782cf5f23383f359b74cd2bcc0aba78f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param1 , class Param2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::execute </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param1&#160;</td>
+          <td class="paramname"><em>p1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param2&#160;</td>
+          <td class="paramname"><em>p2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを指定してスレッドを実行する </p>
+<p>スレッドプールの初期化が終了していない場合は false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p1</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p2</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a359a1eef678f790a7863a5bc15bb81bc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param1 , class Param2 , class Param3 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::execute </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param1&#160;</td>
+          <td class="paramname"><em>p1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param2&#160;</td>
+          <td class="paramname"><em>p2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param3&#160;</td>
+          <td class="paramname"><em>p3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを指定してスレッドを実行する </p>
+<p>スレッドプールの初期化が終了していない場合は false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p1</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p2</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p3</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab118c55787212b1e010cde3742add0fb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param1 , class Param2 , class Param3 , class Param4 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::execute </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param1&#160;</td>
+          <td class="paramname"><em>p1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param2&#160;</td>
+          <td class="paramname"><em>p2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param3&#160;</td>
+          <td class="paramname"><em>p3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param4&#160;</td>
+          <td class="paramname"><em>p4</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを指定してスレッドを実行する </p>
+<p>スレッドプールの初期化が終了していない場合は false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p1</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p2</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p3</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p4</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a3bfdcdf301af77e3ccacfbeee1de779e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::execute </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを指定してスレッドを実行する </p>
+<p>スレッドプールの初期化が終了していない場合は false を返す．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a2a46714ff66743bb176184fc0fb7d8d3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::executes </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param *&#160;</td>
+          <td class="paramname"><em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_threads</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを複数指定してスレッドを実行する </p>
+<p>スレッドプールの初期化が終了していない場合は false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… スレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a44f60f30f857800dfcb6ff69d50a6f9b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param1 , class Param2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::executes </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param1 *&#160;</td>
+          <td class="paramname"><em>param1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param2 *&#160;</td>
+          <td class="paramname"><em>param2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_threads</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを複数指定してスレッドを実行する </p>
+<p>スレッドプールの初期化が終了していない場合は false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param1</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param2</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… スレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a71ec180c2e9bd24d74f8e319b87e5e2a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param1 , class Param2 , class Param3 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::executes </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param1 *&#160;</td>
+          <td class="paramname"><em>param1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param2 *&#160;</td>
+          <td class="paramname"><em>param2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param3 *&#160;</td>
+          <td class="paramname"><em>param3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_threads</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを複数指定してスレッドを実行する </p>
+<p>スレッドプールの初期化が終了していない場合は false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param1</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param2</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param3</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… スレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a22a452861ee65249b3b131182597c7cb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param1 , class Param2 , class Param3 , class Param4 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::executes </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param1 *&#160;</td>
+          <td class="paramname"><em>param1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param2 *&#160;</td>
+          <td class="paramname"><em>param2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param3 *&#160;</td>
+          <td class="paramname"><em>param3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param4 *&#160;</td>
+          <td class="paramname"><em>param4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_threads</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを複数指定してスレッドを実行する </p>
+<p>スレッドプールの初期化が終了していない場合は false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param1</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param2</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param3</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">param4</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… スレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab7a2c7f091b49f76618886b70d4cd11f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::initialize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1thread__pool.html#a74a02008ee0568354bf627140e866f2a">size_type</a>&#160;</td>
+          <td class="paramname"><em>number_of_max_threads</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッドプール内で使用するスレッドの数を指定してスレッドプールを初期化する </p>
+<p>既にスレッドプールを初期化している場合は，現在のスレッドが全て終了するまで待機する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">number_of_max_threads</td><td>… スレッドプールにためておくスレッドの数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab6fe93d1a7d36b5e6f4b1b3aabf7ed37"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::thread_pool::resume_thread_from_queue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1thread__pool.html#a74a02008ee0568354bf627140e866f2a">size_type</a>&#160;</td>
+          <td class="paramname"><em>num_threads</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッドプールから必要な数だけスレッドを再開する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_threads</td><td>… リジュームするスレッド数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a7e1f96105059a1d86d9bf10351b9396a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::thread_pool::uninitialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>スレッドプールで使用しているリソースを全て開放する </p>
+<p>現在のスレッドが全て終了するまで待機し，スレッドプールで使用しているリソースを全て開放する </p>
+
+</div>
+</div>
+<a class="anchor" id="afe912d1506c8879cb626c210c809c78d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool mist::thread_pool::wait </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>dwMilliseconds</em> = <code>INFINITE</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>全てのスレッドが終了するか，タイムアウトになるまで待機する </p>
+<p>タイムアウトを INFINITE に設定することで，スレッドが終了するまで待ち続ける． スレッドプールの初期化が終了していない場合は false を返す．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">dwMilliseconds</td><td>… タイムアウト時間（ミリ秒単位）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… スレッドがタイムアウト前に終了した </td></tr>
+    <tr><td class="paramname">false</td><td>… タイムアウトが発生したか，その他のエラーが発生 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="thread_8h_source.html">thread.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

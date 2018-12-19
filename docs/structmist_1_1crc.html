@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>構造体 テンプレート mist::crc&lt; BIT &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="structmist_1_1crc.html">crc</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-static-methods">Static Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">構造体 テンプレート mist::crc&lt; BIT &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>CRC を生成・検証を行うクラス  
+ <a href="structmist_1_1crc.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="crc_8h_source.html">crc.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public メソッド</h2></td></tr>
+<tr class="memitem:a1fa84a080ea60e35556627dc68c508cb"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1crc.html#a1fa84a080ea60e35556627dc68c508cb">generate</a> (const unsigned char *pdata, size_t len, size_t gen_poly=crc_generator_polynominal::crc_default&lt; BIT &gt;::gen_poly)</td></tr>
+<tr class="memdesc:a1fa84a080ea60e35556627dc68c508cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">pdata[0] から pdata[len - 1] の len bytes の CRC を生成する．  <a href="#a1fa84a080ea60e35556627dc68c508cb"></a><br/></td></tr>
+<tr class="memitem:af5ca525d0807858381029e0ba0ff00d2"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1crc.html#af5ca525d0807858381029e0ba0ff00d2">check</a> (const unsigned char *pdata, size_t len, size_t crc_, size_t gen_poly=crc_generator_polynominal::crc_default&lt; BIT &gt;::gen_poly)</td></tr>
+<tr class="memdesc:af5ca525d0807858381029e0ba0ff00d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">pdata[0] から pdata[len - 1] の len bytes の CRC を検証する．  <a href="#af5ca525d0807858381029e0ba0ff00d2"></a><br/></td></tr>
+<tr class="memitem:a9ca1da7c6531d2c08a69e4e9b82e48e7"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1crc.html#a9ca1da7c6531d2c08a69e4e9b82e48e7">generate_implant</a> (unsigned char *pdata, size_t len, size_t gen_poly=crc_generator_polynominal::crc_default&lt; BIT &gt;::gen_poly)</td></tr>
+<tr class="memdesc:a9ca1da7c6531d2c08a69e4e9b82e48e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">pdata[0] から pdata[len - BIT / 8 - 1] の len - BIT / 8 bytes の CRC を生成し，pdata[len - BIT / 8] 以降にビッグエンディアンで CRC を埋め込む．  <a href="#a9ca1da7c6531d2c08a69e4e9b82e48e7"></a><br/></td></tr>
+<tr class="memitem:a15648b4709c10a0dff4aab8f85009beb"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1crc.html#a15648b4709c10a0dff4aab8f85009beb">check_implant</a> (const unsigned char *pdata, size_t len, size_t gen_poly=crc_generator_polynominal::crc_default&lt; BIT &gt;::gen_poly)</td></tr>
+<tr class="memdesc:a15648b4709c10a0dff4aab8f85009beb"><td class="mdescLeft">&#160;</td><td class="mdescRight">pdata[0] から pdata[len - 1] の len bytes （CRC 埋め込み済み）の CRC を検証する．  <a href="#a15648b4709c10a0dff4aab8f85009beb"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;int BIT&gt;<br/>
+struct mist::crc&lt; BIT &gt;</h3>
+
+<p>CRC を生成・検証を行うクラス </p>
+</div><h2>関数</h2>
+<a class="anchor" id="af5ca525d0807858381029e0ba0ff00d2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int BIT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool <a class="el" href="structmist_1_1crc.html">mist::crc</a>&lt; BIT &gt;::check </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned char *&#160;</td>
+          <td class="paramname"><em>pdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>crc_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>gen_poly</em> = <code>crc_generator_polynominal::crc_default&lt;&#160;BIT&#160;&gt;::gen_poly</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>pdata[0] から pdata[len - 1] の len bytes の CRC を検証する． </p>
+<p>デフォルトCRC-8 生成多項式 x^8 + x^2 + x^1 + 1 デフォルトCRC-16生成多項式 x^16 + x^15 + x^2 + 1 デフォルトCRC-32生成多項式 x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x^1 + 1</p>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… CRCが一致した </td></tr>
+    <tr><td class="paramname">false</td><td>… CRCが一致しないため，データが改変された可能性あり </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a15648b4709c10a0dff4aab8f85009beb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int BIT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool <a class="el" href="structmist_1_1crc.html">mist::crc</a>&lt; BIT &gt;::check_implant </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned char *&#160;</td>
+          <td class="paramname"><em>pdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>gen_poly</em> = <code>crc_generator_polynominal::crc_default&lt;&#160;BIT&#160;&gt;::gen_poly</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>pdata[0] から pdata[len - 1] の len bytes （CRC 埋め込み済み）の CRC を検証する． </p>
+<p>デフォルトCRC-8 生成多項式 x^8 + x^2 + x^1 + 1 デフォルトCRC-16生成多項式 x^16 + x^15 + x^2 + 1 デフォルトCRC-32生成多項式 x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x^1 + 1</p>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… CRCが一致した </td></tr>
+    <tr><td class="paramname">false</td><td>… CRCが一致しないため，データが改変された可能性あり </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a1fa84a080ea60e35556627dc68c508cb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int BIT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static size_t <a class="el" href="structmist_1_1crc.html">mist::crc</a>&lt; BIT &gt;::generate </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned char *&#160;</td>
+          <td class="paramname"><em>pdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>gen_poly</em> = <code>crc_generator_polynominal::crc_default&lt;&#160;BIT&#160;&gt;::gen_poly</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>pdata[0] から pdata[len - 1] の len bytes の CRC を生成する． </p>
+<p>デフォルトCRC-8 生成多項式 x^8 + x^2 + x^1 + 1 デフォルトCRC-16生成多項式 x^16 + x^15 + x^2 + 1 デフォルトCRC-32生成多項式 x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x^1 + 1</p>
+<dl class="section return"><dt>戻り値</dt><dd>データから生成したCRC </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9ca1da7c6531d2c08a69e4e9b82e48e7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int BIT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static size_t <a class="el" href="structmist_1_1crc.html">mist::crc</a>&lt; BIT &gt;::generate_implant </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char *&#160;</td>
+          <td class="paramname"><em>pdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>gen_poly</em> = <code>crc_generator_polynominal::crc_default&lt;&#160;BIT&#160;&gt;::gen_poly</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>pdata[0] から pdata[len - BIT / 8 - 1] の len - BIT / 8 bytes の CRC を生成し，pdata[len - BIT / 8] 以降にビッグエンディアンで CRC を埋め込む． </p>
+<p>デフォルトCRC-8 生成多項式 x^8 + x^2 + x^1 + 1 デフォルトCRC-16生成多項式 x^16 + x^15 + x^2 + 1 デフォルトCRC-32生成多項式 x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x^1 + 1</p>
+<dl class="section return"><dt>戻り値</dt><dd>データから生成したCRC </dd></dl>
+
+</div>
+</div>
+<hr/>この構造体の説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="crc_8h_source.html">crc.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

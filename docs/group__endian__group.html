@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>エンディアンに関する情報の取得及び変換</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">エンディアンに関する情報の取得及び変換</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionmist_1_1byte__array.html">mist::byte_array&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">バイト配列と値のペアを表現するクラス  <a href="unionmist_1_1byte__array.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gae759de748e6a8e7e503e2b3f93d48a03"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__endian__group.html#gae759de748e6a8e7e503e2b3f93d48a03">mist::_is_little_endian_</a> ()</td></tr>
+<tr class="memdesc:gae759de748e6a8e7e503e2b3f93d48a03"><td class="mdescLeft">&#160;</td><td class="mdescRight">現在のマシンのエンディアンがリトルエンディアンかどうかを調べる  <a href="#gae759de748e6a8e7e503e2b3f93d48a03"></a><br/></td></tr>
+<tr class="memitem:ga53141a1351836e135495bb28769bf43f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__endian__group.html#ga53141a1351836e135495bb28769bf43f">mist::_is_big_endian_</a> ()</td></tr>
+<tr class="memdesc:ga53141a1351836e135495bb28769bf43f"><td class="mdescLeft">&#160;</td><td class="mdescRight">現在のマシンのエンディアンがビッグエンディアンかどうかを調べる  <a href="#ga53141a1351836e135495bb28769bf43f"></a><br/></td></tr>
+<tr class="memitem:gac02114a7bc93baa61d52c12644a0f9ee"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gac02114a7bc93baa61d52c12644a0f9ee"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__endian__group.html#gac02114a7bc93baa61d52c12644a0f9ee">mist::swap_bytes</a> (byte_array&lt; T &gt; &amp;bytes)</td></tr>
+<tr class="memdesc:gac02114a7bc93baa61d52c12644a0f9ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">byte_array内のバイトスワップをする  <a href="#gac02114a7bc93baa61d52c12644a0f9ee"></a><br/></td></tr>
+<tr class="memitem:gacb558bd66eaef6dcb3038d60e251eddc"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gacb558bd66eaef6dcb3038d60e251eddc"><td class="memTemplItemLeft" align="right" valign="top">byte_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__endian__group.html#gacb558bd66eaef6dcb3038d60e251eddc">mist::to_current_endian</a> (const byte_array&lt; T &gt; &amp;bytes, bool from_little_endian)</td></tr>
+<tr class="memdesc:gacb558bd66eaef6dcb3038d60e251eddc"><td class="mdescLeft">&#160;</td><td class="mdescRight">byte_array内のデータを現在の計算機のエンディアンに合わせる  <a href="#gacb558bd66eaef6dcb3038d60e251eddc"></a><br/></td></tr>
+<tr class="memitem:gaefdd026fc399aab67608954b7d06e8db"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gaefdd026fc399aab67608954b7d06e8db"><td class="memTemplItemLeft" align="right" valign="top">byte_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__endian__group.html#gaefdd026fc399aab67608954b7d06e8db">mist::from_current_endian</a> (const byte_array&lt; T &gt; &amp;bytes, bool to_little_endian)</td></tr>
+<tr class="memdesc:gaefdd026fc399aab67608954b7d06e8db"><td class="mdescLeft">&#160;</td><td class="mdescRight">byte_array内のデータを現在の計算機のエンディアンから目的のエンディアンに合わせる  <a href="#gaefdd026fc399aab67608954b7d06e8db"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="endian_8h.html" title="計算機のエンディアンを取得し，自動的に変換するライブラリ">mist/config/endian.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga53141a1351836e135495bb28769bf43f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::_is_big_endian_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>現在のマシンのエンディアンがビッグエンディアンかどうかを調べる </p>
+<p>詳細な説明や関数の使用例を書く</p>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… ビッグエンディアン </td></tr>
+    <tr><td class="paramname">false</td><td>… リトルエンディアン </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gae759de748e6a8e7e503e2b3f93d48a03"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::_is_little_endian_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>現在のマシンのエンディアンがリトルエンディアンかどうかを調べる </p>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… リトルエンディアン </td></tr>
+    <tr><td class="paramname">false</td><td>… ビッグエンディアン </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__endian__group.html#gaefdd026fc399aab67608954b7d06e8db">mist::from_current_endian()</a>, <a class="el" href="namespacemist_1_1dicom.html#aabf7eef04c71c86c6d52e65d60685d68">mist::dicom::process_dicom_tag()</a>, <a class="el" href="group__endian__group.html#gacb558bd66eaef6dcb3038d60e251eddc">mist::to_current_endian()</a>, と <a class="el" href="namespacemist_1_1dicom.html#af4f89de7551cc2861bc9461ba440c4d4">mist::dicom::write_dicom_tag_explicit_vr()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaefdd026fc399aab67608954b7d06e8db"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte_array&lt; T &gt; mist::from_current_endian </td>
+          <td>(</td>
+          <td class="paramtype">const byte_array&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bytes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>to_little_endian</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>byte_array内のデータを現在の計算機のエンディアンから目的のエンディアンに合わせる </p>
+<ul>
+<li>リトルエンディアンの計算機で，to_little_endian = false とすると，変換後のデータはビッグエンディアンとなる</li>
+<li>ビッグエンディアンの計算機で，to_little_endian = true とすると，変換後のデータはリトルエンディアンとなる</li>
+<li>それ以外の場合は，それぞれの計算機のエンディアンのままで何も変換されない</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">bytes</td><td>… 変換されるデータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">to_little_endian</td><td>… 変換後のエンディアンタイプ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>変換後のデータ </dd></dl>
+
+<p>参照先 <a class="el" href="group__endian__group.html#gae759de748e6a8e7e503e2b3f93d48a03">mist::_is_little_endian_()</a>, と <a class="el" href="group__endian__group.html#gac02114a7bc93baa61d52c12644a0f9ee">mist::swap_bytes()</a>.</p>
+
+<p>参照元 <a class="el" href="group__dicom__group.html#gae9f3cde0162d4864f3cc1097ff3e7aec">mist::read_dicom()</a>, <a class="el" href="namespacemist_1_1dicom.html#af4f89de7551cc2861bc9461ba440c4d4">mist::dicom::write_dicom_tag_explicit_vr()</a>, と <a class="el" href="namespacemist_1_1dicom.html#a46295afaefab8fb2b96d0b09550e6cfa">mist::dicom::write_dicom_tag_implicit_vr()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gac02114a7bc93baa61d52c12644a0f9ee"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::swap_bytes </td>
+          <td>(</td>
+          <td class="paramtype">byte_array&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bytes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>byte_array内のバイトスワップをする </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">bytes</td><td>… バイトスワップされるデータ </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__endian__group.html#gaefdd026fc399aab67608954b7d06e8db">mist::from_current_endian()</a>, と <a class="el" href="group__endian__group.html#gacb558bd66eaef6dcb3038d60e251eddc">mist::to_current_endian()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gacb558bd66eaef6dcb3038d60e251eddc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte_array&lt; T &gt; mist::to_current_endian </td>
+          <td>(</td>
+          <td class="paramtype">const byte_array&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bytes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>byte_array内のデータを現在の計算機のエンディアンに合わせる </p>
+<ul>
+<li>リトルエンディアンの計算機で，ビッグエンディアンのデータを入力し，from_little_endian = false とすると，変換後のデータはリトルエンディアンとなる</li>
+<li>ビッグエンディアンの計算機で，リトルエンディアンのデータを入力し，from_little_endian = true とすると，変換後のデータはビッグエンディアンとなる</li>
+<li>それ以外の場合は何も変換されない</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">bytes</td><td>… 変換されるデータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 変換前のエンディアンタイプ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>変換後のデータ </dd></dl>
+
+<p>参照先 <a class="el" href="group__endian__group.html#gae759de748e6a8e7e503e2b3f93d48a03">mist::_is_little_endian_()</a>, と <a class="el" href="group__endian__group.html#gac02114a7bc93baa61d52c12644a0f9ee">mist::swap_bytes()</a>.</p>
+
+<p>参照元 <a class="el" href="namespacemist_1_1dicom.html#a819058813e183470427a784c74c2cdef">mist::dicom::decode()</a>, <a class="el" href="namespacemist_1_1dicom.html#ae3458ee4ef0de0aa8eb77cbba1acc455">mist::dicom::decode_RLE()</a>, <a class="el" href="namespacemist_1_1dicom.html#aabf7eef04c71c86c6d52e65d60685d68">mist::dicom::process_dicom_tag()</a>, と <a class="el" href="namespacemist_1_1dicom.html#ae3a525dc5fd7fd4757fe75d93e62dca3">mist::dicom::read_dicom_tag()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

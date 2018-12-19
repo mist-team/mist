@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>経験的モード分解およびヒルベルト変換</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">経験的モード分解およびヒルベルト変換</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga9bc60d0a6dcb540645a24a1b40212f4b"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga9bc60d0a6dcb540645a24a1b40212f4b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__hht__group.html#ga9bc60d0a6dcb540645a24a1b40212f4b">mist::hilbert</a> (const array&lt; T &gt; &amp;in, array&lt; std::complex&lt; T &gt; &gt; &amp;out, bool mirror=false)</td></tr>
+<tr class="memdesc:ga9bc60d0a6dcb540645a24a1b40212f4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ヒルベルト変換  <a href="#ga9bc60d0a6dcb540645a24a1b40212f4b"></a><br/></td></tr>
+<tr class="memitem:ga754b6e040d3c06ae2be785c24b1d9f09"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 &gt; </td></tr>
+<tr class="memitem:ga754b6e040d3c06ae2be785c24b1d9f09"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__hht__group.html#ga754b6e040d3c06ae2be785c24b1d9f09">mist::emd</a> (const array&lt; T1 &gt; &amp;in, array&lt; T2 &gt; &amp;imf, double sd=0.3)</td></tr>
+<tr class="memdesc:ga754b6e040d3c06ae2be785c24b1d9f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">経験的モード分解  <a href="#ga754b6e040d3c06ae2be785c24b1d9f09"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="hht_8h.html" title="経験的モード分解およびヒルベルト変換のためのライブラリ">mist/hht.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga754b6e040d3c06ae2be785c24b1d9f09"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class T2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t mist::emd </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>imf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>sd</em> = <code>0.3</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>経験的モード分解 </p>
+<p>入力系列に経験的モード分解を適用し，固有モード関数を出力する</p>
+<dl class="section attention"><dt>注意</dt><dd>出力の固有モード関数は高周波数成分から順に並ぶ </dd>
+<dd>
+便宜上，残差を最後の配列要素として返す</dd></dl>
+<p>imf[ 0 ] -&gt; 1st IMF imf[ 1 ] -&gt; 2nd IMF imf[ 2 ] -&gt; 3rd IMF : : imf( imf.size( ) - 1 ) -&gt; residual</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力系列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">imf</td><td>… 固有モード関数の配列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sd</td><td>… シフト処理の終了基準の値 (デフォルトは0.3)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>固有モード関数の数 (残差は含まない) </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array.html#a38c6b918f0ae02e92c99d9e1d065e5f0">mist::array&lt; T, Allocator &gt;::begin()</a>, <a class="el" href="classmist_1_1array.html#a4a9614c5640c4a305671e591319d74ad">mist::array&lt; T, Allocator &gt;::end()</a>, <a class="el" href="classmist_1_1array.html#ab2b09cc3b61f7dc9bb120ed876003705">mist::array&lt; T, Allocator &gt;::resize()</a>, と <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga9bc60d0a6dcb540645a24a1b40212f4b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::hilbert </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array&lt; std::complex&lt; T &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>mirror</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ヒルベルト変換 </p>
+<p>解析信号(複素数)の系列を出力する</p>
+<dl class="section attention"><dt>注意</dt><dd>出力系列の虚部が実部のヒルベルト変換となっている</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力系列 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力系列 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mirror</td><td>… 端がなめらかになるように折り返し処理をするかどうか (デフォルトはfalse)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>変換に成功したかどうか </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

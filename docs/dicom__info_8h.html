@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>dicom_info.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_693aed4c217c3209f853cada5eb38eec.html">io</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#enum-members">列挙型</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">dicom_info.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>DICOM画像を読み書きするためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">../config/mist_conf.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="endian_8h_source.html">../config/endian.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="singleton_8h_source.html">../singleton.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="dicom__tag_8h_source.html">./dicom_tag.h</a>&quot;</code><br/>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;map&gt;</code><br/>
+<code>#include &lt;string&gt;</code><br/>
+</div>
+<p><a href="dicom__info_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__element.html">mist::dicom::dicom_element</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのタグとその要素を管理するクラス  <a href="classmist_1_1dicom_1_1dicom__element.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag__container.html">mist::dicom::dicom_tag_container</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグのデータを管理するコンテナ  <a href="classmist_1_1dicom_1_1dicom__tag__container.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html">mist::dicom::dicom_image_info</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMの画像情報を管理する  <a href="classmist_1_1dicom_1_1dicom__image__info.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__info.html">mist::dicom::dicom_info</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMの全情報を管理する  <a href="classmist_1_1dicom_1_1dicom__info.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1dicom"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html">mist::dicom</a></td></tr>
+<tr class="memdesc:namespacemist_1_1dicom"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMファイルを操作する関数・クラスを含む名前空間 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="enum-members"></a>
+列挙型</h2></td></tr>
+<tr class="memitem:ae0b01d637df72179efd33b8db86b0cb2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#ae0b01d637df72179efd33b8db86b0cb2">mist::dicom::compress_type</a> { <br/>
+&#160;&#160;<a class="el" href="namespacemist_1_1dicom.html#ae0b01d637df72179efd33b8db86b0cb2ac0cf26064538ea6a0f20ddcfe57670c9">mist::dicom::RAW</a>, 
+<a class="el" href="namespacemist_1_1dicom.html#ae0b01d637df72179efd33b8db86b0cb2a944c0080733751412d4b9852bc23ecd4">mist::dicom::JPEG</a>, 
+<a class="el" href="namespacemist_1_1dicom.html#ae0b01d637df72179efd33b8db86b0cb2a44ac645c2b296cb8f059d3a5e1798cfe">mist::dicom::JPEGLS</a>, 
+<a class="el" href="namespacemist_1_1dicom.html#ae0b01d637df72179efd33b8db86b0cb2a8c060e365a9f330c078285e2e1a90a7b">mist::dicom::JPEG2000</a>, 
+<br/>
+&#160;&#160;<a class="el" href="namespacemist_1_1dicom.html#ae0b01d637df72179efd33b8db86b0cb2a66389b0a1e505e0cf05c0e53d0679055">mist::dicom::RLE</a>
+<br/>
+ }</td></tr>
+<tr class="memdesc:ae0b01d637df72179efd33b8db86b0cb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMデータの圧縮タイプ  <a href="namespacemist_1_1dicom.html#ae0b01d637df72179efd33b8db86b0cb2">[詳細]</a><br/></td></tr>
+<tr class="memitem:a3705f3d750df45e39f1d713c01ad480e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480e">mist::dicom::photometric_interpretation_type</a> { , <br/>
+&#160;&#160;<a class="el" href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480ea38fddbd352eadcf96b8b91625d03af81">mist::dicom::MONOCHROME1</a>, 
+<a class="el" href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480ea8ef9bb728f570b97f82e3f092813ccba">mist::dicom::MONOCHROME2</a>, 
+<a class="el" href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480eaa1e0dc7cf7ec9bd2b03853e2044b23fb">mist::dicom::RGB</a>, 
+<a class="el" href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480ea2cbf21499227acbe6aa84486963f98ca">mist::dicom::PALETTE_COLOR</a>, 
+<br/>
+&#160;&#160;<a class="el" href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480ea54d16174ea78c5fe1f3c721d6bccc2ac">mist::dicom::YBR_FULL_422</a>, 
+<a class="el" href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480eaae1f23ee02d91fd2005be412e4f25626">mist::dicom::YBR_FULL</a>
+<br/>
+ }</td></tr>
+<tr class="memdesc:a3705f3d750df45e39f1d713c01ad480e"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMデータの画素の表現タイプ  <a href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480e">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a36f2559af3100e711a25cc7fdb95e725"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a36f2559af3100e711a25cc7fdb95e725"></a>
+dicom_uid_table &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a36f2559af3100e711a25cc7fdb95e725">mist::dicom::get_dicom_uid_table</a> ()</td></tr>
+<tr class="memdesc:a36f2559af3100e711a25cc7fdb95e725"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのUIDに変換する <br/></td></tr>
+<tr class="memitem:ab08b1e5a9adca77ade632181e9297c5f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab08b1e5a9adca77ade632181e9297c5f"></a>
+dicom_uid&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#ab08b1e5a9adca77ade632181e9297c5f">mist::dicom::get_uid</a> (const std::string &amp;uid)</td></tr>
+<tr class="memdesc:ab08b1e5a9adca77ade632181e9297c5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのUIDに変換する <br/></td></tr>
+<tr class="memitem:a19404627bbef9227703c5f386c73a9c7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19404627bbef9227703c5f386c73a9c7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a19404627bbef9227703c5f386c73a9c7">mist::dicom::is_dicom_class_uid</a> (const std::string &amp;uid)</td></tr>
+<tr class="memdesc:a19404627bbef9227703c5f386c73a9c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのUIDテーブルに存在するかどうかを調べる <br/></td></tr>
+<tr class="memitem:a96521d82a7b87ef528017bb7edade567"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96521d82a7b87ef528017bb7edade567"></a>
+dicom_uid&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a96521d82a7b87ef528017bb7edade567">mist::dicom::get_uid</a> (const unsigned char *str, difference_type numBytes)</td></tr>
+<tr class="memdesc:a96521d82a7b87ef528017bb7edade567"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMのUIDに変換する <br/></td></tr>
+<tr class="memitem:a165ad390d9d45973b1e471fd9e555e77"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a165ad390d9d45973b1e471fd9e555e77"></a>
+compress_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a165ad390d9d45973b1e471fd9e555e77">mist::dicom::get_compress_type</a> (const std::string &amp;uid)</td></tr>
+<tr class="memdesc:a165ad390d9d45973b1e471fd9e555e77"><td class="mdescLeft">&#160;</td><td class="mdescRight">UIDを元に圧縮タイプを取得する <br/></td></tr>
+<tr class="memitem:a7133b8bdb26c054e327d650456c15091"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7133b8bdb26c054e327d650456c15091"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a7133b8bdb26c054e327d650456c15091">mist::dicom::find_tag</a> (const dicom_tag_container &amp;dicm, unsigned short group, unsigned short element, double default_value)</td></tr>
+<tr class="memdesc:a7133b8bdb26c054e327d650456c15091"><td class="mdescLeft">&#160;</td><td class="mdescRight">dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す） <br/></td></tr>
+<tr class="memitem:adba79e0a45526e3059e81efa197cd0c0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adba79e0a45526e3059e81efa197cd0c0"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#adba79e0a45526e3059e81efa197cd0c0">mist::dicom::find_tag</a> (const dicom_tag_container &amp;dicm, unsigned short group, unsigned short element, float default_value)</td></tr>
+<tr class="memdesc:adba79e0a45526e3059e81efa197cd0c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す） <br/></td></tr>
+<tr class="memitem:aecc6b615864a18a6cb6a44574edc1659"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aecc6b615864a18a6cb6a44574edc1659"></a>
+signed int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#aecc6b615864a18a6cb6a44574edc1659">mist::dicom::find_tag</a> (const dicom_tag_container &amp;dicm, unsigned short group, unsigned short element, signed int default_value)</td></tr>
+<tr class="memdesc:aecc6b615864a18a6cb6a44574edc1659"><td class="mdescLeft">&#160;</td><td class="mdescRight">dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す） <br/></td></tr>
+<tr class="memitem:a8fc2395238646fec61b57836757d01f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8fc2395238646fec61b57836757d01f7"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a8fc2395238646fec61b57836757d01f7">mist::dicom::find_tag</a> (const dicom_tag_container &amp;dicm, unsigned short group, unsigned short element, unsigned int default_value)</td></tr>
+<tr class="memdesc:a8fc2395238646fec61b57836757d01f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す） <br/></td></tr>
+<tr class="memitem:a75917cebc31baacb6f2fe88c5373ef4b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a75917cebc31baacb6f2fe88c5373ef4b"></a>
+signed short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a75917cebc31baacb6f2fe88c5373ef4b">mist::dicom::find_tag</a> (const dicom_tag_container &amp;dicm, unsigned short group, unsigned short element, signed short default_value)</td></tr>
+<tr class="memdesc:a75917cebc31baacb6f2fe88c5373ef4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す） <br/></td></tr>
+<tr class="memitem:aba4c67c4d76004604d5e40386a99d6b2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba4c67c4d76004604d5e40386a99d6b2"></a>
+unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#aba4c67c4d76004604d5e40386a99d6b2">mist::dicom::find_tag</a> (const dicom_tag_container &amp;dicm, unsigned short group, unsigned short element, unsigned short default_value)</td></tr>
+<tr class="memdesc:aba4c67c4d76004604d5e40386a99d6b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す） <br/></td></tr>
+<tr class="memitem:a0be4a8f0f6ec260f40a2b8fdaffc7c2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0be4a8f0f6ec260f40a2b8fdaffc7c2e"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a0be4a8f0f6ec260f40a2b8fdaffc7c2e">mist::dicom::find_tag</a> (const dicom_tag_container &amp;dicm, unsigned short group, unsigned short element, const std::string &amp;default_value)</td></tr>
+<tr class="memdesc:a0be4a8f0f6ec260f40a2b8fdaffc7c2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す） <br/></td></tr>
+<tr class="memitem:a5b96ea681cc76bde6f6c231a412558bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b96ea681cc76bde6f6c231a412558bc"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a5b96ea681cc76bde6f6c231a412558bc">mist::dicom::find_tag</a> (const dicom_tag_container &amp;dicm, unsigned short group, unsigned short element, const char *default_value)</td></tr>
+<tr class="memdesc:a5b96ea681cc76bde6f6c231a412558bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す） <br/></td></tr>
+<tr class="memitem:afae1eab718f5fb69b83f0f5f2b3d1918"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afae1eab718f5fb69b83f0f5f2b3d1918"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#afae1eab718f5fb69b83f0f5f2b3d1918">mist::dicom::get_dicom_info</a> (const dicom_tag_container &amp;dicm, dicom_info &amp;info)</td></tr>
+<tr class="memdesc:afae1eab718f5fb69b83f0f5f2b3d1918"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMコンテナからDICOMの情報を取得する <br/></td></tr>
+<tr class="memitem:a87cd5b6510e5e9f9438f994db1e929dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a87cd5b6510e5e9f9438f994db1e929dd">mist::dicom::is_element_begin</a> (const unsigned char *p, const unsigned char *e)</td></tr>
+<tr class="memdesc:a87cd5b6510e5e9f9438f994db1e929dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素タグの開始位置かどうか  <a href="#a87cd5b6510e5e9f9438f994db1e929dd"></a><br/></td></tr>
+<tr class="memitem:ae6d1e551a02320c6a0eff4be95b356c1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#ae6d1e551a02320c6a0eff4be95b356c1">mist::dicom::is_element_end</a> (const unsigned char *p, const unsigned char *e)</td></tr>
+<tr class="memdesc:ae6d1e551a02320c6a0eff4be95b356c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素タグの終了位置かどうか  <a href="#ae6d1e551a02320c6a0eff4be95b356c1"></a><br/></td></tr>
+<tr class="memitem:ae3458ee4ef0de0aa8eb77cbba1acc455"><td class="memItemLeft" align="right" valign="top">unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#ae3458ee4ef0de0aa8eb77cbba1acc455">mist::dicom::decode_RLE</a> (unsigned char *psrc, unsigned char *psrc_end, unsigned char *pdst, unsigned char *pdst_end, bool from_little_endian=true)</td></tr>
+<tr class="memdesc:ae3458ee4ef0de0aa8eb77cbba1acc455"><td class="mdescLeft">&#160;</td><td class="mdescRight">RLE圧縮ファイルのデコーダ  <a href="#ae3458ee4ef0de0aa8eb77cbba1acc455"></a><br/></td></tr>
+<tr class="memitem:a4d2d4c085c425c1e8432aa13998f272c"><td class="memItemLeft" align="right" valign="top">unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a4d2d4c085c425c1e8432aa13998f272c">mist::dicom::decode_JPEG</a> (unsigned char *psrc, unsigned char *psrc_end, unsigned char *pdst, unsigned char *pdst_end)</td></tr>
+<tr class="memdesc:a4d2d4c085c425c1e8432aa13998f272c"><td class="mdescLeft">&#160;</td><td class="mdescRight">JPEG圧縮ファイルのデコーダ  <a href="#a4d2d4c085c425c1e8432aa13998f272c"></a><br/></td></tr>
+<tr class="memitem:a819058813e183470427a784c74c2cdef"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html#a819058813e183470427a784c74c2cdef">mist::dicom::decode</a> (dicom_element &amp;element, const dicom_info &amp;info)</td></tr>
+<tr class="memdesc:a819058813e183470427a784c74c2cdef"><td class="mdescLeft">&#160;</td><td class="mdescRight">圧縮ファイルのデコーダ  <a href="#a819058813e183470427a784c74c2cdef"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>DICOM画像を読み書きするためのライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

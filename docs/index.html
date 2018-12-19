@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>MIST ( Media Integration Standard Toolkit )</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li class="current"><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">MIST ( Media Integration Standard Toolkit ) </div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><h1><a class="anchor" id="config"></a>
+MISTの基本設定</h1>
+<ul>
+<li><a class="el" href="group__config__group.html">基本設定</a></li>
+<li><a class="el" href="group__callback__group.html">MIST全般で利用できるコールバック関数</a> </li>
+</ul>
+<h1><a class="anchor" id="class"></a>
+MISTで提供する基本コンテナ</h1>
+<ul>
+<li><a class="el" href="classmist_1_1array.html">array</a> : STLに準拠したメモリ上で連続となる1次元配列であり，音声・画像の全てのデータの基底クラス</li>
+<li><a class="el" href="classmist_1_1array1.html">array1</a> : 音声を扱うための1次元配列</li>
+<li><a class="el" href="classmist_1_1array2.html">array2</a> : 2次元画像を扱うための画像クラス</li>
+<li><a class="el" href="classmist_1_1array3.html">array3</a> : 3次元画像を扱うための画像クラス</li>
+<li><a class="el" href="classmist_1_1bitmap.html">bitmap</a> : ビットマップ画像を扱うためのクラス</li>
+<li><a class="el" href="classmist_1_1marray.html">marray</a> : 1・2・3次元画像の縁にマージンを持った画像を扱うクラス</li>
+<li><a class="el" href="classmist_1_1buffered__array.html">buffered_array</a> : 画像の一辺が2の指数乗となる画像を扱うクラス</li>
+<li><a class="el" href="classmist_1_1matrix.html">matrix</a> : 任意の行列を扱うためのクラス（Expression template を利用した高速な演算が可能）</li>
+<li><a class="el" href="group__vector__group.html">ベクトル演算を可能とするクラス</a><ul>
+<li><a class="el" href="classmist_1_1vector2.html">vector2</a> : 2次元ベクトルを扱うクラス</li>
+<li><a class="el" href="classmist_1_1vector3.html">vector3</a> : 3次元ベクトルを扱うクラス</li>
+<li><a class="el" href="classmist_1_1vector.html">vector</a> : N次元ベクトルを扱うクラス</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="element"></a>
+MISTで提供する基本データ型</h1>
+<ul>
+<li><a class="el" href="classmist_1_1binary.html">バイナリ画素</a></li>
+<li><a class="el" href="group__color__group.html">色空間を扱うクラス</a><ul>
+<li><a class="el" href="structmist_1_1rgb.html">カラー画素</a></li>
+<li><a class="el" href="structmist_1_1bgr.html">Windows用のビットマップで利用されるカラー画素</a></li>
+<li><a class="el" href="structmist_1_1rgba.html">カラー画素（アルファ付き）</a></li>
+</ul>
+</li>
+<li><a class="el" href="structmist_1_1stereo.html">ステレオ音声</a></li>
+<li><a class="el" href="classmist_1_1quaternion.html">クォータニオン（四元数）</a></li>
+<li><a class="el" href="group__set__group.html">集合</a></li>
+<li><a class="el" href="group__facet__group.html">ポリゴン関連</a><ul>
+<li><a class="el" href="classmist_1_1facet.html">ポリゴンを扱うクラス</a></li>
+<li><a class="el" href="classmist_1_1facet__list.html">ポリゴンの集合を扱うクラス</a></li>
+<li><a class="el" href="group__facet__group.html#ga7b71d3f3a684e8073fbcdef04bf5a641">ポリゴン数の削減</a></li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="algorithm"></a>
+MISTで提供するアルゴリズム</h1>
+<h2><a class="anchor" id="implement"></a>
+実装補助</h2>
+<ul>
+<li><a class="el" href="group__limits__group.html">型に対する情報</a></li>
+<li><a class="el" href="group__pointer__group.html">自動的にメモリ管理を行うポインタ</a></li>
+<li><a class="el" href="classmist_1_1timer.html">時間計測</a></li>
+<li><a class="el" href="group__environment__group.html">計算機環境情報</a></li>
+<li><a class="el" href="group__operator__group.html">演算子の実装補助</a></li>
+<li><a class="el" href="group__thread__group.html">マルチスレッド</a><ul>
+<li><a class="el" href="classmist_1_1thread__pool.html">スレッドプール</a></li>
+<li><a class="el" href="classmist_1_1singleton.html">シングルトン</a></li>
+</ul>
+</li>
+<li><a class="el" href="group__free__form__group.html">自由曲線・曲面</a><ul>
+<li><a class="el" href="group__bspline__group.html">Bスプライン曲線</a></li>
+<li><a class="el" href="group__spline__group.html">3次スプライン曲線</a></li>
+</ul>
+</li>
+<li><a class="el" href="structmist_1_1crc.html">CRC</a></li>
+<li><a class="el" href="group__hash__group.html">ハッシュ関数</a><ul>
+<li><a class="el" href="classmist_1_1md2.html">MD2</a></li>
+<li><a class="el" href="classmist_1_1md4.html">MD4</a></li>
+<li><a class="el" href="classmist_1_1md5.html">MD5</a></li>
+<li><a class="el" href="classmist_1_1sha1.html">SHA-1</a></li>
+<li><a class="el" href="classmist_1_1sha256.html">SHA-256</a></li>
+<li><a class="el" href="classmist_1_1sha384.html">SHA-384</a></li>
+<li><a class="el" href="classmist_1_1sha512.html">SHA-512</a></li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="numeric"></a>
+ベクトル・行列演算</h2>
+<ul>
+<li><a class="el" href="group__numeric__group.html">行列演算</a><ul>
+<li><a class="el" href="group__numeric__group.html#ga007686de5a5b2750f03f579e88efb2d3">トレース</a></li>
+<li><a class="el" href="group__numeric__group.html#ga4629afcc450bb6ad7ae8c2a387f28b50">行列式</a></li>
+<li><a class="el" href="group__numeric__group.html#ga260dc839da68a5284bf1dabe2ede3cff">逆行列</a></li>
+<li><a class="el" href="group__numeric__group.html#ga6709a4d9733dafcb5fab51c0a6811f98">連立方程式を解く</a></li>
+<li><a class="el" href="group__numeric__group.html#ga9f2c1f0b1c0105313749a4a08779f98e">QR 分解</a></li>
+<li><a class="el" href="group__numeric__group.html#ga09d4ad5b46a612d36d046f7dee47b065">LU 分解</a></li>
+<li><a class="el" href="group__numeric__group.html#ga94da1e1c8dd4fdcac80077d86a8b417e">固有値・固有ベクトル</a></li>
+<li><a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">特異値分解</a></li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="common"></a>
+共通の処理</h2>
+<ul>
+<li><a class="el" href="group__fourier__group.html">フーリエ変換</a><ul>
+<li><a class="el" href="group__fft__group.html">高速フーリエ変換 (FFT)</a></li>
+<li><a class="el" href="group__dct__group.html">離散コサイン変換(DCT)</a></li>
+<li><a class="el" href="group__dst__group.html">離散サイン変換 (DST) </a></li>
+</ul>
+</li>
+<li>ウェーブレット変換</li>
+<li><a class="el" href="group__statistics__group.html">統計処理</a><ul>
+<li><a class="el" href="group__statistics__group.html#gab2e2f495a7afab3959fba5b3abd84932">平均値計算</a></li>
+<li><a class="el" href="group__statistics__group.html#gab1a1cf9612283f16d57f14642517b023">分散計算</a></li>
+<li><a class="el" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">ヒストグラム作成</a></li>
+<li><a class="el" href="group__mixture__group.html">混合正規分布の推定</a></li>
+</ul>
+</li>
+<li><a class="el" href="group__random__group.html">擬似乱数生成</a><ul>
+<li><a class="el" href="classmist_1_1uniform_1_1random.html">一様乱数</a></li>
+<li><a class="el" href="classmist_1_1gauss_1_1random.html">正規乱数</a></li>
+</ul>
+</li>
+<li>グラフ描画(2次元)</li>
+<li>画像や基本オブジェクトの描画<ul>
+<li><a class="el" href="group__image__draw__group.html">OpenGLを用いた2次元画像描画</a></li>
+<li><a class="el" href="group__image__drawing__group.html">直線・円の描画</a></li>
+</ul>
+</li>
+<li><a class="el" href="group__minimization__group.html">関数の最小化</a></li>
+<li><a class="el" href="group__registration__group.html">レジストレーション</a><ul>
+<li><a class="el" href="namespacemist_1_1non__rigid.html">非剛体レジストレーション</a></li>
+</ul>
+</li>
+<li><a class="el" href="group__visualization__group.html">可視化</a><ul>
+<li><a class="el" href="group__volumerendering__group.html">ボリュームレンダリング</a></li>
+<li><a class="el" href="classmist_1_1marching__cubes.html">等濃度面表示</a></li>
+</ul>
+</li>
+<li>キャリブレーション<ul>
+<li><a class="el" href="group__calibration__group.html">カメラキャリブレーション</a></li>
+</ul>
+</li>
+<li><a class="el" href="group__machine__learning__group.html">機械学習</a><ul>
+<li><a class="el" href="namespacemist_1_1machine__learning_1_1adaboost.html">Multiclass AdaBoost</a></li>
+</ul>
+</li>
+<li><a class="el" href="group__hht__group.html">経験的モード分解およびヒルベルト変換</a><ul>
+<li><a class="el" href="group__hht__group.html#ga9bc60d0a6dcb540645a24a1b40212f4b">ヒルベルト変換</a></li>
+<li><a class="el" href="group__hht__group.html#ga754b6e040d3c06ae2be785c24b1d9f09">経験的モード分解</a></li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="image"></a>
+主に画像に対して適用される処理</h2>
+<h3><a class="anchor" id="image-io"></a>
+入出力系</h3>
+<ul>
+<li><a class="el" href="group__image__group.html">任意の画像データの読み込み・書き出し</a><ul>
+<li><a class="el" href="group__image__raw__group.html">RAWデータの読み込み・書き出し</a></li>
+<li><a class="el" href="group__image__bmp__group.html">BMPデータの読み込み・書き出し</a></li>
+<li><a class="el" href="group__image__pnm__group.html">PNMデータの読み込み・書き出し</a></li>
+<li><a class="el" href="group__image__jpeg__group.html">JPEGデータの読み込み・書き出し</a></li>
+<li><a class="el" href="group__image__png__group.html">PNGデータの読み込み・書き出し</a></li>
+<li><a class="el" href="group__image__gif__group.html">GIFデータの読み込み</a></li>
+<li><a class="el" href="group__image__tiff__group.html">TIFFデータの読み込み・書き出し</a></li>
+<li><a class="el" href="group__image__tga__group.html">TGAデータの読み込み・書き出し</a></li>
+<li><a class="el" href="group__dicom__group.html">DICOMデータの読み込み・書き出し</a></li>
+</ul>
+</li>
+</ul>
+<h3><a class="anchor" id="image-filter"></a>
+フィルタ系</h3>
+<ul>
+<li><a class="el" href="group__linear__group.html">線形フィルタ</a></li>
+<li><a class="el" href="group__median__group.html">メディアンフィルタ</a></li>
+<li><a class="el" href="group__region__growing__group.html">領域拡張法</a></li>
+<li><a class="el" href="group__interpolate__group.html">画像補間</a><ul>
+<li><a class="el" href="namespacemist_1_1nearest.html">最近傍型補間</a></li>
+<li><a class="el" href="namespacemist_1_1mean.html">平均値型補間</a></li>
+<li><a class="el" href="namespacemist_1_1linear.html">線形補間</a></li>
+<li><a class="el" href="namespacemist_1_1cubic.html">3次補間（sinc関数の3次近似を利用した補間）</a></li>
+<li><a class="el" href="namespacemist_1_1BSpline.html">3次のBスプライン補間</a></li>
+<li><a class="el" href="namespacemist_1_1sinc.html">sinc関数補間（全画素を畳み込むので計算コスト大）</a></li>
+</ul>
+</li>
+<li><a class="el" href="group__edge__group.html">エッジ検出</a><ul>
+<li><a class="el" href="group__edge__group.html#ga28a5402c2799df009c0cfee3cb5cb2ce">Cannyエッジ検出器</a></li>
+</ul>
+</li>
+<li><a class="el" href="group__corner__group.html">コーナー検出</a><ul>
+<li><a class="el" href="group__corner__group.html#ga5024b59625782787fcfcb492d8e893f1">Harrisコーナー検出器</a></li>
+</ul>
+</li>
+<li>カラー画像に対する処理<ul>
+<li><a class="el" href="group__interlace__group.html">インターレス除去</a></li>
+</ul>
+</li>
+<li><a class="el" href="group__threshold__group.html">閾値選択</a></li>
+<li><a class="el" href="group__morphology__group.html">モルフォロジー演算</a></li>
+<li>2値画像に対する処理<ul>
+<li><a class="el" href="group__labeling__group.html">ラベリング</a></li>
+<li><a class="el" href="group__decomposition__group.html">図形分割</a></li>
+<li><a class="el" href="group__boundary__group.html">境界画素抽出</a></li>
+<li><a class="el" href="group__mode__group.html">最頻値フィルタ</a></li>
+<li><a class="el" href="group__thinning__group.html">細線化</a></li>
+<li><a class="el" href="group__skeleton__group.html">スケルトン抽出</a></li>
+<li><a class="el" href="group__distance__group.html">距離変換</a><ul>
+<li><a class="el" href="group__voronoi__distance__group.html">ボロノイ分割</a></li>
+<li><a class="el" href="group__euclidean__distance__group.html">ユークリッド2乗距離変換</a></li>
+<li><a class="el" href="namespacemist_1_1euclidean.html#a4d65329f5ad33bb8730e7f6c917df7b7">ユークリッド2乗逆距離変換</a></li>
+<li><a class="el" href="namespacemist_1_1manhattan.html#a7210ef9066042a4cb5d338cc2ad809da">マンハッタン距離（シティーブロック距離）変換</a></li>
+<li><a class="el" href="namespacemist_1_1chessboard.html#a6ec1bab1b35e7579fa194cf15b2b66f9">チェスボード距離変換</a></li>
+</ul>
+</li>
+<li><a class="el" href="group__fusion__group.html">図形融合</a><ul>
+<li><a class="el" href="group__fusion__mdt__group.html">マンハッタン距離（L1ノルム，シティーブロック距離）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="audio"></a>
+主に音声に対して適用される処理</h2>
+<h3><a class="anchor" id="audio-io"></a>
+入出力系</h3>
+<ul>
+<li><a class="el" href="group__audio__group.html">音声データの読み込み・書き出し</a><ul>
+<li><a class="el" href="group__audio__wav__group.html">WAVデータの読み込み・書き出し</a></li>
+</ul>
+</li>
+</ul>
+<h3><a class="anchor" id="audio-filter"></a>
+フィルタ系</h3>
+<ul>
+<li>サンプリングレート変更</li>
+<li>再生 </li>
+</ul>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

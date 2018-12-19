@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>wav.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_693aed4c217c3209f853cada5eb38eec.html">io</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">wav.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>WAV音声ファイルを読み書きするためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="stereo_8h_source.html">../config/stereo.h</a>&quot;</code><br/>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;deque&gt;</code><br/>
+<code>#include &lt;map&gt;</code><br/>
+<code>#include &lt;algorithm&gt;</code><br/>
+</div>
+<p><a href="wav_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gaaaceabf15a95e095a9ddf75e017c39f7"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gaaaceabf15a95e095a9ddf75e017c39f7"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__audio__wav__group.html#gaaaceabf15a95e095a9ddf75e017c39f7">mist::read_wav</a> (array&lt; T, Allocator &gt; &amp;sound, const std::string &amp;filename, unsigned int &amp;sampling_rate)</td></tr>
+<tr class="memdesc:gaaaceabf15a95e095a9ddf75e017c39f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">WAVファイルから音声データををMISTコンテナに読み込む  <a href="group__audio__wav__group.html#gaaaceabf15a95e095a9ddf75e017c39f7"></a><br/></td></tr>
+<tr class="memitem:gac0960f0bfc89fdecb87496573ec33a42"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gac0960f0bfc89fdecb87496573ec33a42"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__audio__wav__group.html#gac0960f0bfc89fdecb87496573ec33a42">mist::read_wav</a> (array&lt; T, Allocator &gt; &amp;sound, const std::wstring &amp;filename, unsigned int &amp;sampling_rate)</td></tr>
+<tr class="memdesc:gac0960f0bfc89fdecb87496573ec33a42"><td class="mdescLeft">&#160;</td><td class="mdescRight">WAVファイルから音声データををMISTコンテナに読み込む  <a href="group__audio__wav__group.html#gac0960f0bfc89fdecb87496573ec33a42"></a><br/></td></tr>
+<tr class="memitem:ga3df7a22c9cd36a0afd64c10a975f5f21"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga3df7a22c9cd36a0afd64c10a975f5f21"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__audio__wav__group.html#ga3df7a22c9cd36a0afd64c10a975f5f21">mist::read_wav</a> (array&lt; T, Allocator &gt; &amp;sound, const std::string &amp;filename)</td></tr>
+<tr class="memdesc:ga3df7a22c9cd36a0afd64c10a975f5f21"><td class="mdescLeft">&#160;</td><td class="mdescRight">WAVファイルから音声データををMISTコンテナに読み込む  <a href="group__audio__wav__group.html#ga3df7a22c9cd36a0afd64c10a975f5f21"></a><br/></td></tr>
+<tr class="memitem:gac704f5f0ad2225207c8c67ace6b8d85d"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gac704f5f0ad2225207c8c67ace6b8d85d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__audio__wav__group.html#gac704f5f0ad2225207c8c67ace6b8d85d">mist::read_wav</a> (array&lt; T, Allocator &gt; &amp;sound, const std::wstring &amp;filename)</td></tr>
+<tr class="memdesc:gac704f5f0ad2225207c8c67ace6b8d85d"><td class="mdescLeft">&#160;</td><td class="mdescRight">WAVファイルから音声データををMISTコンテナに読み込む  <a href="group__audio__wav__group.html#gac704f5f0ad2225207c8c67ace6b8d85d"></a><br/></td></tr>
+<tr class="memitem:ga441184b6f414d802d09e9008debf31c2"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga441184b6f414d802d09e9008debf31c2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__audio__wav__group.html#ga441184b6f414d802d09e9008debf31c2">mist::write_wav</a> (const array&lt; T, Allocator &gt; &amp;sound, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::size_type wav_bits, typename array&lt; T, Allocator &gt;::size_type sampling_rate)</td></tr>
+<tr class="memdesc:ga441184b6f414d802d09e9008debf31c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナのデータをWAVファイルへ出力する  <a href="group__audio__wav__group.html#ga441184b6f414d802d09e9008debf31c2"></a><br/></td></tr>
+<tr class="memitem:ga01384af36c55bb6b757db4b53a4c9737"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga01384af36c55bb6b757db4b53a4c9737"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__audio__wav__group.html#ga01384af36c55bb6b757db4b53a4c9737">mist::write_wav</a> (const array&lt; T, Allocator &gt; &amp;sound, const std::wstring &amp;filename, typename array&lt; T, Allocator &gt;::size_type wav_bits, typename array&lt; T, Allocator &gt;::size_type sampling_rate)</td></tr>
+<tr class="memdesc:ga01384af36c55bb6b757db4b53a4c9737"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナのデータをWAVファイルへ出力する  <a href="group__audio__wav__group.html#ga01384af36c55bb6b757db4b53a4c9737"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>WAV音声ファイルを読み書きするためのライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

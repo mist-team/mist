@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ネームスペース mist::lucidi</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="namespaces.html"><span>ネームスペース一覧</span></a></li>
+      <li><a href="namespacemembers.html"><span>ネームスペースメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1lucidi.html">lucidi</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ネームスペース mist::lucidi<div class="ingroups"><a class="el" href="group__minimization__group.html">関数の最小化</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Lucidi法（方向集合を用いた多変数関数の極小値の探索）  
+<a href="#details">[詳細]</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a264ba4d9639762ea4f6d8e1e3a1f0b2b"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a264ba4d9639762ea4f6d8e1e3a1f0b2b"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1lucidi.html#a264ba4d9639762ea4f6d8e1e3a1f0b2b">minimization</a> (<a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; T, Allocator &gt; &amp;p, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; T, Allocator &gt; &amp;dirs, Functor f, double tolerance, size_t &amp;iterations, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a264ba4d9639762ea4f6d8e1e3a1f0b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lucidi 提案の多変数関数の極小値探索  <a href="#a264ba4d9639762ea4f6d8e1e3a1f0b2b"></a><br/></td></tr>
+<tr class="memitem:a8bd5f6afb1009d9668c3bc418e940ca3"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:a8bd5f6afb1009d9668c3bc418e940ca3"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1lucidi.html#a8bd5f6afb1009d9668c3bc418e940ca3">minimization</a> (<a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; T, Allocator &gt; &amp;p, <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; T, Allocator &gt; &amp;dirs, Functor f, double tolerance, size_t max_iterations=1000)</td></tr>
+<tr class="memdesc:a8bd5f6afb1009d9668c3bc418e940ca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powell 法による多次元変数による極小値の探索を行う  <a href="#a8bd5f6afb1009d9668c3bc418e940ca3"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>Lucidi法（方向集合を用いた多変数関数の極小値の探索） </p>
+</div><h2>関数</h2>
+<a class="anchor" id="a264ba4d9639762ea4f6d8e1e3a1f0b2b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::lucidi::minimization </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dirs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>iterations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_iterations</em> = <code>1000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lucidi 提案の多変数関数の極小値探索 </p>
+<p>手法について何か書く</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>… 探索の開始ベクトル，最小値を与えるベクトル </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dirs</td><td>… 探索に用いる方向集合 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 評価関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 許容誤差 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">iterations</td><td>… 実際の反復回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_iterations</td><td>… 最大反復回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>極小を与える座標値における評価値 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684">mist::matrix&lt; T, Allocator &gt;::cols()</a>, <a class="el" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f">mist::matrix&lt; T, Allocator &gt;::rows()</a>, と <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8bd5f6afb1009d9668c3bc418e940ca3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double mist::lucidi::minimization </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dirs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_iterations</em> = <code>1000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Powell 法による多次元変数による極小値の探索を行う </p>
+<p>手法について何か書く</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>… 探索の開始ベクトル，最小値を与えるベクトル </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dirs</td><td>… 探索に用いる方向集合 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 評価関数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… 許容誤差 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_iterations</td><td>… 最大反復回数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>極小を与える座標値における評価値 </dd></dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1gold.html#adb69f1d4d00e8930427bb3b78bb996e0">mist::gold::minimization()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::bspline&lt; T, K, Allocator &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1bspline.html">bspline</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-attribs">Protected 変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::bspline&lt; T, K, Allocator &gt;<div class="ingroups"><a class="el" href="group__bspline__group.html">Bスプライン曲線</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Bスプライン曲線を扱うためのクラス  
+ <a href="classmist_1_1bspline.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="bspline_8h_source.html">bspline.h</a>&gt;</code></p>
+
+<p>std::vector&lt; T &gt;を継承しています。</p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:aab4e2e7d9afd92e27e16d8f7df9880fd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fd">BSplineMode</a> { <a class="el" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fdaed94ff2d8378042559d8272ace12d51d">ROUND</a>, 
+<a class="el" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fdaf10c89957104b1d14541c80675afdd22">THROUGH</a>
+ }</td></tr>
+<tr class="memdesc:aab4e2e7d9afd92e27e16d8f7df9880fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">ノットベクトルを手動で設定しない場合のデフォルトのモード  <a href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fd">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:abceabec86f63b4bf61f6d737cbc7ed57"><td class="memItemLeft" align="right" valign="top">value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1bspline.html#abceabec86f63b4bf61f6d737cbc7ed57">operator()</a> (double t)</td></tr>
+<tr class="memdesc:abceabec86f63b4bf61f6d737cbc7ed57"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定された位置（区間０〜１）に対応する，Bスプライン補間結果を返す  <a href="#abceabec86f63b4bf61f6d737cbc7ed57"></a><br/></td></tr>
+<tr class="memitem:abc8209ed97451c06254c44e3a59eba1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1bspline.html#abc8209ed97451c06254c44e3a59eba1a">knot</a> (const knot_list &amp;kknot)</td></tr>
+<tr class="memdesc:abc8209ed97451c06254c44e3a59eba1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">任意のノットベクトルを設定する  <a href="#abc8209ed97451c06254c44e3a59eba1a"></a><br/></td></tr>
+<tr class="memitem:a0a02fd10dc0d4923cc65fadd6ac438a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1bspline.html#a0a02fd10dc0d4923cc65fadd6ac438a3">knot</a> (<a class="el" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fd">BSplineMode</a> <a class="el" href="group__mode__group.html#ga8820313fa0f62e950e18a22083c2bc68">mode</a>)</td></tr>
+<tr class="memdesc:a0a02fd10dc0d4923cc65fadd6ac438a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのモードでノットベクトルを設定する  <a href="#a0a02fd10dc0d4923cc65fadd6ac438a3"></a><br/></td></tr>
+<tr class="memitem:a740f7a4fcaccd07df439e4e57446400d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a740f7a4fcaccd07df439e4e57446400d"></a>
+const <a class="el" href="classmist_1_1bspline.html">bspline</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1bspline.html#a740f7a4fcaccd07df439e4e57446400d">operator=</a> (const <a class="el" href="classmist_1_1bspline.html">bspline</a> &amp;b)</td></tr>
+<tr class="memdesc:a740f7a4fcaccd07df439e4e57446400d"><td class="mdescLeft">&#160;</td><td class="mdescRight">代入演算子 <br/></td></tr>
+<tr class="memitem:abb05ee7f2740c60e052f60351823728b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb05ee7f2740c60e052f60351823728b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1bspline.html#abb05ee7f2740c60e052f60351823728b">bspline</a> (const <a class="el" href="classmist_1_1bspline.html">bspline</a> &amp;b)</td></tr>
+<tr class="memdesc:abb05ee7f2740c60e052f60351823728b"><td class="mdescLeft">&#160;</td><td class="mdescRight">コピーコンストラクタ <br/></td></tr>
+<tr class="memitem:a705b486e4e0afc775bc4805ae133b6ef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1bspline.html#a705b486e4e0afc775bc4805ae133b6ef">bspline</a> ()</td></tr>
+<tr class="memdesc:a705b486e4e0afc775bc4805ae133b6ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのコンストラクタ  <a href="#a705b486e4e0afc775bc4805ae133b6ef"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected 変数</h2></td></tr>
+<tr class="memitem:a4321f4da661e8a56188cbd58c8e25d3c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4321f4da661e8a56188cbd58c8e25d3c"></a>
+knot_list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1bspline.html#a4321f4da661e8a56188cbd58c8e25d3c">knot_</a></td></tr>
+<tr class="memdesc:a4321f4da661e8a56188cbd58c8e25d3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ノットベクトル <br/></td></tr>
+<tr class="memitem:a48a1ab39feecaf1a0ba9e5d2102e2d98"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a48a1ab39feecaf1a0ba9e5d2102e2d98"></a>
+<a class="el" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fd">BSplineMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1bspline.html#a48a1ab39feecaf1a0ba9e5d2102e2d98">mode_</a></td></tr>
+<tr class="memdesc:a48a1ab39feecaf1a0ba9e5d2102e2d98"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのノットベクトル設定 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_classstd_1_1vector"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classstd_1_1vector')"><img src="closed.png" alt="-"/>&nbsp;変数 inherited from <a class="el" href="classstd_1_1vector.html">std::vector< T ></a></td></tr>
+<tr class="memitem:a2396209900e8f592db1f0b2467f7d899 inherit pub_attribs_classstd_1_1vector"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2396209900e8f592db1f0b2467f7d899"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>elements</b></td></tr>
+<tr class="memdesc:a2396209900e8f592db1f0b2467f7d899 inherit pub_attribs_classstd_1_1vector"><td class="mdescLeft">&#160;</td><td class="mdescRight">STL member. <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T, int K, class Allocator = std::allocator&lt; T &gt;&gt;<br/>
+class mist::bspline&lt; T, K, Allocator &gt;</h3>
+
+<p>Bスプライン曲線を扱うためのクラス </p>
+<p>K次のBスプライン曲線を描画可能．可変個数の制御点に対応し，任意のノットベクトルに対応するBスプライン曲線を描画</p>
+<dl class="section attention"><dt>注意</dt><dd>入力されるデータ型が，加減算と単一のスカラー値を全てに代入する操作と浮動小数との掛け算をサポートする必要がある． </dd>
+<dd>
+ただし，vector2，vector3 は正しく動作するようになっている． </dd>
+<dd>
+array 等のMISTコンテナを利用する際には，オペレータを有効にする必要がある．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>… 各制御点・補間点を表すデータ構造を指定（double や <a class="el" href="classmist_1_1vector3.html">vector3&lt; double &gt;</a> など） </td></tr>
+    <tr><td class="paramname">K</td><td>… Bスプライン曲線の次数</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"> Bスプライン曲線の作成例</div>
+<div class="line"><span class="comment">// 3次で変数の型が double のBスプラインを作成する</span></div>
+<div class="line"><a class="code" href="classmist_1_1bspline.html" title="Bスプライン曲線を扱うためのクラス">mist::bspline&lt; double, 3 &gt;</a> b;</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 制御点を追加</span></div>
+<div class="line">b.push_back( 2.0 );</div>
+<div class="line">b.push_back( 3.0 );</div>
+<div class="line">...</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// ノットベクトルを以下の方法のいずれかを用いて設定</span></div>
+<div class="line"><span class="comment">// ・閉曲線の設定</span></div>
+<div class="line">b.<a class="code" href="classmist_1_1bspline.html#abc8209ed97451c06254c44e3a59eba1a" title="任意のノットベクトルを設定する">knot</a>( <a class="code" href="classmist_1_1bspline.html" title="Bスプライン曲線を扱うためのクラス">mist::bspline&lt; double &gt;::ROUND</a> );</div>
+<div class="line"><span class="comment">// ・最初と最後の制御点を通る場合の設定</span></div>
+<div class="line">b.knot( <a class="code" href="classmist_1_1bspline.html" title="Bスプライン曲線を扱うためのクラス">mist::bspline&lt; double &gt;::THROUGH</a> );</div>
+<div class="line"><span class="comment">// ・任意のノットベクトルを設定</span></div>
+<div class="line">b.knot( STLのベクトルタイプのノットのリスト );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 補間点を計算（区間は０〜１）</span></div>
+<div class="line"><span class="keywordtype">double</span> p1 = b( 0.0 );</div>
+<div class="line"><span class="keywordtype">double</span> p2 = b( 0.4 );</div>
+<div class="line"><span class="keywordtype">double</span> p3 = b( 0.7 );</div>
+<div class="line">...</div>
+</div><!-- fragment --> </div><h2>列挙型</h2>
+<a class="anchor" id="aab4e2e7d9afd92e27e16d8f7df9880fd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , int K, class Allocator  = std::allocator&lt; T &gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fd">mist::bspline::BSplineMode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ノットベクトルを手動で設定しない場合のデフォルトのモード </p>
+<dl><dt><b>列挙型の値: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="aab4e2e7d9afd92e27e16d8f7df9880fdaed94ff2d8378042559d8272ace12d51d"></a>ROUND</em>&nbsp;</td><td>
+<p>閉曲線の設定 </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="aab4e2e7d9afd92e27e16d8f7df9880fdaf10c89957104b1d14541c80675afdd22"></a>THROUGH</em>&nbsp;</td><td>
+<p>最初と最後の制御点を通る場合の設定 </p>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+</div>
+</div>
+<h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="a705b486e4e0afc775bc4805ae133b6ef"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , int K, class Allocator  = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1bspline.html">mist::bspline</a>&lt; T, K, Allocator &gt;::<a class="el" href="classmist_1_1bspline.html">bspline</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>デフォルトのコンストラクタ </p>
+<p>ノットベクトルのデフォルト値を「最初と最後を通る曲線」に設定する </p>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="abc8209ed97451c06254c44e3a59eba1a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , int K, class Allocator  = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1bspline.html">mist::bspline</a>&lt; T, K, Allocator &gt;::knot </td>
+          <td>(</td>
+          <td class="paramtype">const knot_list &amp;&#160;</td>
+          <td class="paramname"><em>kknot</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>任意のノットベクトルを設定する </p>
+<dl class="section attention"><dt>注意</dt><dd>次数 K で制御点数 N とした時に，ノットベクトルの数は N + K + 1 必要である</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">kknot</td><td>… ノットベクトル </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a0a02fd10dc0d4923cc65fadd6ac438a3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , int K, class Allocator  = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1bspline.html">mist::bspline</a>&lt; T, K, Allocator &gt;::knot </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fd">BSplineMode</a>&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>デフォルトのモードでノットベクトルを設定する </p>
+<p>本クラス内で定義されている列挙型 BSplineMode のうちの一つを利用する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>… 曲線のタイプ </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="abceabec86f63b4bf61f6d737cbc7ed57"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , int K, class Allocator  = std::allocator&lt; T &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">value_type <a class="el" href="classmist_1_1bspline.html">mist::bspline</a>&lt; T, K, Allocator &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定された位置（区間０〜１）に対応する，Bスプライン補間結果を返す </p>
+<dl class="section attention"><dt>注意</dt><dd>次数＋１の制御点数が入力されている必要あり．足りない場合は，デフォルトのノットベクトルで最初期化される．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>… 全体の曲線を区間０〜１とした時に，補間される点の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された点の位置に対応するBスプライン曲線の補間結果 </dd></dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="bspline_8h_source.html">bspline.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

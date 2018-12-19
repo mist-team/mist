@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>set.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_a2627e7237515a7c75baa232ceab4ab6.html">config</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">set.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>集合演算を扱うためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">mist_conf.h</a>&quot;</code><br/>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;set&gt;</code><br/>
+<code>#include &lt;algorithm&gt;</code><br/>
+</div>
+<p><a href="set_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1set__base.html">mist::set_base&lt; SetType &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合を扱うための基本クラス  <a href="classmist_1_1set__base.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1set.html">mist::set&lt; Key, Comp, Allocator &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合演算を行うことができる，STLの set の拡張版  <a href="classmist_1_1set.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1multiset.html">mist::multiset&lt; Key, Comp, Allocator &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合演算を行うことができる，STLの set の拡張版  <a href="classmist_1_1multiset.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga06322ed48886892d5902d809d01c0068"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga06322ed48886892d5902d809d01c0068"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga06322ed48886892d5902d809d01c0068"><td class="memTemplItemLeft" align="right" valign="top">const set_base&lt; SetType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga06322ed48886892d5902d809d01c0068">mist::operator+</a> (const set_base&lt; SetType &gt; &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:ga06322ed48886892d5902d809d01c0068"><td class="mdescLeft">&#160;</td><td class="mdescRight">和集合を計算する <br/></td></tr>
+<tr class="memitem:gab15a9902725eb6f47350a3b2e4186c92"><td class="memTemplParams" colspan="2"><a class="anchor" id="gab15a9902725eb6f47350a3b2e4186c92"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:gab15a9902725eb6f47350a3b2e4186c92"><td class="memTemplItemLeft" align="right" valign="top">const set_base&lt; SetType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#gab15a9902725eb6f47350a3b2e4186c92">mist::operator-</a> (const set_base&lt; SetType &gt; &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:gab15a9902725eb6f47350a3b2e4186c92"><td class="mdescLeft">&#160;</td><td class="mdescRight">差集合を計算する <br/></td></tr>
+<tr class="memitem:ga69d97cb8a6f23ee9eb32667552bcfd79"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga69d97cb8a6f23ee9eb32667552bcfd79"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga69d97cb8a6f23ee9eb32667552bcfd79"><td class="memTemplItemLeft" align="right" valign="top">const set_base&lt; SetType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga69d97cb8a6f23ee9eb32667552bcfd79">mist::operator*</a> (const set_base&lt; SetType &gt; &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:ga69d97cb8a6f23ee9eb32667552bcfd79"><td class="mdescLeft">&#160;</td><td class="mdescRight">積集合を計算する <br/></td></tr>
+<tr class="memitem:gafc1f422107fa0c7bb70be2c08c9483b6"><td class="memTemplParams" colspan="2"><a class="anchor" id="gafc1f422107fa0c7bb70be2c08c9483b6"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:gafc1f422107fa0c7bb70be2c08c9483b6"><td class="memTemplItemLeft" align="right" valign="top">const set_base&lt; SetType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#gafc1f422107fa0c7bb70be2c08c9483b6">mist::operator*</a> (const set_base&lt; SetType &gt; &amp;s1, const typename set_base&lt; SetType &gt;::key_type &amp;s2)</td></tr>
+<tr class="memdesc:gafc1f422107fa0c7bb70be2c08c9483b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合と1要素の積を計算する <br/></td></tr>
+<tr class="memitem:gafb76172563692490fa686d1d695c1bd6"><td class="memTemplParams" colspan="2"><a class="anchor" id="gafb76172563692490fa686d1d695c1bd6"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:gafb76172563692490fa686d1d695c1bd6"><td class="memTemplItemLeft" align="right" valign="top">const set_base&lt; SetType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#gafb76172563692490fa686d1d695c1bd6">mist::operator*</a> (const typename set_base&lt; SetType &gt;::key_type &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:gafb76172563692490fa686d1d695c1bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">1要素と集合の積を計算する <br/></td></tr>
+<tr class="memitem:gab0e51c7ad6168318e3fe73536920ecdf"><td class="memTemplParams" colspan="2"><a class="anchor" id="gab0e51c7ad6168318e3fe73536920ecdf"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:gab0e51c7ad6168318e3fe73536920ecdf"><td class="memTemplItemLeft" align="right" valign="top">const set_base&lt; SetType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#gab0e51c7ad6168318e3fe73536920ecdf">mist::operator+</a> (const set_base&lt; SetType &gt; &amp;s1, const typename set_base&lt; SetType &gt;::key_type &amp;s2)</td></tr>
+<tr class="memdesc:gab0e51c7ad6168318e3fe73536920ecdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合と1要素の和を計算する <br/></td></tr>
+<tr class="memitem:ga6611c1f888810295bd766a06a5e690b2"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga6611c1f888810295bd766a06a5e690b2"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga6611c1f888810295bd766a06a5e690b2"><td class="memTemplItemLeft" align="right" valign="top">const set_base&lt; SetType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga6611c1f888810295bd766a06a5e690b2">mist::operator+</a> (const typename set_base&lt; SetType &gt;::key_type &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:ga6611c1f888810295bd766a06a5e690b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">1要素と集合の和を計算する <br/></td></tr>
+<tr class="memitem:ga1236ce8d168bd02ffeec095b0da2222b"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga1236ce8d168bd02ffeec095b0da2222b"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga1236ce8d168bd02ffeec095b0da2222b"><td class="memTemplItemLeft" align="right" valign="top">const set_base&lt; SetType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga1236ce8d168bd02ffeec095b0da2222b">mist::operator-</a> (const set_base&lt; SetType &gt; &amp;s1, const typename set_base&lt; SetType &gt;::key_type &amp;s2)</td></tr>
+<tr class="memdesc:ga1236ce8d168bd02ffeec095b0da2222b"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合と1要素の差を計算する <br/></td></tr>
+<tr class="memitem:ga784b2cc7dbb331743b5a28362efd67f7"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga784b2cc7dbb331743b5a28362efd67f7"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga784b2cc7dbb331743b5a28362efd67f7"><td class="memTemplItemLeft" align="right" valign="top">const set_base&lt; SetType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga784b2cc7dbb331743b5a28362efd67f7">mist::operator-</a> (const typename set_base&lt; SetType &gt;::key_type &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:ga784b2cc7dbb331743b5a28362efd67f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">1要素と集合の差を計算する <br/></td></tr>
+<tr class="memitem:ga1a1d4bc7a3180b5c613ee7e98ed91279"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga1a1d4bc7a3180b5c613ee7e98ed91279"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga1a1d4bc7a3180b5c613ee7e98ed91279"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga1a1d4bc7a3180b5c613ee7e98ed91279">mist::operator==</a> (const set_base&lt; SetType &gt; &amp;s1, const typename set_base&lt; SetType &gt;::key_type &amp;s2)</td></tr>
+<tr class="memdesc:ga1a1d4bc7a3180b5c613ee7e98ed91279"><td class="mdescLeft">&#160;</td><td class="mdescRight">全ての要素が等しいかどうかを判定する（ <img class="formulaInl" alt="$ a = b $" src="form_6.png"/>） <br/></td></tr>
+<tr class="memitem:ga2c00257c63221a9baa708c81f1e0220f"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga2c00257c63221a9baa708c81f1e0220f"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga2c00257c63221a9baa708c81f1e0220f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga2c00257c63221a9baa708c81f1e0220f">mist::operator!=</a> (const set_base&lt; SetType &gt; &amp;s1, const typename set_base&lt; SetType &gt;::key_type &amp;s2)</td></tr>
+<tr class="memdesc:ga2c00257c63221a9baa708c81f1e0220f"><td class="mdescLeft">&#160;</td><td class="mdescRight">全ての要素が等しくないかどうかを判定する（ <img class="formulaInl" alt="$ a \neq b $" src="form_7.png"/>） <br/></td></tr>
+<tr class="memitem:ga688b6637c85ba47f66a282aae3699e93"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga688b6637c85ba47f66a282aae3699e93"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga688b6637c85ba47f66a282aae3699e93"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga688b6637c85ba47f66a282aae3699e93">mist::operator&lt;</a> (const set_base&lt; SetType &gt; &amp;s1, const typename set_base&lt; SetType &gt;::key_type &amp;s2)</td></tr>
+<tr class="memdesc:ga688b6637c85ba47f66a282aae3699e93"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合の包含関係を調べる（ <img class="formulaInl" alt="$ a \subset b $" src="form_8.png"/>） <br/></td></tr>
+<tr class="memitem:ga2535b5deae46c41803b9c5d174be2279"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga2535b5deae46c41803b9c5d174be2279"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga2535b5deae46c41803b9c5d174be2279"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga2535b5deae46c41803b9c5d174be2279">mist::operator&lt;=</a> (const set_base&lt; SetType &gt; &amp;s1, const typename set_base&lt; SetType &gt;::key_type &amp;s2)</td></tr>
+<tr class="memdesc:ga2535b5deae46c41803b9c5d174be2279"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合の包含関係を調べる（ <img class="formulaInl" alt="$ a \subseteq b $" src="form_9.png"/>） <br/></td></tr>
+<tr class="memitem:gaf4a0ac17a1c50f007e44ab87b0ce5faa"><td class="memTemplParams" colspan="2"><a class="anchor" id="gaf4a0ac17a1c50f007e44ab87b0ce5faa"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:gaf4a0ac17a1c50f007e44ab87b0ce5faa"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#gaf4a0ac17a1c50f007e44ab87b0ce5faa">mist::operator&gt;</a> (const set_base&lt; SetType &gt; &amp;s1, const typename set_base&lt; SetType &gt;::key_type &amp;s2)</td></tr>
+<tr class="memdesc:gaf4a0ac17a1c50f007e44ab87b0ce5faa"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合の包含関係を調べる（ <img class="formulaInl" alt="$ a \supset b $" src="form_10.png"/>） <br/></td></tr>
+<tr class="memitem:ga9ac718114adefb48718af658a948d177"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga9ac718114adefb48718af658a948d177"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga9ac718114adefb48718af658a948d177"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga9ac718114adefb48718af658a948d177">mist::operator&gt;=</a> (const set_base&lt; SetType &gt; &amp;s1, const typename set_base&lt; SetType &gt;::key_type &amp;s2)</td></tr>
+<tr class="memdesc:ga9ac718114adefb48718af658a948d177"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合の包含関係を調べる（ <img class="formulaInl" alt="$ a \supseteq b $" src="form_11.png"/>） <br/></td></tr>
+<tr class="memitem:ga0ebcfe4308f8e55c358a42a961d0c880"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga0ebcfe4308f8e55c358a42a961d0c880"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga0ebcfe4308f8e55c358a42a961d0c880"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga0ebcfe4308f8e55c358a42a961d0c880">mist::operator==</a> (const typename set_base&lt; SetType &gt;::key_type &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:ga0ebcfe4308f8e55c358a42a961d0c880"><td class="mdescLeft">&#160;</td><td class="mdescRight">全ての要素が等しいかどうかを判定する（ <img class="formulaInl" alt="$ a = b $" src="form_6.png"/>） <br/></td></tr>
+<tr class="memitem:ga5efb853e43069d1ffaf3da310b623e39"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga5efb853e43069d1ffaf3da310b623e39"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga5efb853e43069d1ffaf3da310b623e39"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga5efb853e43069d1ffaf3da310b623e39">mist::operator!=</a> (const typename set_base&lt; SetType &gt;::key_type &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:ga5efb853e43069d1ffaf3da310b623e39"><td class="mdescLeft">&#160;</td><td class="mdescRight">全ての要素が等しくないかどうかを判定する（ <img class="formulaInl" alt="$ a \neq b $" src="form_7.png"/>） <br/></td></tr>
+<tr class="memitem:ga5811a9c72dd3196c8eb08389f0189278"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga5811a9c72dd3196c8eb08389f0189278"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga5811a9c72dd3196c8eb08389f0189278"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga5811a9c72dd3196c8eb08389f0189278">mist::operator&lt;</a> (const typename set_base&lt; SetType &gt;::key_type &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:ga5811a9c72dd3196c8eb08389f0189278"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合の包含関係を調べる（ <img class="formulaInl" alt="$ a \subset b $" src="form_8.png"/>） <br/></td></tr>
+<tr class="memitem:ga7dfb1ea482d6061dba23e97419638960"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga7dfb1ea482d6061dba23e97419638960"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga7dfb1ea482d6061dba23e97419638960"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga7dfb1ea482d6061dba23e97419638960">mist::operator&lt;=</a> (const typename set_base&lt; SetType &gt;::key_type &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:ga7dfb1ea482d6061dba23e97419638960"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合の包含関係を調べる（ <img class="formulaInl" alt="$ a \subseteq b $" src="form_9.png"/>） <br/></td></tr>
+<tr class="memitem:gada11f00312dc0bd8d251b06720a6bc2d"><td class="memTemplParams" colspan="2"><a class="anchor" id="gada11f00312dc0bd8d251b06720a6bc2d"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:gada11f00312dc0bd8d251b06720a6bc2d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#gada11f00312dc0bd8d251b06720a6bc2d">mist::operator&gt;</a> (const typename set_base&lt; SetType &gt;::key_type &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:gada11f00312dc0bd8d251b06720a6bc2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合の包含関係を調べる（ <img class="formulaInl" alt="$ a \supset b $" src="form_10.png"/>） <br/></td></tr>
+<tr class="memitem:ga5d6654cab5c1b7b0093d8f3503397cd6"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga5d6654cab5c1b7b0093d8f3503397cd6"></a>
+template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:ga5d6654cab5c1b7b0093d8f3503397cd6"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#ga5d6654cab5c1b7b0093d8f3503397cd6">mist::operator&gt;=</a> (const typename set_base&lt; SetType &gt;::key_type &amp;s1, const set_base&lt; SetType &gt; &amp;s2)</td></tr>
+<tr class="memdesc:ga5d6654cab5c1b7b0093d8f3503397cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">集合の包含関係を調べる（ <img class="formulaInl" alt="$ a \supseteq b $" src="form_11.png"/>） <br/></td></tr>
+<tr class="memitem:gab02391403e887634fea70224580c9694"><td class="memTemplParams" colspan="2">template&lt;class SetType &gt; </td></tr>
+<tr class="memitem:gab02391403e887634fea70224580c9694"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__set__group.html#gab02391403e887634fea70224580c9694">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const set_base&lt; SetType &gt; &amp;s)</td></tr>
+<tr class="memdesc:gab02391403e887634fea70224580c9694"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームに，コンテナ内の要素を整形して出力する  <a href="group__set__group.html#gab02391403e887634fea70224580c9694"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>集合演算を扱うためのライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

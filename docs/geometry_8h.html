@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>geometry.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">geometry.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>geometric calculation  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="matrix_8h_source.html">matrix.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="numeric_8h_source.html">numeric.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="vector_8h_source.html">vector.h</a>&quot;</code><br/>
+</div>
+<p><a href="geometry_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1nearest"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1nearest.html">mist::nearest</a></td></tr>
+<tr class="memdesc:namespacemist_1_1nearest"><td class="mdescLeft">&#160;</td><td class="mdescRight">最近傍型補間 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1linear"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html">mist::linear</a></td></tr>
+<tr class="memdesc:namespacemist_1_1linear"><td class="mdescLeft">&#160;</td><td class="mdescRight">一般カーネルの線形フィルタの実装（コールバック関数を指定することが可能） <br/></td></tr>
+<tr class="memitem:namespacemist_1_1cubic"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1cubic.html">mist::cubic</a></td></tr>
+<tr class="memdesc:namespacemist_1_1cubic"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次のsinc関数を用いた補間 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:adca49273c7ff92351816821784f7ca6d"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:adca49273c7ff92351816821784f7ca6d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#adca49273c7ff92351816821784f7ca6d">mist::translation_matrix</a> (matrix&lt; T, Allocator &gt; &amp;mat, typename matrix&lt; T, Allocator &gt;::value_type x, typename matrix&lt; T, Allocator &gt;::value_type y)</td></tr>
+<tr class="memdesc:adca49273c7ff92351816821784f7ca6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculate translation matrix  <a href="#adca49273c7ff92351816821784f7ca6d"></a><br/></td></tr>
+<tr class="memitem:a64ba8af07977af38891e18fc2558dc18"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a64ba8af07977af38891e18fc2558dc18"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a64ba8af07977af38891e18fc2558dc18">mist::rotation_matrix</a> (matrix&lt; T, Allocator &gt; &amp;mat, typename matrix&lt; T, Allocator &gt;::value_type radian)</td></tr>
+<tr class="memdesc:a64ba8af07977af38891e18fc2558dc18"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculate rotation matrix  <a href="#a64ba8af07977af38891e18fc2558dc18"></a><br/></td></tr>
+<tr class="memitem:a8a4bb6fee2b1641a2951fcb5a40b944a"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a8a4bb6fee2b1641a2951fcb5a40b944a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a8a4bb6fee2b1641a2951fcb5a40b944a">mist::rotation_matrix</a> (matrix&lt; T, Allocator &gt; &amp;mat, typename matrix&lt; T, Allocator &gt;::value_type radian, typename matrix&lt; T, Allocator &gt;::value_type cx, typename matrix&lt; T, Allocator &gt;::value_type cy)</td></tr>
+<tr class="memdesc:a8a4bb6fee2b1641a2951fcb5a40b944a"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculate rotation matrix  <a href="#a8a4bb6fee2b1641a2951fcb5a40b944a"></a><br/></td></tr>
+<tr class="memitem:afede2b385e98e06e5571bd1b7f055fee"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:afede2b385e98e06e5571bd1b7f055fee"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#afede2b385e98e06e5571bd1b7f055fee">mist::scaling_matrix</a> (matrix&lt; T, Allocator &gt; &amp;mat, typename matrix&lt; T, Allocator &gt;::value_type x, typename matrix&lt; T, Allocator &gt;::value_type y)</td></tr>
+<tr class="memdesc:afede2b385e98e06e5571bd1b7f055fee"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculate scaling matrix  <a href="#afede2b385e98e06e5571bd1b7f055fee"></a><br/></td></tr>
+<tr class="memitem:ac621dd7adbc4d81ad1d16e2d64968f23"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ac621dd7adbc4d81ad1d16e2d64968f23"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#ac621dd7adbc4d81ad1d16e2d64968f23">mist::homography_matrix</a> (matrix&lt; T, Allocator &gt; &amp;mat, const matrix&lt; T, Allocator &gt; &amp;p1, const matrix&lt; T, Allocator &gt; &amp;p2)</td></tr>
+<tr class="memdesc:ac621dd7adbc4d81ad1d16e2d64968f23"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculate homography matrix  <a href="#ac621dd7adbc4d81ad1d16e2d64968f23"></a><br/></td></tr>
+<tr class="memitem:a4b4b2f8f0cc9352bfd73b51b96a22781"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a4b4b2f8f0cc9352bfd73b51b96a22781"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1nearest.html#a4b4b2f8f0cc9352bfd73b51b96a22781">mist::nearest::transform</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T1, Allocator1 &gt; &amp;out, const matrix&lt; T2, Allocator2 &gt; &amp;mat)</td></tr>
+<tr class="memdesc:a4b4b2f8f0cc9352bfd73b51b96a22781"><td class="mdescLeft">&#160;</td><td class="mdescRight">transform <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a>  <a href="#a4b4b2f8f0cc9352bfd73b51b96a22781"></a><br/></td></tr>
+<tr class="memitem:ae4478e46710d156473ae8405bf21e7a4"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ae4478e46710d156473ae8405bf21e7a4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#ae4478e46710d156473ae8405bf21e7a4">mist::linear::transform</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T1, Allocator1 &gt; &amp;out, const matrix&lt; T2, Allocator2 &gt; &amp;mat)</td></tr>
+<tr class="memdesc:ae4478e46710d156473ae8405bf21e7a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">transform <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a>  <a href="#ae4478e46710d156473ae8405bf21e7a4"></a><br/></td></tr>
+<tr class="memitem:af98bedc500bd6e51da328aae50decfa2"><td class="memTemplParams" colspan="2">template&lt;class Value_type1 , class Allocator1 , class Value_type2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:af98bedc500bd6e51da328aae50decfa2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1linear.html#af98bedc500bd6e51da328aae50decfa2">mist::linear::transform</a> (const <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; Value_type1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; Value_type2, Allocator2 &gt; &amp;out, const double &amp;delta_x, const double &amp;delta_y)</td></tr>
+<tr class="memdesc:af98bedc500bd6e51da328aae50decfa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">平行移動と拡大を考慮して変形する  <a href="#af98bedc500bd6e51da328aae50decfa2"></a><br/></td></tr>
+<tr class="memitem:a7d76ddb06b8cdafe9254837268fd1438"><td class="memTemplParams" colspan="2">template&lt;class T1 , class Allocator1 , class T2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a7d76ddb06b8cdafe9254837268fd1438"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1cubic.html#a7d76ddb06b8cdafe9254837268fd1438">mist::cubic::transform</a> (const array2&lt; T1, Allocator1 &gt; &amp;in, array2&lt; T1, Allocator1 &gt; &amp;out, const matrix&lt; T2, Allocator2 &gt; &amp;mat)</td></tr>
+<tr class="memdesc:a7d76ddb06b8cdafe9254837268fd1438"><td class="mdescLeft">&#160;</td><td class="mdescRight">transform <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a>  <a href="#a7d76ddb06b8cdafe9254837268fd1438"></a><br/></td></tr>
+<tr class="memitem:a5b6175ac4bd657c2d11d8685dae891a1"><td class="memTemplParams" colspan="2">template&lt;class Value_type1 , class Allocator1 , class Value_type2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:a5b6175ac4bd657c2d11d8685dae891a1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1cubic.html#a5b6175ac4bd657c2d11d8685dae891a1">mist::cubic::transform</a> (const <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; Value_type1, Allocator1 &gt; &amp;in, <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; Value_type2, Allocator2 &gt; &amp;out, const double &amp;delta_x, const double &amp;delta_y)</td></tr>
+<tr class="memdesc:a5b6175ac4bd657c2d11d8685dae891a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">平行移動と拡大を考慮して変形する  <a href="#a5b6175ac4bd657c2d11d8685dae891a1"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>geometric calculation </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

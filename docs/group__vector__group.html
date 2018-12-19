@@ -1,0 +1,364 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ベクトルライブラリ</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ベクトルライブラリ</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector3.html">mist::vector3&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元ベクトルを扱うクラス  <a href="classmist_1_1vector3.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector2.html">mist::vector2&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元ベクトルを扱うクラス  <a href="classmist_1_1vector2.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1vector.html">mist::vector&lt; T, Allocator &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">N次元ベクトルを扱うクラス  <a href="classmist_1_1vector.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga5cb42b1fe86f96fe5afec693254130d6"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga5cb42b1fe86f96fe5afec693254130d6"></a>
+template&lt;class T1 , class T2 &gt; </td></tr>
+<tr class="memitem:ga5cb42b1fe86f96fe5afec693254130d6"><td class="memTemplItemLeft" align="right" valign="top">promote_trait&lt; T1, T2 &gt;::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__vector__group.html#ga5cb42b1fe86f96fe5afec693254130d6">mist::operator^</a> (const vector3&lt; T1 &gt; &amp;v1, const vector3&lt; T2 &gt; &amp;v2)</td></tr>
+<tr class="memdesc:ga5cb42b1fe86f96fe5afec693254130d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルの内積 <br/></td></tr>
+<tr class="memitem:ga5ac511970cdc73f129818029b07d5af3"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga5ac511970cdc73f129818029b07d5af3"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__vector__group.html#ga5ac511970cdc73f129818029b07d5af3">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const vector3&lt; T &gt; &amp;v)</td></tr>
+<tr class="memdesc:ga5ac511970cdc73f129818029b07d5af3"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルの和  <a href="#ga5ac511970cdc73f129818029b07d5af3"></a><br/></td></tr>
+<tr class="memitem:ga64c1cf179a134ea54d8afd175dab5899"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga64c1cf179a134ea54d8afd175dab5899"><td class="memTemplItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__vector__group.html#ga64c1cf179a134ea54d8afd175dab5899">mist::operator&gt;&gt;</a> (std::istream &amp;in, vector3&lt; T &gt; &amp;v)</td></tr>
+<tr class="memdesc:ga64c1cf179a134ea54d8afd175dab5899"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method for reading the vector comma separated from an istream.  <a href="#ga64c1cf179a134ea54d8afd175dab5899"></a><br/></td></tr>
+<tr class="memitem:gab997a41399c670c02c7a55e55ed067f1"><td class="memTemplParams" colspan="2"><a class="anchor" id="gab997a41399c670c02c7a55e55ed067f1"></a>
+template&lt;class T1 , class T2 &gt; </td></tr>
+<tr class="memitem:gab997a41399c670c02c7a55e55ed067f1"><td class="memTemplItemLeft" align="right" valign="top">promote_trait&lt; T1, T2 &gt;::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__vector__group.html#gab997a41399c670c02c7a55e55ed067f1">mist::operator^</a> (const vector2&lt; T1 &gt; &amp;v1, const vector2&lt; T2 &gt; &amp;v2)</td></tr>
+<tr class="memdesc:gab997a41399c670c02c7a55e55ed067f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルの内積 <br/></td></tr>
+<tr class="memitem:ga5e07456373d42e1d55a1ed29a0573b6c"><td class="memTemplParams" colspan="2"><a class="anchor" id="ga5e07456373d42e1d55a1ed29a0573b6c"></a>
+template&lt;class T1 , class T2 &gt; </td></tr>
+<tr class="memitem:ga5e07456373d42e1d55a1ed29a0573b6c"><td class="memTemplItemLeft" align="right" valign="top">promote_trait&lt; T1, T2 &gt;::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__vector__group.html#ga5e07456373d42e1d55a1ed29a0573b6c">mist::operator*</a> (const vector2&lt; T1 &gt; &amp;v1, const vector2&lt; T2 &gt; &amp;v2)</td></tr>
+<tr class="memdesc:ga5e07456373d42e1d55a1ed29a0573b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルの外積 <br/></td></tr>
+<tr class="memitem:gade7455e6af38c3b818bc881175de483c"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gade7455e6af38c3b818bc881175de483c"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__vector__group.html#gade7455e6af38c3b818bc881175de483c">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const vector2&lt; T &gt; &amp;v)</td></tr>
+<tr class="memdesc:gade7455e6af38c3b818bc881175de483c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルの和  <a href="#gade7455e6af38c3b818bc881175de483c"></a><br/></td></tr>
+<tr class="memitem:gab6a30af4e9854194efb9a375b98651a4"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gab6a30af4e9854194efb9a375b98651a4"><td class="memTemplItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__vector__group.html#gab6a30af4e9854194efb9a375b98651a4">mist::operator&gt;&gt;</a> (std::istream &amp;in, vector2&lt; T &gt; &amp;v)</td></tr>
+<tr class="memdesc:gab6a30af4e9854194efb9a375b98651a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method for reading the vector comma separated from an istream.  <a href="#gab6a30af4e9854194efb9a375b98651a4"></a><br/></td></tr>
+<tr class="memitem:ga945db0002bc912fad0737acf80668f78"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga945db0002bc912fad0737acf80668f78"><td class="memTemplItemLeft" align="right" valign="top">inline::std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__vector__group.html#ga945db0002bc912fad0737acf80668f78">mist::operator&lt;&lt;</a> (::std::ostream &amp;out, const vector&lt; T, Allocator &gt; &amp;v)</td></tr>
+<tr class="memdesc:ga945db0002bc912fad0737acf80668f78"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームに，行列内の要素を整形して出力する  <a href="#ga945db0002bc912fad0737acf80668f78"></a><br/></td></tr>
+<tr class="memitem:ga5f0379e2d10870ca96ab94145f5918ed"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga5f0379e2d10870ca96ab94145f5918ed"><td class="memTemplItemLeft" align="right" valign="top">vector&lt; T, Allocator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__vector__group.html#ga5f0379e2d10870ca96ab94145f5918ed">mist::operator*</a> (const vector&lt; T, Allocator &gt; &amp;v1, const vector&lt; T, Allocator &gt; &amp;v2)</td></tr>
+<tr class="memdesc:ga5f0379e2d10870ca96ab94145f5918ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトルの外積を計算する  <a href="#ga5f0379e2d10870ca96ab94145f5918ed"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="vector_8h.html" title="各次元に対応したベクトル演算を行うためのライブラリ">mist/vector.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga5f0379e2d10870ca96ab94145f5918ed"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt; T, Allocator &gt; mist::operator* </td>
+          <td>(</td>
+          <td class="paramtype">const vector&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const vector&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ベクトルの外積を計算する </p>
+<dl class="section attention"><dt>注意</dt><dd>外積を計算する2つのベクトルの次元が等しくなくてはならない</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v1</td><td>… 左辺値ベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">v2</td><td>… 右辺値ベクトル</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>外積結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga5ac511970cdc73f129818029b07d5af3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; mist::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const vector3&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ベクトルの和 </p>
+<p>ベクトルの差 ベクトルの外積 ベクトルと定数の積 定数とベクトルの積 ベクトルを定数で割る 指定されたストリームに，コンテナ内の要素を整形して出力する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">out</td><td>… 入力と出力を行うストリーム </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 3次元ベクトル</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力されたストリーム</dd></dl>
+<div class="fragment"><div class="line"> 出力例</div>
+<div class="line">( 1, 2, 3 )</div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a class="anchor" id="gade7455e6af38c3b818bc881175de483c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; mist::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const vector2&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ベクトルの和 </p>
+<p>ベクトルの差 ベクトルと定数の積 定数とベクトルの積 ベクトルを定数で割る 指定されたストリームに，コンテナ内の要素を整形して出力する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">out</td><td>… 入力と出力を行うストリーム </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 2次元ベクトル</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力されたストリーム</dd></dl>
+<div class="fragment"><div class="line"> 出力例</div>
+<div class="line">( 1, 2 )</div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a class="anchor" id="ga945db0002bc912fad0737acf80668f78"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">inline ::std::ostream&amp; mist::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">::std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const vector&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>指定されたストリームに，行列内の要素を整形して出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">out</td><td>… 入力と出力を行うストリーム </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 出力する行列</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力されたストリーム</dd></dl>
+<div class="fragment"><div class="line"> 出力例</div>
+<div class="line">1, 2, 3, 4</div>
+</div><!-- fragment --> 
+<p>参照先 <a class="el" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4">mist::array&lt; T, Allocator &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga64c1cf179a134ea54d8afd175dab5899"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::istream&amp; mist::operator&gt;&gt; </td>
+          <td>(</td>
+          <td class="paramtype">std::istream &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector3&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Method for reading the vector comma separated from an istream. </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… input stream </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">v</td><td>… 3-dimensional vector</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the input stream</dd></dl>
+<div class="fragment"><div class="line"> Marco Feuerstein</div>
+<div class="line">( 1, 2, 3 )</div>
+</div><!-- fragment --> 
+<p>参照先 <a class="el" href="classmist_1_1vector3.html#af8bc62562bfcf84e19b8c460c90eb87b">mist::vector3&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1vector3.html#ad713c6bf4aceb2b61dec9dfca7175bd3">mist::vector3&lt; T &gt;::y</a>, と <a class="el" href="classmist_1_1vector3.html#a65670ab9189ceb952f9ac1f7684cf567">mist::vector3&lt; T &gt;::z</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gab6a30af4e9854194efb9a375b98651a4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::istream&amp; mist::operator&gt;&gt; </td>
+          <td>(</td>
+          <td class="paramtype">std::istream &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector2&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Method for reading the vector comma separated from an istream. </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">in</td><td>… input stream </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">v</td><td>… 2-dimensional vector</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>the input stream</dd></dl>
+<div class="fragment"><div class="line"> Marco Feuerstein</div>
+<div class="line">( 1, 2 )</div>
+</div><!-- fragment --> 
+<p>参照先 <a class="el" href="classmist_1_1vector2.html#af68bdd4edd7479a3e5173dd47c7881be">mist::vector2&lt; T &gt;::x</a>, と <a class="el" href="classmist_1_1vector2.html#ad8df8b8e6bdcd20c4507827fbf4d9f6b">mist::vector2&lt; T &gt;::y</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

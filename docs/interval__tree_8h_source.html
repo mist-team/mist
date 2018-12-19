@@ -1,0 +1,371 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>interval_tree.h ソースファイル</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">interval_tree.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="interval__tree_8h.html">説明を見る。</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Copyright (c) 2003-2011, MIST Project, Nagoya University</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// All rights reserved.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// Redistribution and use in source and binary forms, with or without modification,</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// are permitted provided that the following conditions are met:</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// 1. Redistributions of source code must retain the above copyright notice,</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// this list of conditions and the following disclaimer.</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// 2. Redistributions in binary form must reproduce the above copyright notice,</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// this list of conditions and the following disclaimer in the documentation</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// and/or other materials provided with the distribution.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// 3. Neither the name of the Nagoya University nor the names of its contributors</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// may be used to endorse or promote products derived from this software</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// without specific prior written permission.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_INTERVAL_TREE_H__</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __INCLUDE_INTERVAL_TREE_H__</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// mist名前空間の始まり</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<a class="code" href="mist__conf_8h.html#a7895efefff8bac18aad4afb2a3154927" title="MIST名前空間の始まり">_MIST_BEGIN</a></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> M, <span class="keyword">typename</span> T &gt;  <span class="keyword">class </span><a class="code" href="classtagged__section.html" title="Interval-treeのためのタグ情報付き区間を表すクラス">tagged_section</a>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> M, <span class="keyword">typename</span> T &gt;  <span class="keyword">class </span><a class="code" href="classtagged__section__min__less.html" title="区間集合のソートに用いる関数オブジェクト">tagged_section_min_less</a>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> M, <span class="keyword">typename</span> T &gt;  <span class="keyword">class </span><a class="code" href="classtagged__section__max__greater.html" title="区間集合のソートに用いる関数オブジェクト">tagged_section_max_greater</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> S, <span class="keyword">typename</span> V &gt;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="code" href="classinterval__tree.html">   92</a></span>&#160;<span class="keyword">class </span><a class="code" href="classinterval__tree.html" title="区間の集合から任意の値が含まれる区間のみを高速に探索するためのクラス">interval_tree</a></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;{</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="code" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43">   95</a></span>&#160;    <span class="keyword">typedef</span> S                           <a class="code" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43" title="区間を表す型">section_type</a>;   </div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="code" href="classinterval__tree.html#a1e58a6e48fa9c73a130204ff33784a84">   96</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> S::min_max_type    <a class="code" href="classinterval__tree.html#a1e58a6e48fa9c73a130204ff33784a84" title="区間の両端の値を表す型">min_max_type</a>;   </div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="code" href="classinterval__tree.html#a9a9eef853a48363c8a41a3d1433c3ae6">   97</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> S::tag_type        <a class="code" href="classinterval__tree.html#a9a9eef853a48363c8a41a3d1433c3ae6" title="区間のタグ情報をを表す型">tag_type</a>;       </div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="code" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0">   98</a></span>&#160;    <span class="keyword">typedef</span> V                           <a class="code" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0" title="区間の探索の際に入力される値を表す型">value_type</a>;     </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">class </span>node;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="code" href="classinterval__tree.html#af8c0f0e8ed1a6f66a1b51b7fed9b560c">  107</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classinterval__tree.html#af8c0f0e8ed1a6f66a1b51b7fed9b560c" title="入力された値が含まれる区間の探索">find</a>( <span class="keyword">const</span> <a class="code" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0" title="区間の探索の際に入力される値を表す型">value_type</a> &amp;val, std::vector&lt; tag_type &gt; &amp;tags )</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        tags.resize( 0 );</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        _find( val, tags, root_ );</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="code" href="classinterval__tree.html#a9f5377c6ea71235257a10ec5144d85b3">  118</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classinterval__tree.html#a9f5377c6ea71235257a10ec5144d85b3" title="Interval-treeの構築">construct</a>( <span class="keyword">const</span> std::vector&lt; section_type &gt; &amp;secs )</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordflow">if</span>( root_ != NULL ) </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        { </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <a class="code" href="classinterval__tree.html#a8bdf4bf3ecba1f76547ae506577836d6" title="Interval-treeの破棄">destruct</a>( ); </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">if</span>( secs.size( ) &gt; 0 ) </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        {</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            <span class="keywordtype">size_t</span> tree_size = 0;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            root_= <span class="keyword">new</span> node( secs, tree_size );</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            <span class="keywordflow">return</span> ( tree_size == secs.size( ) );</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <a class="code" href="classinterval__tree.html#a8bdf4bf3ecba1f76547ae506577836d6" title="Interval-treeの破棄">destruct</a>( );</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    }</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno"><a class="code" href="classinterval__tree.html#a8bdf4bf3ecba1f76547ae506577836d6">  135</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classinterval__tree.html#a8bdf4bf3ecba1f76547ae506577836d6" title="Interval-treeの破棄">destruct</a>( )</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    {</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keywordflow">if</span>( root_ != NULL ) </div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        { </div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <span class="keyword">delete</span> root_; </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            root_ = NULL; </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        }</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    }</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="code" href="classinterval__tree.html#a623562f67293ac36e11363fc56c3c94e">  145</a></span>&#160;    <a class="code" href="classinterval__tree.html#a623562f67293ac36e11363fc56c3c94e" title="デフォルトコンストラクタ">interval_tree</a>( ) : root_( NULL )</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    { </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    }</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00153"></a><span class="lineno"><a class="code" href="classinterval__tree.html#a8521e57b166547f2fcebede4954bba13">  153</a></span>&#160;    <a class="code" href="classinterval__tree.html#a623562f67293ac36e11363fc56c3c94e" title="デフォルトコンストラクタ">interval_tree</a>( <span class="keyword">const</span> std::vector&lt; section_type &gt; &amp;secs ) : root_( NULL ) </div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    { </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <a class="code" href="classinterval__tree.html#a9f5377c6ea71235257a10ec5144d85b3" title="Interval-treeの構築">construct</a>( secs ); </div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    }</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
+<div class="line"><a name="l00162"></a><span class="lineno"><a class="code" href="classinterval__tree.html#a2fd9c606e228e10ab42966c40875b14c">  162</a></span>&#160;    <a class="code" href="classinterval__tree.html#a623562f67293ac36e11363fc56c3c94e" title="デフォルトコンストラクタ">interval_tree</a>( <span class="keyword">const</span> <a class="code" href="classinterval__tree.html" title="区間の集合から任意の値が含まれる区間のみを高速に探索するためのクラス">interval_tree&lt; section_type, value_type &gt;</a> &amp;it ) : root_( NULL )</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        *<span class="keyword">this</span> = it;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00168"></a><span class="lineno"><a class="code" href="classinterval__tree.html#a17d326c4e43d4e6658a5ca97fa356cbf">  168</a></span>&#160;    <a class="code" href="classinterval__tree.html#a17d326c4e43d4e6658a5ca97fa356cbf" title="デストラクタ">~interval_tree</a>( ) </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    { </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <a class="code" href="classinterval__tree.html#a8bdf4bf3ecba1f76547ae506577836d6" title="Interval-treeの破棄">destruct</a>( ); </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    }</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00177"></a><span class="lineno"><a class="code" href="classinterval__tree.html#a8a8559a9d327181f6021f3249aa848a0">  177</a></span>&#160;    <a class="code" href="classinterval__tree.html" title="区間の集合から任意の値が含まれる区間のみを高速に探索するためのクラス">interval_tree</a> &amp;<a class="code" href="classinterval__tree.html#a8a8559a9d327181f6021f3249aa848a0" title="代入演算子">operator =</a>( <span class="keyword">const</span> <a class="code" href="classinterval__tree.html" title="区間の集合から任意の値が含まれる区間のみを高速に探索するためのクラス">interval_tree&lt; section_type, value_type &gt;</a> &amp;it )</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    {</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="keywordflow">if</span>( &amp;it == <span class="keyword">this</span> )</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        {</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        }</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        {</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            <a class="code" href="classinterval__tree.html#a8bdf4bf3ecba1f76547ae506577836d6" title="Interval-treeの破棄">destruct</a>( );</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            <span class="keywordflow">if</span>( it.root_ != NULL )</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            {</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                root_ = <span class="keyword">new</span> node( *it.root_ );</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            }</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        }</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    }</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keywordtype">void</span> _find( <span class="keyword">const</span> <a class="code" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0" title="区間の探索の際に入力される値を表す型">value_type</a> &amp;val, std::vector&lt; tag_type &gt; &amp;tags, node *p )</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    {</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keywordflow">if</span>( p != NULL )</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            <span class="keywordflow">if</span>( val &lt; p-&gt;val( ) )</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            {   </div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> i = 0 ; i &lt; p-&gt;min_inc_secs_size( ) ; i ++ )</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                {</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                    <span class="keywordflow">if</span>( static_cast&lt; value_type &gt;( p-&gt;min_inc_secs( i ).minimum( ) ) &gt; val )</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                    {</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                    }</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                    tags.push_back( p-&gt;min_inc_secs( i ).tag( ) );</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                }</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                _find( val, tags, p-&gt;left( ) );</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            }</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>( val &gt; p-&gt;val( ) )</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> i = 0 ; i &lt; p-&gt;max_dec_secs_size( ) ; i ++ )</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                {</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                    <span class="keywordflow">if</span>( static_cast&lt; value_type &gt;( p-&gt;max_dec_secs( i ).maximum( ) ) &lt;= val )</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;                    {</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;                        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                    }</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                    tags.push_back( p-&gt;max_dec_secs( i ).tag( ) );</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                }</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                _find( val, tags, p-&gt;right( ) );</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            }</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            {</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> i = 0 ; i &lt; p-&gt;min_inc_secs_size( ) ; i ++ )</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                {</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                    tags.push_back( p-&gt;min_inc_secs( i ).tag( ) );</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;                }</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            }</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        } </div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    }</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    node *root_;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;};</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> M, <span class="keyword">typename</span> T &gt;</div>
+<div class="line"><a name="l00247"></a><span class="lineno"><a class="code" href="classtagged__section.html">  247</a></span>&#160;<span class="keyword">class </span><a class="code" href="classtagged__section.html" title="Interval-treeのためのタグ情報付き区間を表すクラス">tagged_section</a></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;{</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00250"></a><span class="lineno"><a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc">  250</a></span>&#160;    <span class="keyword">typedef</span> M <a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc" title="最大値，最小値を表す型">min_max_type</a>;     </div>
+<div class="line"><a name="l00251"></a><span class="lineno"><a class="code" href="classtagged__section.html#a9dc0a20c978150a549cdd9e148023ac5">  251</a></span>&#160;    <span class="keyword">typedef</span> T <a class="code" href="classtagged__section.html#a9dc0a20c978150a549cdd9e148023ac5" title="タグ情報を表す型">tag_type</a>;         </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
+<div class="line"><a name="l00257"></a><span class="lineno"><a class="code" href="classtagged__section.html#a1691f697d35dcf4015bd1042aa10792a">  257</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc" title="最大値，最小値を表す型">min_max_type</a>  &amp;<a class="code" href="classtagged__section.html#a1691f697d35dcf4015bd1042aa10792a" title="区間の最小値を返す">minimum</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> min_; }</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    </div>
+<div class="line"><a name="l00263"></a><span class="lineno"><a class="code" href="classtagged__section.html#a8c9b969cf9d11162f2eb7d9a8e402625">  263</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc" title="最大値，最小値を表す型">min_max_type</a>  &amp;<a class="code" href="classtagged__section.html#a8c9b969cf9d11162f2eb7d9a8e402625" title="区間の最大値を返す">maximum</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> max_; }</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    </div>
+<div class="line"><a name="l00269"></a><span class="lineno"><a class="code" href="classtagged__section.html#ab1df0820714167d1ab5e3cdcf6976f1f">  269</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classtagged__section.html#a9dc0a20c978150a549cdd9e148023ac5" title="タグ情報を表す型">tag_type</a>      &amp;<a class="code" href="classtagged__section.html#ab1df0820714167d1ab5e3cdcf6976f1f" title="区間のタグ情報を返す">tag</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> tag_; }</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    </div>
+<div class="line"><a name="l00275"></a><span class="lineno"><a class="code" href="classtagged__section.html#a4b185a90c9af401b11f1a09fd8d1593d">  275</a></span>&#160;    <a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc" title="最大値，最小値を表す型">min_max_type</a>    &amp;<a class="code" href="classtagged__section.html#a4b185a90c9af401b11f1a09fd8d1593d" title="区間の最小値を返す（入出力可能）">minimum</a>( ) { <span class="keywordflow">return</span> min_; }</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    </div>
+<div class="line"><a name="l00281"></a><span class="lineno"><a class="code" href="classtagged__section.html#aaf522c4e1c084e5158b9f26c76036767">  281</a></span>&#160;    <a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc" title="最大値，最小値を表す型">min_max_type</a>    &amp;<a class="code" href="classtagged__section.html#aaf522c4e1c084e5158b9f26c76036767" title="区間の最大値を返す（入出力可能）">maximum</a>( ) { <span class="keywordflow">return</span> max_; }</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    </div>
+<div class="line"><a name="l00287"></a><span class="lineno"><a class="code" href="classtagged__section.html#a019166194c82ba4ee9e1d3bc8d13acfd">  287</a></span>&#160;    <a class="code" href="classtagged__section.html#a9dc0a20c978150a549cdd9e148023ac5" title="タグ情報を表す型">tag_type</a>        &amp;<a class="code" href="classtagged__section.html#a019166194c82ba4ee9e1d3bc8d13acfd" title="区間のタグ情報を返す（入出力可能）">tag</a>( ) { <span class="keywordflow">return</span> tag_; }</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
+<div class="line"><a name="l00290"></a><span class="lineno"><a class="code" href="classtagged__section.html#a04f08d996dde6a00fdeb30ed6db8c225">  290</a></span>&#160;    <a class="code" href="classtagged__section.html#a04f08d996dde6a00fdeb30ed6db8c225" title="デフォルトコンストラクタ">tagged_section</a>( ) : min_( <a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc" title="最大値，最小値を表す型">min_max_type</a>( ) ), max_( <a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc" title="最大値，最小値を表す型">min_max_type</a>( ) ), tag_( <a class="code" href="classtagged__section.html#a9dc0a20c978150a549cdd9e148023ac5" title="タグ情報を表す型">tag_type</a>( ) ) { }</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    </div>
+<div class="line"><a name="l00298"></a><span class="lineno"><a class="code" href="classtagged__section.html#ad4154c361170773eccbd2e9d4ee96177">  298</a></span>&#160;    <a class="code" href="classtagged__section.html#ad4154c361170773eccbd2e9d4ee96177" title="コンストラクタ">tagged_section</a>( <span class="keyword">const</span> <a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc" title="最大値，最小値を表す型">min_max_type</a> &amp;min, <span class="keyword">const</span> <a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc" title="最大値，最小値を表す型">min_max_type</a> &amp;max, <span class="keyword">const</span> <a class="code" href="classtagged__section.html#a9dc0a20c978150a549cdd9e148023ac5" title="タグ情報を表す型">tag_type</a> &amp;<a class="code" href="classtagged__section.html#ab1df0820714167d1ab5e3cdcf6976f1f" title="区間のタグ情報を返す">tag</a> ) : min_( min ), max_( max ), tag_( tag ) { }</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    </div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc" title="最大値，最小値を表す型">min_max_type</a>    min_;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <a class="code" href="classtagged__section.html#aa3193215f250c1c5971940825c0a93dc" title="最大値，最小値を表す型">min_max_type</a>    max_;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <a class="code" href="classtagged__section.html#a9dc0a20c978150a549cdd9e148023ac5" title="タグ情報を表す型">tag_type</a>        tag_;</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;};</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> M, <span class="keyword">typename</span> T &gt;</div>
+<div class="line"><a name="l00313"></a><span class="lineno"><a class="code" href="group__interval__tree__group.html#ga6199f87907445b335fbd2ab7923b2bdb">  313</a></span>&#160;<span class="keyword">inline</span> std::ostream &amp;operator &lt;&lt;( std::ostream &amp;out, const tagged_section&lt; M, T &gt; &amp;in )</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;{</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keywordflow">return</span> out &lt;&lt; in.tag( ) &lt;&lt; <span class="stringliteral">&quot; [&quot;</span> &lt;&lt; in.minimum( ) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; in.maximum( ) &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;}</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> M, <span class="keyword">typename</span> T &gt; </div>
+<div class="line"><a name="l00320"></a><span class="lineno"><a class="code" href="classtagged__section__min__less.html">  320</a></span>&#160;<span class="keyword">class </span><a class="code" href="classtagged__section__min__less.html" title="区間集合のソートに用いる関数オブジェクト">tagged_section_min_less</a>   </div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;{ </div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="keyword">public</span>: </div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keywordtype">bool</span> operator ( )( <span class="keyword">const</span> <a class="code" href="classtagged__section.html" title="Interval-treeのためのタグ情報付き区間を表すクラス">tagged_section&lt; M, T &gt;</a> &amp;s0, <span class="keyword">const</span> <a class="code" href="classtagged__section.html" title="Interval-treeのためのタグ情報付き区間を表すクラス">tagged_section&lt; M, T &gt;</a> &amp;s1 ) <span class="keyword">const</span> { <span class="keywordflow">return</span> s0.minimum( ) &lt; s1.minimum( ); } </div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;};</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> M, <span class="keyword">typename</span> T &gt;</div>
+<div class="line"><a name="l00328"></a><span class="lineno"><a class="code" href="classtagged__section__max__greater.html">  328</a></span>&#160;<span class="keyword">class </span><a class="code" href="classtagged__section__max__greater.html" title="区間集合のソートに用いる関数オブジェクト">tagged_section_max_greater</a>    </div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;{ </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="keyword">public</span>: </div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keywordtype">bool</span> operator ( )( <span class="keyword">const</span> <a class="code" href="classtagged__section.html" title="Interval-treeのためのタグ情報付き区間を表すクラス">tagged_section&lt; M, T &gt;</a> &amp;s0, <span class="keyword">const</span> <a class="code" href="classtagged__section.html" title="Interval-treeのためのタグ情報付き区間を表すクラス">tagged_section&lt; M, T &gt;</a> &amp;s1 ) <span class="keyword">const</span> { <span class="keywordflow">return</span> s0.maximum( ) &gt; s1.maximum( ); } </div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;};</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">typename</span> S, <span class="keyword">typename</span> V &gt;</div>
+<div class="line"><a name="l00341"></a><span class="lineno"><a class="code" href="classinterval__tree_1_1node.html">  341</a></span>&#160;<span class="keyword">class </span><a class="code" href="classinterval__tree.html" title="区間の集合から任意の値が含まれる区間のみを高速に探索するためのクラス">interval_tree</a>&lt; S, V &gt;::<a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a></div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;{</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classinterval__tree.html" title="区間の集合から任意の値が含まれる区間のみを高速に探索するためのクラス">interval_tree</a>&lt; S, V &gt;;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    <span class="keyword">const</span> <a class="code" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0" title="区間の探索の際に入力される値を表す型">value_type</a>    &amp;val( )<span class="keyword">                         const </span>{ <span class="keywordflow">return</span> val_; } </div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keyword">const</span> <a class="code" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43" title="区間を表す型">section_type</a>  &amp;min_inc_secs( <span class="keyword">const</span> <span class="keywordtype">size_t</span> i )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> min_inc_secs_[ i ]; }</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keyword">const</span> <a class="code" href="classinterval__tree.html#ab5fb9320f7cf3664b336576393f77d43" title="区間を表す型">section_type</a>  &amp;max_dec_secs( <span class="keyword">const</span> <span class="keywordtype">size_t</span> i )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> max_dec_secs_[ i ]; }</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="keywordtype">size_t</span>      min_inc_secs_size( )<span class="keyword">                    const </span>{ <span class="keywordflow">return</span> min_inc_secs_.size( ); }</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keywordtype">size_t</span>      max_dec_secs_size( )<span class="keyword">                    const </span>{ <span class="keywordflow">return</span> max_dec_secs_.size( ); }</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    </div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a> *left( )   { <span class="keywordflow">return</span> left_; }</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a> *right( )  { <span class="keywordflow">return</span> right_; }</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a>( <span class="keyword">const</span> std::vector&lt; section_type &gt; &amp;secs, <span class="keywordtype">size_t</span> &amp;tree_size ) : left_( NULL ), right_( NULL )</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    { </div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        val_ = middle( secs ); </div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        std::vector&lt; section_type &gt; l_secs, r_secs;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> i = 0 ; i &lt; secs.size( ) ; i ++ )</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        {</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;            <span class="keywordflow">if</span>( static_cast&lt; value_type &gt;( secs[ i ].maximum( ) ) &lt;= val_ )</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;            {</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                l_secs.push_back( secs[ i ] );</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;            }</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;            <span class="keywordflow">if</span>( static_cast&lt; value_type &gt;( secs[ i ] .minimum( ) ) &gt; val_ )</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;            {</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                r_secs.push_back( secs[ i ] );</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            }</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            min_inc_secs_.push_back( secs[ i ] );</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        }</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        tree_size += min_inc_secs_.size( );</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        std::sort( min_inc_secs_.begin( ), min_inc_secs_.end( ), <a class="code" href="classtagged__section__min__less.html" title="区間集合のソートに用いる関数オブジェクト">tagged_section_min_less&lt; min_max_type, tag_type &gt;</a>( ) );</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        max_dec_secs_ = min_inc_secs_; </div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        std::sort( max_dec_secs_.begin( ), max_dec_secs_.end( ), <a class="code" href="classtagged__section__max__greater.html" title="区間集合のソートに用いる関数オブジェクト">tagged_section_max_greater&lt; min_max_type, tag_type &gt;</a>( ) );</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        <span class="keywordflow">if</span>( l_secs.size( ) &gt; 0 )</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        {</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;            left_ = <span class="keyword">new</span> <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a>( l_secs, tree_size );</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        }</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="keywordflow">if</span>( r_secs.size( ) &gt; 0 )</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        {</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;            right_ = <span class="keyword">new</span> <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a>( r_secs, tree_size );</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        }</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    }</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a>( <span class="keyword">const</span> <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a> &amp;nd ) : left_( NULL ), right_( NULL )</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    {</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        *<span class="keyword">this</span> = nd; </div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    }</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    ~<a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a>( )</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    { </div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="keywordflow">if</span>( left_ != NULL )</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        {</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            <span class="keyword">delete</span> left_;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;            left_ = NULL;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        }</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        <span class="keywordflow">if</span>( right_ != NULL )</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        {</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;            <span class="keyword">delete</span> right_;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;            right_ = NULL;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        }</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    }</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a> &amp;<a class="code" href="classinterval__tree.html#a8a8559a9d327181f6021f3249aa848a0" title="代入演算子">operator =</a>( <span class="keyword">const</span> <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a> &amp;nd )</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    {</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        <span class="keywordflow">if</span>( &amp;nd == <span class="keyword">this</span> )</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        {</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        }</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        {</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;            <span class="keyword">delete</span> left_;</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;            <span class="keyword">delete</span> right_;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;            val_            = nd.val_;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;            min_inc_secs_   = nd.min_inc_secs_;</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;            max_dec_secs_   = nd.max_dec_secs_;</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;            <span class="keywordflow">if</span>( nd.left_ != NULL )</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;            {</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;                left_   = <span class="keyword">new</span> <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a>( *nd.left_ );</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;            }</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;            <span class="keywordflow">if</span>( nd.right_ != NULL )</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;            {</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;                right_  = <span class="keyword">new</span> <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a>( *nd.right_ );</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;            }</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;        }</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    }</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    <a class="code" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0" title="区間の探索の際に入力される値を表す型">value_type</a> middle( <span class="keyword">const</span> std::vector&lt; section_type &gt; &amp;secs )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        <span class="keyword">typename</span> section_type::min_max_type minimum = secs[ 0 ].minimum( );</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        <span class="keyword">typename</span> section_type::min_max_type maximum = secs[ 0 ].maximum( );</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> i = 1 ; i &lt; secs.size( ) ; i ++ )</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        {</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;            minimum = ( secs[ i ].minimum( ) &lt; minimum ) ? secs[ i ].minimum( ) : minimum;</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;            maximum = ( secs[ i ].maximum( ) &gt; maximum ) ? secs[ i ].maximum( ) : maximum;</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;        }</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;        <span class="keywordflow">return</span>( static_cast&lt; value_type &gt;( ( minimum + maximum ) / 2.0 ) );</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    }</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    <a class="code" href="classinterval__tree.html#a6a9351c7810273c1555e604ff2888ec0" title="区間の探索の際に入力される値を表す型">value_type</a>                  val_;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    std::vector&lt; section_type &gt; min_inc_secs_;</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;    std::vector&lt; section_type &gt; max_dec_secs_;</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;    <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a>                        *left_;</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    <a class="code" href="classinterval__tree_1_1node.html" title="Interval-treeのノードを表すクラス（interval_treeクラスの内部でのみ使用）">node</a>                        *right_;</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;};</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;<span class="comment">//  Interval-tree グループの終わり</span></div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;<span class="comment">// mist名前空間の終わり</span></div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;<a class="code" href="mist__conf_8h.html#a5782930a99d85de30831b223eb8df540" title="MIST名前空間の終わり">_MIST_END</a></div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;<span class="preprocessor">#endif // #ifndef __INCLUDE_INTERVAL_TREE_H__</span></div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;<span class="preprocessor"></span></div>
+</div><!-- fragment --></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:17 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::dicom::dicom_tag_table</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1dicom.html">dicom</a></li><li class="navelem"><a class="el" href="classmist_1_1dicom_1_1dicom__tag__table.html">dicom_tag_table</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-methods">Protected メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::dicom::dicom_tag_table</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>MISTで扱うことができるDICOMタグの一覧を登録するクラス  
+ <a href="classmist_1_1dicom_1_1dicom__tag__table.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="dicom__tag_8h_source.html">dicom_tag.h</a>&gt;</code></p>
+
+<p>std::multiset&lt; K &gt;を継承しています。</p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:ae1b8d39a44d3f8b7ab435d822e870ae0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae1b8d39a44d3f8b7ab435d822e870ae0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag__table.html#ae1b8d39a44d3f8b7ab435d822e870ae0">contain_tag</a> (unsigned short group, unsigned short element) const </td></tr>
+<tr class="memdesc:ae1b8d39a44d3f8b7ab435d822e870ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">(group, element) のタグが含まれているかどうかを調べる <br/></td></tr>
+<tr class="memitem:ac22f8fa1dde776a71584107de557196b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac22f8fa1dde776a71584107de557196b"></a>
+<a class="el" href="classmist_1_1dicom_1_1dicom__tag.html">dicom_tag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag__table.html#ac22f8fa1dde776a71584107de557196b">get_tag</a> (unsigned short group, unsigned short element, const std::string &amp;vr) const </td></tr>
+<tr class="memdesc:ac22f8fa1dde776a71584107de557196b"><td class="mdescLeft">&#160;</td><td class="mdescRight">(group, element, vr) のタグを取得する <br/></td></tr>
+<tr class="memitem:a0de278f17b7f9dedcfa05a994989d3e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0de278f17b7f9dedcfa05a994989d3e7"></a>
+<a class="el" href="classmist_1_1dicom_1_1dicom__tag.html">dicom_tag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag__table.html#a0de278f17b7f9dedcfa05a994989d3e7">get_tag</a> (unsigned short group, unsigned short element, <a class="el" href="namespacemist_1_1dicom.html#a1beb77bab459d87a4764d0b57f0a34a2">dicom_vr</a> vr) const </td></tr>
+<tr class="memdesc:a0de278f17b7f9dedcfa05a994989d3e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">(group, element, vr) のタグを取得する <br/></td></tr>
+<tr class="memitem:a6c73b63d99e92b0a89cfd2d51ce3b86d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c73b63d99e92b0a89cfd2d51ce3b86d"></a>
+<a class="el" href="classmist_1_1dicom_1_1dicom__tag.html">dicom_tag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag__table.html#a6c73b63d99e92b0a89cfd2d51ce3b86d">get_tag</a> (unsigned short group, unsigned short element) const </td></tr>
+<tr class="memdesc:a6c73b63d99e92b0a89cfd2d51ce3b86d"><td class="mdescLeft">&#160;</td><td class="mdescRight">(group, element) で一番最初に見つかったタグを取得する <br/></td></tr>
+<tr class="memitem:afc22730c470e8870e6e38b451baac9aa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag__table.html#afc22730c470e8870e6e38b451baac9aa">dicom_tag_table</a> ()</td></tr>
+<tr class="memdesc:afc22730c470e8870e6e38b451baac9aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトコンストラクタ  <a href="#afc22730c470e8870e6e38b451baac9aa"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr class="memitem:ac70e4f383b3bb6eeefd00cad0ff3dd6d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac70e4f383b3bb6eeefd00cad0ff3dd6d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag__table.html#ac70e4f383b3bb6eeefd00cad0ff3dd6d">insert_tag</a> (unsigned short group, unsigned short element, const std::string &amp;vr, int vm, const std::string &amp;comment, bool b=true)</td></tr>
+<tr class="memdesc:ac70e4f383b3bb6eeefd00cad0ff3dd6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを挿入する <br/></td></tr>
+<tr class="memitem:afe5e82fe08112444c75cc30dff18bf48"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe5e82fe08112444c75cc30dff18bf48"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag__table.html#afe5e82fe08112444c75cc30dff18bf48">insert_tag</a> (unsigned short group, unsigned short element, <a class="el" href="namespacemist_1_1dicom.html#a1beb77bab459d87a4764d0b57f0a34a2">dicom_vr</a> vr, int vm, const std::string &amp;comment, bool b=true)</td></tr>
+<tr class="memdesc:afe5e82fe08112444c75cc30dff18bf48"><td class="mdescLeft">&#160;</td><td class="mdescRight">タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを挿入する <br/></td></tr>
+<tr class="memitem:af2206934be463adf63bd613a60ff2a12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2206934be463adf63bd613a60ff2a12"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__tag__table.html#af2206934be463adf63bd613a60ff2a12">insert_tag</a> (const dicom_tag_element *dicom_tags)</td></tr>
+<tr class="memdesc:af2206934be463adf63bd613a60ff2a12"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMタグの配列を挿入する <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_classstd_1_1multiset"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classstd_1_1multiset')"><img src="closed.png" alt="-"/>&nbsp;変数 inherited from <a class="el" href="classstd_1_1multiset.html">std::multiset< K ></a></td></tr>
+<tr class="memitem:a93eb79091066c87f6dfb9d07c6c7cbcd inherit pub_attribs_classstd_1_1multiset"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a93eb79091066c87f6dfb9d07c6c7cbcd"></a>
+K&#160;</td><td class="memItemRight" valign="bottom"><b>keys</b></td></tr>
+<tr class="memdesc:a93eb79091066c87f6dfb9d07c6c7cbcd inherit pub_attribs_classstd_1_1multiset"><td class="mdescLeft">&#160;</td><td class="mdescRight">STL member. <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>MISTで扱うことができるDICOMタグの一覧を登録するクラス </p>
+</div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="afc22730c470e8870e6e38b451baac9aa"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">mist::dicom::dicom_tag_table::dicom_tag_table </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>デフォルトコンストラクタ </p>
+<p>必要なDICOMタグのみをインポートする． 以下のマクロのうち，1 と定義されているもののみを有効にする</p>
+<ul>
+<li><b>INCLUDE_DICOM_TAG_0000</b> … グループIDが 0000 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0002</b> … グループIDが 0002 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0004</b> … グループIDが 0004 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0008</b> … グループIDが 0008 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0010</b> … グループIDが 0010 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0012</b> … グループIDが 0012 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0018</b> … グループIDが 0018 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0020</b> … グループIDが 0020 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0022</b> … グループIDが 0022 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0028</b> … グループIDが 0028 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0032</b> … グループIDが 0032 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0038</b> … グループIDが 0038 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_003A</b> … グループIDが 003A のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0040</b> … グループIDが 0040 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0042</b> … グループIDが 0042 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0044</b> … グループIDが 0044 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0046</b> … グループIDが 0046 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0050</b> … グループIDが 0050 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0054</b> … グループIDが 0054 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0060</b> … グループIDが 0060 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0062</b> … グループIDが 0062 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0064</b> … グループIDが 0064 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0066</b> … グループIDが 0066 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0070</b> … グループIDが 0070 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0072</b> … グループIDが 0072 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0074</b> … グループIDが 0074 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0088</b> … グループIDが 0088 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0100</b> … グループIDが 0100 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_0400</b> … グループIDが 0400 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_2000</b> … グループIDが 2000 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_2010</b> … グループIDが 2010 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_2020</b> … グループIDが 2020 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_2030</b> … グループIDが 2030 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_2040</b> … グループIDが 2040 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_2050</b> … グループIDが 2050 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_2100</b> … グループIDが 2100 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_2110</b> … グループIDが 2110 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_2120</b> … グループIDが 2120 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_2130</b> … グループIDが 2130 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_2200</b> … グループIDが 2200 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_3002</b> … グループIDが 3002 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_3004</b> … グループIDが 3004 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_3006</b> … グループIDが 3006 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_3008</b> … グループIDが 3008 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_300A</b> … グループIDが 300A のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_300C</b> … グループIDが 300C のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_300E</b> … グループIDが 300E のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_4000</b> … グループIDが 4000 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_4008</b> … グループIDが 4008 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_4FFE</b> … グループIDが 4FFE のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_5000</b> … グループIDが 5000 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_5200</b> … グループIDが 5200 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_5400</b> … グループIDが 5400 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_5600</b> … グループIDが 5600 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_6000</b> … グループIDが 6000 のタグを挿入する</li>
+<li><b>INCLUDE_DICOM_TAG_FFFF</b> … グループIDが FFFF のタグを挿入する </li>
+</ul>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="dicom__tag_8h_source.html">dicom_tag.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

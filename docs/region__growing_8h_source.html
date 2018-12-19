@@ -1,0 +1,927 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>region_growing.h ソースファイル</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_98af7b07076b7431daa71db42f45cb3a.html">filter</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">region_growing.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="region__growing_8h.html">説明を見る。</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Copyright (c) 2003-2011, MIST Project, Nagoya University</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// All rights reserved.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// Redistribution and use in source and binary forms, with or without modification,</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// are permitted provided that the following conditions are met:</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// 1. Redistributions of source code must retain the above copyright notice,</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// this list of conditions and the following disclaimer.</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// 2. Redistributions in binary form must reproduce the above copyright notice,</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// this list of conditions and the following disclaimer in the documentation</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// and/or other materials provided with the distribution.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// 3. Neither the name of the Nagoya University nor the names of its contributors</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// may be used to endorse or promote products derived from this software</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// without specific prior written permission.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_REGIONGROWING__</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __INCLUDE_MIST_REGIONGROWING__</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_H__</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;../mist.h&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_LIMITS__</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;../limits.h&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_VECTOR__</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;../vector.h&quot;</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#include &lt;deque&gt;</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// mist名前空間の始まり</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<a class="code" href="mist__conf_8h.html#a7895efefff8bac18aad4afb2a3154927" title="MIST名前空間の始まり">_MIST_BEGIN</a></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="code" href="namespacemist_1_1region__growing__utility.html">   88</a></span>&#160;<span class="keyword">namespace </span>region_growing_utility</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;{</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5">   91</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5" title="次の注目点の定め方">expand_mode_type</a></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    {</div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a94360168bdc0c7c111de0e10206e3ae0">   93</a></span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a94360168bdc0c7c111de0e10206e3ae0" title="４近傍（２次元）">NC4</a>,    </div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5aae08a1b4828f3931bf1bb0084f4dbf06">   94</a></span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5aae08a1b4828f3931bf1bb0084f4dbf06" title="８近傍（２次元）">NC8</a>,    </div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a26d722f6b416a713fd65ce0476739e58">   95</a></span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a26d722f6b416a713fd65ce0476739e58" title="６近傍（３次元）">NC6</a>,    </div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5adf50660bd21ec2472f47b2ebe35c3645">   96</a></span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5adf50660bd21ec2472f47b2ebe35c3645" title="１８近傍（３次元）">NC18</a>,   </div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a022ccd1e24fe7f382c0dfa998a807cc8">   97</a></span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a022ccd1e24fe7f382c0dfa998a807cc8" title="２６近傍（３次元）">NC26</a>,   </div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a31ee749ac6b205a8ef040b4a68453c18">   98</a></span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a31ee749ac6b205a8ef040b4a68453c18" title="構造要素内のすべての点">ALL</a>     </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    };</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html">  103</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html" title="領域拡張法で用いる２次元画素の構造要素">pixel</a></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    {</div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a91d49b6d388a1ebb580efa03a49b2b55">  105</a></span>&#160;        <span class="keyword">typedef</span> <span class="keywordtype">size_t</span>      <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a91d49b6d388a1ebb580efa03a49b2b55" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a>;              </div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#ad45da7b6a23f5038233ec02233010476">  106</a></span>&#160;        <span class="keyword">typedef</span> ptrdiff_t   <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#ad45da7b6a23f5038233ec02233010476" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a>;        </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a0b5a1e163cd8e4311fd28f20869812a6">  108</a></span>&#160;        <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a91d49b6d388a1ebb580efa03a49b2b55" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a0b5a1e163cd8e4311fd28f20869812a6" title="構造要素の幅を返す">width</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( 1 ); }   </div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a858825596f85020741b26b10d194d73e">  109</a></span>&#160;        <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a91d49b6d388a1ebb580efa03a49b2b55" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a858825596f85020741b26b10d194d73e" title="構造要素の高さを返す">height</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( 1 ); }  </div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#ad8a3aceb30ab2d1337e5876dac7f6ea0">  110</a></span>&#160;        <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a91d49b6d388a1ebb580efa03a49b2b55" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#ad8a3aceb30ab2d1337e5876dac7f6ea0" title="構造要素の深さを返す">depth</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( 1 ); }   </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5" title="次の注目点の定め方">expand_mode_type</a> __expand_mode__;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a54ca4c6ef076fccfac13517616e9628e">  115</a></span>&#160;        <span class="keywordtype">bool</span> operator ()( <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#ad45da7b6a23f5038233ec02233010476" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> <span class="comment">/* i */</span>, <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#ad45da7b6a23f5038233ec02233010476" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> <span class="comment">/* j */</span>, <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#ad45da7b6a23f5038233ec02233010476" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> <span class="comment">/* k */</span> )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( <span class="keyword">true</span> ); }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a8a841c8559a5af3af34a52e2a60de6e6">  118</a></span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5" title="次の注目点の定め方">expand_mode_type</a> <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a8a841c8559a5af3af34a52e2a60de6e6" title="次の注目点の定め方">expand_mode</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( __expand_mode__ ); }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00121"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a5336330ab1f5c621cdcb14ba928db4a5">  121</a></span>&#160;        <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a5336330ab1f5c621cdcb14ba928db4a5" title="NC4 近傍型のボクセル">pixel</a>( ) : __expand_mode__( <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a94360168bdc0c7c111de0e10206e3ae0" title="４近傍（２次元）">NC4</a> ){ }</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a05d517f409880d05b034ae6c745a9536">  124</a></span>&#160;        <a class="code" href="structmist_1_1region__growing__utility_1_1pixel.html#a05d517f409880d05b034ae6c745a9536" title="指定した近傍のボクセルとして初期化する">pixel</a>( <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5" title="次の注目点の定め方">expand_mode_type</a> mode ) : __expand_mode__( mode ){ }</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    };</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html">  129</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html" title="領域拡張法で用いる３次元画素の構造要素">voxel</a></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    {</div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#adc91a004f44606e475583b93365d52e9">  131</a></span>&#160;        <span class="keyword">typedef</span> <span class="keywordtype">size_t</span>      <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#adc91a004f44606e475583b93365d52e9" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a>;              </div>
+<div class="line"><a name="l00132"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a5298dca45b90dbb89611cb32e2245589">  132</a></span>&#160;        <span class="keyword">typedef</span> ptrdiff_t   <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a5298dca45b90dbb89611cb32e2245589" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a>;        </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#ac54f5c282b0b656a4ceae4392bd07d56">  134</a></span>&#160;        <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#adc91a004f44606e475583b93365d52e9" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#ac54f5c282b0b656a4ceae4392bd07d56" title="構造要素の幅を返す">width</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( 1 ); }   </div>
+<div class="line"><a name="l00135"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a989bf371e8a946faca448c6d6e64ce3a">  135</a></span>&#160;        <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#adc91a004f44606e475583b93365d52e9" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a989bf371e8a946faca448c6d6e64ce3a" title="構造要素の高さを返す">height</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( 1 ); }  </div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a3175bad2927bec6b6fd000b2b266e8e0">  136</a></span>&#160;        <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#adc91a004f44606e475583b93365d52e9" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a3175bad2927bec6b6fd000b2b266e8e0" title="構造要素の深さを返す">depth</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( 1 ); }   </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5" title="次の注目点の定め方">expand_mode_type</a> __expand_mode__;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a70c87e1efd5c09e3bf5d70f69fb1a5c3">  141</a></span>&#160;        <span class="keywordtype">bool</span> operator ()( <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a5298dca45b90dbb89611cb32e2245589" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> <span class="comment">/* i */</span>, <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a5298dca45b90dbb89611cb32e2245589" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> <span class="comment">/* j */</span>, <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a5298dca45b90dbb89611cb32e2245589" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> <span class="comment">/* k */</span> )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( <span class="keyword">true</span> ); }</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#ab0ee66d9b869dd533fc9ba3d06d3d797">  144</a></span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5" title="次の注目点の定め方">expand_mode_type</a> <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#ab0ee66d9b869dd533fc9ba3d06d3d797" title="次の注目点の定め方">expand_mode</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( __expand_mode__ ); }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00147"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a0e423dfa31d46e19077b06ba3c31dd8e">  147</a></span>&#160;        <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a0e423dfa31d46e19077b06ba3c31dd8e" title="NC6 近傍型のボクセル">voxel</a>( ) : __expand_mode__( <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a26d722f6b416a713fd65ce0476739e58" title="６近傍（３次元）">NC6</a> ){ }</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a60f86e020cb92fd2523c3148f0bc8788">  150</a></span>&#160;        <a class="code" href="structmist_1_1region__growing__utility_1_1voxel.html#a60f86e020cb92fd2523c3148f0bc8788" title="指定した近傍のボクセルとして初期化する">voxel</a>( <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5" title="次の注目点の定め方">expand_mode_type</a> mode ) : __expand_mode__( mode ){ }</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    };</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1circle.html">  155</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classmist_1_1region__growing__utility_1_1circle.html" title="領域拡張法で用いる円の構造要素">circle</a></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00158"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a64d435633bb4a1b5fed69b7cc13dc410">  158</a></span>&#160;        <span class="keyword">typedef</span> <span class="keywordtype">size_t</span>      <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a64d435633bb4a1b5fed69b7cc13dc410" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a>;          </div>
+<div class="line"><a name="l00159"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#aa7251629fe759380dad70bbab0135a1d">  159</a></span>&#160;        <span class="keyword">typedef</span> ptrdiff_t   <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#aa7251629fe759380dad70bbab0135a1d" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a>;    </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordtype">double</span> radius_;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordtype">double</span> resoX_;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordtype">double</span> resoY_;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a64d435633bb4a1b5fed69b7cc13dc410" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> width_;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a64d435633bb4a1b5fed69b7cc13dc410" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> height_;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#abad27b76a95085c641a9cf7dc8d4249a">  169</a></span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a64d435633bb4a1b5fed69b7cc13dc410" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#abad27b76a95085c641a9cf7dc8d4249a" title="構造要素の幅を返す">width</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( width_ ); }      </div>
+<div class="line"><a name="l00170"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a4eeef85643e3b3a8512d78b841cc98b2">  170</a></span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a64d435633bb4a1b5fed69b7cc13dc410" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a4eeef85643e3b3a8512d78b841cc98b2" title="構造要素の高さを返す">height</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( height_ ); }    </div>
+<div class="line"><a name="l00171"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a548d7f9901090fd7884109988f7958e1">  171</a></span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a64d435633bb4a1b5fed69b7cc13dc410" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a548d7f9901090fd7884109988f7958e1" title="構造要素の深さを返す">depth</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( 1 ); }           </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#ab6577c282017824a954303eae4efb259">  174</a></span>&#160;        <span class="keywordtype">bool</span> operator ()( <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#aa7251629fe759380dad70bbab0135a1d" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> i, <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#aa7251629fe759380dad70bbab0135a1d" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> j, <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#aa7251629fe759380dad70bbab0135a1d" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> k )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            <span class="keywordflow">if</span>( k != 0 )</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            {</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                <span class="keywordflow">return</span>( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            }</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            {</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                <span class="keywordflow">return</span>( i * i * resoX_ * resoX_ + j * j * resoY_ * resoY_ &lt;= radius_ * radius_ );</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            }</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        }</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00187"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a3e826c5e4e64be24aaf6532073b38be6">  187</a></span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5" title="次の注目点の定め方">expand_mode_type</a> <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a3e826c5e4e64be24aaf6532073b38be6" title="次の注目点の定め方">expand_mode</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a94360168bdc0c7c111de0e10206e3ae0" title="４近傍（２次元）">NC4</a> ); }</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
+<div class="line"><a name="l00190"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#ac227a2fa0fcf7b385db539e10e5f32b1">  190</a></span>&#160;        <a class="code" href="namespacemist_1_1mode__filter.html#a49be8a5eecec8cc00aa0ed630f839d4c" title="最頻値フィルタに用いる円構造要素">circle</a>( <span class="keywordtype">double</span> radius, <span class="keywordtype">double</span> resoX = 1.0, <span class="keywordtype">double</span> resoY = 1.0, <span class="keywordtype">bool</span> radiusInPhysicalCoords = <span class="keyword">false</span> ) : radius_( radius )</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        {</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="keywordflow">if</span>( radiusInPhysicalCoords )</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            {</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                resoX_ = resoX;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                resoY_ = resoY;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            }</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                <span class="keywordtype">double</span> max_reso = resoX &gt; resoY ? resoX: resoY;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                resoX_ = resoX / max_reso;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                resoY_ = resoY / max_reso;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            }</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            width_  = <span class="keyword">static_cast&lt;</span> <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a64d435633bb4a1b5fed69b7cc13dc410" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <span class="keyword">&gt;</span>( std::ceil( radius_ / resoX_ ) ) * 2 + 1;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            height_ = <span class="keyword">static_cast&lt;</span> <a class="code" href="classmist_1_1region__growing__utility_1_1circle.html#a64d435633bb4a1b5fed69b7cc13dc410" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <span class="keyword">&gt;</span>( std::ceil( radius_ / resoY_ ) ) * 2 + 1;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        }</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    };</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
+<div class="line"><a name="l00211"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html">  211</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html" title="領域拡張法で用いる球の構造要素">sphere</a></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00214"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a63a45e9bb6dab2152569892c8a976705">  214</a></span>&#160;        <span class="keyword">typedef</span> <span class="keywordtype">size_t</span>      <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a63a45e9bb6dab2152569892c8a976705" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a>;          </div>
+<div class="line"><a name="l00215"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a0bb91e5f755a445c04fc207f07caada8">  215</a></span>&#160;        <span class="keyword">typedef</span> ptrdiff_t   <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a0bb91e5f755a445c04fc207f07caada8" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a>;    </div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordtype">double</span> radius_;     </div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        <span class="keywordtype">double</span> resoX_;      </div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="keywordtype">double</span> resoY_;      </div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="keywordtype">double</span> resoZ_;      </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a63a45e9bb6dab2152569892c8a976705" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> width_;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a63a45e9bb6dab2152569892c8a976705" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> height_;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a63a45e9bb6dab2152569892c8a976705" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> depth_;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00227"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#adcf2df74781bc9ec37dba495ed44f6b8">  227</a></span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a63a45e9bb6dab2152569892c8a976705" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#adcf2df74781bc9ec37dba495ed44f6b8" title="構造要素の幅を返す">width</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( width_ ); }      </div>
+<div class="line"><a name="l00228"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#aa419f2ed206ac6baaa15d329c74f5e4c">  228</a></span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a63a45e9bb6dab2152569892c8a976705" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#aa419f2ed206ac6baaa15d329c74f5e4c" title="構造要素の高さを返す">height</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( height_ ); }    </div>
+<div class="line"><a name="l00229"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a20923a353a8fdf09d24796004f577766">  229</a></span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a63a45e9bb6dab2152569892c8a976705" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a20923a353a8fdf09d24796004f577766" title="構造要素の深さを返す">depth</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( depth_ ); }      </div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
+<div class="line"><a name="l00232"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#abb086e3625437f83f40873138f74c493">  232</a></span>&#160;        <span class="keywordtype">bool</span> operator ()( <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a0bb91e5f755a445c04fc207f07caada8" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> i, <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a0bb91e5f755a445c04fc207f07caada8" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> j, <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a0bb91e5f755a445c04fc207f07caada8" title="符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ">difference_type</a> k )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            <span class="keywordflow">return</span>( i * i * resoX_ * resoX_ + j * j * resoY_ * resoY_+ k * k * resoZ_ * resoZ_ &lt;= radius_ * radius_ );</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
+<div class="line"><a name="l00238"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a367883c8c19c112de3ec2f65e4155f4d">  238</a></span>&#160;        <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5" title="次の注目点の定め方">expand_mode_type</a> <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a367883c8c19c112de3ec2f65e4155f4d" title="次の注目点の定め方">expand_mode</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a26d722f6b416a713fd65ce0476739e58" title="６近傍（３次元）">NC6</a> ); }</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
+<div class="line"><a name="l00241"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#ac19ddc32396f6779b4f5036802770ed5">  241</a></span>&#160;        <a class="code" href="namespacemist_1_1mode__filter.html#ab8f4385aa6d16689ce46e360d1342b4c" title="最頻値フィルタに用いる球構造要素">sphere</a>( <span class="keywordtype">double</span> radius, <span class="keywordtype">double</span> resoX = 1.0, <span class="keywordtype">double</span> resoY = 1.0, <span class="keywordtype">double</span> resoZ = 1.0, <span class="keywordtype">bool</span> radiusInPhysicalCoords = <span class="keyword">false</span> ) : radius_( radius )</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        {</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            <span class="keywordflow">if</span> (radiusInPhysicalCoords)</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            {</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                resoX_ = resoX;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                resoY_ = resoY;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                resoZ_ = resoZ;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            }</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            {</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                <span class="keywordtype">double</span> max_reso = resoX &gt; resoY ? resoX: resoY;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                max_reso = max_reso &gt; resoZ ? max_reso : resoZ;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                resoX_ = resoX / max_reso;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                resoY_ = resoY / max_reso;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                resoZ_ = resoZ / max_reso;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            }</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            width_  = <span class="keyword">static_cast&lt;</span> <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a63a45e9bb6dab2152569892c8a976705" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <span class="keyword">&gt;</span>( std::ceil( radius_ / resoX_ ) ) * 2 + 1;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            height_ = <span class="keyword">static_cast&lt;</span> <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a63a45e9bb6dab2152569892c8a976705" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <span class="keyword">&gt;</span>( std::ceil( radius_ / resoY_ ) ) * 2 + 1;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            depth_  = <span class="keyword">static_cast&lt;</span> <a class="code" href="classmist_1_1region__growing__utility_1_1sphere.html#a63a45e9bb6dab2152569892c8a976705" title="符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ">size_type</a> <span class="keyword">&gt;</span>( std::ceil( radius_ / resoZ_ ) ) * 2 + 1;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        }</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    };</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> T &gt;</div>
+<div class="line"><a name="l00270"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1less.html">  270</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classmist_1_1region__growing__utility_1_1less.html" title="領域拡張法で用いる拡張条件">less</a></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    {</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        <span class="keyword">typedef</span> <span class="keywordtype">size_t</span>      size_type;          </div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <span class="keyword">typedef</span> ptrdiff_t   difference_type;    </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="keyword">typedef</span> T           value_type;         </div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00278"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1less.html#a19eeae786aeb2f495b2f7efea8c480c5">  278</a></span>&#160;        value_type <a class="code" href="classmist_1_1region__growing__utility_1_1less.html#a19eeae786aeb2f495b2f7efea8c480c5" title="しきい値">th_</a>;     </div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        <span class="keyword">template</span> &lt; <span class="keyword">class</span> VerifyList &gt;</div>
+<div class="line"><a name="l00283"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1less.html#a8f97d92d3bfd45f052a997b1639f2c69">  283</a></span>&#160;        <span class="keywordtype">bool</span> operator()( <span class="keyword">const</span> VerifyList &amp;elements, size_type num )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            <span class="keyword">typedef</span> <span class="keyword">typename</span> VerifyList::value_type verify_value_type;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; num ; i++ )</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            {</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                <span class="keyword">const</span> verify_value_type &amp;v = elements[ i ];</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                <span class="keywordflow">if</span>( !( v &lt; th_ ) )</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                {</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                    <span class="keywordflow">return</span> ( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                }</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            }</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            <span class="keywordflow">return</span> ( <span class="keyword">true</span> );</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        }</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
+<div class="line"><a name="l00300"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1less.html#ac80442a32eb4edd09ceb64ceaf72feb7">  300</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classmist_1_1region__growing__utility_1_1less.html#ac80442a32eb4edd09ceb64ceaf72feb7" title="条件判定を行う際に，構造要素内の全画素が必要な場合は true を返す">require_all_elements</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( <span class="keyword">false</span> ); }</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
+<div class="line"><a name="l00303"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1less.html#a14d401484048e7b0c470eef4176f6404">  303</a></span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1less.html#a14d401484048e7b0c470eef4176f6404" title="任意のしきい値で初期化">less</a>( value_type <a class="code" href="namespacemist_1_1ptile.html#adac80a62f2adcc1d47a42f45423dc937" title="p-tile法によるしきい値決定">threshold</a> ) : th_( threshold ){ }</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    };</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> T &gt;</div>
+<div class="line"><a name="l00312"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1greater.html">  312</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classmist_1_1region__growing__utility_1_1greater.html" title="領域拡張法で用いる拡張条件">greater</a></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    {</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        <span class="keyword">typedef</span> <span class="keywordtype">size_t</span>      size_type;          </div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        <span class="keyword">typedef</span> ptrdiff_t   difference_type;    </div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        <span class="keyword">typedef</span> T           value_type;         </div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00320"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1greater.html#ab440e4d82e516ac6e668fb97578fa9c9">  320</a></span>&#160;        value_type <a class="code" href="classmist_1_1region__growing__utility_1_1greater.html#ab440e4d82e516ac6e668fb97578fa9c9" title="しきい値">th_</a>;     </div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keyword">template</span> &lt; <span class="keyword">class</span> VerifyList &gt;</div>
+<div class="line"><a name="l00325"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1greater.html#ae3fb780a0977596127706c86c754b0ed">  325</a></span>&#160;        <span class="keywordtype">bool</span> operator()( <span class="keyword">const</span> VerifyList &amp;elements, size_type num )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;            <span class="keyword">typedef</span> <span class="keyword">typename</span> VerifyList::value_type verify_value_type;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;            <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; num ; i++ )</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;            {</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                <span class="keyword">const</span> verify_value_type &amp;v = elements[ i ];</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                <span class="keywordflow">if</span>( v &lt; th_ )</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                {</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                    <span class="keywordflow">return</span> ( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                }</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;            }</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;            <span class="keywordflow">return</span> ( <span class="keyword">true</span> );</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        }</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
+<div class="line"><a name="l00342"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1greater.html#a5aece8ac65eb845909f86bd17098cb87">  342</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classmist_1_1region__growing__utility_1_1greater.html#a5aece8ac65eb845909f86bd17098cb87" title="条件判定を行う際に，構造要素内の全画素が必要な場合は true を返す">require_all_elements</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( <span class="keyword">false</span> ); }</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;</div>
+<div class="line"><a name="l00345"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1greater.html#ae3edc9507d2cdc2c1ae973e3564db82e">  345</a></span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1greater.html#ae3edc9507d2cdc2c1ae973e3564db82e" title="任意のしきい値で初期化">greater</a>( value_type <a class="code" href="namespacemist_1_1ptile.html#adac80a62f2adcc1d47a42f45423dc937" title="p-tile法によるしきい値決定">threshold</a> ) : th_( threshold ){ }</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    };</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> T &gt;</div>
+<div class="line"><a name="l00354"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1equal.html">  354</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classmist_1_1region__growing__utility_1_1equal.html" title="領域拡張法で用いる拡張条件">equal</a></div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    {</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        <span class="keyword">typedef</span> <span class="keywordtype">size_t</span>      size_type;          </div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        <span class="keyword">typedef</span> ptrdiff_t   difference_type;    </div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        <span class="keyword">typedef</span> T           value_type;         </div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00362"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1equal.html#a6e7ed5e45911eb808cb34ef17d75b9f0">  362</a></span>&#160;        value_type <a class="code" href="classmist_1_1region__growing__utility_1_1equal.html#a6e7ed5e45911eb808cb34ef17d75b9f0" title="しきい値">th_</a>;     </div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="keyword">template</span> &lt; <span class="keyword">class</span> VerifyList &gt;</div>
+<div class="line"><a name="l00367"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1equal.html#aeccc2a18c3304f22a296ae2e71900a1d">  367</a></span>&#160;        <span class="keywordtype">bool</span> operator()( <span class="keyword">const</span> VerifyList &amp;elements, size_type num )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            <span class="keyword">typedef</span> <span class="keyword">typename</span> VerifyList::value_type verify_value_type;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; num ; i++ )</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            {</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;                <span class="keyword">const</span> verify_value_type &amp;v = elements[ i ];</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;                <span class="keywordflow">if</span>( v &lt; th_ || th_ &lt; v )</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;                {</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;                    <span class="keywordflow">return</span> ( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;                }</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;            }</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            <span class="keywordflow">return</span> ( <span class="keyword">true</span> );</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        }</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;</div>
+<div class="line"><a name="l00384"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1equal.html#a2b9c0e266492be2a02997339d971cf66">  384</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classmist_1_1region__growing__utility_1_1equal.html#a2b9c0e266492be2a02997339d971cf66" title="条件判定を行う際に，構造要素内の全画素が必要な場合は true を返す">require_all_elements</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( <span class="keyword">false</span> ); }</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;</div>
+<div class="line"><a name="l00387"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1equal.html#ad1f65875bac99afbb55daeb081080527">  387</a></span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1equal.html#ad1f65875bac99afbb55daeb081080527" title="任意のしきい値で初期化">equal</a>( value_type <a class="code" href="namespacemist_1_1ptile.html#adac80a62f2adcc1d47a42f45423dc937" title="p-tile法によるしきい値決定">threshold</a> ) : th_( threshold ){ }</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    };</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> T &gt;</div>
+<div class="line"><a name="l00396"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1range.html">  396</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classmist_1_1region__growing__utility_1_1range.html" title="領域拡張法で用いる拡張条件">range</a></div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    {</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        <span class="keyword">typedef</span> <span class="keywordtype">size_t</span>      size_type;          </div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        <span class="keyword">typedef</span> ptrdiff_t   difference_type;    </div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <span class="keyword">typedef</span> T           value_type;         </div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00404"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1range.html#ae7434d89cd8bbe495bcbd535d326843f">  404</a></span>&#160;        value_type <a class="code" href="classmist_1_1region__growing__utility_1_1range.html#ae7434d89cd8bbe495bcbd535d326843f" title="範囲の下限">min_</a>;    </div>
+<div class="line"><a name="l00405"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1range.html#abf938a4996eaec62b0062af7276eba4d">  405</a></span>&#160;        value_type <a class="code" href="classmist_1_1region__growing__utility_1_1range.html#abf938a4996eaec62b0062af7276eba4d" title="範囲の上限">max_</a>;    </div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        <span class="keyword">template</span> &lt; <span class="keyword">class</span> VerifyList &gt;</div>
+<div class="line"><a name="l00410"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1range.html#ae216965bbd257ea3524a86dde2ceb5d5">  410</a></span>&#160;        <span class="keywordtype">bool</span> operator()( <span class="keyword">const</span> VerifyList &amp;elements, size_type num )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;            <span class="keyword">typedef</span> <span class="keyword">typename</span> VerifyList::value_type verify_value_type;</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;            <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; num ; i++ )</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;            {</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;                <span class="keyword">const</span> verify_value_type &amp;v = elements[ i ];</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;                <span class="keywordflow">if</span>( v &lt; min_ || max_ &lt; v )</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;                {</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;                    <span class="keywordflow">return</span> ( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;                }</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;            }</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;            <span class="keywordflow">return</span> ( <span class="keyword">true</span> );</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        }</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;</div>
+<div class="line"><a name="l00427"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1range.html#a87e4cf5cc433544efe885c4dcb5a225c">  427</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classmist_1_1region__growing__utility_1_1range.html#a87e4cf5cc433544efe885c4dcb5a225c" title="条件判定を行う際に，構造要素内の全画素が必要な場合は true を返す">require_all_elements</a>( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( <span class="keyword">false</span> ); }</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;</div>
+<div class="line"><a name="l00430"></a><span class="lineno"><a class="code" href="classmist_1_1region__growing__utility_1_1range.html#a15adcc02459bf07406c066dc4e94e9d7">  430</a></span>&#160;        <a class="code" href="classmist_1_1region__growing__utility_1_1range.html#a15adcc02459bf07406c066dc4e94e9d7" title="任意の下限と上限で範囲を初期化">range</a>( value_type min, value_type max ) : min_( min ), max_( max ){ }</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    };</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;}</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="comment">// 領域拡張法の内部で利用する型など</span></div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;<span class="keyword">namespace </span>__region_growing_utility__</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;{</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;    <span class="keyword">struct </span>pointer_diff2</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    {</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        <span class="keyword">typedef</span> ptrdiff_t   difference_type;</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;        ptrdiff_t diff1;</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;        ptrdiff_t diff2;</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        pointer_diff2( ptrdiff_t d1 = 0, ptrdiff_t d2 = 0 ) : diff1( d1 ), diff2( d2 ){ }</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;    };</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    <span class="keyword">typedef</span> vector3&lt; ptrdiff_t &gt;            point_type;         </div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    <span class="keyword">typedef</span> std::vector&lt; point_type &gt;       point_list_type;    </div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    <span class="keyword">typedef</span> std::vector&lt; pointer_diff2 &gt;    ptrdiff_list_type;</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <span class="keyword">struct </span>no_mask</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;    {</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        <span class="keyword">typedef</span> <span class="keywordtype">size_t</span>      size_type;</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;        <span class="keyword">typedef</span> ptrdiff_t   difference_type;</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        <span class="keywordtype">bool</span> empty( )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( <span class="keyword">true</span> ); }</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        <span class="keywordtype">bool</span> operator ()( difference_type <span class="comment">/* i */</span>, difference_type <span class="comment">/* j */</span>, difference_type <span class="comment">/* k */</span> )<span class="keyword"> const </span>{ <span class="keywordflow">return</span>( <span class="keyword">false</span> ); }</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    };</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2, <span class="keyword">class</span> Component &gt;</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    ptrdiff_list_type create_component_list( <span class="keyword">const</span> Array1 &amp;in1, <span class="keyword">const</span> Array2 &amp;in2, <span class="keyword">const</span> Component &amp;components )</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;    {</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::const_pointer              const_pointer1;</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array2::const_pointer              const_pointer2;</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> ptrdiff_list_type::size_type       size_type;</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> ptrdiff_list_type::difference_type difference_type;</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> ptrdiff_list_type::value_type      value_type;</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;        ptrdiff_list_type list;</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;        difference_type w = components.width( );</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;        difference_type h = components.height( );</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        difference_type d = components.depth( );</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;        difference_type cx = w / 2;</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        difference_type cy = h / 2;</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;        difference_type cz = d / 2;</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;        difference_type ox1 = in1.width( ) / 2;</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;        difference_type oy1 = in1.height( ) / 2;</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;        difference_type oz1 = in1.depth( ) / 2;</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;        difference_type ox2 = in2.width( ) / 2;</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;        difference_type oy2 = in2.height( ) / 2;</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;        difference_type oz2 = in2.depth( ) / 2;</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;        const_pointer1 p1 = &amp;in1( ox1, oy1, oz1 );</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;        const_pointer2 p2 = &amp;in2( ox2, oy2, oz2 );</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;        <span class="keywordflow">for</span>( difference_type k = 0 ; k &lt; d ; k++ )</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;        {</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;            <span class="keywordflow">for</span>( difference_type j = 0 ; j &lt; h ; j++ )</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;            {</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;                <span class="keywordflow">for</span>( difference_type i = 0 ; i &lt; w ; i++ )</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;                {</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;                    <span class="keywordflow">if</span>( components( i - cx, j - cy, k - cz ) )</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;                    {</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;                        ptrdiff_t d1 = &amp;in1( ox1 + i - cx, oy1 + j - cy, oz1 + k - cz ) - p1;</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;                        ptrdiff_t d2 = &amp;in2( ox2 + i - cx, oy2 + j - cy, oz2 + k - cz ) - p2;</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;                        list.push_back( pointer_diff2( d1, d2 ) );</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;                    }</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;                }</div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;            }</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        }</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;        <span class="keywordflow">return</span>( list );</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;    }</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;</div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2, <span class="keyword">class</span> Component &gt;</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;    ptrdiff_list_type create_update_list( <span class="keyword">const</span> Array1 &amp;in1, <span class="keyword">const</span> Array2 &amp;in2, <span class="keyword">const</span> Component &amp;components )</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;    {</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::const_pointer              const_pointer1;</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array2::const_pointer              const_pointer2;</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> ptrdiff_list_type::size_type       size_type;</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> ptrdiff_list_type::difference_type difference_type;</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> ptrdiff_list_type::value_type      value_type;</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;        ptrdiff_list_type list;</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;        difference_type ox1 = in1.width( ) / 2;</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        difference_type oy1 = in1.height( ) / 2;</div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        difference_type oz1 = in1.depth( ) / 2;</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        difference_type ox2 = in2.width( ) / 2;</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;        difference_type oy2 = in2.height( ) / 2;</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;        difference_type oz2 = in2.depth( ) / 2;</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;        const_pointer1 p1 = &amp;in1( ox1, oy1, oz1 );</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;        const_pointer2 p2 = &amp;in2( ox2, oy2, oz2 );</div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;        <span class="keywordflow">switch</span>( components.expand_mode( ) )</div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;        {</div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a94360168bdc0c7c111de0e10206e3ae0" title="４近傍（２次元）">region_growing_utility::NC4</a>:</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1, oz1 ) - p1, &amp;in2( ox2 - 1, oy2, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1, oz1 ) - p1, &amp;in2( ox2 + 1, oy2, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1, oy1 - 1, oz1 ) - p1, &amp;in2( ox2, oy2 - 1, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1, oy1 + 1, oz1 ) - p1, &amp;in2( ox2, oy2 + 1, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5aae08a1b4828f3931bf1bb0084f4dbf06" title="８近傍（２次元）">region_growing_utility::NC8</a>:</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1 - 1, oz1 ) - p1, &amp;in2( ox2 - 1, oy2 - 1, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 - 1, oz1 ) - p1, &amp;in2( ox2    , oy2 - 1, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1 - 1, oz1 ) - p1, &amp;in2( ox2 + 1, oy2 - 1, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1    , oz1 ) - p1, &amp;in2( ox2 - 1, oy2    , oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1    , oz1 ) - p1, &amp;in2( ox2 + 1, oy2    , oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1 + 1, oz1 ) - p1, &amp;in2( ox2 - 1, oy2 + 1, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 + 1, oz1 ) - p1, &amp;in2( ox2    , oy2 + 1, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1 + 1, oz1 ) - p1, &amp;in2( ox2 + 1, oy2 + 1, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a26d722f6b416a713fd65ce0476739e58" title="６近傍（３次元）">region_growing_utility::NC6</a>:</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1, oz1 ) - p1, &amp;in2( ox2 - 1, oy2, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1, oz1 ) - p1, &amp;in2( ox2 + 1, oy2, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1, oy1 - 1, oz1 ) - p1, &amp;in2( ox2, oy2 - 1, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1, oy1 + 1, oz1 ) - p1, &amp;in2( ox2, oy2 + 1, oz2 ) - p2 ) );</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1, oy1, oz1 - 1 ) - p1, &amp;in2( ox2, oy2, oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1, oy1, oz1 + 1 ) - p1, &amp;in2( ox2, oy2, oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5adf50660bd21ec2472f47b2ebe35c3645" title="１８近傍（３次元）">region_growing_utility::NC18</a>:</div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 - 1, oz1 - 1 ) - p1, &amp;in2( ox2    , oy2 - 1, oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1    , oz1 - 1 ) - p1, &amp;in2( ox2 - 1, oy2    , oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1    , oz1 - 1 ) - p1, &amp;in2( ox2    , oy2    , oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1    , oz1 - 1 ) - p1, &amp;in2( ox2 + 1, oy2    , oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 + 1, oz1 - 1 ) - p1, &amp;in2( ox2    , oy2 + 1, oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1 - 1, oz1     ) - p1, &amp;in2( ox2 - 1, oy2 - 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 - 1, oz1     ) - p1, &amp;in2( ox2    , oy2 - 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1 - 1, oz1     ) - p1, &amp;in2( ox2 + 1, oy2 - 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1    , oz1     ) - p1, &amp;in2( ox2 - 1, oy2    , oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1    , oz1     ) - p1, &amp;in2( ox2 + 1, oy2    , oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1 + 1, oz1     ) - p1, &amp;in2( ox2 - 1, oy2 + 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 + 1, oz1     ) - p1, &amp;in2( ox2    , oy2 + 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1 + 1, oz1     ) - p1, &amp;in2( ox2 + 1, oy2 + 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 - 1, oz1 + 1 ) - p1, &amp;in2( ox2    , oy2 - 1, oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1    , oz1 + 1 ) - p1, &amp;in2( ox2 - 1, oy2    , oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1    , oz1 + 1 ) - p1, &amp;in2( ox2    , oy2    , oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1    , oz1 + 1 ) - p1, &amp;in2( ox2 + 1, oy2    , oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 + 1, oz1 + 1 ) - p1, &amp;in2( ox2    , oy2 + 1, oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;</div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a022ccd1e24fe7f382c0dfa998a807cc8" title="２６近傍（３次元）">region_growing_utility::NC26</a>:</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1 - 1, oz1 - 1 ) - p1, &amp;in2( ox2 - 1, oy2 - 1, oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 - 1, oz1 - 1 ) - p1, &amp;in2( ox2    , oy2 - 1, oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1 - 1, oz1 - 1 ) - p1, &amp;in2( ox2 + 1, oy2 - 1, oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1    , oz1 - 1 ) - p1, &amp;in2( ox2 - 1, oy2    , oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1    , oz1 - 1 ) - p1, &amp;in2( ox2    , oy2    , oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1    , oz1 - 1 ) - p1, &amp;in2( ox2 + 1, oy2    , oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1 + 1, oz1 - 1 ) - p1, &amp;in2( ox2 - 1, oy2 + 1, oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 + 1, oz1 - 1 ) - p1, &amp;in2( ox2    , oy2 + 1, oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1 + 1, oz1 - 1 ) - p1, &amp;in2( ox2 + 1, oy2 + 1, oz2 - 1 ) - p2 ) );</div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1 - 1, oz1     ) - p1, &amp;in2( ox2 - 1, oy2 - 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 - 1, oz1     ) - p1, &amp;in2( ox2    , oy2 - 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1 - 1, oz1     ) - p1, &amp;in2( ox2 + 1, oy2 - 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1    , oz1     ) - p1, &amp;in2( ox2 - 1, oy2    , oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1    , oz1     ) - p1, &amp;in2( ox2 + 1, oy2    , oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1 + 1, oz1     ) - p1, &amp;in2( ox2 - 1, oy2 + 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 + 1, oz1     ) - p1, &amp;in2( ox2    , oy2 + 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1 + 1, oz1     ) - p1, &amp;in2( ox2 + 1, oy2 + 1, oz2     ) - p2 ) );</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1 - 1, oz1 + 1 ) - p1, &amp;in2( ox2 - 1, oy2 - 1, oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 - 1, oz1 + 1 ) - p1, &amp;in2( ox2    , oy2 - 1, oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1 - 1, oz1 + 1 ) - p1, &amp;in2( ox2 + 1, oy2 - 1, oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1    , oz1 + 1 ) - p1, &amp;in2( ox2 - 1, oy2    , oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1    , oz1 + 1 ) - p1, &amp;in2( ox2    , oy2    , oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1    , oz1 + 1 ) - p1, &amp;in2( ox2 + 1, oy2    , oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 - 1, oy1 + 1, oz1 + 1 ) - p1, &amp;in2( ox2 - 1, oy2 + 1, oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1    , oy1 + 1, oz1 + 1 ) - p1, &amp;in2( ox2    , oy2 + 1, oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;            list.push_back( pointer_diff2( &amp;in1( ox1 + 1, oy1 + 1, oz1 + 1 ) - p1, &amp;in2( ox2 + 1, oy2 + 1, oz2 + 1 ) - p2 ) );</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="namespacemist_1_1region__growing__utility.html#ac40fb748b4933d7d127b5d0e997b02f5a31ee749ac6b205a8ef040b4a68453c18" title="構造要素内のすべての点">region_growing_utility::ALL</a>:</div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;        <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;            list = create_component_list( in1, in2, components );</div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        }</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;</div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        <span class="keywordflow">return</span>( list );</div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;    }</div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> T, <span class="keyword">class</span> Allocator, <span class="keyword">class</span> Array, <span class="keyword">class</span> Po<span class="keywordtype">int</span>Type &gt;</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;    <span class="keywordtype">bool</span> check_component_list( <span class="keyword">const</span> array2&lt; T, Allocator &gt; &amp;in1, <span class="keyword">const</span> Array &amp;in2, <span class="keyword">const</span> PointType &amp;pt, pointer_diff2 &amp;ptr )</div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    {</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> array2&lt; T, Allocator &gt;::const_pointer  const_pointer1;</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array::const_pointer                   const_pointer2;</div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> ptrdiff_list_type::difference_type     difference_type;</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;</div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        difference_type x = <span class="keyword">static_cast&lt;</span> difference_type <span class="keyword">&gt;</span>( pt.x );</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;        difference_type y = <span class="keyword">static_cast&lt;</span> difference_type <span class="keyword">&gt;</span>( pt.y );</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;        difference_type w = in1.width( );</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;        difference_type h = in1.height( );</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;        <span class="keywordflow">if</span>( x &lt; 0 || x &gt;= w || y &lt; 0 || y &gt;= h )</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;        {</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;        }</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>( in2( x, y ) != 0 )</div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;        {</div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        }</div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;        {</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;            ptr.diff1 = &amp;in1( x, y) - &amp;in1[ 0 ];</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;            ptr.diff2 = &amp;in2( x, y ) - &amp;in2[ 0 ];</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">true</span> );</div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;        }</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;    }</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> T, <span class="keyword">class</span> Allocator, <span class="keyword">class</span> Array, <span class="keyword">class</span> Po<span class="keywordtype">int</span>Type &gt;</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    <span class="keywordtype">bool</span> check_component_list( <span class="keyword">const</span> array3&lt; T, Allocator &gt; &amp;in1, <span class="keyword">const</span> Array &amp;in2, <span class="keyword">const</span> PointType &amp;pt, pointer_diff2 &amp;ptr )</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;    {</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> array3&lt; T, Allocator &gt;::const_pointer  const_pointer1;</div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array::const_pointer                   const_pointer2;</div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> ptrdiff_list_type::difference_type     difference_type;</div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        difference_type x = <span class="keyword">static_cast&lt;</span> difference_type <span class="keyword">&gt;</span>( pt.x );</div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;        difference_type y = <span class="keyword">static_cast&lt;</span> difference_type <span class="keyword">&gt;</span>( pt.y );</div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        difference_type z = <span class="keyword">static_cast&lt;</span> difference_type <span class="keyword">&gt;</span>( pt.z );</div>
+<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        difference_type w = in1.width( );</div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;        difference_type h = in1.height( );</div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;        difference_type d = in1.depth( );</div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;</div>
+<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;        <span class="keywordflow">if</span>( x &lt; 0 || x &gt;= w || y &lt; 0 || y &gt;= h || z &lt; 0 || z &gt;= d )</div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;        {</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;        }</div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>( in2( x, y, z ) != 0 )</div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;        {</div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;        }</div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;        {</div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;            ptr.diff1 = &amp;in1( x, y, z ) - &amp;in1[ 0 ];</div>
+<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;            ptr.diff2 = &amp;in2( x, y, z ) - &amp;in2[ 0 ];</div>
+<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">true</span> );</div>
+<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;        }</div>
+<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;    }</div>
+<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;</div>
+<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;</div>
+<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Po<span class="keywordtype">int</span>Type &gt;</div>
+<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;    <span class="keyword">struct </span>point_list_converter</div>
+<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;    {</div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;        <span class="keyword">typedef</span> std::vector&lt; PointType &gt; point_list_type;</div>
+<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;</div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;        <span class="keyword">static</span> point_list_type create_point_list( <span class="keyword">const</span> PointType &amp;pt )</div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;        {</div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;            point_list_type list( 1 );</div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;            list[ 0 ] = pt;</div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;            <span class="keywordflow">return</span>( list );</div>
+<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;        }</div>
+<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;    };</div>
+<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;</div>
+<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;</div>
+<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Po<span class="keywordtype">int</span>Type &gt;</div>
+<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;    <span class="keyword">struct </span>point_list_converter&lt; std::vector&lt; PointType &gt; &gt;</div>
+<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;    {</div>
+<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;        <span class="keyword">typedef</span> std::vector&lt; PointType &gt; point_list_type;</div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;</div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;        <span class="keyword">static</span> point_list_type create_point_list( <span class="keyword">const</span> point_list_type &amp;list )</div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;        {</div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;            <span class="keywordflow">return</span>( list );</div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;        }</div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;    };</div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;</div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Po<span class="keywordtype">int</span>Type &gt;</div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;    <span class="keyword">struct </span>point_list_converter&lt; std::deque&lt; PointType &gt; &gt;</div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;    {</div>
+<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;        <span class="keyword">typedef</span> std::deque&lt; PointType &gt; point_list_type;</div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;</div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;        <span class="keyword">static</span> point_list_type create_point_list( <span class="keyword">const</span> point_list_type &amp;list )</div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;        {</div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;            <span class="keywordflow">return</span>( list );</div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;        }</div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;    };</div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;</div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> T &gt;</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    <span class="keyword">inline</span> <span class="keyword">const</span> T maximum( <span class="keyword">const</span> T &amp;v0, <span class="keyword">const</span> <span class="keyword">typename</span> type_trait&lt; T &gt;::value_type &amp;v1 )</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;    {</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;        <span class="keywordflow">return</span>( v0 &gt; v1 ? v0 : v1 );</div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;    }</div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;</div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> T &gt;</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;    <span class="keyword">inline</span> <span class="keyword">const</span> T maximum( <span class="keyword">const</span> T &amp;v0, <span class="keyword">const</span> <span class="keyword">typename</span> type_trait&lt; T &gt;::value_type &amp;v1, <span class="keyword">const</span> <span class="keyword">typename</span> type_trait&lt; T &gt;::value_type &amp;v2 )</div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;    {</div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;        <span class="keywordflow">return</span>( v0 &gt; v1 ? ( v0 &gt; v2 ? v0 : v2 ) : ( v1 &gt; v2 ? v1 : v2 ) );</div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;    }</div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> T &gt;</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;    <span class="keyword">inline</span> <span class="keyword">const</span> T maximum( <span class="keyword">const</span> T &amp;v0, <span class="keyword">const</span> <span class="keyword">typename</span> type_trait&lt; T &gt;::value_type &amp;v1, <span class="keyword">const</span> <span class="keyword">typename</span> type_trait&lt; T &gt;::value_type &amp;v2, <span class="keyword">const</span> <span class="keyword">typename</span> type_trait&lt; T &gt;::value_type &amp;v3 )</div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;    {</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;        <span class="keywordflow">return</span>( maximum( maximum( v0, v1 ), maximum( v2, v3 ) ) );</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;    }</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;}</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;</div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;</div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;<span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2, <span class="keyword">class</span> MaskType, <span class="keyword">class</span> Po<span class="keywordtype">int</span>List, <span class="keyword">class</span> Component, <span class="keyword">class</span> Condition &gt;</div>
+<div class="line"><a name="l00753"></a><span class="lineno"><a class="code" href="group__region__growing__group.html#gabae77324d51d95c848be61462fd817e5">  753</a></span>&#160;<span class="keyword">typename</span> Array1::difference_type <a class="code" href="group__region__growing__group.html#gabae77324d51d95c848be61462fd817e5" title="任意の構造要素と条件を用いて領域拡張を行う関数">region_growing</a>( <span class="keyword">const</span> Array1 &amp;in, Array2 &amp;out, <span class="keyword">const</span> MaskType &amp;mask, <span class="keyword">const</span> PointList &amp;start_points, <span class="keyword">typename</span> Array2::value_type output_value,</div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;                                                        <span class="keyword">const</span> Component &amp;components, <span class="keyword">const</span> Condition &amp;condition, <span class="keyword">typename</span> Array1::size_type max_paint )</div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;{</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;    <span class="keywordflow">if</span>( in.empty( ) || <a class="code" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710" title="入力された2つのオブジェクトが同じもの（メモリ上で同じ位置にある）かどうかを判定する">is_same_object</a>( in, out ) )</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    {</div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;        <span class="keywordflow">return</span>( -1 );</div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    }</div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;</div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::template rebind&lt; unsigned char &gt;::other mask_type;</div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;    <span class="keyword">typedef</span> __region_growing_utility__::pointer_diff2 pointer_diff_type;</div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::size_type          size_type;</div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::value_type         value_type;</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::difference_type    difference_type;</div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> Array2::value_type         out_value_type;</div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::const_pointer      const_pointer;</div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> mask_type::pointer         work_pointer;</div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> Array2::pointer            output_pointer;</div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    size_type rx = components.width( ) / 2;</div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;    size_type ry = components.height( ) / 2;</div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;    size_type rz = components.depth( ) / 2;</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;</div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;    <span class="comment">// 注目点が範囲外に出ないことを監視するマスク</span></div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;    <span class="comment">// 最低でも外側に１画素の安全領域を作成する</span></div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    <a class="code" href="classmist_1_1marray.html" title="画像のふちにマージンを持った配列">marray&lt; mask_type &gt;</a> work( in, __region_growing_utility__::maximum( rx, ry, rz, 1 ) );</div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;    __region_growing_utility__::ptrdiff_list_type clist = __region_growing_utility__::create_component_list( in, work, components );    <span class="comment">// 構造要素内の画素のリスト</span></div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;    __region_growing_utility__::ptrdiff_list_type ulist = __region_growing_utility__::create_update_list( in, work, components );       <span class="comment">// ある注目点の次に注目点になる画素のリスト</span></div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;</div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;    std::deque&lt; pointer_diff_type &gt; que;                                    <span class="comment">// 注目点画素のリスト</span></div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;    std::vector&lt; value_type &gt; element( clist.size( ) );                     <span class="comment">// 拡張条件の判定に用いる画素の配列</span></div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;    __region_growing_utility__::ptrdiff_list_type elist( clist.size( ) );   <span class="comment">// 拡張条件の判定に用いる画素へのポインタを覚える配列</span></div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;</div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;    <span class="comment">// 画像の外側に拡張しないようにマスクを設定する</span></div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;    work.fill( );</div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;    work.<a class="code" href="classmist_1_1marray.html#a7cb90c2169dc8b1e7e171cf23207f6e4" title="コンテナ内のマージン部分のデータ要素を指定された値で初期化する">fill_margin</a>( 255 );</div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;</div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    <span class="comment">// マスクの内容を注目点のデータに反映させる</span></div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;    <span class="keywordflow">if</span>( !mask.empty( ) )</div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;    {</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;        <span class="keywordflow">for</span>( size_type k = 0 ; k &lt; in.depth( ) ; k++ )</div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;        {</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;            <span class="keywordflow">for</span>( size_type j = 0 ; j &lt; in.height( ) ; j++ )</div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;            {</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;                <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; in.width( ) ; i++ )</div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;                {</div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;                    <span class="keywordflow">if</span>( mask( i, j, k ) )</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;                    {</div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;                        work( i, j, k ) = 255;</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;                    }</div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;                }</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;            }</div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;        }</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;    }</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    <span class="keyword">typedef</span> __region_growing_utility__::point_list_converter&lt; PointList &gt; start_point_list_converter;</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> start_point_list_converter::point_list_type start_point_list_type;</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;    start_point_list_type sps = start_point_list_converter::create_point_list( start_points );</div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;    <span class="comment">// 拡張開始点が画像内に存在しているかどうかをチェックする</span></div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;    <span class="keywordflow">for</span>( <span class="keyword">typename</span> start_point_list_type::const_iterator ite = sps.begin( ) ; ite != sps.end( ) ; ++ite )</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    {</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;        __region_growing_utility__::pointer_diff2 ptr;</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;        <span class="keywordflow">if</span>( __region_growing_utility__::check_component_list( in, work, *ite, ptr ) )</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;        {</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;            que.push_back( ptr );</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;        }</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;    }</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;    <span class="comment">// 出力画像の大きさをチェックする</span></div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;    <span class="keywordflow">if</span>( in.size( ) != out.size( ) )</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;    {</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;        out.resize( in.width( ), in.height( ), in.depth( ) );</div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;        out.reso1( in.reso1( ) );</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;        out.reso2( in.reso2( ) );</div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;        out.reso3( in.reso3( ) );</div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    }</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    </div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    size_type num_painted = 0;  <span class="comment">// 塗りつぶした画素数のカウンタ</span></div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;</div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    <span class="comment">// 領域拡張の条件によって，構造要素内の全要素を判定に用いるかどうかを決める</span></div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <span class="comment">// require_all_elements が false の場合には，すでに判定済みの画素は2度目の判定を行わない</span></div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    <span class="keywordflow">if</span>( condition.require_all_elements( ) )</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    {</div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;        <span class="comment">// 構造要素内のすべての点を用いて評価を行う</span></div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;        <span class="keywordflow">while</span>( !que.empty( ) )</div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;        {</div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;            <span class="keywordflow">if</span>( num_painted &gt;= max_paint )</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;            {</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;                <span class="keywordflow">return</span>( num_painted );</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;            }</div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;</div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;            <span class="comment">// リストの先頭画素を取り出す</span></div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;            pointer_diff_type cur = que.front( );</div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;            que.pop_front( );</div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;</div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;            const_pointer  pi = &amp;in[ 0 ] + cur.diff1;</div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;            work_pointer   pw = &amp;work[ 0 ] + cur.diff2;</div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;            output_pointer po = &amp;out[ 0 ] + cur.diff1;</div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;</div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;            <span class="comment">// 以降の処理で注目点とならないように，現在の注目点をマスクする</span></div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;            pw[ 0 ] |= 0xf0;</div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;</div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;            <span class="comment">// 拡張条件判定に用いる画素を列挙する</span></div>
+<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;            <span class="comment">// ここで，マスクされている領域は範囲に含めない（画像外など）</span></div>
+<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;            size_type num = 0;</div>
+<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;            <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; clist.size( ) ; i++ )</div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;            {</div>
+<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;                <span class="keyword">const</span> pointer_diff_type &amp;d = clist[ i ];</div>
+<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;                <span class="keywordflow">if</span>( ( pw[ d.diff2 ] &amp; 0x0f ) == 0 )</div>
+<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;                {</div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;                    element[ num ] = pi[ d.diff1 ];</div>
+<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;                    elist[ num ]   = d;</div>
+<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;                    num++;</div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;                }</div>
+<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;            }</div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;</div>
+<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;            <span class="comment">// 拡張条件の判定を行う</span></div>
+<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;            <span class="keywordflow">if</span>( num != 0 &amp;&amp; condition( element, num ) )</div>
+<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;            {</div>
+<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;                <span class="comment">// 条件を満たした構造要素内の画素すべてを塗りつぶす</span></div>
+<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;                <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; num ; i++ )</div>
+<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;                {</div>
+<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;                    <span class="keyword">const</span> pointer_diff_type &amp;d = elist[ i ];</div>
+<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;                    num_painted += po[ d.diff1 ] != output_value ? 1 : 0;</div>
+<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;                    po[ d.diff1 ] = output_value;</div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;                }</div>
+<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;</div>
+<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;                <span class="comment">// 構造要素によって次の注目点を決定し，リストの最後に追加する</span></div>
+<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;                <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; ulist.size( ) ; i++ )</div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;                {</div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;                    <span class="keyword">const</span> pointer_diff_type &amp;d = ulist[ i ];</div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;                    <span class="keywordflow">if</span>( ( pw[ d.diff2 ] &amp; 0xf0 ) == 0 )</div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;                    {</div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;                        pw[ d.diff2 ] |= 0xf0;</div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;                        que.push_back( pointer_diff_type( cur.diff1 + d.diff1, cur.diff2 + d.diff2 ) );</div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;                    }</div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;                }</div>
+<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;            }</div>
+<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;        }</div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    }</div>
+<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    {</div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;        <span class="comment">// すでに判定された画素については評価を行わない</span></div>
+<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;        <span class="keywordflow">while</span>( !que.empty( ) )</div>
+<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;        {</div>
+<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;            <span class="keywordflow">if</span>( num_painted &gt;= max_paint )</div>
+<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;            {</div>
+<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;                <span class="keywordflow">return</span>( num_painted );</div>
+<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;            }</div>
+<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;</div>
+<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;            <span class="comment">// リストの先頭画素を取り出す</span></div>
+<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;            pointer_diff_type cur = que.front( );</div>
+<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;            que.pop_front( );</div>
+<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;</div>
+<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;            const_pointer  pi = &amp;in[ 0 ] + cur.diff1;</div>
+<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;            work_pointer   pw = &amp;work[ 0 ] + cur.diff2;</div>
+<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;            output_pointer po = &amp;out[ 0 ] + cur.diff1;</div>
+<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;</div>
+<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;            <span class="comment">// 以降の処理で注目点とならないように，現在の注目点をマスクする</span></div>
+<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;            pw[ 0 ] |= 0xf0;</div>
+<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;</div>
+<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;            <span class="comment">// 拡張条件判定に用いる画素を列挙する</span></div>
+<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;            <span class="comment">// ここで，マスクされている領域は範囲に含めない（画像外など）</span></div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;            <span class="comment">// また，すでに判定済みの画素も除外する</span></div>
+<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;            <span class="comment">// 判定画素と更新部分のリストを作成する</span></div>
+<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;            size_type num = 0;</div>
+<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;            <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; clist.size( ) ; i++ )</div>
+<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160;            {</div>
+<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160;                <span class="keyword">const</span> pointer_diff_type &amp;d = clist[ i ];</div>
+<div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160;                <span class="keywordflow">if</span>( ( pw[ d.diff2 ] &amp; 0x0f ) == 0 )</div>
+<div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;                {</div>
+<div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;                    element[ num ] = pi[ d.diff1 ];</div>
+<div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;                    elist[ num ]   = d;</div>
+<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;                    num++;</div>
+<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;                }</div>
+<div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;            }</div>
+<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;</div>
+<div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160;            <span class="comment">// 拡張条件の判定を行う</span></div>
+<div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;            <span class="keywordflow">if</span>( condition( element, num ) )</div>
+<div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;            {</div>
+<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;                <span class="comment">// 条件を満たした構造要素内の画素すべてを塗りつぶす</span></div>
+<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;                <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; num ; i++ )</div>
+<div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;                {</div>
+<div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;                    <span class="keyword">const</span> pointer_diff_type &amp;d = elist[ i ];</div>
+<div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;                    num_painted += po[ d.diff1 ] != output_value ? 1 : 0;</div>
+<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;                    pw[ d.diff2 ] |= 1;</div>
+<div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;                    po[ d.diff1 ] = output_value;</div>
+<div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;                }</div>
+<div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160;</div>
+<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;                <span class="comment">// 構造要素によって次の注目点を決定し，リストの最後に追加する</span></div>
+<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;                <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; ulist.size( ) ; i++ )</div>
+<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;                {</div>
+<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;                    <span class="keyword">const</span> pointer_diff_type &amp;d = ulist[ i ];</div>
+<div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;                    <span class="keywordflow">if</span>( ( pw[ d.diff2 ] &amp; 0xf0 ) == 0 )</div>
+<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;                    {</div>
+<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160;                        pw[ d.diff2 ] |= 0xf0;</div>
+<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;                        que.push_back( pointer_diff_type( cur.diff1 + d.diff1, cur.diff2 + d.diff2 ) );</div>
+<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;                    }</div>
+<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;                }</div>
+<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;            }</div>
+<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;        }</div>
+<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;    }</div>
+<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;</div>
+<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;    <span class="keywordflow">return</span>( num_painted );</div>
+<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;}</div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;</div>
+<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;</div>
+<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;</div>
+<div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160;<span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2, <span class="keyword">class</span> Po<span class="keywordtype">int</span>List, <span class="keyword">class</span> Component, <span class="keyword">class</span> Condition &gt;</div>
+<div class="line"><a name="l00983"></a><span class="lineno"><a class="code" href="group__region__growing__group.html#gaec4ddb74f83f51b4accaa11df033dd21">  983</a></span>&#160;<span class="keyword">typename</span> Array1::difference_type <a class="code" href="group__region__growing__group.html#gabae77324d51d95c848be61462fd817e5" title="任意の構造要素と条件を用いて領域拡張を行う関数">region_growing</a>( <span class="keyword">const</span> Array1 &amp;in, Array2 &amp;out, <span class="keyword">const</span> PointList &amp;start_points, <span class="keyword">typename</span> Array2::value_type output_value,</div>
+<div class="line"><a name="l00984"></a><span class="lineno">  984</span>&#160;                                        <span class="keyword">const</span> Component &amp;components, <span class="keyword">const</span> Condition &amp;condition, <span class="keyword">typename</span> Array1::size_type max_paint = <a class="code" href="structmist_1_1type__limits.html" title="入力された型の情報を取得する">type_limits&lt; typename Array1::size_type &gt;::maximum</a>( ) )</div>
+<div class="line"><a name="l00985"></a><span class="lineno">  985</span>&#160;{</div>
+<div class="line"><a name="l00986"></a><span class="lineno">  986</span>&#160;    <span class="keywordflow">return</span>( <a class="code" href="group__region__growing__group.html#gabae77324d51d95c848be61462fd817e5" title="任意の構造要素と条件を用いて領域拡張を行う関数">region_growing</a>( in, out, __region_growing_utility__::no_mask( ), start_points, output_value, components, condition, max_paint ) );</div>
+<div class="line"><a name="l00987"></a><span class="lineno">  987</span>&#160;}</div>
+<div class="line"><a name="l00988"></a><span class="lineno">  988</span>&#160;</div>
+<div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160;</div>
+<div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160;<span class="comment">//  領域拡張法グループの終わり</span></div>
+<div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;</div>
+<div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160;</div>
+<div class="line"><a name="l00994"></a><span class="lineno">  994</span>&#160;<span class="comment">// mist名前空間の終わり</span></div>
+<div class="line"><a name="l00995"></a><span class="lineno">  995</span>&#160;<a class="code" href="mist__conf_8h.html#a5782930a99d85de30831b223eb8df540" title="MIST名前空間の終わり">_MIST_END</a></div>
+<div class="line"><a name="l00996"></a><span class="lineno">  996</span>&#160;</div>
+<div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160;</div>
+<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;<span class="preprocessor">#endif // __INCLUDE_MIST_REGIONGROWING__</span></div>
+<div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160;<span class="preprocessor"></span></div>
+</div><!-- fragment --></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:22 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,1313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::marray&lt; Array &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1marray.html">marray</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-types">Protected 型</a> &#124;
+<a href="#pro-attribs">Protected 変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::marray&lt; Array &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>画像のふちにマージンを持った配列  
+ <a href="classmist_1_1marray.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="mist_8h_source.html">mist.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:aafdee2c101e2f054156f18c75199fce3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aafdee2c101e2f054156f18c75199fce3"></a>
+typedef Array::allocator_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#aafdee2c101e2f054156f18c75199fce3">allocator_type</a></td></tr>
+<tr class="memdesc:aafdee2c101e2f054156f18c75199fce3"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナが利用するアロケータ型 <br/></td></tr>
+<tr class="memitem:ad416cbfa22b96e6f7b7a586dbfc4da1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad416cbfa22b96e6f7b7a586dbfc4da1b"></a>
+typedef Array::reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a></td></tr>
+<tr class="memdesc:ad416cbfa22b96e6f7b7a586dbfc4da1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の参照．mist::array&lt; data &gt; の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:a8f629673f1570cdf89f146f03cc8eed2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f629673f1570cdf89f146f03cc8eed2"></a>
+typedef Array::const_reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a></td></tr>
+<tr class="memdesc:a8f629673f1570cdf89f146f03cc8eed2"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const 参照．mist::array&lt; data &gt; の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:a65ae8728d8fe9457fd8189a2310c6166"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65ae8728d8fe9457fd8189a2310c6166"></a>
+typedef Array::value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a></td></tr>
+<tr class="memdesc:a65ae8728d8fe9457fd8189a2310c6166"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型．mist::array&lt; data &gt; の data と同じ <br/></td></tr>
+<tr class="memitem:a096cdb9c8b6957f68481e566106c5bcd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a096cdb9c8b6957f68481e566106c5bcd"></a>
+typedef Array::size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a></td></tr>
+<tr class="memdesc:a096cdb9c8b6957f68481e566106c5bcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a6d029f2e271daa5a5e57ef95f2f452ae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d029f2e271daa5a5e57ef95f2f452ae"></a>
+typedef Array::difference_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a></td></tr>
+<tr class="memdesc:a6d029f2e271daa5a5e57ef95f2f452ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:a07499d6a85dbfbacefbe37a45bd423da"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a07499d6a85dbfbacefbe37a45bd423da"></a>
+typedef Array::pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a07499d6a85dbfbacefbe37a45bd423da">pointer</a></td></tr>
+<tr class="memdesc:a07499d6a85dbfbacefbe37a45bd423da"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型のポインター型．mist::array&lt; data &gt; の場合，data * となる <br/></td></tr>
+<tr class="memitem:af3199959eeeac31c23fd09789e539165"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3199959eeeac31c23fd09789e539165"></a>
+typedef Array::const_pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#af3199959eeeac31c23fd09789e539165">const_pointer</a></td></tr>
+<tr class="memdesc:af3199959eeeac31c23fd09789e539165"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array&lt; data &gt; の場合，const data * となる <br/></td></tr>
+<tr class="memitem:a9d8a781cbbca34512b8a4c686a33bdb8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d8a781cbbca34512b8a4c686a33bdb8"></a>
+typedef Array::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a9d8a781cbbca34512b8a4c686a33bdb8">iterator</a></td></tr>
+<tr class="memdesc:a9d8a781cbbca34512b8a4c686a33bdb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ <br/></td></tr>
+<tr class="memitem:aa8d961330b0cd381e2f2f8eb3d1eb6e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8d961330b0cd381e2f2f8eb3d1eb6e0"></a>
+typedef Array::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#aa8d961330b0cd381e2f2f8eb3d1eb6e0">const_iterator</a></td></tr>
+<tr class="memdesc:aa8d961330b0cd381e2f2f8eb3d1eb6e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版 <br/></td></tr>
+<tr class="memitem:acc52d79b0d13a352d432a387f6d54cf4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc52d79b0d13a352d432a387f6d54cf4"></a>
+typedef Array::reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#acc52d79b0d13a352d432a387f6d54cf4">reverse_iterator</a></td></tr>
+<tr class="memdesc:acc52d79b0d13a352d432a387f6d54cf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ <br/></td></tr>
+<tr class="memitem:a43333079e1f7afd817d80aa0f539ca9a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43333079e1f7afd817d80aa0f539ca9a"></a>
+typedef <br class="typebreak"/>
+Array::const_reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a43333079e1f7afd817d80aa0f539ca9a">const_reverse_iterator</a></td></tr>
+<tr class="memdesc:a43333079e1f7afd817d80aa0f539ca9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:aeb7e081b5f108448d3323f1f3f3bc129"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#aeb7e081b5f108448d3323f1f3f3bc129">resize</a> (<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> num1)</td></tr>
+<tr class="memdesc:aeb7e081b5f108448d3323f1f3f3bc129"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素数を変更する  <a href="#aeb7e081b5f108448d3323f1f3f3bc129"></a><br/></td></tr>
+<tr class="memitem:a49edd6c1d8f5302fb881124750eae8b0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a49edd6c1d8f5302fb881124750eae8b0">resize</a> (<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> num1, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> num2)</td></tr>
+<tr class="memdesc:a49edd6c1d8f5302fb881124750eae8b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素数を変更する  <a href="#a49edd6c1d8f5302fb881124750eae8b0"></a><br/></td></tr>
+<tr class="memitem:abe6025a808cfa5b19aeec78dee75b5d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#abe6025a808cfa5b19aeec78dee75b5d7">resize</a> (<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> num1, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> num2, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> num3)</td></tr>
+<tr class="memdesc:abe6025a808cfa5b19aeec78dee75b5d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の要素数を変更する  <a href="#abe6025a808cfa5b19aeec78dee75b5d7"></a><br/></td></tr>
+<tr class="memitem:a98e8390ccec1cf8ea9176039ecf0abca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a98e8390ccec1cf8ea9176039ecf0abca">swap</a> (<a class="el" href="classmist_1_1marray.html">marray</a> &amp;a)</td></tr>
+<tr class="memdesc:a98e8390ccec1cf8ea9176039ecf0abca"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内の全ての内容を入れ替える．  <a href="#a98e8390ccec1cf8ea9176039ecf0abca"></a><br/></td></tr>
+<tr class="memitem:ad37fefe8e84f29d4263e2c594b7a0799"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#ad37fefe8e84f29d4263e2c594b7a0799">clear</a> ()</td></tr>
+<tr class="memdesc:ad37fefe8e84f29d4263e2c594b7a0799"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナの要素を空にする  <a href="#ad37fefe8e84f29d4263e2c594b7a0799"></a><br/></td></tr>
+<tr class="memitem:a7cb90c2169dc8b1e7e171cf23207f6e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a7cb90c2169dc8b1e7e171cf23207f6e4">fill_margin</a> (const <a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a> &amp;val=<a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a>())</td></tr>
+<tr class="memdesc:a7cb90c2169dc8b1e7e171cf23207f6e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンテナ内のマージン部分のデータ要素を指定された値で初期化する  <a href="#a7cb90c2169dc8b1e7e171cf23207f6e4"></a><br/></td></tr>
+<tr class="memitem:a3acc3479f6759925cb500c0720ff6bc2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3acc3479f6759925cb500c0720ff6bc2"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a3acc3479f6759925cb500c0720ff6bc2">size1</a> () const </td></tr>
+<tr class="memdesc:a3acc3479f6759925cb500c0720ff6bc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:ae7bc7823e5b6d00f70bb761e9ef768fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7bc7823e5b6d00f70bb761e9ef768fd"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#ae7bc7823e5b6d00f70bb761e9ef768fd">size2</a> () const </td></tr>
+<tr class="memdesc:ae7bc7823e5b6d00f70bb761e9ef768fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:a2ae5dee9e9c132d9f09760a1f878f94e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ae5dee9e9c132d9f09760a1f878f94e"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a2ae5dee9e9c132d9f09760a1f878f94e">size3</a> () const </td></tr>
+<tr class="memdesc:a2ae5dee9e9c132d9f09760a1f878f94e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:a3787f0ff3c825ee7b1ea75632485c7bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3787f0ff3c825ee7b1ea75632485c7bd"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a3787f0ff3c825ee7b1ea75632485c7bd">width</a> () const </td></tr>
+<tr class="memdesc:a3787f0ff3c825ee7b1ea75632485c7bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:af2d6a8c2dd6b7b52a1f99ae0b9ca6270"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2d6a8c2dd6b7b52a1f99ae0b9ca6270"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#af2d6a8c2dd6b7b52a1f99ae0b9ca6270">height</a> () const </td></tr>
+<tr class="memdesc:af2d6a8c2dd6b7b52a1f99ae0b9ca6270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:a97f17fc7b6e2094e16d41c96d072b5a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a97f17fc7b6e2094e16d41c96d072b5a7"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a97f17fc7b6e2094e16d41c96d072b5a7">depth</a> () const </td></tr>
+<tr class="memdesc:a97f17fc7b6e2094e16d41c96d072b5a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z軸方向のコンテナに格納されているデータ数を返す <br/></td></tr>
+<tr class="memitem:a8880c0febb6a39ce06f2a5a10acbae19"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8880c0febb6a39ce06f2a5a10acbae19"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a8880c0febb6a39ce06f2a5a10acbae19">margin1</a> () const </td></tr>
+<tr class="memdesc:a8880c0febb6a39ce06f2a5a10acbae19"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向のマージン幅を返す <br/></td></tr>
+<tr class="memitem:ac552255c9de8fdb9d87ba2b1aa3819f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac552255c9de8fdb9d87ba2b1aa3819f7"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#ac552255c9de8fdb9d87ba2b1aa3819f7">margin2</a> () const </td></tr>
+<tr class="memdesc:ac552255c9de8fdb9d87ba2b1aa3819f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向のマージン幅を返す <br/></td></tr>
+<tr class="memitem:abd13a4df6e8e90ab41a609549ab1a0ee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd13a4df6e8e90ab41a609549ab1a0ee"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#abd13a4df6e8e90ab41a609549ab1a0ee">margin3</a> () const </td></tr>
+<tr class="memdesc:abd13a4df6e8e90ab41a609549ab1a0ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z軸方向のマージン幅を返す <br/></td></tr>
+<tr class="memitem:a59f8a28b87c65fcc84117eec9f362b96"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1marray.html">marray</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a59f8a28b87c65fcc84117eec9f362b96">operator=</a> (const <a class="el" href="classmist_1_1marray.html">marray</a> &amp;o)</td></tr>
+<tr class="memdesc:a59f8a28b87c65fcc84117eec9f362b96"><td class="mdescLeft">&#160;</td><td class="mdescRight">同じ型の marray コンテナを代入する  <a href="#a59f8a28b87c65fcc84117eec9f362b96"></a><br/></td></tr>
+<tr class="memitem:adb4ee92ac329a8a114b2c7ad372c0c68"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:adb4ee92ac329a8a114b2c7ad372c0c68"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1marray.html">marray</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#adb4ee92ac329a8a114b2c7ad372c0c68">operator=</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:adb4ee92ac329a8a114b2c7ad372c0c68"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なる array コンテナを代入する  <a href="#adb4ee92ac329a8a114b2c7ad372c0c68"></a><br/></td></tr>
+<tr class="memitem:ad81b4d1f247a706f0b99daaf7a8a2096"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ad81b4d1f247a706f0b99daaf7a8a2096"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1marray.html">marray</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#ad81b4d1f247a706f0b99daaf7a8a2096">operator=</a> (const <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:ad81b4d1f247a706f0b99daaf7a8a2096"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なる <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1</a> コンテナを代入する  <a href="#ad81b4d1f247a706f0b99daaf7a8a2096"></a><br/></td></tr>
+<tr class="memitem:a3e20486efeb909c4bc5564c4be578372"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a3e20486efeb909c4bc5564c4be578372"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1marray.html">marray</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a3e20486efeb909c4bc5564c4be578372">operator=</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:a3e20486efeb909c4bc5564c4be578372"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なる <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> コンテナを代入する  <a href="#a3e20486efeb909c4bc5564c4be578372"></a><br/></td></tr>
+<tr class="memitem:abd9d62d1389b2395201be5f533fa02ac"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:abd9d62d1389b2395201be5f533fa02ac"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1marray.html">marray</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#abd9d62d1389b2395201be5f533fa02ac">operator=</a> (const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T, Allocator &gt; &amp;o)</td></tr>
+<tr class="memdesc:abd9d62d1389b2395201be5f533fa02ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の型が異なる <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a> コンテナを代入する  <a href="#abd9d62d1389b2395201be5f533fa02ac"></a><br/></td></tr>
+<tr class="memitem:aa77df772ac1da0992bb1734c6e594847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#aa77df772ac1da0992bb1734c6e594847">at</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> index)</td></tr>
+<tr class="memdesc:aa77df772ac1da0992bb1734c6e594847"><td class="mdescLeft">&#160;</td><td class="mdescRight">index で示される位置の要素の参照を返す  <a href="#aa77df772ac1da0992bb1734c6e594847"></a><br/></td></tr>
+<tr class="memitem:a44e41554de366103e060556dce87e2c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a44e41554de366103e060556dce87e2c1">at</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> i, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> j)</td></tr>
+<tr class="memdesc:a44e41554de366103e060556dce87e2c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j ) で示される位置の要素の参照を返す  <a href="#a44e41554de366103e060556dce87e2c1"></a><br/></td></tr>
+<tr class="memitem:ad267c30f296c3f458edd443b92f64678"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#ad267c30f296c3f458edd443b92f64678">at</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> i, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> j, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> k)</td></tr>
+<tr class="memdesc:ad267c30f296c3f458edd443b92f64678"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j, k ) で示される位置の要素の参照を返す  <a href="#ad267c30f296c3f458edd443b92f64678"></a><br/></td></tr>
+<tr class="memitem:a89ba215d1bf50876e99813f0227f2e26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a89ba215d1bf50876e99813f0227f2e26">at</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> index) const </td></tr>
+<tr class="memdesc:a89ba215d1bf50876e99813f0227f2e26"><td class="mdescLeft">&#160;</td><td class="mdescRight">index で示される位置の要素の const 参照を返す  <a href="#a89ba215d1bf50876e99813f0227f2e26"></a><br/></td></tr>
+<tr class="memitem:a4cda3a9ec1bc4b2b83a4b33d41868bdd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a4cda3a9ec1bc4b2b83a4b33d41868bdd">at</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> i, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> j) const </td></tr>
+<tr class="memdesc:a4cda3a9ec1bc4b2b83a4b33d41868bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j ) で示される位置の要素の const 参照を返す  <a href="#a4cda3a9ec1bc4b2b83a4b33d41868bdd"></a><br/></td></tr>
+<tr class="memitem:a5cd1f78f6845914e6cb2e824b43cbbe6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a5cd1f78f6845914e6cb2e824b43cbbe6">at</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> i, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> j, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> k) const </td></tr>
+<tr class="memdesc:a5cd1f78f6845914e6cb2e824b43cbbe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j, k ) で示される位置の要素の const 参照を返す  <a href="#a5cd1f78f6845914e6cb2e824b43cbbe6"></a><br/></td></tr>
+<tr class="memitem:a35dad12455748169e6e9b8a4eb045f47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a35dad12455748169e6e9b8a4eb045f47">operator[]</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> index)</td></tr>
+<tr class="memdesc:a35dad12455748169e6e9b8a4eb045f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">index で示される位置の要素の参照を返す  <a href="#a35dad12455748169e6e9b8a4eb045f47"></a><br/></td></tr>
+<tr class="memitem:afe64b8a6b619448b96dc5b56e6aca340"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#afe64b8a6b619448b96dc5b56e6aca340">operator()</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> index)</td></tr>
+<tr class="memdesc:afe64b8a6b619448b96dc5b56e6aca340"><td class="mdescLeft">&#160;</td><td class="mdescRight">index で示される位置の要素の参照を返す  <a href="#afe64b8a6b619448b96dc5b56e6aca340"></a><br/></td></tr>
+<tr class="memitem:a5cf477f5ef8630890e72b39bb571a19c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a5cf477f5ef8630890e72b39bb571a19c">operator()</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> i, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> j)</td></tr>
+<tr class="memdesc:a5cf477f5ef8630890e72b39bb571a19c"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j ) で示される位置の要素の参照を返す  <a href="#a5cf477f5ef8630890e72b39bb571a19c"></a><br/></td></tr>
+<tr class="memitem:aff5e27d4b57cc5272be2d5eb49a5300d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#aff5e27d4b57cc5272be2d5eb49a5300d">operator()</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> i, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> j, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> k)</td></tr>
+<tr class="memdesc:aff5e27d4b57cc5272be2d5eb49a5300d"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j, k ) で示される位置の要素の参照を返す  <a href="#aff5e27d4b57cc5272be2d5eb49a5300d"></a><br/></td></tr>
+<tr class="memitem:a03dc543f109e898822b9dda6cce8add4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a03dc543f109e898822b9dda6cce8add4">operator[]</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> index) const </td></tr>
+<tr class="memdesc:a03dc543f109e898822b9dda6cce8add4"><td class="mdescLeft">&#160;</td><td class="mdescRight">index で示される位置の要素の参照を返す  <a href="#a03dc543f109e898822b9dda6cce8add4"></a><br/></td></tr>
+<tr class="memitem:a86b7e5c489364fa9e8804c0653a39aa7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a86b7e5c489364fa9e8804c0653a39aa7">operator()</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> index) const </td></tr>
+<tr class="memdesc:a86b7e5c489364fa9e8804c0653a39aa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">index で示される位置の要素の const 参照を返す  <a href="#a86b7e5c489364fa9e8804c0653a39aa7"></a><br/></td></tr>
+<tr class="memitem:af578d5b4524f3d83cc7e9b9af0aefb9a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#af578d5b4524f3d83cc7e9b9af0aefb9a">operator()</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> i, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> j) const </td></tr>
+<tr class="memdesc:af578d5b4524f3d83cc7e9b9af0aefb9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j ) で示される位置の要素の const 参照を返す  <a href="#af578d5b4524f3d83cc7e9b9af0aefb9a"></a><br/></td></tr>
+<tr class="memitem:a04cc2d706658dcada1b2885b38d809d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a04cc2d706658dcada1b2885b38d809d4">operator()</a> (<a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> i, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> j, <a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a> k) const </td></tr>
+<tr class="memdesc:a04cc2d706658dcada1b2885b38d809d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">( i, j, k ) で示される位置の要素の const 参照を返す  <a href="#a04cc2d706658dcada1b2885b38d809d4"></a><br/></td></tr>
+<tr class="memitem:a026a0e13ec0af0f3584f44f18b5021b3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a026a0e13ec0af0f3584f44f18b5021b3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a026a0e13ec0af0f3584f44f18b5021b3">marray</a> ()</td></tr>
+<tr class="memdesc:a026a0e13ec0af0f3584f44f18b5021b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">ディフォルトコンストラクタ．要素数 0，マージン 0 のコンテナを作成する <br/></td></tr>
+<tr class="memitem:afaa2d87622461bbbfe3f125ca7b60c62"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afaa2d87622461bbbfe3f125ca7b60c62"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#afaa2d87622461bbbfe3f125ca7b60c62">marray</a> (<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> margin)</td></tr>
+<tr class="memdesc:afaa2d87622461bbbfe3f125ca7b60c62"><td class="mdescLeft">&#160;</td><td class="mdescRight">マージン margin のコンテナを作成する <br/></td></tr>
+<tr class="memitem:a7bdbf210d4e67ebb7c31e916e79fd46d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7bdbf210d4e67ebb7c31e916e79fd46d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a7bdbf210d4e67ebb7c31e916e79fd46d">marray</a> (const <a class="el" href="classmist_1_1marray.html">marray</a> &amp;o)</td></tr>
+<tr class="memdesc:a7bdbf210d4e67ebb7c31e916e79fd46d"><td class="mdescLeft">&#160;</td><td class="mdescRight">コピーコンストラクタ <br/></td></tr>
+<tr class="memitem:ab7c1b0f3bd763ea9a216bc7b77bc6bf4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab7c1b0f3bd763ea9a216bc7b77bc6bf4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#ab7c1b0f3bd763ea9a216bc7b77bc6bf4">marray</a> (<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> w, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> margin)</td></tr>
+<tr class="memdesc:ab7c1b0f3bd763ea9a216bc7b77bc6bf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">マージン margin のコンテナを作成する <br/></td></tr>
+<tr class="memitem:a6a9017db49fda82e33defa2575cc72b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a9017db49fda82e33defa2575cc72b9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a6a9017db49fda82e33defa2575cc72b9">marray</a> (<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> w, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> h, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> margin)</td></tr>
+<tr class="memdesc:a6a9017db49fda82e33defa2575cc72b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">マージン margin のコンテナを作成する <br/></td></tr>
+<tr class="memitem:a2e4508d2734b678964695c674d3bc29b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e4508d2734b678964695c674d3bc29b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a2e4508d2734b678964695c674d3bc29b">marray</a> (<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> w, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> h, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> d, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> margin)</td></tr>
+<tr class="memdesc:a2e4508d2734b678964695c674d3bc29b"><td class="mdescLeft">&#160;</td><td class="mdescRight">マージン margin のコンテナを作成する <br/></td></tr>
+<tr class="memitem:aae6c312f4d43ebecfdf341a085c3e9c2"><td class="memTemplParams" colspan="2"><a class="anchor" id="aae6c312f4d43ebecfdf341a085c3e9c2"></a>
+template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:aae6c312f4d43ebecfdf341a085c3e9c2"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#aae6c312f4d43ebecfdf341a085c3e9c2">marray</a> (const <a class="el" href="classmist_1_1array.html">array</a>&lt; T, Allocator &gt; &amp;o, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> <a class="el" href="classmist_1_1marray.html#a8880c0febb6a39ce06f2a5a10acbae19">margin1</a>, const <a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a> &amp;val=<a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a>(0))</td></tr>
+<tr class="memdesc:aae6c312f4d43ebecfdf341a085c3e9c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">array 配列 o の配列の大きさと，X軸方向のマージン margin1 を用いて初期化し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:ac018d6ca28b6bedc32046647e23bd84e"><td class="memTemplParams" colspan="2"><a class="anchor" id="ac018d6ca28b6bedc32046647e23bd84e"></a>
+template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ac018d6ca28b6bedc32046647e23bd84e"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#ac018d6ca28b6bedc32046647e23bd84e">marray</a> (const <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T, Allocator &gt; &amp;o, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> <a class="el" href="classmist_1_1marray.html#a8880c0febb6a39ce06f2a5a10acbae19">margin1</a>, const <a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a> &amp;val=<a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a>())</td></tr>
+<tr class="memdesc:ac018d6ca28b6bedc32046647e23bd84e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1</a> 配列 o の配列の大きさと，X軸方向のマージン margin1 を用いて初期化し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:adb1ed7928536674333f02c4a83cbf1fa"><td class="memTemplParams" colspan="2"><a class="anchor" id="adb1ed7928536674333f02c4a83cbf1fa"></a>
+template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:adb1ed7928536674333f02c4a83cbf1fa"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#adb1ed7928536674333f02c4a83cbf1fa">marray</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;o, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> <a class="el" href="classmist_1_1marray.html#a8880c0febb6a39ce06f2a5a10acbae19">margin1</a>, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> <a class="el" href="classmist_1_1marray.html#ac552255c9de8fdb9d87ba2b1aa3819f7">margin2</a>, const <a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a> &amp;val=<a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a>())</td></tr>
+<tr class="memdesc:adb1ed7928536674333f02c4a83cbf1fa"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> 配列 o の配列の大きさと，X軸方向のマージン margin1，Y軸方向のマージン margin2 を用いて初期化し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:a6b72a545d52c0eed6dfc7692be76a777"><td class="memTemplParams" colspan="2"><a class="anchor" id="a6b72a545d52c0eed6dfc7692be76a777"></a>
+template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a6b72a545d52c0eed6dfc7692be76a777"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a6b72a545d52c0eed6dfc7692be76a777">marray</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;o, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> <a class="el" href="classmist_1_1marray.html#a8880c0febb6a39ce06f2a5a10acbae19">margin1</a>, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> <a class="el" href="classmist_1_1marray.html#ac552255c9de8fdb9d87ba2b1aa3819f7">margin2</a>, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>, const <a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a> &amp;val)</td></tr>
+<tr class="memdesc:a6b72a545d52c0eed6dfc7692be76a777"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> 配列 o の配列の大きさと，X軸方向のマージン margin1，Y軸方向のマージン margin2 を用いて初期化し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:a8160e97d090fc70097648b4e2d27fcaf"><td class="memTemplParams" colspan="2"><a class="anchor" id="a8160e97d090fc70097648b4e2d27fcaf"></a>
+template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a8160e97d090fc70097648b4e2d27fcaf"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a8160e97d090fc70097648b4e2d27fcaf">marray</a> (const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T, Allocator &gt; &amp;o, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> <a class="el" href="classmist_1_1marray.html#a8880c0febb6a39ce06f2a5a10acbae19">margin1</a>, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> <a class="el" href="classmist_1_1marray.html#ac552255c9de8fdb9d87ba2b1aa3819f7">margin2</a>, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> <a class="el" href="classmist_1_1marray.html#abd13a4df6e8e90ab41a609549ab1a0ee">margin3</a>, const <a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a> &amp;val=<a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a>())</td></tr>
+<tr class="memdesc:a8160e97d090fc70097648b4e2d27fcaf"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a> 配列 o の配列の大きさと，X軸方向のマージン margin1，Y軸方向のマージン margin2，Z軸方向のマージン margin3 を用いて初期化し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:a572385ce3cf42b0fa32c209781cf1ba4"><td class="memTemplParams" colspan="2"><a class="anchor" id="a572385ce3cf42b0fa32c209781cf1ba4"></a>
+template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a572385ce3cf42b0fa32c209781cf1ba4"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a572385ce3cf42b0fa32c209781cf1ba4">marray</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;o, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> <a class="el" href="classmist_1_1marray.html#a8880c0febb6a39ce06f2a5a10acbae19">margin1</a>, const <a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a> &amp;val=<a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a>())</td></tr>
+<tr class="memdesc:a572385ce3cf42b0fa32c209781cf1ba4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> 配列 o の配列の大きさと，X・Y軸方向のマージン margin1 を用いて初期化し，全要素を val で初期化する <br/></td></tr>
+<tr class="memitem:ab42b752fe2dc3d63d7e4af33e3d51d64"><td class="memTemplParams" colspan="2"><a class="anchor" id="ab42b752fe2dc3d63d7e4af33e3d51d64"></a>
+template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ab42b752fe2dc3d63d7e4af33e3d51d64"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#ab42b752fe2dc3d63d7e4af33e3d51d64">marray</a> (const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T, Allocator &gt; &amp;o, <a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a> <a class="el" href="classmist_1_1marray.html#a8880c0febb6a39ce06f2a5a10acbae19">margin1</a>, const <a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a> &amp;val=<a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a>())</td></tr>
+<tr class="memdesc:ab42b752fe2dc3d63d7e4af33e3d51d64"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a> 配列 o の配列の大きさと，X・Y・Z軸方向のマージン margin1 を用いて初期化し，全要素を val で初期化する <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-types"></a>
+Protected 型</h2></td></tr>
+<tr class="memitem:a8e0c2a349294d5ed47827fe2d2d20d81"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e0c2a349294d5ed47827fe2d2d20d81"></a>
+typedef Array&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a8e0c2a349294d5ed47827fe2d2d20d81">base</a></td></tr>
+<tr class="memdesc:a8e0c2a349294d5ed47827fe2d2d20d81"><td class="mdescLeft">&#160;</td><td class="mdescRight">基底クラス <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected 変数</h2></td></tr>
+<tr class="memitem:a7230a3b48844277db9600f3cfad3160c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7230a3b48844277db9600f3cfad3160c"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a7230a3b48844277db9600f3cfad3160c">margin1_</a></td></tr>
+<tr class="memdesc:a7230a3b48844277db9600f3cfad3160c"><td class="mdescLeft">&#160;</td><td class="mdescRight">X軸方向のマージン <br/></td></tr>
+<tr class="memitem:a7af6d9336c8de6762016111a5d651722"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7af6d9336c8de6762016111a5d651722"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a7af6d9336c8de6762016111a5d651722">margin2_</a></td></tr>
+<tr class="memdesc:a7af6d9336c8de6762016111a5d651722"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y軸方向のマージン <br/></td></tr>
+<tr class="memitem:a6d13a1f119e63d014924a58c173f5048"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d13a1f119e63d014924a58c173f5048"></a>
+<a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1marray.html#a6d13a1f119e63d014924a58c173f5048">margin3_</a></td></tr>
+<tr class="memdesc:a6d13a1f119e63d014924a58c173f5048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z軸方向のマージン <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class Array&gt;<br/>
+class mist::marray&lt; Array &gt;</h3>
+
+<p>画像のふちにマージンを持った配列 </p>
+<p>1・2・3次元画像にマージンを持たせるための基本クラス （<a class="el" href="mist_8h.html">mist/mist.h</a> をインクルードする）</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Array</td><td>… 1・2・3次元画像クラスを指定する </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2>関数</h2>
+<a class="anchor" id="aa77df772ac1da0992bb1734c6e594847"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::at </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>index で示される位置の要素の参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>… コンテナ内の要素位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a44e41554de366103e060556dce87e2c1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::at </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j ) で示される位置の要素の参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad267c30f296c3f458edd443b92f64678"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::at </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>k</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j, k ) で示される位置の要素の参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">k</td><td>… コンテナ内のY軸方向の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a89ba215d1bf50876e99813f0227f2e26"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::at </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>index で示される位置の要素の const 参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>… コンテナ内の要素位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す const 参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4cda3a9ec1bc4b2b83a4b33d41868bdd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::at </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j ) で示される位置の要素の const 参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す const 参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5cd1f78f6845914e6cb2e824b43cbbe6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::at </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>k</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j, k ) で示される位置の要素の const 参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">k</td><td>… コンテナ内のY軸方向の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す const 参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad37fefe8e84f29d4263e2c594b7a0799"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナの要素を空にする </p>
+<p>コンテナに格納されているデータを全て削除し，コンテナを空（要素数0）にする </p>
+
+</div>
+</div>
+<a class="anchor" id="a7cb90c2169dc8b1e7e171cf23207f6e4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::fill_margin </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>val</em> = <code><a class="el" href="classmist_1_1marray.html#a65ae8728d8fe9457fd8189a2310c6166">value_type</a>(&#160;)</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内のマージン部分のデータ要素を指定された値で初期化する </p>
+<p>マージン部分の要素を値 val で初期化する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td>… 要素を初期化する値 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__morphology__group.html#ga573121226332924e8d3a9a6aa80c7f07">mist::closing()</a>, <a class="el" href="group__morphology__group.html#ga99d5819b28dfe92e222fa0147c1cf9f8">mist::opening()</a>, と <a class="el" href="group__region__growing__group.html#gabae77324d51d95c848be61462fd817e5">mist::region_growing()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afe64b8a6b619448b96dc5b56e6aca340"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>index で示される位置の要素の参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>… コンテナ内の要素位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5cf477f5ef8630890e72b39bb571a19c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j ) で示される位置の要素の参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aff5e27d4b57cc5272be2d5eb49a5300d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>k</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j, k ) で示される位置の要素の参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">k</td><td>… コンテナ内のY軸方向の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a86b7e5c489364fa9e8804c0653a39aa7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>index で示される位置の要素の const 参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>… コンテナ内の要素位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す const 参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af578d5b4524f3d83cc7e9b9af0aefb9a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j ) で示される位置の要素の const 参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す const 参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a04cc2d706658dcada1b2885b38d809d4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>k</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>( i, j, k ) で示される位置の要素の const 参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>… コンテナ内のX軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>… コンテナ内のY軸方向の位置 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">k</td><td>… コンテナ内のY軸方向の位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す const 参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a59f8a28b87c65fcc84117eec9f362b96"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1marray.html">marray</a>&amp; <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1marray.html">marray</a>&lt; Array &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>同じ型の marray コンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元の marray コンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="adb4ee92ac329a8a114b2c7ad372c0c68"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1marray.html">marray</a>&amp; <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array.html">array</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>要素の型が異なる array コンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元の array コンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad81b4d1f247a706f0b99daaf7a8a2096"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1marray.html">marray</a>&amp; <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array1.html">array1</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>要素の型が異なる <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1</a> コンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元の <a class="el" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1</a> コンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3e20486efeb909c4bc5564c4be578372"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1marray.html">marray</a>&amp; <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>要素の型が異なる <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> コンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元の <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2</a> コンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="abd9d62d1389b2395201be5f533fa02ac"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1marray.html">marray</a>&amp; <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>要素の型が異なる <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a> コンテナを代入する </p>
+<p>コピー元であるコンテナ o と全く同じコンテナを作成する． コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">o</td><td>… コピー元の <a class="el" href="classmist_1_1array3.html" title="要素数が可変の解像度付き3次元配列">array3</a> コンテナ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>自分自身 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a35dad12455748169e6e9b8a4eb045f47"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#ad416cbfa22b96e6f7b7a586dbfc4da1b">reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>index で示される位置の要素の参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>… コンテナ内の要素位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a03dc543f109e898822b9dda6cce8add4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1marray.html#a8f629673f1570cdf89f146f03cc8eed2">const_reference</a> <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a6d029f2e271daa5a5e57ef95f2f452ae">difference_type</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>index で示される位置の要素の参照を返す </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>… コンテナ内の要素位置</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>指定された要素を示す参照 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aeb7e081b5f108448d3323f1f3f3bc129"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td>
+          <td class="paramname"><em>num1</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の要素数を変更する </p>
+<p>要素数を num1 個に変更し，全ての要素をデフォルト値で初期化する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num1</td><td>… リサイズ後の全要素数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 正常にリサイズが終了 </td></tr>
+    <tr><td class="paramname">false</td><td>… リサイズ後のメモリを確保できなかった場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a49edd6c1d8f5302fb881124750eae8b0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td>
+          <td class="paramname"><em>num1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td>
+          <td class="paramname"><em>num2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の要素数を変更する </p>
+<p>要素数を num1 × num2 個に変更し，要素数が変更された場合のみ全ての要素をデフォルト値で初期化する．</p>
+<dl class="section attention"><dt>注意</dt><dd>必ず要素を初期化するためには，fill 関数を利用してください．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num1</td><td>… リサイズ後のX軸方向の要素数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num2</td><td>… リサイズ後のY軸方向の要素数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 正常にリサイズが終了 </td></tr>
+    <tr><td class="paramname">false</td><td>… リサイズ後のメモリを確保できなかった場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="abe6025a808cfa5b19aeec78dee75b5d7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td>
+          <td class="paramname"><em>num1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td>
+          <td class="paramname"><em>num2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html#a096cdb9c8b6957f68481e566106c5bcd">size_type</a>&#160;</td>
+          <td class="paramname"><em>num3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の要素数を変更する </p>
+<p>要素数を num1 × num2 × num3 個に変更し，要素数が変更された場合のみ全ての要素をデフォルト値で初期化する．</p>
+<dl class="section attention"><dt>注意</dt><dd>必ず要素を初期化するためには，fill 関数を利用してください．</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num1</td><td>… リサイズ後のX軸方向の要素数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num2</td><td>… リサイズ後のY軸方向の要素数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num3</td><td>… リサイズ後のZ軸方向の要素数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 正常にリサイズが終了 </td></tr>
+    <tr><td class="paramname">false</td><td>… リサイズ後のメモリを確保できなかった場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a98e8390ccec1cf8ea9176039ecf0abca"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1marray.html">mist::marray</a>&lt; Array &gt;::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1marray.html">marray</a>&lt; Array &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>コンテナ内の全ての内容を入れ替える． </p>
+<dl class="section attention"><dt>注意</dt><dd>どちらかのコンテナが外部メモリを利用している場合は，スワップは必ず失敗する</dd></dl>
+<p>入れ替え元のコンテナ a の中身と全て入れ替える</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 内容を入れ替える対象</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… データのスワップに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… データのスワップに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="mist_8h_source.html">mist.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

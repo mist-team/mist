@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::scoped_array&lt; T &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1scoped__array.html">scoped_array</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::scoped_array&lt; T &gt;<div class="ingroups"><a class="el" href="group__pointer__group.html">メモリ領域の自動開放を行うポインタ</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>オブジェクトのスコープが切れると配列用に確保したメモリの自動開放を行うポインタ  
+ <a href="classmist_1_1scoped__array.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="pointer_8h_source.html">pointer.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a62752af02641c2fbf32ae128e9d94a41"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a62752af02641c2fbf32ae128e9d94a41"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__array.html#a62752af02641c2fbf32ae128e9d94a41">size_type</a></td></tr>
+<tr class="memdesc:a62752af02641c2fbf32ae128e9d94a41"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a9fb3e12c2640a8ff2daf648d1021c539"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fb3e12c2640a8ff2daf648d1021c539"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__array.html#a9fb3e12c2640a8ff2daf648d1021c539">difference_type</a></td></tr>
+<tr class="memdesc:a9fb3e12c2640a8ff2daf648d1021c539"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:a63a0bfe668e4df89f6ac9d112b9a6617"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63a0bfe668e4df89f6ac9d112b9a6617"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__array.html#a63a0bfe668e4df89f6ac9d112b9a6617">value_type</a></td></tr>
+<tr class="memdesc:a63a0bfe668e4df89f6ac9d112b9a6617"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部データ型．T と同じ <br/></td></tr>
+<tr class="memitem:a356259b1f01f010bca848b268b5f59d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a356259b1f01f010bca848b268b5f59d2"></a>
+typedef T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__array.html#a356259b1f01f010bca848b268b5f59d2">pointer</a></td></tr>
+<tr class="memdesc:a356259b1f01f010bca848b268b5f59d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型のポインター型．data の場合，data * となる <br/></td></tr>
+<tr class="memitem:a4fb1e48336de4c55fae32a62170db4a4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4fb1e48336de4c55fae32a62170db4a4"></a>
+typedef T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__array.html#a4fb1e48336de4c55fae32a62170db4a4">reference</a></td></tr>
+<tr class="memdesc:a4fb1e48336de4c55fae32a62170db4a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の参照．data の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:a9dd31abd54b782b9a084469c3486c8cc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9dd31abd54b782b9a084469c3486c8cc"></a>
+typedef const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__array.html#a9dd31abd54b782b9a084469c3486c8cc">const_reference</a></td></tr>
+<tr class="memdesc:a9dd31abd54b782b9a084469c3486c8cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const 参照．data の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:a36090c0d581ad41baa6ded1c0ec93990"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a36090c0d581ad41baa6ded1c0ec93990"></a>
+typedef const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__array.html#a36090c0d581ad41baa6ded1c0ec93990">const_pointer</a></td></tr>
+<tr class="memdesc:a36090c0d581ad41baa6ded1c0ec93990"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const ポインター型．data の場合，const data * となる <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a6d717772c99be7e143ec2e203338f004"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d717772c99be7e143ec2e203338f004"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__array.html#a6d717772c99be7e143ec2e203338f004">scoped_array</a> (<a class="el" href="classmist_1_1scoped__array.html#a356259b1f01f010bca848b268b5f59d2">pointer</a> p)</td></tr>
+<tr class="memdesc:a6d717772c99be7e143ec2e203338f004"><td class="mdescLeft">&#160;</td><td class="mdescRight">成分を b で初期化する <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br/>
+class mist::scoped_array&lt; T &gt;</h3>
+
+<p>オブジェクトのスコープが切れると配列用に確保したメモリの自動開放を行うポインタ </p>
+<dl class="section attention"><dt>注意</dt><dd>配列のポインタに対してしか利用できない </dd>
+<dd>
+管理しているポインタを他のオブジェクトに譲渡することはできない</dd></dl>
+<div class="fragment"><div class="line"> ポインタの使用例</div>
+<div class="line">{</div>
+<div class="line">    <a class="code" href="classmist_1_1scoped__array.html" title="オブジェクトのスコープが切れると配列用に確保したメモリの自動開放を行うポインタ">mist::scoped_array&lt; std::string &gt;</a> a( <span class="keyword">new</span> std::string[ 2 ] );</div>
+<div class="line">   </div>
+<div class="line">       a[ 0 ] = <span class="stringliteral">&quot;test1&quot;</span>;</div>
+<div class="line">       a[ 1 ] = <span class="stringliteral">&quot;test2&quot;</span>;</div>
+<div class="line">   </div>
+<div class="line">       std::cout &lt;&lt; a[ 0 ] &lt;&lt; a[ 1 ] &lt;&lt; std::endl;</div>
+<div class="line">} <span class="comment">// &lt;- ここで a に割り当てたメモリ領域が，自動的に開放される</span></div>
+</div><!-- fragment --> </div><hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="pointer_8h_source.html">pointer.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

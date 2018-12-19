@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::dicom::dicom_uid_table</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1dicom.html">dicom</a></li><li class="navelem"><a class="el" href="classmist_1_1dicom_1_1dicom__uid__table.html">dicom_uid_table</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-methods">Protected メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::dicom::dicom_uid_table</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>DICOMが扱う UID の一覧を管理するクラス  
+ <a href="classmist_1_1dicom_1_1dicom__uid__table.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="dicom__tag_8h_source.html">dicom_tag.h</a>&gt;</code></p>
+
+<p>std::set&lt; K &gt;を継承しています。</p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:aa8ff1be0613ae21e331b61fa0d2afb45"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8ff1be0613ae21e331b61fa0d2afb45"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__uid__table.html#aa8ff1be0613ae21e331b61fa0d2afb45">contain_uid</a> (const std::string &amp;uid) const </td></tr>
+<tr class="memdesc:aa8ff1be0613ae21e331b61fa0d2afb45"><td class="mdescLeft">&#160;</td><td class="mdescRight">uid が含まれているかどうかを調べる <br/></td></tr>
+<tr class="memitem:a40ce83fd009c95e13a87375f408ee48d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40ce83fd009c95e13a87375f408ee48d"></a>
+<a class="el" href="classmist_1_1dicom_1_1dicom__uid.html">dicom_uid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__uid__table.html#a40ce83fd009c95e13a87375f408ee48d">get_uid</a> (const std::string &amp;uid)</td></tr>
+<tr class="memdesc:a40ce83fd009c95e13a87375f408ee48d"><td class="mdescLeft">&#160;</td><td class="mdescRight">uid を取得する <br/></td></tr>
+<tr class="memitem:a0acc40aedca484a19c4b537543744e65"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0acc40aedca484a19c4b537543744e65"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__uid__table.html#a0acc40aedca484a19c4b537543744e65">dicom_uid_table</a> ()</td></tr>
+<tr class="memdesc:a0acc40aedca484a19c4b537543744e65"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトのコンストラクタ <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr class="memitem:a04ad1700d6fb923135869319cb8ee30b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a04ad1700d6fb923135869319cb8ee30b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__uid__table.html#a04ad1700d6fb923135869319cb8ee30b">insert_uid</a> (const std::string &amp;id=&quot;&quot;, const std::string &amp;n=&quot;&quot;, const std::string &amp;t=&quot;&quot;)</td></tr>
+<tr class="memdesc:a04ad1700d6fb923135869319cb8ee30b"><td class="mdescLeft">&#160;</td><td class="mdescRight">タグID id，名前 n，タイプ t の UID を挿入する <br/></td></tr>
+<tr class="memitem:a87a36faab884e18813844132164cee8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87a36faab884e18813844132164cee8e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1dicom_1_1dicom__uid__table.html#a87a36faab884e18813844132164cee8e">insert_uid</a> (const dicom_uid_element *dicom_uids)</td></tr>
+<tr class="memdesc:a87a36faab884e18813844132164cee8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">dicom_uids の UID を挿入する <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_classstd_1_1set"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classstd_1_1set')"><img src="closed.png" alt="-"/>&nbsp;変数 inherited from <a class="el" href="classstd_1_1set.html">std::set< K ></a></td></tr>
+<tr class="memitem:a7f92ca6d6e5216b9c4be631bd87f1df4 inherit pub_attribs_classstd_1_1set"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f92ca6d6e5216b9c4be631bd87f1df4"></a>
+K&#160;</td><td class="memItemRight" valign="bottom"><b>keys</b></td></tr>
+<tr class="memdesc:a7f92ca6d6e5216b9c4be631bd87f1df4 inherit pub_attribs_classstd_1_1set"><td class="mdescLeft">&#160;</td><td class="mdescRight">STL member. <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>DICOMが扱う UID の一覧を管理するクラス </p>
+</div><hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="dicom__tag_8h_source.html">dicom_tag.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

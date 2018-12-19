@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>TIFF画像入出力</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">TIFF画像入出力</div>  </div>
+<div class="ingroups"><a class="el" href="group__image__group.html">画像入出力</a></div></div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gaed6bb21f0e0e0dd2bf59d198c2b2d0a9"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gaed6bb21f0e0e0dd2bf59d198c2b2d0a9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__tiff__group.html#gaed6bb21f0e0e0dd2bf59d198c2b2d0a9">mist::read_tiff</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename)</td></tr>
+<tr class="memdesc:gaed6bb21f0e0e0dd2bf59d198c2b2d0a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">TIFF画像をMISTコンテナに読み込む  <a href="#gaed6bb21f0e0e0dd2bf59d198c2b2d0a9"></a><br/></td></tr>
+<tr class="memitem:gac1f56047db2d6cfc5fad0f815ae58b8e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gac1f56047db2d6cfc5fad0f815ae58b8e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__tiff__group.html#gac1f56047db2d6cfc5fad0f815ae58b8e">mist::read_tiff</a> (array2&lt; T, Allocator &gt; &amp;image, const std::wstring &amp;filename)</td></tr>
+<tr class="memdesc:gac1f56047db2d6cfc5fad0f815ae58b8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">TIFF画像をMISTコンテナに読み込む  <a href="#gac1f56047db2d6cfc5fad0f815ae58b8e"></a><br/></td></tr>
+<tr class="memitem:gad9ec0d98308ccabd5c25aacb5225c28b"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gad9ec0d98308ccabd5c25aacb5225c28b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__tiff__group.html#gad9ec0d98308ccabd5c25aacb5225c28b">mist::write_tiff</a> (const array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, bool use_lzw_compression=<a class="el" href="group__config__group.html#ga0a9574c0f5d59f3864181e311acccb38">_LZW_COMPRESSION_SUPPORT_</a>)</td></tr>
+<tr class="memdesc:gad9ec0d98308ccabd5c25aacb5225c28b"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナの画像をTIFF形式でファイルに出力する  <a href="#gad9ec0d98308ccabd5c25aacb5225c28b"></a><br/></td></tr>
+<tr class="memitem:ga2ad242e5106004783f84323aa636dbf6"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga2ad242e5106004783f84323aa636dbf6"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__tiff__group.html#ga2ad242e5106004783f84323aa636dbf6">mist::write_tiff</a> (const array2&lt; T, Allocator &gt; &amp;image, const std::wstring &amp;filename, bool use_lzw_compression=<a class="el" href="group__config__group.html#ga0a9574c0f5d59f3864181e311acccb38">_LZW_COMPRESSION_SUPPORT_</a>)</td></tr>
+<tr class="memdesc:ga2ad242e5106004783f84323aa636dbf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナの画像をTIFF形式でファイルに出力する  <a href="#ga2ad242e5106004783f84323aa636dbf6"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<p>TIFFファイルを読み込んで，MISTコンテナへ格納する． また，MISTコンテナからTIFFファイルへの書き出しをサポート． 別途 <a href="http://libtiff.org">http://libtiff.org</a> が提供するフリーのTIFFライブラリが必要です．</p>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="tiff_8h.html" title="TIFF画像を読み書きするためのライブラリ">mist/io/tiff.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="gaed6bb21f0e0e0dd2bf59d198c2b2d0a9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_tiff </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TIFF画像をMISTコンテナに読み込む </p>
+<p>LZW圧縮のかかったTIFFやカラーテーブルを使用したTIFFファイル等のさまざまなフォーマットを読み込むことが可能． また，出力するMISTコンテナがカラー画像かグレースケール画像かによって，ピクセルデータを適切に変換する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__group.html#ga753d074332158a04c160ab1c29182967">mist::read_image()</a>, と <a class="el" href="group__image__tiff__group.html#gac1f56047db2d6cfc5fad0f815ae58b8e">mist::read_tiff()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gac1f56047db2d6cfc5fad0f815ae58b8e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_tiff </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TIFF画像をMISTコンテナに読み込む </p>
+<p>LZW圧縮のかかったTIFFやカラーテーブルを使用したTIFFファイル等のさまざまなフォーマットを読み込むことが可能． また，出力するMISTコンテナがカラー画像かグレースケール画像かによって，ピクセルデータを適切に変換する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__tiff__group.html#gaed6bb21f0e0e0dd2bf59d198c2b2d0a9">mist::read_tiff()</a>, と <a class="el" href="namespacemist.html#ab2f799d2c98c030f7bc5ba23c8fb0380">mist::wstr2str()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gad9ec0d98308ccabd5c25aacb5225c28b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_tiff </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_lzw_compression</em> = <code><a class="el" href="group__config__group.html#ga0a9574c0f5d59f3864181e311acccb38">_LZW_COMPRESSION_SUPPORT_</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナの画像をTIFF形式でファイルに出力する </p>
+<dl class="section attention"><dt>注意</dt><dd>LZW圧縮のかかったTIFF画像を出力する場合は，libtiff ライブラリ側でLZW圧縮が有効になっている必要がある </dd>
+<dd>
+データの型がunsigned short，rgb&lt; unsigned short&gt;，rgba&lt; unsigned short&gt;の場合は、16ビットチャンネルを使用して画像が保存される</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 出力画像を保持するMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 出力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">use_lzw_compression</td><td>… LZW圧縮されたTIFF画像を出力するかどうか</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の書き込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の書き込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__group.html#ga0b247072df9e69c7ddddac0f60af66b2">mist::write_image()</a>, と <a class="el" href="group__image__tiff__group.html#ga2ad242e5106004783f84323aa636dbf6">mist::write_tiff()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga2ad242e5106004783f84323aa636dbf6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_tiff </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_lzw_compression</em> = <code><a class="el" href="group__config__group.html#ga0a9574c0f5d59f3864181e311acccb38">_LZW_COMPRESSION_SUPPORT_</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナの画像をTIFF形式でファイルに出力する </p>
+<dl class="section attention"><dt>注意</dt><dd>LZW圧縮のかかったTIFF画像を出力する場合は，libtiff ライブラリ側でLZW圧縮が有効になっている必要がある </dd>
+<dd>
+データの型がunsigned short，rgb&lt; unsigned short&gt;，rgba&lt; unsigned short&gt;の場合は、16ビットチャンネルを使用して画像が保存される</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 出力画像を保持するMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 出力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">use_lzw_compression</td><td>… LZW圧縮されたTIFF画像を出力するかどうか</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の書き込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の書き込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__tiff__group.html#gad9ec0d98308ccabd5c25aacb5225c28b">mist::write_tiff()</a>, と <a class="el" href="namespacemist.html#ab2f799d2c98c030f7bc5ba23c8fb0380">mist::wstr2str()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

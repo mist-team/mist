@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>iterator.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_a2627e7237515a7c75baa232ceab4ab6.html">config</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">iterator.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>MISTコンテナを操作するためのイテレータ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &lt;iterator&gt;</code><br/>
+<code>#include &quot;<a class="el" href="mist__conf_8h_source.html">mist_conf.h</a>&quot;</code><br/>
+</div>
+<p><a href="iterator_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator1.html">mist::mist_iterator1&lt; T, Distance, Pointer, Reference &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">mistコンテナで利用する1次元操作用ランダムアクセスイテレータ  <a href="classmist_1_1mist__iterator1.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__iterator2.html">mist::mist_iterator2&lt; T, Distance, Pointer, Reference &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">mistコンテナで利用する2次元操作用ランダムアクセスイテレータ  <a href="classmist_1_1mist__iterator2.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1mist__reverse__iterator.html">mist::mist_reverse_iterator&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">イテレータから逆方向ランダムアクセスイテレータを生成する  <a href="classmist_1_1mist__reverse__iterator.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a23294553d7540bd710c9ca4cd113680d"><td class="memTemplParams" colspan="2"><a class="anchor" id="a23294553d7540bd710c9ca4cd113680d"></a>
+template&lt;class T , class Distance , class Pointer , class Reference &gt; </td></tr>
+<tr class="memitem:a23294553d7540bd710c9ca4cd113680d"><td class="memTemplItemLeft" align="right" valign="top">const mist_iterator1&lt; T, <br class="typebreak"/>
+Distance, Pointer, Reference &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a23294553d7540bd710c9ca4cd113680d">mist::operator+</a> (const mist_iterator1&lt; T, Distance, Pointer, Reference &gt; &amp;ite, typename mist_iterator1&lt; T, Distance, Pointer, Reference &gt;::difference_type dist)</td></tr>
+<tr class="memdesc:a23294553d7540bd710c9ca4cd113680d"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ + 方向にイテレータを進めたイテレータを返す <br/></td></tr>
+<tr class="memitem:aaf8cd348159b8829fb5191840c0c15c4"><td class="memTemplParams" colspan="2"><a class="anchor" id="aaf8cd348159b8829fb5191840c0c15c4"></a>
+template&lt;class T , class Distance , class Pointer , class Reference &gt; </td></tr>
+<tr class="memitem:aaf8cd348159b8829fb5191840c0c15c4"><td class="memTemplItemLeft" align="right" valign="top">const mist_iterator1&lt; T, <br class="typebreak"/>
+Distance, Pointer, Reference &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#aaf8cd348159b8829fb5191840c0c15c4">mist::operator+</a> (typename mist_iterator1&lt; T, Distance, Pointer, Reference &gt;::difference_type dist, const mist_iterator1&lt; T, Distance, Pointer, Reference &gt; &amp;ite)</td></tr>
+<tr class="memdesc:aaf8cd348159b8829fb5191840c0c15c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ + 方向にイテレータを進めたイテレータを返す <br/></td></tr>
+<tr class="memitem:a940a4e5dc24d977f8aff37b896ff8d8c"><td class="memTemplParams" colspan="2"><a class="anchor" id="a940a4e5dc24d977f8aff37b896ff8d8c"></a>
+template&lt;class T , class Distance , class Pointer , class Reference &gt; </td></tr>
+<tr class="memitem:a940a4e5dc24d977f8aff37b896ff8d8c"><td class="memTemplItemLeft" align="right" valign="top">const mist_iterator1&lt; T, <br class="typebreak"/>
+Distance, Pointer, Reference &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a940a4e5dc24d977f8aff37b896ff8d8c">mist::operator-</a> (const mist_iterator1&lt; T, Distance, Pointer, Reference &gt; &amp;ite, typename mist_iterator1&lt; T, Distance, Pointer, Reference &gt;::difference_type dist)</td></tr>
+<tr class="memdesc:a940a4e5dc24d977f8aff37b896ff8d8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ - 方向にイテレータを進めたイテレータを返す <br/></td></tr>
+<tr class="memitem:a361d5f4d4fa4a0d6274526d023258a88"><td class="memTemplParams" colspan="2"><a class="anchor" id="a361d5f4d4fa4a0d6274526d023258a88"></a>
+template&lt;class T , class Distance , class Pointer , class Reference &gt; </td></tr>
+<tr class="memitem:a361d5f4d4fa4a0d6274526d023258a88"><td class="memTemplItemLeft" align="right" valign="top">const mist_iterator2&lt; T, <br class="typebreak"/>
+Distance, Pointer, Reference &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a361d5f4d4fa4a0d6274526d023258a88">mist::operator+</a> (const mist_iterator2&lt; T, Distance, Pointer, Reference &gt; &amp;ite, typename mist_iterator2&lt; T, Distance, Pointer, Reference &gt;::difference_type dist)</td></tr>
+<tr class="memdesc:a361d5f4d4fa4a0d6274526d023258a88"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ + 方向にイテレータを進めたイテレータを返す <br/></td></tr>
+<tr class="memitem:ab96e2625755b199a578a1ede27f25e1f"><td class="memTemplParams" colspan="2"><a class="anchor" id="ab96e2625755b199a578a1ede27f25e1f"></a>
+template&lt;class T , class Distance , class Pointer , class Reference &gt; </td></tr>
+<tr class="memitem:ab96e2625755b199a578a1ede27f25e1f"><td class="memTemplItemLeft" align="right" valign="top">const mist_iterator2&lt; T, <br class="typebreak"/>
+Distance, Pointer, Reference &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#ab96e2625755b199a578a1ede27f25e1f">mist::operator+</a> (typename mist_iterator2&lt; T, Distance, Pointer, Reference &gt;::difference_type dist, const mist_iterator2&lt; T, Distance, Pointer, Reference &gt; &amp;ite)</td></tr>
+<tr class="memdesc:ab96e2625755b199a578a1ede27f25e1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ + 方向にイテレータを進めたイテレータを返す <br/></td></tr>
+<tr class="memitem:ad249dd9f64f3ed8a505486e8390e08f2"><td class="memTemplParams" colspan="2"><a class="anchor" id="ad249dd9f64f3ed8a505486e8390e08f2"></a>
+template&lt;class T , class Distance , class Pointer , class Reference &gt; </td></tr>
+<tr class="memitem:ad249dd9f64f3ed8a505486e8390e08f2"><td class="memTemplItemLeft" align="right" valign="top">const mist_iterator2&lt; T, <br class="typebreak"/>
+Distance, Pointer, Reference &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#ad249dd9f64f3ed8a505486e8390e08f2">mist::operator-</a> (const mist_iterator2&lt; T, Distance, Pointer, Reference &gt; &amp;ite, typename mist_iterator2&lt; T, Distance, Pointer, Reference &gt;::difference_type dist)</td></tr>
+<tr class="memdesc:ad249dd9f64f3ed8a505486e8390e08f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ - 方向にイテレータを進めたイテレータを返す <br/></td></tr>
+<tr class="memitem:a770865a33323d72685058aed6c7fd981"><td class="memTemplParams" colspan="2"><a class="anchor" id="a770865a33323d72685058aed6c7fd981"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a770865a33323d72685058aed6c7fd981"><td class="memTemplItemLeft" align="right" valign="top">const mist_reverse_iterator&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a770865a33323d72685058aed6c7fd981">mist::operator+</a> (const mist_reverse_iterator&lt; T &gt; &amp;ite1, const mist_reverse_iterator&lt; T &gt; ite2)</td></tr>
+<tr class="memdesc:a770865a33323d72685058aed6c7fd981"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ + 方向にイテレータを進めたイテレータを返す <br/></td></tr>
+<tr class="memitem:a9f5c292642eca30375ad0b23aab0a779"><td class="memTemplParams" colspan="2"><a class="anchor" id="a9f5c292642eca30375ad0b23aab0a779"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a9f5c292642eca30375ad0b23aab0a779"><td class="memTemplItemLeft" align="right" valign="top">const mist_reverse_iterator&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a9f5c292642eca30375ad0b23aab0a779">mist::operator+</a> (const mist_reverse_iterator&lt; T &gt; &amp;ite, typename T::difference_type dist)</td></tr>
+<tr class="memdesc:a9f5c292642eca30375ad0b23aab0a779"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ + 方向にイテレータを進めたイテレータを返す <br/></td></tr>
+<tr class="memitem:a61cc3e9ba6df1a58b732f816dee4cca2"><td class="memTemplParams" colspan="2"><a class="anchor" id="a61cc3e9ba6df1a58b732f816dee4cca2"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a61cc3e9ba6df1a58b732f816dee4cca2"><td class="memTemplItemLeft" align="right" valign="top">const mist_reverse_iterator&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a61cc3e9ba6df1a58b732f816dee4cca2">mist::operator+</a> (typename T::difference_type dist, const mist_reverse_iterator&lt; T &gt; &amp;ite)</td></tr>
+<tr class="memdesc:a61cc3e9ba6df1a58b732f816dee4cca2"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ - 方向にイテレータを進めたイテレータを返す <br/></td></tr>
+<tr class="memitem:a3beec57a1aaf3bee3a49471cef1c0e87"><td class="memTemplParams" colspan="2"><a class="anchor" id="a3beec57a1aaf3bee3a49471cef1c0e87"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a3beec57a1aaf3bee3a49471cef1c0e87"><td class="memTemplItemLeft" align="right" valign="top">const mist_reverse_iterator&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist.html#a3beec57a1aaf3bee3a49471cef1c0e87">mist::operator-</a> (const mist_reverse_iterator&lt; T &gt; &amp;ite, typename T::difference_type dist)</td></tr>
+<tr class="memdesc:a3beec57a1aaf3bee3a49471cef1c0e87"><td class="mdescLeft">&#160;</td><td class="mdescRight">dist だけ - 方向にイテレータを進めたイテレータを返す <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>MISTコンテナを操作するためのイテレータ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

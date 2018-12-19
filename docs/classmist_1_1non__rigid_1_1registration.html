@@ -1,0 +1,544 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::non_rigid::registration&lt; TARGETTYPE &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1non__rigid.html">non_rigid</a></li><li class="navelem"><a class="el" href="classmist_1_1non__rigid_1_1registration.html">registration</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-attribs">Protected 変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::non_rigid::registration&lt; TARGETTYPE &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>非剛体レジストレーションエンジン  
+ <a href="classmist_1_1non__rigid_1_1registration.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="registration_8h_source.html">registration.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a56a390003c0b53dc301d345614ce82a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56a390003c0b53dc301d345614ce82a1"></a>
+typedef TARGETTYPE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#a56a390003c0b53dc301d345614ce82a1">image_type</a></td></tr>
+<tr class="memdesc:a56a390003c0b53dc301d345614ce82a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">レジストレーションする目標画像の型 <br/></td></tr>
+<tr class="memitem:a70427172a8aa9cbf212beb1a4a13bfea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70427172a8aa9cbf212beb1a4a13bfea"></a>
+typedef <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#a70427172a8aa9cbf212beb1a4a13bfea">vector_type</a></td></tr>
+<tr class="memdesc:a70427172a8aa9cbf212beb1a4a13bfea"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部で利用する3次元ベクトルの型 <br/></td></tr>
+<tr class="memitem:a59c4fbc6519404de2ce0af9d62bec936"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a59c4fbc6519404de2ce0af9d62bec936"></a>
+typedef <a class="el" href="classmist_1_1marray.html">marray</a>&lt; <a class="el" href="classmist_1_1array3.html">array3</a><br class="typebreak"/>
+&lt; <a class="el" href="classmist_1_1non__rigid_1_1registration.html#a70427172a8aa9cbf212beb1a4a13bfea">vector_type</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#a59c4fbc6519404de2ce0af9d62bec936">control_mesh_type</a></td></tr>
+<tr class="memdesc:a59c4fbc6519404de2ce0af9d62bec936"><td class="mdescLeft">&#160;</td><td class="mdescRight">制御点の配列 <br/></td></tr>
+<tr class="memitem:a879111bfc7fe81c62ef63fd4f96fd34e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a879111bfc7fe81c62ef63fd4f96fd34e"></a>
+typedef <a class="el" href="classmist_1_1matrix.html">matrix</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#a879111bfc7fe81c62ef63fd4f96fd34e">matrix_type</a></td></tr>
+<tr class="memdesc:a879111bfc7fe81c62ef63fd4f96fd34e"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部で利用する行列の型 <br/></td></tr>
+<tr class="memitem:abf34bc7df04ca45051f0425ae4c8f2e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf34bc7df04ca45051f0425ae4c8f2e7"></a>
+typedef image_type::size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a></td></tr>
+<tr class="memdesc:abf34bc7df04ca45051f0425ae4c8f2e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部で利用する符号なし整数型 <br/></td></tr>
+<tr class="memitem:a28baa515d1ceb4641831441880a49555"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28baa515d1ceb4641831441880a49555"></a>
+typedef image_type::difference_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#a28baa515d1ceb4641831441880a49555">difference_type</a></td></tr>
+<tr class="memdesc:a28baa515d1ceb4641831441880a49555"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部で利用する符号あり整数型 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:aca376193eea9d8dc091bc03225be9557"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#aca376193eea9d8dc091bc03225be9557">registration</a> (const <a class="el" href="classmist_1_1non__rigid_1_1registration.html#a56a390003c0b53dc301d345614ce82a1">image_type</a> &amp;tgt, <a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a> divW, <a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a> divH, <a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a> divD, <a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a> bin)</td></tr>
+<tr class="memdesc:aca376193eea9d8dc091bc03225be9557"><td class="mdescLeft">&#160;</td><td class="mdescRight">非剛体レジストレーションエンジンの初期化  <a href="#aca376193eea9d8dc091bc03225be9557"></a><br/></td></tr>
+<tr class="memitem:ab46fe54297912466b466ab659e2ea1ad"><td class="memTemplParams" colspan="2">template&lt;class SOURCETYPE &gt; </td></tr>
+<tr class="memitem:ab46fe54297912466b466ab659e2ea1ad"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#ab46fe54297912466b466ab659e2ea1ad">apply</a> (const SOURCETYPE &amp;source, double tolerance, <a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a> max_loop=3, <a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a> coarse_to_fine_step=1, <a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a> thread_num=0)</td></tr>
+<tr class="memdesc:ab46fe54297912466b466ab659e2ea1ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">非剛体レジストレーションの実行  <a href="#ab46fe54297912466b466ab659e2ea1ad"></a><br/></td></tr>
+<tr class="memitem:a4953e118f8dc50b1a3fb0282b652c7c2"><td class="memTemplParams" colspan="2">template&lt;class SOURCETYPE , class Functor &gt; </td></tr>
+<tr class="memitem:a4953e118f8dc50b1a3fb0282b652c7c2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#a4953e118f8dc50b1a3fb0282b652c7c2">apply</a> (const SOURCETYPE &amp;source, double tolerance, <a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a> max_loop, <a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a> coarse_to_fine_step, <a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a> thread_num, Functor callback)</td></tr>
+<tr class="memdesc:a4953e118f8dc50b1a3fb0282b652c7c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">非剛体レジストレーションの実行  <a href="#a4953e118f8dc50b1a3fb0282b652c7c2"></a><br/></td></tr>
+<tr class="memitem:a796ef4ff8d60cfa6618cd7f8f5de8447"><td class="memTemplParams" colspan="2">template&lt;class SOURCETYPE , class SOURCETYPEA , class OUTTYPE , class OUTTYPEA &gt; </td></tr>
+<tr class="memitem:a796ef4ff8d60cfa6618cd7f8f5de8447"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#a796ef4ff8d60cfa6618cd7f8f5de8447">transform</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; SOURCETYPE, SOURCETYPEA &gt; &amp;source, <a class="el" href="classmist_1_1array2.html">array2</a>&lt; OUTTYPE, OUTTYPEA &gt; &amp;out)</td></tr>
+<tr class="memdesc:a796ef4ff8d60cfa6618cd7f8f5de8447"><td class="mdescLeft">&#160;</td><td class="mdescRight">非剛体レジストレーション結果を画像に格納する  <a href="#a796ef4ff8d60cfa6618cd7f8f5de8447"></a><br/></td></tr>
+<tr class="memitem:a003391d53ea12d353f4e11a5dce484bf"><td class="memTemplParams" colspan="2">template&lt;class SOURCETYPE , class SOURCETYPEA , class OUTTYPE , class OUTTYPEA &gt; </td></tr>
+<tr class="memitem:a003391d53ea12d353f4e11a5dce484bf"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#a003391d53ea12d353f4e11a5dce484bf">transform</a> (const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; SOURCETYPE, SOURCETYPEA &gt; &amp;source, <a class="el" href="classmist_1_1array3.html">array3</a>&lt; OUTTYPE, OUTTYPEA &gt; &amp;out)</td></tr>
+<tr class="memdesc:a003391d53ea12d353f4e11a5dce484bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">非剛体レジストレーション結果を画像に格納する  <a href="#a003391d53ea12d353f4e11a5dce484bf"></a><br/></td></tr>
+<tr class="memitem:afd9abeda7cea0609d03afcfd405497ee"><td class="memTemplParams" colspan="2">template&lt;class SOURCETYPE , class SOURCETYPEA , class OUTTYPE , class OUTTYPEA &gt; </td></tr>
+<tr class="memitem:afd9abeda7cea0609d03afcfd405497ee"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#afd9abeda7cea0609d03afcfd405497ee">transform</a> (const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; SOURCETYPE, SOURCETYPEA &gt; &amp;source, <a class="el" href="classmist_1_1array2.html">array2</a>&lt; OUTTYPE, OUTTYPEA &gt; &amp;out, typename <a class="el" href="classmist_1_1array2.html">array2</a>&lt; OUTTYPE, OUTTYPEA &gt;::value_type value)</td></tr>
+<tr class="memdesc:afd9abeda7cea0609d03afcfd405497ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">非剛体レジストレーション結果を画像に格納する  <a href="#afd9abeda7cea0609d03afcfd405497ee"></a><br/></td></tr>
+<tr class="memitem:a0658d57d0e4f05755ca11b371543c129"><td class="memTemplParams" colspan="2">template&lt;class SOURCETYPE , class SOURCETYPEA , class OUTTYPE , class OUTTYPEA &gt; </td></tr>
+<tr class="memitem:a0658d57d0e4f05755ca11b371543c129"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#a0658d57d0e4f05755ca11b371543c129">transform</a> (const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; SOURCETYPE, SOURCETYPEA &gt; &amp;source, <a class="el" href="classmist_1_1array3.html">array3</a>&lt; OUTTYPE, OUTTYPEA &gt; &amp;out, typename <a class="el" href="classmist_1_1array2.html">array2</a>&lt; OUTTYPE, OUTTYPEA &gt;::value_type value)</td></tr>
+<tr class="memdesc:a0658d57d0e4f05755ca11b371543c129"><td class="mdescLeft">&#160;</td><td class="mdescRight">非剛体レジストレーション結果を画像に格納する  <a href="#a0658d57d0e4f05755ca11b371543c129"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected 変数</h2></td></tr>
+<tr class="memitem:a81d46a1cc433ddeb4c200c23c60784f8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81d46a1cc433ddeb4c200c23c60784f8"></a>
+const <a class="el" href="classmist_1_1non__rigid_1_1registration.html#a56a390003c0b53dc301d345614ce82a1">image_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#a81d46a1cc433ddeb4c200c23c60784f8">target</a></td></tr>
+<tr class="memdesc:a81d46a1cc433ddeb4c200c23c60784f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">レジストレーションする目標画像 <br/></td></tr>
+<tr class="memitem:a49f490ee03fcc408df9cdbce92f3c8f4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a49f490ee03fcc408df9cdbce92f3c8f4"></a>
+<a class="el" href="classmist_1_1non__rigid_1_1registration.html#a59c4fbc6519404de2ce0af9d62bec936">control_mesh_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#a49f490ee03fcc408df9cdbce92f3c8f4">control_mesh</a></td></tr>
+<tr class="memdesc:a49f490ee03fcc408df9cdbce92f3c8f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">制御点配列 <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class TARGETTYPE&gt;<br/>
+class mist::non_rigid::registration&lt; TARGETTYPE &gt;</h3>
+
+<p>非剛体レジストレーションエンジン </p>
+<pre class="fragment">   @param TARGETTYPE  … レジストレーションする目標画像の型
+
+   @code 
+</pre><p> <a class="el" href="classmist_1_1non__rigid_1_1registration.html" title="非剛体レジストレーションエンジン">mist::non_rigid::registration</a>&lt; 目標画像の型を入力 &gt; r( 目標画像, X軸方向の制御点数, Y軸方向の制御点数, Z軸方向の制御点数, NMIを計算する際のビン幅 );</p>
+<p>r.apply( ソース画像, レジストレーションの終了判定に用いる許容相対誤差 );</p>
+<p>r.transform( ソース画像, 非剛体レジストレーションの結果を格納する画像 );  </p>
+</div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="aca376193eea9d8dc091bc03225be9557"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class TARGETTYPE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1non__rigid_1_1registration.html">mist::non_rigid::registration</a>&lt; TARGETTYPE &gt;::<a class="el" href="classmist_1_1non__rigid_1_1registration.html">registration</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1non__rigid_1_1registration.html#a56a390003c0b53dc301d345614ce82a1">image_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>tgt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a>&#160;</td>
+          <td class="paramname"><em>divW</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a>&#160;</td>
+          <td class="paramname"><em>divH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a>&#160;</td>
+          <td class="paramname"><em>divD</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a>&#160;</td>
+          <td class="paramname"><em>bin</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>非剛体レジストレーションエンジンの初期化 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">tgt</td><td>… 目標画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">divW</td><td>… 制御点の初期分割数のX軸方向の個数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">divH</td><td>… 制御点の初期分割数のY軸方向の個数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">divD</td><td>… 制御点の初期分割数のZ軸方向の個数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bin</td><td>… NMIを計算する際のビン幅 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="ab46fe54297912466b466ab659e2ea1ad"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class TARGETTYPE &gt; </div>
+<div class="memtemplate">
+template&lt;class SOURCETYPE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1non__rigid_1_1registration.html">mist::non_rigid::registration</a>&lt; TARGETTYPE &gt;::apply </td>
+          <td>(</td>
+          <td class="paramtype">const SOURCETYPE &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a>&#160;</td>
+          <td class="paramname"><em>max_loop</em> = <code>3</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a>&#160;</td>
+          <td class="paramname"><em>coarse_to_fine_step</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a>&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>非剛体レジストレーションの実行 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>… 目標画像に向けて変形するソース画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… レジストレーションの終了判定に用いる許容相対誤差 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_loop</td><td>… 最適化処理の最大反復回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">coarse_to_fine_step</td><td>… 何段階のメッシュ再分割処理を行うか </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a4953e118f8dc50b1a3fb0282b652c7c2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class TARGETTYPE &gt; </div>
+<div class="memtemplate">
+template&lt;class SOURCETYPE , class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1non__rigid_1_1registration.html">mist::non_rigid::registration</a>&lt; TARGETTYPE &gt;::apply </td>
+          <td>(</td>
+          <td class="paramtype">const SOURCETYPE &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a>&#160;</td>
+          <td class="paramname"><em>max_loop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a>&#160;</td>
+          <td class="paramname"><em>coarse_to_fine_step</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1non__rigid_1_1registration.html#abf34bc7df04ca45051f0425ae4c8f2e7">size_type</a>&#160;</td>
+          <td class="paramname"><em>thread_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>非剛体レジストレーションの実行 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>… 目標画像に向けて変形するソース画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tolerance</td><td>… レジストレーションの終了判定に用いる許容相対誤差 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_loop</td><td>… 最適化処理の最大反復回数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">coarse_to_fine_step</td><td>… 何段階のメッシュ再分割処理を行うか </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 現在の進行状況を表示するためのコールバック関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>, <a class="el" href="classmist_1_1vector3.html#af8bc62562bfcf84e19b8c460c90eb87b">mist::vector3&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1vector3.html#ad713c6bf4aceb2b61dec9dfca7175bd3">mist::vector3&lt; T &gt;::y</a>, と <a class="el" href="classmist_1_1vector3.html#a65670ab9189ceb952f9ac1f7684cf567">mist::vector3&lt; T &gt;::z</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a796ef4ff8d60cfa6618cd7f8f5de8447"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class TARGETTYPE &gt; </div>
+<div class="memtemplate">
+template&lt;class SOURCETYPE , class SOURCETYPEA , class OUTTYPE , class OUTTYPEA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1non__rigid_1_1registration.html">mist::non_rigid::registration</a>&lt; TARGETTYPE &gt;::transform </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; SOURCETYPE, SOURCETYPEA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array2.html">array2</a>&lt; OUTTYPE, OUTTYPEA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>非剛体レジストレーション結果を画像に格納する </p>
+<p>出力画像の解像度に合わせて，非剛体レジストレーション結果の画像を生成する</p>
+<dl class="section attention"><dt>注意</dt><dd>出力画像のサイズと解像度は事前に設定しておく必要あり</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>… 目標画像に向けて変形するソース画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力結果の画像 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a003391d53ea12d353f4e11a5dce484bf"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class TARGETTYPE &gt; </div>
+<div class="memtemplate">
+template&lt;class SOURCETYPE , class SOURCETYPEA , class OUTTYPE , class OUTTYPEA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1non__rigid_1_1registration.html">mist::non_rigid::registration</a>&lt; TARGETTYPE &gt;::transform </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; SOURCETYPE, SOURCETYPEA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array3.html">array3</a>&lt; OUTTYPE, OUTTYPEA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>非剛体レジストレーション結果を画像に格納する </p>
+<p>出力画像の解像度に合わせて，非剛体レジストレーション結果の画像を生成する</p>
+<dl class="section attention"><dt>注意</dt><dd>出力画像のサイズと解像度は事前に設定しておく必要あり</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>… 目標画像に向けて変形するソース画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力結果の画像 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="afd9abeda7cea0609d03afcfd405497ee"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class TARGETTYPE &gt; </div>
+<div class="memtemplate">
+template&lt;class SOURCETYPE , class SOURCETYPEA , class OUTTYPE , class OUTTYPEA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1non__rigid_1_1registration.html">mist::non_rigid::registration</a>&lt; TARGETTYPE &gt;::transform </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array2.html">array2</a>&lt; SOURCETYPE, SOURCETYPEA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array2.html">array2</a>&lt; OUTTYPE, OUTTYPEA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename <a class="el" href="classmist_1_1array2.html">array2</a>&lt; OUTTYPE, OUTTYPEA &gt;::value_type&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>非剛体レジストレーション結果を画像に格納する </p>
+<p>出力画像の解像度に合わせて，非剛体レジストレーション結果の画像を生成し，制御点のメッシュを描画する</p>
+<dl class="section attention"><dt>注意</dt><dd>出力画像のサイズと解像度は事前に設定しておく必要あり</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>… 目標画像に向けて変形するソース画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力結果の画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>… 制御点メッシュの値 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__drawing__group.html#gac05c5144a880d8c906c4c8ff7da6b20a">mist::draw_line()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1vector3.html#af8bc62562bfcf84e19b8c460c90eb87b">mist::vector3&lt; T &gt;::x</a>, と <a class="el" href="classmist_1_1vector3.html#ad713c6bf4aceb2b61dec9dfca7175bd3">mist::vector3&lt; T &gt;::y</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0658d57d0e4f05755ca11b371543c129"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class TARGETTYPE &gt; </div>
+<div class="memtemplate">
+template&lt;class SOURCETYPE , class SOURCETYPEA , class OUTTYPE , class OUTTYPEA &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1non__rigid_1_1registration.html">mist::non_rigid::registration</a>&lt; TARGETTYPE &gt;::transform </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1array3.html">array3</a>&lt; SOURCETYPE, SOURCETYPEA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1array3.html">array3</a>&lt; OUTTYPE, OUTTYPEA &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename <a class="el" href="classmist_1_1array2.html">array2</a>&lt; OUTTYPE, OUTTYPEA &gt;::value_type&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>非剛体レジストレーション結果を画像に格納する </p>
+<p>出力画像の解像度に合わせて，非剛体レジストレーション結果の画像を生成し，制御点のメッシュを描画する</p>
+<dl class="section attention"><dt>注意</dt><dd>出力画像のサイズと解像度は事前に設定しておく必要あり</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>… 目標画像に向けて変形するソース画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力結果の画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>… 制御点メッシュの値 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__drawing__group.html#gac05c5144a880d8c906c4c8ff7da6b20a">mist::draw_line()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="classmist_1_1array3.html#ae3aec3e8e4dcded2aa267a17a487d251">mist::array3&lt; T, Allocator &gt;::reso3()</a>, <a class="el" href="classmist_1_1vector3.html#af8bc62562bfcf84e19b8c460c90eb87b">mist::vector3&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1vector3.html#ad713c6bf4aceb2b61dec9dfca7175bd3">mist::vector3&lt; T &gt;::y</a>, と <a class="el" href="classmist_1_1vector3.html#a65670ab9189ceb952f9ac1f7684cf567">mist::vector3&lt; T &gt;::z</a>.</p>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="registration_8h_source.html">registration.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

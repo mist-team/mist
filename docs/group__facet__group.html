@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ポリゴンを扱うクラス</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ポリゴンを扱うクラス</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet.html">mist::facet&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポリゴン（三角形）を扱うクラス  <a href="classmist_1_1facet.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1facet__list.html">mist::facet_list&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポリゴン（三角形）の集合を扱うクラス  <a href="classmist_1_1facet__list.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gafdb210f6eea7c49dbdde725ad97c161f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gafdb210f6eea7c49dbdde725ad97c161f"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__facet__group.html#gafdb210f6eea7c49dbdde725ad97c161f">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const facet&lt; T &gt; &amp;f)</td></tr>
+<tr class="memdesc:gafdb210f6eea7c49dbdde725ad97c161f"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームに，ポリゴンオブジェクトを整形して出力する  <a href="#gafdb210f6eea7c49dbdde725ad97c161f"></a><br/></td></tr>
+<tr class="memitem:gaeeaa0e1c6ffe913f8992308642ee8858"><td class="memTemplParams" colspan="2">template&lt;class T , class T1 , class T2 &gt; </td></tr>
+<tr class="memitem:gaeeaa0e1c6ffe913f8992308642ee8858"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__facet__group.html#gaeeaa0e1c6ffe913f8992308642ee8858">mist::convert_to_vertex_face_list</a> (const facet_list&lt; T &gt; &amp;facets, std::vector&lt; vector3&lt; T1 &gt; &gt; &amp;vertices, std::vector&lt; vector3&lt; T2 &gt; &gt; &amp;faces, const double eps=1.0e-6)</td></tr>
+<tr class="memdesc:gaeeaa0e1c6ffe913f8992308642ee8858"><td class="mdescLeft">&#160;</td><td class="mdescRight">3角形パッチの集合から頂点集合と三角形パッチを構成するインデックス集合に変換する  <a href="#gaeeaa0e1c6ffe913f8992308642ee8858"></a><br/></td></tr>
+<tr class="memitem:ga7b71d3f3a684e8073fbcdef04bf5a641"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga7b71d3f3a684e8073fbcdef04bf5a641"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__facet__group.html#ga7b71d3f3a684e8073fbcdef04bf5a641">mist::surface_simplification</a> (facet_list&lt; T &gt; &amp;facets, size_t number_of_facets, bool use_optimal_vertex_placement=true, double threshold_for_triangle_compactness=0.0, const double eps=1.0e-3)</td></tr>
+<tr class="memdesc:ga7b71d3f3a684e8073fbcdef04bf5a641"><td class="mdescLeft">&#160;</td><td class="mdescRight">3角形パッチの集合から頂点集合と三角形パッチを構成するインデックス集合に変換する  <a href="#ga7b71d3f3a684e8073fbcdef04bf5a641"></a><br/></td></tr>
+<tr class="memitem:gae5dc8e22e523fe969bb213257e05449d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gae5dc8e22e523fe969bb213257e05449d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__facet__group.html#gae5dc8e22e523fe969bb213257e05449d">mist::maximum_connected_region</a> (facet_list&lt; T &gt; &amp;facets, const double eps=1.0e-3)</td></tr>
+<tr class="memdesc:gae5dc8e22e523fe969bb213257e05449d"><td class="mdescLeft">&#160;</td><td class="mdescRight">3角形パッチの集合から最大の連結領域のみを取り出し，他を全て削除する  <a href="#gae5dc8e22e523fe969bb213257e05449d"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;mist/facet.h&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="gaeeaa0e1c6ffe913f8992308642ee8858"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class T1 , class T2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::convert_to_vertex_face_list </td>
+          <td>(</td>
+          <td class="paramtype">const facet_list&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>facets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; vector3&lt; T1 &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vertices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; vector3&lt; T2 &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>faces</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>eps</em> = <code>1.0e-6</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>3角形パッチの集合から頂点集合と三角形パッチを構成するインデックス集合に変換する </p>
+<p>共通して使用する頂点を全てまとめた頂点集合を作成する．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">facets</td><td>… 3角形パッチの集合 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">vertices</td><td>… 頂点集合 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">faces</td><td>… 三角形パッチを構成するインデックス集合 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eps</td><td>… 同一頂点と判定される頂点の距離</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>頂点集合とインデックス集合の作成に成功したかどうか </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array2.html#a28c29095c35ba9d400739e2b808eb003">mist::array2&lt; T, Allocator &gt;::clear()</a>, <a class="el" href="classmist_1_1vector3.html#ad81929e66a96307352b3902ff89e4cd5">mist::vector3&lt; T &gt;::inner()</a>, <a class="el" href="classmist_1_1facet.html#a9b4eb8a1dbb7be85069657917dd9603e">mist::facet&lt; T &gt;::normal</a>, <a class="el" href="classmist_1_1facet.html#a934c6a77c94c767fc2ff36c986b2a1d1">mist::facet&lt; T &gt;::p1</a>, <a class="el" href="classmist_1_1facet.html#a878f8ce2e1e1d3c010af68ec5068354c">mist::facet&lt; T &gt;::p2</a>, と <a class="el" href="classmist_1_1facet.html#a2ee7753d236c0ee6f8f327b2cf53a4ed">mist::facet&lt; T &gt;::p3</a>.</p>
+
+<p>参照元 <a class="el" href="group__facet__group.html#gae5dc8e22e523fe969bb213257e05449d">mist::maximum_connected_region()</a>, と <a class="el" href="group__facet__group.html#ga7b71d3f3a684e8073fbcdef04bf5a641">mist::surface_simplification()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gae5dc8e22e523fe969bb213257e05449d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::maximum_connected_region </td>
+          <td>(</td>
+          <td class="paramtype">facet_list&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>facets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>eps</em> = <code>1.0e-3</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>3角形パッチの集合から最大の連結領域のみを取り出し，他を全て削除する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">facets</td><td>… 3角形パッチの集合 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eps</td><td>… 同一頂点と判定される頂点の距離</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>最大領域の抽出に成功したかどうか </dd></dl>
+
+<p>参照先 <a class="el" href="group__facet__group.html#gaeeaa0e1c6ffe913f8992308642ee8858">mist::convert_to_vertex_face_list()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gafdb210f6eea7c49dbdde725ad97c161f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; mist::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const facet&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>f</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定されたストリームに，ポリゴンオブジェクトを整形して出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">out</td><td>… 入力と出力を行うストリーム </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… ポリゴンオブジェクト</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>入力されたストリーム</dd></dl>
+<div class="fragment"><div class="line"> 出力例</div>
+<div class="line">( 1, 2, 3, 4 )</div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a class="anchor" id="ga7b71d3f3a684e8073fbcdef04bf5a641"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::surface_simplification </td>
+          <td>(</td>
+          <td class="paramtype">facet_list&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>facets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>number_of_facets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_optimal_vertex_placement</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>threshold_for_triangle_compactness</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>eps</em> = <code>1.0e-3</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>3角形パッチの集合から頂点集合と三角形パッチを構成するインデックス集合に変換する </p>
+<p>共通して使用する頂点を全てまとめた頂点集合を作成する．</p>
+<ul>
+<li>参考文献<ul>
+<li>Michael Garland and Paul S. Heckbert, "Surface Simplification Using Quadric Error Metrics," Proceedings of SIGGRAPH 97, pp.209-216, 1997</li>
+<li>Michael Garland and Paul S. Heckbert, "Simplifying Surfaces with Color and Texture using Quadric Error Metrics," Proceedings of IEEE Visualization conference , pp.263-269, 1998</li>
+</ul>
+</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">facets</td><td>… 3角形パッチの集合 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">number_of_facets</td><td>… 削減後の3角形パッチ数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">use_optimal_vertex_placement</td><td>… 辺削除後に最適な位置に頂点を移動させるかどうか（有効にすると場合によってはきれいなメッシュが得られない場合あり） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">threshold_for_triangle_compactness</td><td>… 辺削除後に発生する尖った三角形を抑制する（0〜1の間を設定） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eps</td><td>… 同一頂点と判定される頂点の距離</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>3角形パッチす数の削減に成功したかどうか </dd></dl>
+
+<p>参照先 <a class="el" href="group__facet__group.html#gaeeaa0e1c6ffe913f8992308642ee8858">mist::convert_to_vertex_face_list()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

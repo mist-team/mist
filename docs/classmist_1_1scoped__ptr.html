@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::scoped_ptr&lt; T &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1scoped__ptr.html">scoped_ptr</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::scoped_ptr&lt; T &gt;<div class="ingroups"><a class="el" href="group__pointer__group.html">メモリ領域の自動開放を行うポインタ</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>オブジェクトのスコープが切れると自動的にメモリ開放を行うポインタ  
+ <a href="classmist_1_1scoped__ptr.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="pointer_8h_source.html">pointer.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:ae4d228fa789088bef91148865c90770c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae4d228fa789088bef91148865c90770c"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__ptr.html#ae4d228fa789088bef91148865c90770c">size_type</a></td></tr>
+<tr class="memdesc:ae4d228fa789088bef91148865c90770c"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a55ee99cc35b07d1f850b437c7a4fc699"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55ee99cc35b07d1f850b437c7a4fc699"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__ptr.html#a55ee99cc35b07d1f850b437c7a4fc699">difference_type</a></td></tr>
+<tr class="memdesc:a55ee99cc35b07d1f850b437c7a4fc699"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:ab8fad7451a1da46c359c8f8735c0b21e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8fad7451a1da46c359c8f8735c0b21e"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__ptr.html#ab8fad7451a1da46c359c8f8735c0b21e">value_type</a></td></tr>
+<tr class="memdesc:ab8fad7451a1da46c359c8f8735c0b21e"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部データ型．T と同じ <br/></td></tr>
+<tr class="memitem:aeee99c6312c01a2582c3b68d0aca54ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeee99c6312c01a2582c3b68d0aca54ac"></a>
+typedef T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__ptr.html#aeee99c6312c01a2582c3b68d0aca54ac">pointer</a></td></tr>
+<tr class="memdesc:aeee99c6312c01a2582c3b68d0aca54ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型のポインター型．data の場合，data * となる <br/></td></tr>
+<tr class="memitem:ad42edb8c9392e09ca9f3c7f7c6f58d50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad42edb8c9392e09ca9f3c7f7c6f58d50"></a>
+typedef T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__ptr.html#ad42edb8c9392e09ca9f3c7f7c6f58d50">reference</a></td></tr>
+<tr class="memdesc:ad42edb8c9392e09ca9f3c7f7c6f58d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の参照．data の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:a5e1ab8d48bfe2b58742fe3757631575c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e1ab8d48bfe2b58742fe3757631575c"></a>
+typedef const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__ptr.html#a5e1ab8d48bfe2b58742fe3757631575c">const_reference</a></td></tr>
+<tr class="memdesc:a5e1ab8d48bfe2b58742fe3757631575c"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const 参照．data の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:aef4123791d9007f0db8cfac3ff223f19"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef4123791d9007f0db8cfac3ff223f19"></a>
+typedef const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__ptr.html#aef4123791d9007f0db8cfac3ff223f19">const_pointer</a></td></tr>
+<tr class="memdesc:aef4123791d9007f0db8cfac3ff223f19"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const ポインター型．data の場合，const data * となる <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a5c2f5906469a7d47983414f7937a6c6c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c2f5906469a7d47983414f7937a6c6c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__ptr.html#a5c2f5906469a7d47983414f7937a6c6c">scoped_ptr</a> (<a class="el" href="classmist_1_1scoped__ptr.html#aeee99c6312c01a2582c3b68d0aca54ac">pointer</a> p)</td></tr>
+<tr class="memdesc:a5c2f5906469a7d47983414f7937a6c6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">管理するポインタを設定 <br/></td></tr>
+<tr class="memitem:ad4c8e3c09969055bf3d6fca75b9adf89"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad4c8e3c09969055bf3d6fca75b9adf89"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1scoped__ptr.html#ad4c8e3c09969055bf3d6fca75b9adf89">~scoped_ptr</a> ()</td></tr>
+<tr class="memdesc:ad4c8e3c09969055bf3d6fca75b9adf89"><td class="mdescLeft">&#160;</td><td class="mdescRight">管理するポインタを開放 <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br/>
+class mist::scoped_ptr&lt; T &gt;</h3>
+
+<p>オブジェクトのスコープが切れると自動的にメモリ開放を行うポインタ </p>
+<dl class="section attention"><dt>注意</dt><dd>配列に対しては利用できない </dd>
+<dd>
+管理しているポインタを他のオブジェクトに譲渡することはできない</dd></dl>
+<div class="fragment"><div class="line"> ポインタの使用例</div>
+<div class="line">{</div>
+<div class="line">    <a class="code" href="classmist_1_1scoped__ptr.html" title="オブジェクトのスコープが切れると自動的にメモリ開放を行うポインタ">mist::scoped_ptr&lt; std::string &gt;</a> a( <span class="keyword">new</span> std::string( <span class="stringliteral">&quot;test&quot;</span> ) );</div>
+<div class="line">       std::cout &lt;&lt; *a &lt;&lt; std::endl;</div>
+<div class="line">} <span class="comment">// &lt;- ここで a に割り当てたメモリ領域が，自動的に開放される</span></div>
+</div><!-- fragment --> </div><hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="pointer_8h_source.html">pointer.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

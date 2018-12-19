@@ -1,0 +1,477 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス mist::worker_thread</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1worker__thread.html">worker_thread</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-methods">Protected メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス mist::worker_thread<div class="ingroups"><a class="el" href="group__thread__group.html">スレッド</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>バックグラウンドで実行するワーカースレッドを実現するクラス  
+ <a href="classmist_1_1worker__thread.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="thread_8h_source.html">thread.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:ab5a667feec5c32d252f8ea8c190fa542"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5a667feec5c32d252f8ea8c190fa542"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#ab5a667feec5c32d252f8ea8c190fa542">size_type</a></td></tr>
+<tr class="memdesc:ab5a667feec5c32d252f8ea8c190fa542"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:ae4ea64df45528a64ca62add4c394b24f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae4ea64df45528a64ca62add4c394b24f"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#ae4ea64df45528a64ca62add4c394b24f">difference_type</a></td></tr>
+<tr class="memdesc:ae4ea64df45528a64ca62add4c394b24f"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a206c5ba51d9c098af4a33e8610218352"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a206c5ba51d9c098af4a33e8610218352"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#a206c5ba51d9c098af4a33e8610218352">worker_thread</a> ()</td></tr>
+<tr class="memdesc:a206c5ba51d9c098af4a33e8610218352"><td class="mdescLeft">&#160;</td><td class="mdescRight">ワーカースレッド用のスレッドを作成した状態で待機する <br/></td></tr>
+<tr class="memitem:a443b9c5e05b2ae87a182d79e695370e5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a443b9c5e05b2ae87a182d79e695370e5"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#a443b9c5e05b2ae87a182d79e695370e5">~worker_thread</a> ()</td></tr>
+<tr class="memdesc:a443b9c5e05b2ae87a182d79e695370e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">ワーカースレッドで使用している全てのリソースを開放する <br/></td></tr>
+<tr class="memitem:a8af34c1a633061bb98818d63e70fa508"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8af34c1a633061bb98818d63e70fa508"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#a8af34c1a633061bb98818d63e70fa508">is_suspended</a> ()</td></tr>
+<tr class="memdesc:a8af34c1a633061bb98818d63e70fa508"><td class="mdescLeft">&#160;</td><td class="mdescRight">ワーカースレッドがサスペンドしているかどうか <br/></td></tr>
+<tr class="memitem:a615fa87b25884ea674a1161fd45c77dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#a615fa87b25884ea674a1161fd45c77dd">close</a> ()</td></tr>
+<tr class="memdesc:a615fa87b25884ea674a1161fd45c77dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">ワーカースレッドで使用しているリソースを全て開放する  <a href="#a615fa87b25884ea674a1161fd45c77dd"></a><br/></td></tr>
+<tr class="memitem:ac46e48b2430e1df199a96d88c7ed6c1c"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param &gt; </td></tr>
+<tr class="memitem:ac46e48b2430e1df199a96d88c7ed6c1c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#ac46e48b2430e1df199a96d88c7ed6c1c">execute</a> (Functor f, Param p)</td></tr>
+<tr class="memdesc:ac46e48b2430e1df199a96d88c7ed6c1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを指定してスレッドを実行する  <a href="#ac46e48b2430e1df199a96d88c7ed6c1c"></a><br/></td></tr>
+<tr class="memitem:a3b6dbdcff29c348c15a2bed3b6b04393"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param1 , class Param2 &gt; </td></tr>
+<tr class="memitem:a3b6dbdcff29c348c15a2bed3b6b04393"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#a3b6dbdcff29c348c15a2bed3b6b04393">execute</a> (Functor f, Param1 p1, Param2 p2)</td></tr>
+<tr class="memdesc:a3b6dbdcff29c348c15a2bed3b6b04393"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを指定してスレッドを実行する  <a href="#a3b6dbdcff29c348c15a2bed3b6b04393"></a><br/></td></tr>
+<tr class="memitem:a1c00e2109bbd9376ee80ccaf49315b37"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param1 , class Param2 , class Param3 &gt; </td></tr>
+<tr class="memitem:a1c00e2109bbd9376ee80ccaf49315b37"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#a1c00e2109bbd9376ee80ccaf49315b37">execute</a> (Functor f, Param1 p1, Param2 p2, Param3 p3)</td></tr>
+<tr class="memdesc:a1c00e2109bbd9376ee80ccaf49315b37"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを指定してスレッドを実行する  <a href="#a1c00e2109bbd9376ee80ccaf49315b37"></a><br/></td></tr>
+<tr class="memitem:a432b39b387a36ecabe5e5faeefb07e00"><td class="memTemplParams" colspan="2">template&lt;class Functor , class Param1 , class Param2 , class Param3 , class Param4 &gt; </td></tr>
+<tr class="memitem:a432b39b387a36ecabe5e5faeefb07e00"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#a432b39b387a36ecabe5e5faeefb07e00">execute</a> (Functor f, Param1 p1, Param2 p2, Param3 p3, Param4 p4)</td></tr>
+<tr class="memdesc:a432b39b387a36ecabe5e5faeefb07e00"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを指定してスレッドを実行する  <a href="#a432b39b387a36ecabe5e5faeefb07e00"></a><br/></td></tr>
+<tr class="memitem:a87676fd53590040c6959f1e84a6a1a02"><td class="memTemplParams" colspan="2">template&lt;class Functor &gt; </td></tr>
+<tr class="memitem:a87676fd53590040c6959f1e84a6a1a02"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#a87676fd53590040c6959f1e84a6a1a02">execute</a> (Functor f)</td></tr>
+<tr class="memdesc:a87676fd53590040c6959f1e84a6a1a02"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数とパラメータを指定してスレッドを実行する  <a href="#a87676fd53590040c6959f1e84a6a1a02"></a><br/></td></tr>
+<tr class="memitem:aeac1c5d33b0da56dcf74f1b97889cb3d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#aeac1c5d33b0da56dcf74f1b97889cb3d">wait</a> (unsigned long dwMilliseconds=INFINITE)</td></tr>
+<tr class="memdesc:aeac1c5d33b0da56dcf74f1b97889cb3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">全ての処理が終了するか，タイムアウトになるまで待機する  <a href="#aeac1c5d33b0da56dcf74f1b97889cb3d"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr class="memitem:a9eb29b8a39b97d220f63abb9fa6301e3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1worker__thread.html#a9eb29b8a39b97d220f63abb9fa6301e3">exec</a> (__thread_controller__::__thread_pool_functor__ *func)</td></tr>
+<tr class="memdesc:a9eb29b8a39b97d220f63abb9fa6301e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数をスレッドプール内のスレッドに割り当てて実行する  <a href="#a9eb29b8a39b97d220f63abb9fa6301e3"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>バックグラウンドで実行するワーカースレッドを実現するクラス </p>
+<p>ワーカースレッドには複数のジョブを設定することができ，各ジョブを順次実行します． 全てのジョブが終了すると，ワーカースレッドは待機状態に入り，次のジョブを待ちます．</p>
+<dl class="section attention"><dt>注意</dt><dd>初回起動時はスレッド生成に伴うオーバーヘッドがあります</dd></dl>
+<div class="fragment"><div class="line"> 使用例</div>
+<div class="line"><span class="keyword">struct </span>parameter{ ... 何らかのパラメータ ... };   <span class="comment">// スレッド関数に渡すパラメータ（特に構造体である必要は無い）</span></div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span> thread_function( <span class="keyword">const</span> parameter &amp;p );       <span class="comment">// スレッド関数（内部で何らかの処理をする）</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">// これ以降でスレッドを作成する</span></div>
+<div class="line">parameter param;</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// ワーカースレッドを初期化</span></div>
+<div class="line"><a class="code" href="classmist_1_1worker__thread.html" title="バックグラウンドで実行するワーカースレッドを実現するクラス">mist::worker_thread</a> work;</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// 関数を実行する</span></div>
+<div class="line">work.<a class="code" href="classmist_1_1worker__thread.html#ac46e48b2430e1df199a96d88c7ed6c1c" title="関数とパラメータを指定してスレッドを実行する">execute</a>( thread_function, param );</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// ワーカースレッドが実行している処理が全て終了するまで待機</span></div>
+<div class="line">work.<a class="code" href="classmist_1_1worker__thread.html#aeac1c5d33b0da56dcf74f1b97889cb3d" title="全ての処理が終了するか，タイムアウトになるまで待機する">wait</a>( );</div>
+</div><!-- fragment --> </div><h2>関数</h2>
+<a class="anchor" id="a615fa87b25884ea674a1161fd45c77dd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::worker_thread::close </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ワーカースレッドで使用しているリソースを全て開放する </p>
+<p>直ちにワーカースレッドを終了し，ワーカースレッドで使用しているリソースを全て開放する </p>
+
+</div>
+</div>
+<a class="anchor" id="a9eb29b8a39b97d220f63abb9fa6301e3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::worker_thread::exec </td>
+          <td>(</td>
+          <td class="paramtype">__thread_controller__::__thread_pool_functor__ *&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数をスレッドプール内のスレッドに割り当てて実行する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">func</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ac46e48b2430e1df199a96d88c7ed6c1c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::worker_thread::execute </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを指定してスレッドを実行する </p>
+<p>ワーカースレッドが終了した状態では false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a3b6dbdcff29c348c15a2bed3b6b04393"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param1 , class Param2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::worker_thread::execute </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param1&#160;</td>
+          <td class="paramname"><em>p1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param2&#160;</td>
+          <td class="paramname"><em>p2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを指定してスレッドを実行する </p>
+<p>ワーカースレッドが終了した状態では false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">p1</td><td>… スレッドの関数に渡すパラメータ1 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p2</td><td>… スレッドの関数に渡すパラメータ2 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a1c00e2109bbd9376ee80ccaf49315b37"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param1 , class Param2 , class Param3 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::worker_thread::execute </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param1&#160;</td>
+          <td class="paramname"><em>p1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param2&#160;</td>
+          <td class="paramname"><em>p2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param3&#160;</td>
+          <td class="paramname"><em>p3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを指定してスレッドを実行する </p>
+<p>ワーカースレッドが終了した状態では false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p1</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p2</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p3</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a432b39b387a36ecabe5e5faeefb07e00"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor , class Param1 , class Param2 , class Param3 , class Param4 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::worker_thread::execute </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param1&#160;</td>
+          <td class="paramname"><em>p1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param2&#160;</td>
+          <td class="paramname"><em>p2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param3&#160;</td>
+          <td class="paramname"><em>p3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Param4&#160;</td>
+          <td class="paramname"><em>p4</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを指定してスレッドを実行する </p>
+<p>ワーカースレッドが終了した状態では false を返す． スレッドが実行する関数の引数はコピーして渡される．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p1</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p2</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p3</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p4</td><td>… スレッドの関数に渡すパラメータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a87676fd53590040c6959f1e84a6a1a02"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Functor &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::worker_thread::execute </td>
+          <td>(</td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数とパラメータを指定してスレッドを実行する </p>
+<p>ワーカースレッドが終了した状態では false を返す．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>… 実行されるスレッド関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aeac1c5d33b0da56dcf74f1b97889cb3d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool mist::worker_thread::wait </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>dwMilliseconds</em> = <code>INFINITE</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>全ての処理が終了するか，タイムアウトになるまで待機する </p>
+<p>タイムアウトを INFINITE に設定することで，スレッドが終了するまで待ち続ける． スレッドプールの初期化が終了していない場合は false を返す．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">dwMilliseconds</td><td>… タイムアウト時間（ミリ秒単位）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… スレッドがタイムアウト前に終了した </td></tr>
+    <tr><td class="paramname">false</td><td>… タイムアウトが発生したか，その他のエラーが発生 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="thread_8h_source.html">thread.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

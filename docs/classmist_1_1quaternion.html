@@ -1,0 +1,1206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::quaternion&lt; T &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1quaternion.html">quaternion</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pub-static-methods">Static Public メソッド</a> &#124;
+<a href="#pub-attribs">変数</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::quaternion&lt; T &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>クォータニオン（四元数）を扱うクラス  
+ <a href="classmist_1_1quaternion.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="quaternion_8h_source.html">quaternion.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:af10d94babcd791414f196265bb0d81a3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af10d94babcd791414f196265bb0d81a3"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a></td></tr>
+<tr class="memdesc:af10d94babcd791414f196265bb0d81a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTのコンテナ内に格納するデータ型．mist::array&lt; data &gt; の data と同じ <br/></td></tr>
+<tr class="memitem:a44534738c5419127b0c500c343093a10"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a44534738c5419127b0c500c343093a10"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a44534738c5419127b0c500c343093a10">size_type</a></td></tr>
+<tr class="memdesc:a44534738c5419127b0c500c343093a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a705f00b759e032b2235efac5670fa206"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a705f00b759e032b2235efac5670fa206"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a705f00b759e032b2235efac5670fa206">difference_type</a></td></tr>
+<tr class="memdesc:a705f00b759e032b2235efac5670fa206"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:aa15972be9eee8cd9a8703b1dafe8fbc6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa15972be9eee8cd9a8703b1dafe8fbc6"></a>
+typedef <a class="el" href="classmist_1_1quaternion.html#aa15972be9eee8cd9a8703b1dafe8fbc6">float_type</a>&lt; T &gt;::<a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#aa15972be9eee8cd9a8703b1dafe8fbc6">float_type</a></td></tr>
+<tr class="memdesc:aa15972be9eee8cd9a8703b1dafe8fbc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">長さなどを計算するときに用いる浮動小数点型 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a6cf0bac25247e8d964840fcc72eb48c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6cf0bac25247e8d964840fcc72eb48c1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a6cf0bac25247e8d964840fcc72eb48c1">quaternion</a> ()</td></tr>
+<tr class="memdesc:a6cf0bac25247e8d964840fcc72eb48c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルトコンストラクタ（全要素を0で初期化する） <br/></td></tr>
+<tr class="memitem:ae8ae346f1278c2465aeddc39f6627ef9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8ae346f1278c2465aeddc39f6627ef9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#ae8ae346f1278c2465aeddc39f6627ef9">quaternion</a> (const <a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a> &amp;ww, const <a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a> &amp;xx, const <a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a> &amp;yy, const <a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a> &amp;zz)</td></tr>
+<tr class="memdesc:ae8ae346f1278c2465aeddc39f6627ef9"><td class="mdescLeft">&#160;</td><td class="mdescRight">ww，xx，yy，zz の値を用いて初期化する <br/></td></tr>
+<tr class="memitem:ac0d2921af48fec34a35c588ea644204a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0d2921af48fec34a35c588ea644204a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#ac0d2921af48fec34a35c588ea644204a">quaternion</a> (const <a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a> &amp;ww)</td></tr>
+<tr class="memdesc:ac0d2921af48fec34a35c588ea644204a"><td class="mdescLeft">&#160;</td><td class="mdescRight">ww，xx，yy，zz の値を用いて初期化する <br/></td></tr>
+<tr class="memitem:ac23ebb5d874881ce540a66c4fd7d7ce7"><td class="memTemplParams" colspan="2"><a class="anchor" id="ac23ebb5d874881ce540a66c4fd7d7ce7"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:ac23ebb5d874881ce540a66c4fd7d7ce7"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#ac23ebb5d874881ce540a66c4fd7d7ce7">quaternion</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;q)</td></tr>
+<tr class="memdesc:ac23ebb5d874881ce540a66c4fd7d7ce7"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のクォータニオンオブジェクト（データ型が異なる）を用いて初期化する <br/></td></tr>
+<tr class="memitem:aea1ead7deaffb33c40da8c7fac5eb887"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aea1ead7deaffb33c40da8c7fac5eb887"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#aea1ead7deaffb33c40da8c7fac5eb887">quaternion</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; T &gt; &amp;q)</td></tr>
+<tr class="memdesc:aea1ead7deaffb33c40da8c7fac5eb887"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のクォータニオンオブジェクト（データ型が同じ）を用いて初期化する <br/></td></tr>
+<tr class="memitem:a04f254389ea87312c1f85dfa2202df0a"><td class="memTemplParams" colspan="2"><a class="anchor" id="a04f254389ea87312c1f85dfa2202df0a"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a04f254389ea87312c1f85dfa2202df0a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a04f254389ea87312c1f85dfa2202df0a">quaternion</a> (<a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a> ww, const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;v)</td></tr>
+<tr class="memdesc:a04f254389ea87312c1f85dfa2202df0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">実数成分 ww と虚数成分のベクトル v を用いて初期化する <br/></td></tr>
+<tr class="memitem:aecdc6da0377974be0b4028283b47411c"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:aecdc6da0377974be0b4028283b47411c"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#aecdc6da0377974be0b4028283b47411c">quaternion</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;axis, <a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a> theta)</td></tr>
+<tr class="memdesc:aecdc6da0377974be0b4028283b47411c"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンを用いた任意軸周りの回転  <a href="#aecdc6da0377974be0b4028283b47411c"></a><br/></td></tr>
+<tr class="memitem:a17564861b1100d7b049efb0716d1552d"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a17564861b1100d7b049efb0716d1552d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a17564861b1100d7b049efb0716d1552d">quaternion</a> (<a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; dir, <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; up)</td></tr>
+<tr class="memdesc:a17564861b1100d7b049efb0716d1552d"><td class="mdescLeft">&#160;</td><td class="mdescRight">カメラの視線方向と上向き方向を用いて，カメラの姿勢を表すクォータニオンを計算する  <a href="#a17564861b1100d7b049efb0716d1552d"></a><br/></td></tr>
+<tr class="memitem:a47e4a9cdc43fccba586328770103f821"><td class="memTemplParams" colspan="2"><a class="anchor" id="a47e4a9cdc43fccba586328770103f821"></a>
+template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a47e4a9cdc43fccba586328770103f821"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a47e4a9cdc43fccba586328770103f821">operator=</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;q)</td></tr>
+<tr class="memdesc:a47e4a9cdc43fccba586328770103f821"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のクォータニオンオブジェクトを代入する <br/></td></tr>
+<tr class="memitem:a66676c09b316dfe28ade5e93702255ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66676c09b316dfe28ade5e93702255ac"></a>
+const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a66676c09b316dfe28ade5e93702255ac">operator=</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; T &gt; &amp;q)</td></tr>
+<tr class="memdesc:a66676c09b316dfe28ade5e93702255ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">他のクォータニオンオブジェクトを代入する <br/></td></tr>
+<tr class="memitem:a6c2a7f3b76d49e73cbfc1c2de4f26600"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c2a7f3b76d49e73cbfc1c2de4f26600"></a>
+<a class="el" href="classmist_1_1quaternion.html">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a6c2a7f3b76d49e73cbfc1c2de4f26600">operator-</a> () const </td></tr>
+<tr class="memdesc:a6c2a7f3b76d49e73cbfc1c2de4f26600"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号反転したクォータニオンを返す <br/></td></tr>
+<tr class="memitem:af2e2c573bf1ea3c9c2a472041cf155ce"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:af2e2c573bf1ea3c9c2a472041cf155ce"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#af2e2c573bf1ea3c9c2a472041cf155ce">operator+=</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;q)</td></tr>
+<tr class="memdesc:af2e2c573bf1ea3c9c2a472041cf155ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンの足し算  <a href="#af2e2c573bf1ea3c9c2a472041cf155ce"></a><br/></td></tr>
+<tr class="memitem:a8e6946d902980f5ee30af368415e3aeb"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a8e6946d902980f5ee30af368415e3aeb"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a8e6946d902980f5ee30af368415e3aeb">operator+=</a> (const TT &amp;a)</td></tr>
+<tr class="memdesc:a8e6946d902980f5ee30af368415e3aeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンへの実数成分の足し算  <a href="#a8e6946d902980f5ee30af368415e3aeb"></a><br/></td></tr>
+<tr class="memitem:a7601d23490cf5ab61955b71ab08ef92f"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a7601d23490cf5ab61955b71ab08ef92f"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a7601d23490cf5ab61955b71ab08ef92f">operator-=</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;q)</td></tr>
+<tr class="memdesc:a7601d23490cf5ab61955b71ab08ef92f"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンの引き算  <a href="#a7601d23490cf5ab61955b71ab08ef92f"></a><br/></td></tr>
+<tr class="memitem:a118d257712c9a6a3325aedbc92581512"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a118d257712c9a6a3325aedbc92581512"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a118d257712c9a6a3325aedbc92581512">operator-=</a> (const TT &amp;a)</td></tr>
+<tr class="memdesc:a118d257712c9a6a3325aedbc92581512"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンへの実数成分の引き算  <a href="#a118d257712c9a6a3325aedbc92581512"></a><br/></td></tr>
+<tr class="memitem:a47242ae4efa9602c43ec6bd5b14e9db2"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a47242ae4efa9602c43ec6bd5b14e9db2"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a47242ae4efa9602c43ec6bd5b14e9db2">operator*=</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;q)</td></tr>
+<tr class="memdesc:a47242ae4efa9602c43ec6bd5b14e9db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンの掛け算  <a href="#a47242ae4efa9602c43ec6bd5b14e9db2"></a><br/></td></tr>
+<tr class="memitem:a3f55dcfe1e765656afe530ff3b51fac9"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a3f55dcfe1e765656afe530ff3b51fac9"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a3f55dcfe1e765656afe530ff3b51fac9">operator*=</a> (const TT &amp;a)</td></tr>
+<tr class="memdesc:a3f55dcfe1e765656afe530ff3b51fac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンへの実数成分の掛け算  <a href="#a3f55dcfe1e765656afe530ff3b51fac9"></a><br/></td></tr>
+<tr class="memitem:a69bd2c686b595b9af975766afbd09331"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a69bd2c686b595b9af975766afbd09331"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a69bd2c686b595b9af975766afbd09331">operator/=</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;q)</td></tr>
+<tr class="memdesc:a69bd2c686b595b9af975766afbd09331"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンの割り算  <a href="#a69bd2c686b595b9af975766afbd09331"></a><br/></td></tr>
+<tr class="memitem:a7c5f6f350f144ecef1adc1e8c9455044"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a7c5f6f350f144ecef1adc1e8c9455044"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a7c5f6f350f144ecef1adc1e8c9455044">operator/=</a> (const TT &amp;a)</td></tr>
+<tr class="memdesc:a7c5f6f350f144ecef1adc1e8c9455044"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンを実数成分で割る  <a href="#a7c5f6f350f144ecef1adc1e8c9455044"></a><br/></td></tr>
+<tr class="memitem:aaa785eae326b3635843bc59abebc639e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#aaa785eae326b3635843bc59abebc639e">operator==</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;q) const </td></tr>
+<tr class="memdesc:aaa785eae326b3635843bc59abebc639e"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのクォータニオンが同一かどうかを判定する  <a href="#aaa785eae326b3635843bc59abebc639e"></a><br/></td></tr>
+<tr class="memitem:ad43c2b4d7f72b32a5fee6fd8e44c6afd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#ad43c2b4d7f72b32a5fee6fd8e44c6afd">operator!=</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;q) const </td></tr>
+<tr class="memdesc:ad43c2b4d7f72b32a5fee6fd8e44c6afd"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのクォータニオンが等しくないどうかを判定する  <a href="#ad43c2b4d7f72b32a5fee6fd8e44c6afd"></a><br/></td></tr>
+<tr class="memitem:af3b758da857980279f5fc58e9ca5db4c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#af3b758da857980279f5fc58e9ca5db4c">operator&lt;</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;q) const </td></tr>
+<tr class="memdesc:af3b758da857980279f5fc58e9ca5db4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのベクトルの &lt; を判定する  <a href="#af3b758da857980279f5fc58e9ca5db4c"></a><br/></td></tr>
+<tr class="memitem:aecd9a8bf4c1207998a502a7f82e2cbf9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#aecd9a8bf4c1207998a502a7f82e2cbf9">operator&lt;=</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;q) const </td></tr>
+<tr class="memdesc:aecd9a8bf4c1207998a502a7f82e2cbf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのベクトルの &lt;= を判定する  <a href="#aecd9a8bf4c1207998a502a7f82e2cbf9"></a><br/></td></tr>
+<tr class="memitem:a903fb1be19ca65bef682a829786415af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a903fb1be19ca65bef682a829786415af">operator&gt;</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;q) const </td></tr>
+<tr class="memdesc:a903fb1be19ca65bef682a829786415af"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのベクトルの &gt; を判定する  <a href="#a903fb1be19ca65bef682a829786415af"></a><br/></td></tr>
+<tr class="memitem:a1c0870cf0f9d36787acf7ae48110e079"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a1c0870cf0f9d36787acf7ae48110e079">operator&gt;=</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> &amp;q) const </td></tr>
+<tr class="memdesc:a1c0870cf0f9d36787acf7ae48110e079"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのベクトルの &gt;= を判定する  <a href="#a1c0870cf0f9d36787acf7ae48110e079"></a><br/></td></tr>
+<tr class="memitem:a2bd63c5a554f7befdcbf52558eaa95e3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a2bd63c5a554f7befdcbf52558eaa95e3">conjugate</a> () const </td></tr>
+<tr class="memdesc:a2bd63c5a554f7befdcbf52558eaa95e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">共役クォータニオン  <a href="#a2bd63c5a554f7befdcbf52558eaa95e3"></a><br/></td></tr>
+<tr class="memitem:acdbefbc8d7010fad83a091ae8479e023"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#acdbefbc8d7010fad83a091ae8479e023">inv</a> () const </td></tr>
+<tr class="memdesc:acdbefbc8d7010fad83a091ae8479e023"><td class="mdescLeft">&#160;</td><td class="mdescRight">逆クォータニオン  <a href="#acdbefbc8d7010fad83a091ae8479e023"></a><br/></td></tr>
+<tr class="memitem:a496466c75745d22be3697ccb67d7009f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a496466c75745d22be3697ccb67d7009f">unit</a> () const </td></tr>
+<tr class="memdesc:a496466c75745d22be3697ccb67d7009f"><td class="mdescLeft">&#160;</td><td class="mdescRight">単位クォータニオン  <a href="#a496466c75745d22be3697ccb67d7009f"></a><br/></td></tr>
+<tr class="memitem:a88cd2376b5dc5628ed58931ea141d3b7"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a88cd2376b5dc5628ed58931ea141d3b7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a88cd2376b5dc5628ed58931ea141d3b7">inner</a> (const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;q) const </td></tr>
+<tr class="memdesc:a88cd2376b5dc5628ed58931ea141d3b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンの内積  <a href="#a88cd2376b5dc5628ed58931ea141d3b7"></a><br/></td></tr>
+<tr class="memitem:aa5cab4fda28f74de98640fbeba72d0c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmist_1_1quaternion.html#aa15972be9eee8cd9a8703b1dafe8fbc6">float_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#aa5cab4fda28f74de98640fbeba72d0c0">length</a> () const </td></tr>
+<tr class="memdesc:aa5cab4fda28f74de98640fbeba72d0c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンのノルム  <a href="#aa5cab4fda28f74de98640fbeba72d0c0"></a><br/></td></tr>
+<tr class="memitem:a87293b537b6a92334db4599c9db6c101"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a87293b537b6a92334db4599c9db6c101"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a87293b537b6a92334db4599c9db6c101">rotate</a> (const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;v) const </td></tr>
+<tr class="memdesc:a87293b537b6a92334db4599c9db6c101"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンを用いたベクトルの回転  <a href="#a87293b537b6a92334db4599c9db6c101"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public メソッド</h2></td></tr>
+<tr class="memitem:ad1d36eb04e0ea3e4798d6b7799ddd3c8"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:ad1d36eb04e0ea3e4798d6b7799ddd3c8"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#ad1d36eb04e0ea3e4798d6b7799ddd3c8">rotate</a> (<a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; v1, <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; v2)</td></tr>
+<tr class="memdesc:ad1d36eb04e0ea3e4798d6b7799ddd3c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">ベクトル1からベクトル2への回転を表すクォータニオンを作成する  <a href="#ad1d36eb04e0ea3e4798d6b7799ddd3c8"></a><br/></td></tr>
+<tr class="memitem:a0ae3e36963c33afcf758a8843a73f119"><td class="memTemplParams" colspan="2">template&lt;class TT &gt; </td></tr>
+<tr class="memitem:a0ae3e36963c33afcf758a8843a73f119"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a0ae3e36963c33afcf758a8843a73f119">rotate</a> (<a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; v1, <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; v2, const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;axis)</td></tr>
+<tr class="memdesc:a0ae3e36963c33afcf758a8843a73f119"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定した回転軸を用いてベクトル1からベクトル2への回転を表すクォータニオンを作成する  <a href="#a0ae3e36963c33afcf758a8843a73f119"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
+変数</h2></td></tr>
+<tr class="memitem:a86fad37714a15c517d37195c29a34806"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a86fad37714a15c517d37195c29a34806"></a>
+<a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a86fad37714a15c517d37195c29a34806">w</a></td></tr>
+<tr class="memdesc:a86fad37714a15c517d37195c29a34806"><td class="mdescLeft">&#160;</td><td class="mdescRight">実数成分 <br/></td></tr>
+<tr class="memitem:a957749477784eccc3a0207e3ac9a20dc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a957749477784eccc3a0207e3ac9a20dc"></a>
+<a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a957749477784eccc3a0207e3ac9a20dc">x</a></td></tr>
+<tr class="memdesc:a957749477784eccc3a0207e3ac9a20dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">虚数成分1 <br/></td></tr>
+<tr class="memitem:a3007e24af808e2ce0722a0d9cffd1472"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3007e24af808e2ce0722a0d9cffd1472"></a>
+<a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a3007e24af808e2ce0722a0d9cffd1472">y</a></td></tr>
+<tr class="memdesc:a3007e24af808e2ce0722a0d9cffd1472"><td class="mdescLeft">&#160;</td><td class="mdescRight">虚数成分2 <br/></td></tr>
+<tr class="memitem:a6e09e7412a4b188ffadf38c7ae4c9f7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e09e7412a4b188ffadf38c7ae4c9f7d"></a>
+<a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1quaternion.html#a6e09e7412a4b188ffadf38c7ae4c9f7d">z</a></td></tr>
+<tr class="memdesc:a6e09e7412a4b188ffadf38c7ae4c9f7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">虚数成分3 <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br/>
+class mist::quaternion&lt; T &gt;</h3>
+
+<p>クォータニオン（四元数）を扱うクラス </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>… 内部で用いるデータ型 </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="aecdc6da0377974be0b4028283b47411c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::<a class="el" href="classmist_1_1quaternion.html">quaternion</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>axis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a>&#160;</td>
+          <td class="paramname"><em>theta</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンを用いた任意軸周りの回転 </p>
+<dl class="section attention"><dt>注意</dt><dd>右手系の場合は右ねじ回転，左手系の場合は左ねじ回転となるので注意！！ </dd>
+<dd>
+回転角度の単位は度を用いる（ラジアンではないので注意！！）</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">axis</td><td>… 回転軸 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">theta</td><td>… 回転角度 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1vector3.html#af8bc62562bfcf84e19b8c460c90eb87b">mist::vector3&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1vector3.html#ad713c6bf4aceb2b61dec9dfca7175bd3">mist::vector3&lt; T &gt;::y</a>, と <a class="el" href="classmist_1_1vector3.html#a65670ab9189ceb952f9ac1f7684cf567">mist::vector3&lt; T &gt;::z</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a17564861b1100d7b049efb0716d1552d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::<a class="el" href="classmist_1_1quaternion.html">quaternion</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt;&#160;</td>
+          <td class="paramname"><em>dir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt;&#160;</td>
+          <td class="paramname"><em>up</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>カメラの視線方向と上向き方向を用いて，カメラの姿勢を表すクォータニオンを計算する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">dir</td><td>… 回転前のベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">up</td><td>… 回転後のベクトル </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1quaternion.html#a87293b537b6a92334db4599c9db6c101">mist::quaternion&lt; T &gt;::rotate()</a>, と <a class="el" href="classmist_1_1vector3.html#ae4e4a3cabaec8b450c0dda19a38b8aa6">mist::vector3&lt; T &gt;::unit()</a>.</p>
+
+</div>
+</div>
+<h2>関数</h2>
+<a class="anchor" id="a2bd63c5a554f7befdcbf52558eaa95e3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::conjugate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>共役クォータニオン </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \overline{ \mbox{\boldmath p} } = \left( p_w \;,\; -p_x \;,\; -p_y \;,\; -p_z \right)^T \]" src="form_81.png"/>
+</p>
+ 
+</div>
+</div>
+<a class="anchor" id="a88cd2376b5dc5628ed58931ea141d3b7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1quaternion.html#af10d94babcd791414f196265bb0d81a3">value_type</a> <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::inner </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンの内積 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ p_w \times q_w + p_x \times q_x + p_y \times q_y + p_z \times q_z \]" src="form_84.png"/>
+</p>
+ 
+<p>参照先 <a class="el" href="classmist_1_1quaternion.html#a86fad37714a15c517d37195c29a34806">mist::quaternion&lt; T &gt;::w</a>, <a class="el" href="classmist_1_1quaternion.html#a957749477784eccc3a0207e3ac9a20dc">mist::quaternion&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1quaternion.html#a3007e24af808e2ce0722a0d9cffd1472">mist::quaternion&lt; T &gt;::y</a>, と <a class="el" href="classmist_1_1quaternion.html#a6e09e7412a4b188ffadf38c7ae4c9f7d">mist::quaternion&lt; T &gt;::z</a>.</p>
+
+<p>参照元 <a class="el" href="namespacemist.html#a416c4e90fbe4e1ecb13ea585d80a77b2">mist::interpolate()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acdbefbc8d7010fad83a091ae8479e023"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::inv </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>逆クォータニオン </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p}^{-1} = \frac{ \overline{ \mbox{\boldmath p} } }{ \left\| \mbox{\boldmath p} \right\|^2 } \]" src="form_82.png"/>
+</p>
+ 
+<p>参照元 <a class="el" href="classmist_1_1quaternion.html#a69bd2c686b595b9af975766afbd09331">mist::quaternion&lt; T &gt;::operator/=()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa5cab4fda28f74de98640fbeba72d0c0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmist_1_1quaternion.html#aa15972be9eee8cd9a8703b1dafe8fbc6">float_type</a> <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::length </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンのノルム </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left\| \mbox{\boldmath p} \right\| = \sqrt{ p_w^2 + p_x^2 + p_y^2 + p_z^2 } \]" src="form_85.png"/>
+</p>
+ 
+</div>
+</div>
+<a class="anchor" id="ad43c2b4d7f72b32a5fee6fd8e44c6afd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのクォータニオンが等しくないどうかを判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_w = q_w \; \wedge \; p_x = q_x \; \wedge \; p_y = q_y \; \wedge \; p_z = q_z } \]" src="form_76.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… どれか1つでも等しくない場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 全ての要素が等しい場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a47242ae4efa9602c43ec6bd5b14e9db2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&amp; <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンの掛け算 </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \times \mbox{\boldmath q} = \left( p_w \times q_w - p_x \times q_x - p_y \times q_y - p_z \times q_z \;,\; p_w \times q_x + p_x \times q_w + p_y \times q_z - p_z \times q_y \;,\; p_w \times q_y + p_y \times q_w + p_z \times q_x - p_x \times q_z \;,\; p_w \times q_z + p_z \times q_w + p_x \times q_y - p_y \times q_x \right)^T \]" src="form_71.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>掛け算結果 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1quaternion.html#a86fad37714a15c517d37195c29a34806">mist::quaternion&lt; T &gt;::w</a>, <a class="el" href="classmist_1_1quaternion.html#a957749477784eccc3a0207e3ac9a20dc">mist::quaternion&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1quaternion.html#a3007e24af808e2ce0722a0d9cffd1472">mist::quaternion&lt; T &gt;::y</a>, と <a class="el" href="classmist_1_1quaternion.html#a6e09e7412a4b188ffadf38c7ae4c9f7d">mist::quaternion&lt; T &gt;::z</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3f55dcfe1e765656afe530ff3b51fac9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&amp; <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">const TT &amp;&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンへの実数成分の掛け算 </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \times a = \left( p_w \times a \;,\; p_x \times a \;,\; p_y \times a \;,\; p_z \times a \right)^T \]" src="form_72.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 実数成分</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>掛け算結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af2e2c573bf1ea3c9c2a472041cf155ce"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&amp; <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンの足し算 </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} + \mbox{\boldmath q} = \left( p_w + q_w \;,\; p_x + q_x \;,\; p_y + q_y \;,\; p_z + q_z \right)^T \]" src="form_67.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>足し算結果 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1quaternion.html#a86fad37714a15c517d37195c29a34806">mist::quaternion&lt; T &gt;::w</a>, <a class="el" href="classmist_1_1quaternion.html#a957749477784eccc3a0207e3ac9a20dc">mist::quaternion&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1quaternion.html#a3007e24af808e2ce0722a0d9cffd1472">mist::quaternion&lt; T &gt;::y</a>, と <a class="el" href="classmist_1_1quaternion.html#a6e09e7412a4b188ffadf38c7ae4c9f7d">mist::quaternion&lt; T &gt;::z</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8e6946d902980f5ee30af368415e3aeb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&amp; <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const TT &amp;&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンへの実数成分の足し算 </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} + a = \left( p_w + a \;,\; p_x \;,\; p_y \;,\; p_z \right)^T \]" src="form_68.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 実数成分</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>足し算結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a7601d23490cf5ab61955b71ab08ef92f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&amp; <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator-= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンの引き算 </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} - \mbox{\boldmath q} = \left( p_w - q_w \;,\; p_x - q_x \;,\; p_y - q_y \;,\; p_z - q_z \right)^T \]" src="form_69.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>引き算結果 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1quaternion.html#a86fad37714a15c517d37195c29a34806">mist::quaternion&lt; T &gt;::w</a>, <a class="el" href="classmist_1_1quaternion.html#a957749477784eccc3a0207e3ac9a20dc">mist::quaternion&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1quaternion.html#a3007e24af808e2ce0722a0d9cffd1472">mist::quaternion&lt; T &gt;::y</a>, と <a class="el" href="classmist_1_1quaternion.html#a6e09e7412a4b188ffadf38c7ae4c9f7d">mist::quaternion&lt; T &gt;::z</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a118d257712c9a6a3325aedbc92581512"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&amp; <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator-= </td>
+          <td>(</td>
+          <td class="paramtype">const TT &amp;&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンへの実数成分の引き算 </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} - a = \left( p_w - a \;,\; p_x \;,\; p_y \;,\; p_z \right)^T \]" src="form_70.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 実数成分</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>引き算結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a69bd2c686b595b9af975766afbd09331"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&amp; <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator/= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンの割り算 </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \frac{ \mbox{\boldmath p} }{ \mbox{\boldmath q} } = \mbox{\boldmath p} \times \mbox{\boldmath q}^{-1} \]" src="form_73.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>掛け算結果 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1quaternion.html#acdbefbc8d7010fad83a091ae8479e023">mist::quaternion&lt; T &gt;::inv()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7c5f6f350f144ecef1adc1e8c9455044"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&amp; <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator/= </td>
+          <td>(</td>
+          <td class="paramtype">const TT &amp;&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンを実数成分で割る </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \div a = \left( p_w \div a \;,\; p_x \div a \;,\; p_y \div a \;,\; p_z \div a \right)^T \]" src="form_74.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>… 実数成分</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>掛け算結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af3b758da857980279f5fc58e9ca5db4c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのベクトルの &lt; を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} < \mbox{\boldmath q} \rightarrow \overline{ p_w \ge q_w \; \wedge \; p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z } \]" src="form_77.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… p &lt; q の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… p &gt;= q の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1quaternion.html#a86fad37714a15c517d37195c29a34806">mist::quaternion&lt; T &gt;::w</a>, <a class="el" href="classmist_1_1quaternion.html#a957749477784eccc3a0207e3ac9a20dc">mist::quaternion&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1quaternion.html#a3007e24af808e2ce0722a0d9cffd1472">mist::quaternion&lt; T &gt;::y</a>, と <a class="el" href="classmist_1_1quaternion.html#a6e09e7412a4b188ffadf38c7ae4c9f7d">mist::quaternion&lt; T &gt;::z</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aecd9a8bf4c1207998a502a7f82e2cbf9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator&lt;= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのベクトルの &lt;= を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_w \le q_w \; \wedge \; p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z \]" src="form_78.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… p &lt;= q の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… p &gt; q の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aaa785eae326b3635843bc59abebc639e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのクォータニオンが同一かどうかを判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} == \mbox{\boldmath q} \rightarrow p_w == q_w \; \wedge \; p_x == q_x \; \wedge \; p_y == q_y \; \wedge \; p_z == q_z \]" src="form_75.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 全ての要素が等しい場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… どれか1つでも等しくない場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1quaternion.html#a86fad37714a15c517d37195c29a34806">mist::quaternion&lt; T &gt;::w</a>, <a class="el" href="classmist_1_1quaternion.html#a957749477784eccc3a0207e3ac9a20dc">mist::quaternion&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1quaternion.html#a3007e24af808e2ce0722a0d9cffd1472">mist::quaternion&lt; T &gt;::y</a>, と <a class="el" href="classmist_1_1quaternion.html#a6e09e7412a4b188ffadf38c7ae4c9f7d">mist::quaternion&lt; T &gt;::z</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a903fb1be19ca65bef682a829786415af"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator&gt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのベクトルの &gt; を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} > \mbox{\boldmath q} \rightarrow \overline{ p_w \le q_w \; \wedge \; p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z } \]" src="form_79.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… p &gt; q の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… p &lt;= q の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a1c0870cf0f9d36787acf7ae48110e079"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::operator&gt;= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2つのベクトルの &gt;= を判定する </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_w \ge q_w \; \wedge \; p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z \]" src="form_80.png"/>
+</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>… 右辺値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… p &gt;= q の場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… p &lt; q の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a87293b537b6a92334db4599c9db6c101"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::rotate </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンを用いたベクトルの回転 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>… 回転されるベクトル</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>回転後のベクトル </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1quaternion.html#a957749477784eccc3a0207e3ac9a20dc">mist::quaternion&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1vector3.html#af8bc62562bfcf84e19b8c460c90eb87b">mist::vector3&lt; T &gt;::x</a>, <a class="el" href="classmist_1_1quaternion.html#a3007e24af808e2ce0722a0d9cffd1472">mist::quaternion&lt; T &gt;::y</a>, <a class="el" href="classmist_1_1vector3.html#ad713c6bf4aceb2b61dec9dfca7175bd3">mist::vector3&lt; T &gt;::y</a>, <a class="el" href="classmist_1_1quaternion.html#a6e09e7412a4b188ffadf38c7ae4c9f7d">mist::quaternion&lt; T &gt;::z</a>, と <a class="el" href="classmist_1_1vector3.html#a65670ab9189ceb952f9ac1f7684cf567">mist::vector3&lt; T &gt;::z</a>.</p>
+
+<p>参照元 <a class="el" href="classmist_1_1quaternion.html#a17564861b1100d7b049efb0716d1552d">mist::quaternion&lt; T &gt;::quaternion()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad1d36eb04e0ea3e4798d6b7799ddd3c8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classmist_1_1quaternion.html">quaternion</a> <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::rotate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt;&#160;</td>
+          <td class="paramname"><em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt;&#160;</td>
+          <td class="paramname"><em>v2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ベクトル1からベクトル2への回転を表すクォータニオンを作成する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v1</td><td>… 回転前のベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">v2</td><td>… 回転後のベクトル</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>回転を表すクォータニオン </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1vector3.html#ad81929e66a96307352b3902ff89e4cd5">mist::vector3&lt; T &gt;::inner()</a>, <a class="el" href="classmist_1_1vector3.html#a15bd4eda63a5af7cb33963a07f05659c">mist::vector3&lt; T &gt;::outer()</a>, と <a class="el" href="classmist_1_1vector3.html#ae4e4a3cabaec8b450c0dda19a38b8aa6">mist::vector3&lt; T &gt;::unit()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0ae3e36963c33afcf758a8843a73f119"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<div class="memtemplate">
+template&lt;class TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classmist_1_1quaternion.html">quaternion</a> <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::rotate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt;&#160;</td>
+          <td class="paramname"><em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt;&#160;</td>
+          <td class="paramname"><em>v2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1vector3.html">vector3</a>&lt; TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>axis</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>指定した回転軸を用いてベクトル1からベクトル2への回転を表すクォータニオンを作成する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">v1</td><td>… 回転前のベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">v2</td><td>… 回転後のベクトル </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">axis</td><td>… 回転軸ベクトル</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>回転を表すクォータニオン </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1vector3.html#ad81929e66a96307352b3902ff89e4cd5">mist::vector3&lt; T &gt;::inner()</a>, <a class="el" href="classmist_1_1vector3.html#a15bd4eda63a5af7cb33963a07f05659c">mist::vector3&lt; T &gt;::outer()</a>, と <a class="el" href="classmist_1_1vector3.html#ae4e4a3cabaec8b450c0dda19a38b8aa6">mist::vector3&lt; T &gt;::unit()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a496466c75745d22be3697ccb67d7009f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1quaternion.html">quaternion</a> <a class="el" href="classmist_1_1quaternion.html">mist::quaternion</a>&lt; T &gt;::unit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>単位クォータニオン </p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \frac{ \mbox{\boldmath p} }{ \left\| \mbox{\boldmath p} \right\|^2 } \]" src="form_83.png"/>
+</p>
+ 
+<p>参照元 <a class="el" href="namespacemist.html#a416c4e90fbe4e1ecb13ea585d80a77b2">mist::interpolate()</a>.</p>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="quaternion_8h_source.html">quaternion.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

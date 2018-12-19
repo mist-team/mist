@@ -1,0 +1,1573 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>RAW 画像入出力</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">RAW 画像入出力</div>  </div>
+<div class="ingroups"><a class="el" href="group__image__group.html">画像入出力</a></div></div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gae10c8395b422903dba6a944e0214f367"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:gae10c8395b422903dba6a944e0214f367"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#gae10c8395b422903dba6a944e0214f367">mist::read_raw</a> (array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::size_type w, typename array&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:gae10c8395b422903dba6a944e0214f367"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#gae10c8395b422903dba6a944e0214f367"></a><br/></td></tr>
+<tr class="memitem:ga7d89abc77cf7d7928812036d3963b47e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:ga7d89abc77cf7d7928812036d3963b47e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga7d89abc77cf7d7928812036d3963b47e">mist::write_raw</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset, bool to_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:ga7d89abc77cf7d7928812036d3963b47e"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を 無圧縮RAW 画像として出力する  <a href="#ga7d89abc77cf7d7928812036d3963b47e"></a><br/></td></tr>
+<tr class="memitem:ga6ff8968348aae67b04d88727715d1c59"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:ga6ff8968348aae67b04d88727715d1c59"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga6ff8968348aae67b04d88727715d1c59">mist::write_raw_gz</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset, bool to_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:ga6ff8968348aae67b04d88727715d1c59"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する  <a href="#ga6ff8968348aae67b04d88727715d1c59"></a><br/></td></tr>
+<tr class="memitem:ga167e1b2cf4e4e43b5634a9b37f0aa79f"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga167e1b2cf4e4e43b5634a9b37f0aa79f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga167e1b2cf4e4e43b5634a9b37f0aa79f">mist::read_raw</a> (array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::size_type w, typename array&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga167e1b2cf4e4e43b5634a9b37f0aa79f"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#ga167e1b2cf4e4e43b5634a9b37f0aa79f"></a><br/></td></tr>
+<tr class="memitem:ga0cf056bd9f983873e07f39ae61e1fa74"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga0cf056bd9f983873e07f39ae61e1fa74"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga0cf056bd9f983873e07f39ae61e1fa74">mist::write_raw</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset, bool to_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga0cf056bd9f983873e07f39ae61e1fa74"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を 無圧縮RAW 画像として出力する  <a href="#ga0cf056bd9f983873e07f39ae61e1fa74"></a><br/></td></tr>
+<tr class="memitem:ga4794ac9647a998a6656a090d0d10dff0"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga4794ac9647a998a6656a090d0d10dff0"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga4794ac9647a998a6656a090d0d10dff0">mist::write_raw_gz</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset, bool to_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga4794ac9647a998a6656a090d0d10dff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する  <a href="#ga4794ac9647a998a6656a090d0d10dff0"></a><br/></td></tr>
+<tr class="memitem:ga0ff55f0a2c90bce107706d2fa34cc708"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga0ff55f0a2c90bce107706d2fa34cc708"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga0ff55f0a2c90bce107706d2fa34cc708">mist::read_raw</a> (array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::size_type w, typename array&lt; T, Allocator &gt;::value_type offset=0, bool from_little_endian=false)</td></tr>
+<tr class="memdesc:ga0ff55f0a2c90bce107706d2fa34cc708"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#ga0ff55f0a2c90bce107706d2fa34cc708"></a><br/></td></tr>
+<tr class="memitem:ga250d7c45fcf34891a2778fc6b16bbecf"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga250d7c45fcf34891a2778fc6b16bbecf"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga250d7c45fcf34891a2778fc6b16bbecf">mist::write_raw</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset=0, bool to_little_endian=false)</td></tr>
+<tr class="memdesc:ga250d7c45fcf34891a2778fc6b16bbecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を 無圧縮RAW 画像として出力する  <a href="#ga250d7c45fcf34891a2778fc6b16bbecf"></a><br/></td></tr>
+<tr class="memitem:gaf0eae253c4d769143fba1877c1e31930"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gaf0eae253c4d769143fba1877c1e31930"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#gaf0eae253c4d769143fba1877c1e31930">mist::write_raw_gz</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset=typename array&lt; T, Allocator &gt;::value_type(0), bool to_little_endian=false)</td></tr>
+<tr class="memdesc:gaf0eae253c4d769143fba1877c1e31930"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する  <a href="#gaf0eae253c4d769143fba1877c1e31930"></a><br/></td></tr>
+<tr class="memitem:ga939d72732c9d524c7477be51022abe46"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:ga939d72732c9d524c7477be51022abe46"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga939d72732c9d524c7477be51022abe46">mist::read_raw</a> (array1&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array1&lt; T, Allocator &gt;::size_type w, double x, typename array1&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:ga939d72732c9d524c7477be51022abe46"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#ga939d72732c9d524c7477be51022abe46"></a><br/></td></tr>
+<tr class="memitem:ga163f589ce6ba7b4e0bf996314abc0e41"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga163f589ce6ba7b4e0bf996314abc0e41"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga163f589ce6ba7b4e0bf996314abc0e41">mist::read_raw</a> (array1&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array1&lt; T, Allocator &gt;::size_type w, double x, typename array1&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga163f589ce6ba7b4e0bf996314abc0e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#ga163f589ce6ba7b4e0bf996314abc0e41"></a><br/></td></tr>
+<tr class="memitem:ga457045ee7950c3238891932e0b4e2efa"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga457045ee7950c3238891932e0b4e2efa"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga457045ee7950c3238891932e0b4e2efa">mist::read_raw</a> (array1&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array1&lt; T, Allocator &gt;::size_type w, double x=1.0, typename array1&lt; T, Allocator &gt;::value_type offset=0, bool from_little_endian=false)</td></tr>
+<tr class="memdesc:ga457045ee7950c3238891932e0b4e2efa"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#ga457045ee7950c3238891932e0b4e2efa"></a><br/></td></tr>
+<tr class="memitem:ga8fbba41c7f6bae50c804965412bf635e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:ga8fbba41c7f6bae50c804965412bf635e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga8fbba41c7f6bae50c804965412bf635e">mist::read_raw</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array2&lt; T, Allocator &gt;::size_type w, typename array2&lt; T, Allocator &gt;::size_type h, double x, double y, typename array2&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:ga8fbba41c7f6bae50c804965412bf635e"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#ga8fbba41c7f6bae50c804965412bf635e"></a><br/></td></tr>
+<tr class="memitem:ga2fcfa518b1f67f0f56a8079a2c906f62"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga2fcfa518b1f67f0f56a8079a2c906f62"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga2fcfa518b1f67f0f56a8079a2c906f62">mist::read_raw</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array2&lt; T, Allocator &gt;::size_type w, typename array2&lt; T, Allocator &gt;::size_type h, double x, double y, typename array2&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga2fcfa518b1f67f0f56a8079a2c906f62"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#ga2fcfa518b1f67f0f56a8079a2c906f62"></a><br/></td></tr>
+<tr class="memitem:ga7711026977c14725bca1e188a7f2e0c2"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga7711026977c14725bca1e188a7f2e0c2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga7711026977c14725bca1e188a7f2e0c2">mist::read_raw</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array2&lt; T, Allocator &gt;::size_type w, typename array2&lt; T, Allocator &gt;::size_type h, double x=1.0, double y=1.0, typename array2&lt; T, Allocator &gt;::value_type offset=0, bool from_little_endian=false)</td></tr>
+<tr class="memdesc:ga7711026977c14725bca1e188a7f2e0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#ga7711026977c14725bca1e188a7f2e0c2"></a><br/></td></tr>
+<tr class="memitem:ga4089ac188873c089f83188ff900c977a"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:ga4089ac188873c089f83188ff900c977a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga4089ac188873c089f83188ff900c977a">mist::read_raw</a> (array3&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array3&lt; T, Allocator &gt;::size_type w, typename array3&lt; T, Allocator &gt;::size_type h, typename array3&lt; T, Allocator &gt;::size_type d, double x, double y, double z, typename array3&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:ga4089ac188873c089f83188ff900c977a"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#ga4089ac188873c089f83188ff900c977a"></a><br/></td></tr>
+<tr class="memitem:ga85a166992ffc87ffad277da1163801b3"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga85a166992ffc87ffad277da1163801b3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga85a166992ffc87ffad277da1163801b3">mist::read_raw</a> (array3&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array3&lt; T, Allocator &gt;::size_type w, typename array3&lt; T, Allocator &gt;::size_type h, typename array3&lt; T, Allocator &gt;::size_type d, double x, double y, double z, typename array3&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga85a166992ffc87ffad277da1163801b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#ga85a166992ffc87ffad277da1163801b3"></a><br/></td></tr>
+<tr class="memitem:ga9215330ae66f8fa0b774a9acde503aa3"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga9215330ae66f8fa0b774a9acde503aa3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga9215330ae66f8fa0b774a9acde503aa3">mist::read_raw</a> (array3&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array3&lt; T, Allocator &gt;::size_type w, typename array3&lt; T, Allocator &gt;::size_type h, typename array3&lt; T, Allocator &gt;::size_type d, double x=1.0, double y=1.0, double z=1.0, typename array3&lt; T, Allocator &gt;::value_type offset=typename array3&lt; T, Allocator &gt;::value_type(0), bool from_little_endian=false)</td></tr>
+<tr class="memdesc:ga9215330ae66f8fa0b774a9acde503aa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="#ga9215330ae66f8fa0b774a9acde503aa3"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<p>RAWファイル（GZIP圧縮に対応）の読み込みと書き込みサポートをMISTに追加するものです． 別途 <a href="http://www.zlib.org">http://www.zlib.org</a> が提供するフリーのZLIBライブラリが必要です．</p>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="raw_8h.html" title="バイナリ画像を読み書きするためのライブラリ">mist/io/raw.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="gae10c8395b422903dba6a944e0214f367"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class ValueType , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ValueType&#160;</td>
+          <td class="paramname"><em>__dmy__</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像の幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">&lt;strong&gt;dmy&lt;/strong&gt;</td><td>… 読み込もうとしているデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__raw__group.html#ga167e1b2cf4e4e43b5634a9b37f0aa79f">mist::read_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga167e1b2cf4e4e43b5634a9b37f0aa79f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像の幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#gae10c8395b422903dba6a944e0214f367">mist::read_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga0ff55f0a2c90bce107706d2fa34cc708"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像の幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#gae10c8395b422903dba6a944e0214f367">mist::read_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga939d72732c9d524c7477be51022abe46"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class ValueType , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array1&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array1&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array1&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ValueType&#160;</td>
+          <td class="paramname"><em>__dmy__</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像の幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… 入力画像の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">&lt;strong&gt;dmy&lt;/strong&gt;</td><td>… 読み込もうとしているデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga163f589ce6ba7b4e0bf996314abc0e41"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array1&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array1&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array1&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像の幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… 入力画像の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#gae10c8395b422903dba6a944e0214f367">mist::read_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga457045ee7950c3238891932e0b4e2efa"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array1&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array1&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em> = <code>1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array1&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像の幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… 入力画像の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#gae10c8395b422903dba6a944e0214f367">mist::read_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga8fbba41c7f6bae50c804965412bf635e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class ValueType , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ValueType&#160;</td>
+          <td class="paramname"><em>__dmy__</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像のX軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>… 入力画像のY軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… 入力画像のX軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>… 入力画像のY軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">&lt;strong&gt;dmy&lt;/strong&gt;</td><td>… 読み込もうとしているデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, と <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga2fcfa518b1f67f0f56a8079a2c906f62"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像のX軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>… 入力画像のY軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… 入力画像のX軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>… 入力画像のY軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#gae10c8395b422903dba6a944e0214f367">mist::read_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga7711026977c14725bca1e188a7f2e0c2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em> = <code>1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>y</em> = <code>1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像のX軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>… 入力画像のY軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… 入力画像のX軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>… 入力画像のY軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#gae10c8395b422903dba6a944e0214f367">mist::read_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga4089ac188873c089f83188ff900c977a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class ValueType , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array3&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ValueType&#160;</td>
+          <td class="paramname"><em>__dmy__</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像のX軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>… 入力画像のY軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d</td><td>… 入力画像のZ軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… 入力画像のX軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>… 入力画像のY軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">z</td><td>… 入力画像のZ軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">&lt;strong&gt;dmy&lt;/strong&gt;</td><td>… 読み込もうとしているデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, と <a class="el" href="classmist_1_1array3.html#ae3aec3e8e4dcded2aa267a17a487d251">mist::array3&lt; T, Allocator &gt;::reso3()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga85a166992ffc87ffad277da1163801b3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array3&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像のX軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>… 入力画像のY軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d</td><td>… 入力画像のZ軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… 入力画像のX軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>… 入力画像のY軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">z</td><td>… 入力画像のZ軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#gae10c8395b422903dba6a944e0214f367">mist::read_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga9215330ae66f8fa0b774a9acde503aa3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_raw </td>
+          <td>(</td>
+          <td class="paramtype">array3&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em> = <code>1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>y</em> = <code>1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z</em> = <code>1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array3&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>typename&#160;array3&lt;&#160;T,&#160;Allocator&#160;&gt;::value_type(&#160;0&#160;)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>from_little_endian</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td>… 入力画像のX軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>… 入力画像のY軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d</td><td>… 入力画像のZ軸方向のサイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… 入力画像のX軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>… 入力画像のY軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">z</td><td>… 入力画像のZ軸方向の画素サイズ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像に足しこむオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from_little_endian</td><td>… 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#gae10c8395b422903dba6a944e0214f367">mist::read_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga7d89abc77cf7d7928812036d3963b47e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class ValueType , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_raw </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>to_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ValueType&#160;</td>
+          <td class="paramname"><em>__dmy__</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナ内の画像を 無圧縮RAW 画像として出力する </p>
+<dl class="section attention"><dt>注意</dt><dd>データを変換して保存する際に，値のオーバーフローなどは無視するので注意が必要</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像から引き算するオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">to_little_endian</td><td>… 出力画像のデータ形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">&lt;strong&gt;dmy&lt;/strong&gt;</td><td>… 出力するデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__raw__group.html#ga0cf056bd9f983873e07f39ae61e1fa74">mist::write_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga0cf056bd9f983873e07f39ae61e1fa74"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_raw </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>to_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナ内の画像を 無圧縮RAW 画像として出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像から引き算するオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">to_little_endian</td><td>… 出力画像のデータ形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#ga7d89abc77cf7d7928812036d3963b47e">mist::write_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga250d7c45fcf34891a2778fc6b16bbecf"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_raw </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>to_little_endian</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナ内の画像を 無圧縮RAW 画像として出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像から引き算するオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">to_little_endian</td><td>… 出力画像のデータ形式（リトルエンディアン … true，ビッグエンディアン … false）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#ga7d89abc77cf7d7928812036d3963b47e">mist::write_raw()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga6ff8968348aae67b04d88727715d1c59"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class ValueType , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_raw_gz </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>to_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ValueType&#160;</td>
+          <td class="paramname"><em>__dmy__</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する </p>
+<dl class="section attention"><dt>注意</dt><dd>データを変換して保存する際に，値のオーバーフローなどは無視するので注意が必要</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像から引き算するオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">to_little_endian</td><td>… 出力画像のデータ形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">&lt;strong&gt;dmy&lt;/strong&gt;</td><td>… 出力するデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__raw__group.html#ga4794ac9647a998a6656a090d0d10dff0">mist::write_raw_gz()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga4794ac9647a998a6656a090d0d10dff0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , class Functor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_raw_gz </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>to_little_endian</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Functor&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像から引き算するオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">to_little_endian</td><td>… 出力画像のデータ形式（リトルエンディアン … true，ビッグエンディアン … false） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>… 進行状況を通知するコールバック関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#ga6ff8968348aae67b04d88727715d1c59">mist::write_raw_gz()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaf0eae253c4d769143fba1877c1e31930"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_raw_gz </td>
+          <td>(</td>
+          <td class="paramtype">const array&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array&lt; T, Allocator &gt;::value_type&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>typename&#160;array&lt;&#160;T,&#160;Allocator&#160;&gt;::value_type(&#160;0&#160;)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>to_little_endian</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>… 画像から引き算するオフセット値 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">to_little_endian</td><td>… 出力画像のデータ形式（リトルエンディアン … true，ビッグエンディアン … false）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__raw__group.html#ga6ff8968348aae67b04d88727715d1c59">mist::write_raw_gz()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

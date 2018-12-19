@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ネームスペース mist::calvin</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="namespaces.html"><span>ネームスペース一覧</span></a></li>
+      <li><a href="namespacemembers.html"><span>ネームスペースメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="namespacemist_1_1calvin.html">calvin</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ネームスペース mist::calvin<div class="ingroups"><a class="el" href="group__euclidean__distance__group.html">ユークリッド距離変換</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Calvinによるユークリッド2乗距離変換  
+<a href="#details">[詳細]</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ac840bacdb89cabb99ed41e7bf55fc490"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ac840bacdb89cabb99ed41e7bf55fc490"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1calvin.html#ac840bacdb89cabb99ed41e7bf55fc490">distance_transform</a> (const Array1 &amp;in, Array2 &amp;out, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ac840bacdb89cabb99ed41e7bf55fc490"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド2乗距離変換  <a href="#ac840bacdb89cabb99ed41e7bf55fc490"></a><br/></td></tr>
+<tr class="memitem:a2356126093b9f70c5775cb2d003995db"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:a2356126093b9f70c5775cb2d003995db"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1calvin.html#a2356126093b9f70c5775cb2d003995db">voronoi_distance_transform</a> (Array1 &amp;voronoi, Array2 &amp;dist, typename Array1::size_type thread_num=0)</td></tr>
+<tr class="memdesc:a2356126093b9f70c5775cb2d003995db"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド距離を用いたボロノイ分割  <a href="#a2356126093b9f70c5775cb2d003995db"></a><br/></td></tr>
+<tr class="memitem:ad8766f3c659c7f94b7e22d48daa51d63"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ad8766f3c659c7f94b7e22d48daa51d63"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1calvin.html#ad8766f3c659c7f94b7e22d48daa51d63">voronoi_transform</a> (Array &amp;voronoi, typename Array::size_type thread_num=0)</td></tr>
+<tr class="memdesc:ad8766f3c659c7f94b7e22d48daa51d63"><td class="mdescLeft">&#160;</td><td class="mdescRight">ユークリッド距離を用いたボロノイ分割  <a href="#ad8766f3c659c7f94b7e22d48daa51d63"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>Calvinによるユークリッド2乗距離変換 </p>
+</div><h2>関数</h2>
+<a class="anchor" id="ac840bacdb89cabb99ed41e7bf55fc490"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::calvin::distance_transform </td>
+          <td>(</td>
+          <td class="paramtype">const Array1 &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array1::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ユークリッド2乗距離変換 </p>
+<p>計算される距離は，ユークリッド2乗距離となります． ユークリッド距離に変換するためには，計算結果の各値の平方根を求めてください． ただし，計算に用いる画素が立方体ではなく直方体の場合には，計算されるユークリッド2距離も画素のアスペクトを考慮して計算されます． 立方体画素を用いている場合には以下を考慮する必要はありません．</p>
+<p>本関数で計算されるユークリッド2乗距離は，X軸方向の画素の大きさを1としたときの比を用いて計算されます． ここで，本関数のある画素の出力が <img class="formulaInl" alt="$l^2$" src="form_21.png"/> で，画素のX軸方向の解像度（大きさ）が <img class="formulaInl" alt="$a_x$" src="form_22.png"/> の場合， <img class="formulaInl" alt="$l a_x$" src="form_23.png"/> が画素の大きさを考慮したユークリッド距離値になります．</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する</dd></dl>
+<ul>
+<li>参考文献<ul>
+<li>Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003</li>
+</ul>
+</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">in</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>… 出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, と <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2356126093b9f70c5775cb2d003995db"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array1 , class Array2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::calvin::voronoi_distance_transform </td>
+          <td>(</td>
+          <td class="paramtype">Array1 &amp;&#160;</td>
+          <td class="paramname"><em>voronoi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Array2 &amp;&#160;</td>
+          <td class="paramname"><em>dist</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array1::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ユークリッド距離を用いたボロノイ分割 </p>
+<p>ユークリッド2乗距離変換とボロノイ分割を同時に行うアルゴリズムになります． 計算されるユークリッド2乗距離は，最も近い母点までの２乗ユークリッド距離を表します． 画素のアスペクトを考慮したボロノイ分割が可能です． アルゴリズム自体は，参考文献の Calvin R. Maurer, Jr. の論文を改良したものである．</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトでは動作しません </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する </dd>
+<dd>
+正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．</dd></dl>
+<ul>
+<li>参考文献<ul>
+<li>齋藤豊文, 鳥脇純一郎, "3次元ユークリッド距離変換および拡張ボロノイ分割のアルゴリズムと肝組織標本画像の解析," 画像電子学会誌, 第21巻，第5号, pp.468-474, 1992</li>
+<li>Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003</li>
+</ul>
+</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">voronoi</td><td>… 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される． </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dist</td><td>… 出力ユークリッド２乗距離画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__thread__group.html#ga0f635b9fa0dc3d181f41fa4830a18513">mist::do_threads_()</a>, と <a class="el" href="group__thread__group.html#gadef82157796ad103bfc943dba8ef17e6">mist::get_cpu_num()</a>.</p>
+
+<p>参照元 <a class="el" href="group__voronoi__distance__group.html#ga455271785599f628701cca7714212e09">mist::euclidean::voronoi_distance_transform()</a>, と <a class="el" href="namespacemist_1_1calvin.html#ad8766f3c659c7f94b7e22d48daa51d63">voronoi_transform()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad8766f3c659c7f94b7e22d48daa51d63"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void mist::calvin::voronoi_transform </td>
+          <td>(</td>
+          <td class="paramtype">Array &amp;&#160;</td>
+          <td class="paramname"><em>voronoi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>thread_num</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ユークリッド距離を用いたボロノイ分割 </p>
+<p>ユークリッド距離に基づくボロノイ分割を行い，画素のアスペクトを考慮したボロノイ分割が可能です． 内部では，ユークリッド2乗距離を計算するための一時画像を作成します． アルゴリズム自体は，参考文献の Calvin R. Maurer, Jr. の論文を改良したものである．</p>
+<dl class="section attention"><dt>注意</dt><dd>入力と出力は，同じMISTコンテナオブジェクトでは動作しません </dd>
+<dd>
+スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する </dd>
+<dd>
+正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．</dd></dl>
+<ul>
+<li>参考文献<ul>
+<li>齋藤豊文, 鳥脇純一郎, "3次元ユークリッド距離変換および拡張ボロノイ分割のアルゴリズムと肝組織標本画像の解析," 画像電子学会誌, 第21巻，第5号, pp.468-474, 1992</li>
+<li>Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003</li>
+</ul>
+</li>
+</ul>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">voronoi</td><td>… 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される． </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thread_num</td><td>… 使用するスレッド数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespacemist_1_1calvin.html#a2356126093b9f70c5775cb2d003995db">voronoi_distance_transform()</a>.</p>
+
+<p>参照元 <a class="el" href="group__voronoi__distance__group.html#gad7e9b8ea65a4cd96ff8075f839012b1f">mist::euclidean::voronoi_transform()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

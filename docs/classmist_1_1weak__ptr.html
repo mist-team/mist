@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>クラス テンプレート mist::weak_ptr&lt; T &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 型</a> &#124;
+<a href="#pub-methods">Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">クラス テンプレート mist::weak_ptr&lt; T &gt;<div class="ingroups"><a class="el" href="group__pointer__group.html">メモリ領域の自動開放を行うポインタ</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>参照カウント型のメモリに対する，弱参照を扱うポインタ  
+ <a href="classmist_1_1weak__ptr.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="pointer_8h_source.html">pointer.h</a>&gt;</code></p>
+
+<p>mist::__shared_memory__::shared_base&lt; T &gt;を継承しています。</p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public 型</h2></td></tr>
+<tr class="memitem:a923b11b569c52c39541779abf7275908"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a923b11b569c52c39541779abf7275908"></a>
+typedef size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a923b11b569c52c39541779abf7275908">size_type</a></td></tr>
+<tr class="memdesc:a923b11b569c52c39541779abf7275908"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ <br/></td></tr>
+<tr class="memitem:a6fe0ac4ef951770b23fd5b8707209d7e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6fe0ac4ef951770b23fd5b8707209d7e"></a>
+typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a6fe0ac4ef951770b23fd5b8707209d7e">difference_type</a></td></tr>
+<tr class="memdesc:a6fe0ac4ef951770b23fd5b8707209d7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ <br/></td></tr>
+<tr class="memitem:afccf3933707850b2c94ad2d410d7de20"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afccf3933707850b2c94ad2d410d7de20"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#afccf3933707850b2c94ad2d410d7de20">value_type</a></td></tr>
+<tr class="memdesc:afccf3933707850b2c94ad2d410d7de20"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部データ型．T と同じ <br/></td></tr>
+<tr class="memitem:a56d459b65b4aef3e7f5482d4c77c29e5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56d459b65b4aef3e7f5482d4c77c29e5"></a>
+typedef T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a56d459b65b4aef3e7f5482d4c77c29e5">pointer</a></td></tr>
+<tr class="memdesc:a56d459b65b4aef3e7f5482d4c77c29e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型のポインター型．data の場合，data * となる <br/></td></tr>
+<tr class="memitem:aac0fef958a15b298dba8bb5d3404f68c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac0fef958a15b298dba8bb5d3404f68c"></a>
+typedef T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#aac0fef958a15b298dba8bb5d3404f68c">reference</a></td></tr>
+<tr class="memdesc:aac0fef958a15b298dba8bb5d3404f68c"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の参照．data の場合，data &amp; となる <br/></td></tr>
+<tr class="memitem:a20c0fc3e2fa55a97f3e4e855a96e8c02"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20c0fc3e2fa55a97f3e4e855a96e8c02"></a>
+typedef const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a20c0fc3e2fa55a97f3e4e855a96e8c02">const_reference</a></td></tr>
+<tr class="memdesc:a20c0fc3e2fa55a97f3e4e855a96e8c02"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const 参照．data の場合，const data &amp; となる <br/></td></tr>
+<tr class="memitem:adfb186737d9909c95419bdbcec0ba38a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adfb186737d9909c95419bdbcec0ba38a"></a>
+typedef const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#adfb186737d9909c95419bdbcec0ba38a">const_pointer</a></td></tr>
+<tr class="memdesc:adfb186737d9909c95419bdbcec0ba38a"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の const ポインター型．data の場合，const data * となる <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:a294846f11f40188030f6c8c0236f81a8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a294846f11f40188030f6c8c0236f81a8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a294846f11f40188030f6c8c0236f81a8">weak_ptr</a> ()</td></tr>
+<tr class="memdesc:a294846f11f40188030f6c8c0236f81a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">未管理のポインタで初期化 <br/></td></tr>
+<tr class="memitem:af0300a0631a474644d05cc1ba0644835"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af0300a0631a474644d05cc1ba0644835"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#af0300a0631a474644d05cc1ba0644835">weak_ptr</a> (<a class="el" href="classmist_1_1shared__ptr.html">shared_ptr</a>&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:af0300a0631a474644d05cc1ba0644835"><td class="mdescLeft">&#160;</td><td class="mdescRight">共有メモリポインタの弱参照を用いて初期化する <br/></td></tr>
+<tr class="memitem:abd3b8229213ffd0dcba2790e09b2528d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd3b8229213ffd0dcba2790e09b2528d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#abd3b8229213ffd0dcba2790e09b2528d">weak_ptr</a> (const <a class="el" href="classmist_1_1shared__ptr.html">shared_ptr</a>&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:abd3b8229213ffd0dcba2790e09b2528d"><td class="mdescLeft">&#160;</td><td class="mdescRight">共有メモリポインタの弱参照を用いて初期化する <br/></td></tr>
+<tr class="memitem:a58cadb9f17898a22284b11bdb677b82c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58cadb9f17898a22284b11bdb677b82c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a58cadb9f17898a22284b11bdb677b82c">weak_ptr</a> (<a class="el" href="classmist_1_1shared__array.html">shared_array</a>&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:a58cadb9f17898a22284b11bdb677b82c"><td class="mdescLeft">&#160;</td><td class="mdescRight">共有メモリ型の配列ポインタの弱参照を用いて初期化する <br/></td></tr>
+<tr class="memitem:a2b408013685c6187743ef80b6be61b16"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b408013685c6187743ef80b6be61b16"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a2b408013685c6187743ef80b6be61b16">weak_ptr</a> (const <a class="el" href="classmist_1_1shared__array.html">shared_array</a>&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:a2b408013685c6187743ef80b6be61b16"><td class="mdescLeft">&#160;</td><td class="mdescRight">共有メモリ型の配列ポインタの弱参照を用いて初期化する <br/></td></tr>
+<tr class="memitem:a933c401da8daf5b88b53f337d10a39df"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a933c401da8daf5b88b53f337d10a39df"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a933c401da8daf5b88b53f337d10a39df">~weak_ptr</a> ()</td></tr>
+<tr class="memdesc:a933c401da8daf5b88b53f337d10a39df"><td class="mdescLeft">&#160;</td><td class="mdescRight">弱参照の参照カウントを1減らす <br/></td></tr>
+<tr class="memitem:a0734cc18470573237d52b03783ebaba1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a0734cc18470573237d52b03783ebaba1">operator=</a> (const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a> &amp;p)</td></tr>
+<tr class="memdesc:a0734cc18470573237d52b03783ebaba1"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の共有メモリポインタを代入する  <a href="#a0734cc18470573237d52b03783ebaba1"></a><br/></td></tr>
+<tr class="memitem:a42296d0d1f09c066f3033dfa68c8025c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a42296d0d1f09c066f3033dfa68c8025c">operator=</a> (const <a class="el" href="classmist_1_1shared__ptr.html">shared_ptr</a>&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:a42296d0d1f09c066f3033dfa68c8025c"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の共有メモリポインタを代入する  <a href="#a42296d0d1f09c066f3033dfa68c8025c"></a><br/></td></tr>
+<tr class="memitem:ac517145635ee21d42efc0e56ce892b38"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#ac517145635ee21d42efc0e56ce892b38">operator=</a> (const <a class="el" href="classmist_1_1shared__array.html">shared_array</a>&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:ac517145635ee21d42efc0e56ce892b38"><td class="mdescLeft">&#160;</td><td class="mdescRight">他の共有メモリ型の配列ポインタを代入する  <a href="#ac517145635ee21d42efc0e56ce892b38"></a><br/></td></tr>
+<tr class="memitem:ac33e584f2450b663a309782ec9037880"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac33e584f2450b663a309782ec9037880"></a>
+<a class="el" href="classmist_1_1weak__ptr.html#aac0fef958a15b298dba8bb5d3404f68c">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#ac33e584f2450b663a309782ec9037880">operator*</a> ()</td></tr>
+<tr class="memdesc:ac33e584f2450b663a309782ec9037880"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタが指す内容への参照を返す <br/></td></tr>
+<tr class="memitem:a40181b47a7a916d2fc18dc53a21ff893"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40181b47a7a916d2fc18dc53a21ff893"></a>
+<a class="el" href="classmist_1_1weak__ptr.html#a20c0fc3e2fa55a97f3e4e855a96e8c02">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a40181b47a7a916d2fc18dc53a21ff893">operator*</a> () const </td></tr>
+<tr class="memdesc:a40181b47a7a916d2fc18dc53a21ff893"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタが指す内容への参照を返す <br/></td></tr>
+<tr class="memitem:a7f0d228681cceb6ed23573e805b8e6dc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f0d228681cceb6ed23573e805b8e6dc"></a>
+<a class="el" href="classmist_1_1weak__ptr.html#a56d459b65b4aef3e7f5482d4c77c29e5">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a7f0d228681cceb6ed23573e805b8e6dc">operator-&gt;</a> ()</td></tr>
+<tr class="memdesc:a7f0d228681cceb6ed23573e805b8e6dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタが指す内容へのアクセスを行う <br/></td></tr>
+<tr class="memitem:a7ff0269c1da49c342d8d4c63ad2ba81e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ff0269c1da49c342d8d4c63ad2ba81e"></a>
+<a class="el" href="classmist_1_1weak__ptr.html#adfb186737d9909c95419bdbcec0ba38a">const_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a7ff0269c1da49c342d8d4c63ad2ba81e">operator-&gt;</a> () const </td></tr>
+<tr class="memdesc:a7ff0269c1da49c342d8d4c63ad2ba81e"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタが指す内容へのアクセスを行う <br/></td></tr>
+<tr class="memitem:a9d2f160f5548efae1da50ca82847c87c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d2f160f5548efae1da50ca82847c87c"></a>
+<a class="el" href="classmist_1_1weak__ptr.html#aac0fef958a15b298dba8bb5d3404f68c">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a9d2f160f5548efae1da50ca82847c87c">operator[]</a> (<a class="el" href="classmist_1_1weak__ptr.html#a6fe0ac4ef951770b23fd5b8707209d7e">difference_type</a> index)</td></tr>
+<tr class="memdesc:a9d2f160f5548efae1da50ca82847c87c"><td class="mdescLeft">&#160;</td><td class="mdescRight">配列の要素へのアクセスを行う <br/></td></tr>
+<tr class="memitem:ab63537eba868592b3fa3880640e9d3fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab63537eba868592b3fa3880640e9d3fc"></a>
+<a class="el" href="classmist_1_1weak__ptr.html#a20c0fc3e2fa55a97f3e4e855a96e8c02">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#ab63537eba868592b3fa3880640e9d3fc">operator[]</a> (<a class="el" href="classmist_1_1weak__ptr.html#a6fe0ac4ef951770b23fd5b8707209d7e">difference_type</a> index) const </td></tr>
+<tr class="memdesc:ab63537eba868592b3fa3880640e9d3fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">配列の要素へのアクセスを行う <br/></td></tr>
+<tr class="memitem:ad5b84e68a57f08d6bf9d12b31665667c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#ad5b84e68a57f08d6bf9d12b31665667c">reset</a> ()</td></tr>
+<tr class="memdesc:ad5b84e68a57f08d6bf9d12b31665667c"><td class="mdescLeft">&#160;</td><td class="mdescRight">管理しているポインタの参照カウントを減らす  <a href="#ad5b84e68a57f08d6bf9d12b31665667c"></a><br/></td></tr>
+<tr class="memitem:a279c0e1af548981adcecc8f3477d30fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a279c0e1af548981adcecc8f3477d30fe"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a279c0e1af548981adcecc8f3477d30fe">operator==</a> (const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a> &amp;p) const </td></tr>
+<tr class="memdesc:a279c0e1af548981adcecc8f3477d30fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタが同一かどうかを判定する <br/></td></tr>
+<tr class="memitem:a6989689ebc9cfe02f8d75b52175902f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6989689ebc9cfe02f8d75b52175902f2"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a6989689ebc9cfe02f8d75b52175902f2">operator!=</a> (const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a> &amp;p) const </td></tr>
+<tr class="memdesc:a6989689ebc9cfe02f8d75b52175902f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタが等しくないどうかを判定する <br/></td></tr>
+<tr class="memitem:ab3a961ac870e9ebe6d78a1f8157c0758"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3a961ac870e9ebe6d78a1f8157c0758"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#ab3a961ac870e9ebe6d78a1f8157c0758">operator&lt;</a> (const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a> &amp;p) const </td></tr>
+<tr class="memdesc:ab3a961ac870e9ebe6d78a1f8157c0758"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタの &lt; を判定する <br/></td></tr>
+<tr class="memitem:aa52305885216cdffebeee99b71719dab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa52305885216cdffebeee99b71719dab"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#aa52305885216cdffebeee99b71719dab">operator&lt;=</a> (const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a> &amp;p) const </td></tr>
+<tr class="memdesc:aa52305885216cdffebeee99b71719dab"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタの &lt;= を判定する <br/></td></tr>
+<tr class="memitem:ad519855614f88e969b5d145a471604fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad519855614f88e969b5d145a471604fe"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#ad519855614f88e969b5d145a471604fe">operator&gt;</a> (const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a> &amp;p) const </td></tr>
+<tr class="memdesc:ad519855614f88e969b5d145a471604fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタの &gt; を判定する <br/></td></tr>
+<tr class="memitem:a1dbbb864c31a35720dd1788c48c10563"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1dbbb864c31a35720dd1788c48c10563"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a1dbbb864c31a35720dd1788c48c10563">operator&gt;=</a> (const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a> &amp;p) const </td></tr>
+<tr class="memdesc:a1dbbb864c31a35720dd1788c48c10563"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタの &gt;= を判定する <br/></td></tr>
+<tr class="memitem:a8762f26cb3f581b426ce2db078ee87c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8762f26cb3f581b426ce2db078ee87c6"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a8762f26cb3f581b426ce2db078ee87c6">operator==</a> (const <a class="el" href="classmist_1_1weak__ptr.html#a56d459b65b4aef3e7f5482d4c77c29e5">pointer</a> &amp;p) const </td></tr>
+<tr class="memdesc:a8762f26cb3f581b426ce2db078ee87c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタが同一かどうかを判定する <br/></td></tr>
+<tr class="memitem:a10dcb264e4d02eccb5d485403388e576"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10dcb264e4d02eccb5d485403388e576"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a10dcb264e4d02eccb5d485403388e576">operator!=</a> (const <a class="el" href="classmist_1_1weak__ptr.html#a56d459b65b4aef3e7f5482d4c77c29e5">pointer</a> &amp;p) const </td></tr>
+<tr class="memdesc:a10dcb264e4d02eccb5d485403388e576"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタが等しくないどうかを判定する <br/></td></tr>
+<tr class="memitem:a228eaa714d01e72354d467f2e20c6791"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a228eaa714d01e72354d467f2e20c6791"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a228eaa714d01e72354d467f2e20c6791">operator&lt;</a> (const <a class="el" href="classmist_1_1weak__ptr.html#a56d459b65b4aef3e7f5482d4c77c29e5">pointer</a> &amp;p) const </td></tr>
+<tr class="memdesc:a228eaa714d01e72354d467f2e20c6791"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタの &lt; を判定する <br/></td></tr>
+<tr class="memitem:adaaafdad031e731a93d42d4863e53ebd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adaaafdad031e731a93d42d4863e53ebd"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#adaaafdad031e731a93d42d4863e53ebd">operator&lt;=</a> (const <a class="el" href="classmist_1_1weak__ptr.html#a56d459b65b4aef3e7f5482d4c77c29e5">pointer</a> &amp;p) const </td></tr>
+<tr class="memdesc:adaaafdad031e731a93d42d4863e53ebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタの &lt;= を判定する <br/></td></tr>
+<tr class="memitem:a8a4e2da9d42aa5ec602923034696aedf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a4e2da9d42aa5ec602923034696aedf"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a8a4e2da9d42aa5ec602923034696aedf">operator&gt;</a> (const <a class="el" href="classmist_1_1weak__ptr.html#a56d459b65b4aef3e7f5482d4c77c29e5">pointer</a> &amp;p) const </td></tr>
+<tr class="memdesc:a8a4e2da9d42aa5ec602923034696aedf"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタの &gt; を判定する <br/></td></tr>
+<tr class="memitem:a5865bd3542d7253ce42a7f6fd7fa06ad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5865bd3542d7253ce42a7f6fd7fa06ad"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1weak__ptr.html#a5865bd3542d7253ce42a7f6fd7fa06ad">operator&gt;=</a> (const <a class="el" href="classmist_1_1weak__ptr.html#a56d459b65b4aef3e7f5482d4c77c29e5">pointer</a> &amp;p) const </td></tr>
+<tr class="memdesc:a5865bd3542d7253ce42a7f6fd7fa06ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">2つのポインタの &gt;= を判定する <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br/>
+class mist::weak_ptr&lt; T &gt;</h3>
+
+<p>参照カウント型のメモリに対する，弱参照を扱うポインタ </p>
+<p>参照カウントが 0 にった際に，保持するポインタは NULL となる</p>
+<dl class="section attention"><dt>注意</dt><dd><a class="el" href="classmist_1_1weak__ptr.html" title="参照カウント型のメモリに対する，弱参照を扱うポインタ">weak_ptr</a> 自身は参照カウントを変化させない</dd></dl>
+<div class="fragment"><div class="line"> 弱参照ポインタの使用例</div>
+<div class="line">{</div>
+<div class="line"><a class="code" href="classmist_1_1weak__ptr.html" title="参照カウント型のメモリに対する，弱参照を扱うポインタ">mist::weak_ptr&lt; std::string &gt;</a> a;</div>
+<div class="line">   </div>
+<div class="line">std::cout &lt;&lt; a &lt;&lt; std::endl;    <span class="comment">// &lt;- a はどこも参照していないので NULL  が入っている</span></div>
+<div class="line">   </div>
+<div class="line">{</div>
+<div class="line">    <a class="code" href="classmist_1_1shared__ptr.html" title="オブジェクトへのポインタの参照カウントを管理し，どこからも参照されなくなったときにメモリを自動開放するポインタ">mist::shared_ptr&lt; std::string &gt;</a> b = <span class="keyword">new</span> std::string[ 2 ];</div>
+<div class="line">   </div>
+<div class="line">       a = b;    <span class="comment">// b の弱参照を a に設定する</span></div>
+<div class="line">   </div>
+<div class="line">       std::cout &lt;&lt; a &lt;&lt; std::endl;    <span class="comment">// &lt;- a は b を参照しているので b の参照先が表示される</span></div>
+<div class="line">   </div>
+<div class="line">   } <span class="comment">// &lt;- ここで b に割り当てたメモリ領域がどこからも参照されなくなるため，メモリ領域が自動的に開放される</span></div>
+<div class="line">   </div>
+<div class="line">std::cout &lt;&lt; a &lt;&lt; std::endl;    <span class="comment">// &lt;- a が参照していた b はもう存在しないので， NULL が入っている</span></div>
+</div><!-- fragment --> </div><h2>関数</h2>
+<a class="anchor" id="a0734cc18470573237d52b03783ebaba1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a>&amp; <a class="el" href="classmist_1_1weak__ptr.html">mist::weak_ptr</a>&lt; T &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>他の共有メモリポインタを代入する </p>
+<dl class="section attention"><dt>注意</dt><dd>すでに管理しているポインタがある場合は，参照カウントを1減らす </dd>
+<dd>
+その際に，どこからも参照されなくなったらメモリを開放する </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a42296d0d1f09c066f3033dfa68c8025c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a>&amp; <a class="el" href="classmist_1_1weak__ptr.html">mist::weak_ptr</a>&lt; T &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1shared__ptr.html">shared_ptr</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>他の共有メモリポインタを代入する </p>
+<dl class="section attention"><dt>注意</dt><dd>すでに管理しているポインタがある場合は，参照カウントを1減らす </dd>
+<dd>
+その際に，どこからも参照されなくなったらメモリを開放する </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac517145635ee21d42efc0e56ce892b38"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmist_1_1weak__ptr.html">weak_ptr</a>&amp; <a class="el" href="classmist_1_1weak__ptr.html">mist::weak_ptr</a>&lt; T &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmist_1_1shared__array.html">shared_array</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>他の共有メモリ型の配列ポインタを代入する </p>
+<dl class="section attention"><dt>注意</dt><dd>すでに管理しているポインタがある場合は，参照カウントを1減らす </dd>
+<dd>
+その際に，どこからも参照されなくなったらメモリを開放する </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad5b84e68a57f08d6bf9d12b31665667c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classmist_1_1weak__ptr.html">mist::weak_ptr</a>&lt; T &gt;::reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>管理しているポインタの参照カウントを減らす </p>
+<dl class="section attention"><dt>注意</dt><dd>どこからも参照されなくなったらメモリを開放する </dd></dl>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="pointer_8h_source.html">pointer.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

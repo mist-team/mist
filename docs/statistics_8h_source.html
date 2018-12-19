@@ -1,0 +1,826 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>statistics.h ソースファイル</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">statistics.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="statistics_8h.html">説明を見る。</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Copyright (c) 2003-2011, MIST Project, Nagoya University</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// All rights reserved.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// Redistribution and use in source and binary forms, with or without modification,</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// are permitted provided that the following conditions are met:</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// 1. Redistributions of source code must retain the above copyright notice,</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// this list of conditions and the following disclaimer.</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// 2. Redistributions in binary form must reproduce the above copyright notice,</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// this list of conditions and the following disclaimer in the documentation</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// and/or other materials provided with the distribution.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// 3. Neither the name of the Nagoya University nor the names of its contributors</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// may be used to endorse or promote products derived from this software</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// without specific prior written permission.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_STATISTICS__</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __INCLUDE_MIST_STATISTICS__</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;cstdio&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_CONF_H__</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="mist__conf_8h.html" title="MISTの設定ファイル">config/mist_conf.h</a>&quot;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_COLOR_H__</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="color_8h.html" title="カラーデータを扱うためのクラス群">config/color.h</a>&quot;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_H__</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="mist_8h.html" title="MISTの基本となる音声・画像を扱うコンテナ">mist.h</a>&quot;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_MATRIX__</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="matrix_8h.html" title="一般行列を扱うためのクラス">matrix.h</a>&quot;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_NUMERIC__</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="numeric_8h.html" title="Lapackを用いた行列演算ライブラリ">numeric.h</a>&quot;</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// mist名前空間の始まり</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<a class="code" href="mist__conf_8h.html#a7895efefff8bac18aad4afb2a3154927" title="MIST名前空間の始まり">_MIST_BEGIN</a></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">namespace </span>__utility__</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;{</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">template</span> &lt; <span class="keywordtype">bool</span> b &gt;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">struct </span>____value_type____</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keyword">typedef</span> <span class="keywordtype">double</span> value_type;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    };</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">template</span> &lt; &gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">struct </span>____value_type____&lt; true &gt;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">typedef</span> rgb&lt; double &gt; value_type;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    };</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> T &gt;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">struct </span>__value_type__</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> ____value_type____&lt; is_color&lt; T &gt;::value &gt;::value_type value_type;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keyword">static</span> value_type t( <span class="keyword">const</span> value_type &amp;v ){ <span class="keywordflow">return</span>( v ); }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    };</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> T, <span class="keyword">class</span> Allocator &gt;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">struct </span>__value_type__&lt; matrix&lt; T, Allocator &gt; &gt;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">typedef</span> matrix&lt; T, Allocator &gt; value_type;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">static</span> value_type t( <span class="keyword">const</span> value_type &amp;v ){ <span class="keywordflow">return</span>( v.t( ) ); }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    };</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="code" href="namespacemist_1_1statistics.html">   97</a></span>&#160;<span class="keyword">namespace </span>statistics</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;{</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array &gt;</div>
+<div class="line"><a name="l00114"></a><span class="lineno"><a class="code" href="group__statistics__group.html#gab2e2f495a7afab3959fba5b3abd84932">  114</a></span>&#160;    <span class="keyword">inline</span> <span class="keyword">typename</span> __utility__::__value_type__&lt; typename Array::value_type &gt;::value_type <a class="code" href="group__statistics__group.html#gab2e2f495a7afab3959fba5b3abd84932">average</a>( <span class="keyword">const</span> Array &amp;a )</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    {</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array::size_type size_type;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> __utility__::__value_type__&lt; typename Array::value_type &gt;::value_type value_type;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordflow">if</span>( a.empty( ) )</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            <span class="keywordflow">return</span>( value_type( ) );</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        {</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            value_type v = a[ 0 ];</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            <span class="keywordflow">for</span>( size_type i = 1 ; i &lt; a.size( ) ; i++ )</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            {</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                v += a[ i ];</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            <span class="keywordflow">return</span>( v / static_cast&lt; double &gt;( a.size( ) ) );</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    }</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array &gt;</div>
+<div class="line"><a name="l00143"></a><span class="lineno"><a class="code" href="group__statistics__group.html#gab1a1cf9612283f16d57f14642517b023">  143</a></span>&#160;    <span class="keyword">inline</span> <span class="keyword">typename</span> __utility__::__value_type__&lt; typename Array::value_type &gt;::value_type <a class="code" href="group__statistics__group.html#gab1a1cf9612283f16d57f14642517b023">variance</a>( <span class="keyword">const</span> Array &amp;a, <span class="keyword">const</span> <span class="keyword">typename</span> __utility__::__value_type__&lt; typename Array::value_type &gt;::value_type &amp;ave )</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    {</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array::size_type size_type;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keyword">typedef</span> __utility__::__value_type__&lt; typename Array::value_type &gt; __utility_type__;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> __utility_type__::value_type value_type;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keywordflow">if</span>( a.empty( ) )</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keywordflow">return</span>( value_type( ) );</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        {</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            value_type v;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                value_type x = a[ 0 ] - ave;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                v = x * __utility_type__::t( x );</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            }</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keywordflow">for</span>( size_type i = 1 ; i &lt; a.size( ) ; i++ )</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            {</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                value_type x = a[ i ] - ave;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                v += x * __utility_type__::t( x );</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keywordflow">return</span>( v / static_cast&lt; double &gt;( a.size( ) ) );</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        }</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    }</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array &gt;</div>
+<div class="line"><a name="l00178"></a><span class="lineno"><a class="code" href="group__statistics__group.html#ga5b3f1b210aa90dcae6edd232fb694709">  178</a></span>&#160;    <span class="keyword">inline</span> <span class="keyword">typename</span> __utility__::__value_type__&lt; typename Array::value_type &gt;::value_type <a class="code" href="group__statistics__group.html#gab1a1cf9612283f16d57f14642517b023">variance</a>( <span class="keyword">const</span> Array &amp;a )</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    {</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="keywordflow">return</span>( <a class="code" href="group__statistics__group.html#gab1a1cf9612283f16d57f14642517b023">variance</a>( a, <a class="code" href="group__statistics__group.html#gab2e2f495a7afab3959fba5b3abd84932">average</a>( a ) ) );</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    }</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2 &gt;</div>
+<div class="line"><a name="l00198"></a><span class="lineno"><a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">  198</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( <span class="keyword">const</span> Array1 &amp;in, Array2 &amp;out, <span class="keyword">typename</span> Array1::value_type min, <span class="keyword">typename</span> Array1::value_type max, <span class="keyword">typename</span> Array1::value_type bin )</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    {</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710" title="入力された2つのオブジェクトが同じもの（メモリ上で同じ位置にある）かどうかを判定する">is_same_object</a>( in, out ) || in.empty( ) )</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::size_type size_type;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::difference_type difference_type;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::value_type value_type;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keywordflow">if</span>( bin &lt;= 0 )</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        {</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        }</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <span class="keywordflow">if</span>( min &gt; max )</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        {</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            value_type tmp = min;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            min = max;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            max = tmp;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        }</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        size_type i;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        difference_type num = <span class="keyword">static_cast&lt;</span> size_type <span class="keyword">&gt;</span>( ( max - min + 1 ) / bin );</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        out.resize( num );</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="keywordflow">for</span>( i = 0 ; i &lt; out.size( ) ; i++ )</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        {</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            out[ i ] = 0;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        }</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keywordflow">for</span>( i = 0 ; i &lt; in.size( ) ; i++ )</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        {</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            difference_type index = <span class="keyword">static_cast&lt;</span> difference_type <span class="keyword">&gt;</span>( ( in[ i ] - min ) / bin );</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            <span class="keywordflow">if</span>( index &gt;= 0 &amp;&amp; index &lt; num )</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            {</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;                out[ index ] += 1;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            }</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keywordflow">return</span>( <span class="keyword">true</span> );</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    }</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2 &gt;</div>
+<div class="line"><a name="l00256"></a><span class="lineno"><a class="code" href="group__statistics__group.html#ga10f48e56fc40327190f861c097e34546">  256</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( <span class="keyword">const</span> Array1 &amp;in, Array2 &amp;out, <span class="keyword">typename</span> Array1::value_type min, <span class="keyword">typename</span> Array1::value_type max )</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    {</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <span class="keywordflow">return</span>( <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( in, out, min, max, 1 ) );</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    }</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2 &gt;</div>
+<div class="line"><a name="l00274"></a><span class="lineno"><a class="code" href="group__statistics__group.html#ga92a4b6f87b3d343e0f56a5b0cc1c71f9">  274</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( <span class="keyword">const</span> Array1 &amp;in, Array2 &amp;out, <span class="keyword">typename</span> Array1::value_type bin )</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    {</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::size_type size_type;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::difference_type difference_type;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::value_type value_type;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <span class="keywordflow">if</span>( in.empty( ) )</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        {</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        }</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        value_type min = in[ 0 ];</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        value_type max = in[ 0 ];</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="keywordflow">for</span>( size_type i = 1 ; i &lt; in.size( ) ; i++ )</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        {</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            <span class="keywordflow">if</span>( min &gt; in[ i ] )</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;            {</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                min = in[ i ];</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            }</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>( max &lt; in[ i ] )</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            {</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                max = in[ i ];</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            }</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        }</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <span class="keywordflow">return</span>( <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( in, out, min, max, bin ) );</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    }</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2 &gt;</div>
+<div class="line"><a name="l00313"></a><span class="lineno"><a class="code" href="group__statistics__group.html#ga38239bf11695e4bb9048d90d24a0badf">  313</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( <span class="keyword">const</span> Array1 &amp;in, Array2 &amp;out )</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    {</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        <span class="keywordflow">return</span>( <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( in, out, 1 ) );</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    }</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2, <span class="keyword">class</span> T, <span class="keyword">class</span> Allocator &gt;</div>
+<div class="line"><a name="l00338"></a><span class="lineno"><a class="code" href="group__statistics__group.html#ga6b409a7251e3503efbd6f549fcda0ae7">  338</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>(</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;                                <span class="keyword">const</span> Array1 &amp;in1, <span class="keyword">const</span> Array2 &amp;in2, <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2&lt; T, Allocator &gt;</a> &amp;out,</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;                                <span class="keyword">typename</span> Array1::value_type min1, <span class="keyword">typename</span> Array1::value_type max1,</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                                <span class="keyword">typename</span> Array1::value_type min2, <span class="keyword">typename</span> Array1::value_type max2,</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                                <span class="keyword">typename</span> Array1::value_type bin</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                            )</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    {</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710" title="入力された2つのオブジェクトが同じもの（メモリ上で同じ位置にある）かどうかを判定する">is_same_object</a>( in1, out ) || <a class="code" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710" title="入力された2つのオブジェクトが同じもの（メモリ上で同じ位置にある）かどうかを判定する">is_same_object</a>( in2, out ) || in1.empty( ) || in2.empty( ) || in1.size( ) != in2.size( ) )</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        {</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        }</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::size_type size_type;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::difference_type difference_type;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::value_type value_type;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        <span class="keywordflow">if</span>( bin &lt;= 0 )</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        {</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        }</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        <span class="keywordflow">if</span>( min1 &gt; max1 )</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        {</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;            value_type tmp = min1;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;            min1 = max1;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;            max1 = tmp;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        }</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="keywordflow">if</span>( min2 &gt; max2 )</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        {</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;            value_type tmp = min2;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            min2 = max2;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            max2 = tmp;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        }</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        difference_type num1 = <span class="keyword">static_cast&lt;</span> size_type <span class="keyword">&gt;</span>( ( max1 - min1 + 1 ) / bin );</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        difference_type num2 = <span class="keyword">static_cast&lt;</span> size_type <span class="keyword">&gt;</span>( ( max2 - min2 + 1 ) / bin );</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        out.<a class="code" href="classmist_1_1array2.html#a63fa884381a82e70d5381875fa4c85d5" title="コンテナ内の要素数を変更する">resize</a>( num1, num2 );</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        out.<a class="code" href="classmist_1_1array.html#abd2515c465b45953c06e996f06d57cb5" title="コンテナ内のデータ要素をデフォルト値で初期化する">fill</a>( );</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; in1.size( ) ; i++ )</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        {</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            difference_type index1 = <span class="keyword">static_cast&lt;</span> difference_type <span class="keyword">&gt;</span>( ( in1[ i ] - min1 ) / bin );</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;            difference_type index2 = <span class="keyword">static_cast&lt;</span> difference_type <span class="keyword">&gt;</span>( ( in2[ i ] - min2 ) / bin );</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;            <span class="keywordflow">if</span>( index1 &gt;= 0 &amp;&amp; index1 &lt; num1 &amp;&amp; index2 &gt;= 0 &amp;&amp; index2 &lt; num2 )</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;            {</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;                out( index1, index2 ) += 1;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;            }</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        }</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        <span class="keywordflow">return</span>( <span class="keyword">true</span> );</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    }</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2, <span class="keyword">class</span> T, <span class="keyword">class</span> Allocator &gt;</div>
+<div class="line"><a name="l00408"></a><span class="lineno"><a class="code" href="group__statistics__group.html#gacd482ebb848abe78ea49dfe32714ae20">  408</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>(</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;                                <span class="keyword">const</span> Array1 &amp;in1, <span class="keyword">const</span> Array2 &amp;in2, <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2&lt; T, Allocator &gt;</a> &amp;out,</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;                                <span class="keyword">typename</span> Array1::value_type min1, <span class="keyword">typename</span> Array1::value_type max1,</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                                <span class="keyword">typename</span> Array1::value_type min2, <span class="keyword">typename</span> Array1::value_type max2</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                            )</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    {</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        <span class="keywordflow">return</span>( <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( in1, in2, out, min1, max1, min2, max2, 1 ) );</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    }</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2, <span class="keyword">class</span> T, <span class="keyword">class</span> Allocator &gt;</div>
+<div class="line"><a name="l00431"></a><span class="lineno"><a class="code" href="group__statistics__group.html#ga9d16ee210de1c1292ae1ef4cb12f9dc4">  431</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( <span class="keyword">const</span> Array1 &amp;in1, <span class="keyword">const</span> Array2 &amp;in2, <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2&lt; T, Allocator &gt;</a> &amp;out, <span class="keyword">typename</span> Array1::value_type bin )</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    {</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::size_type size_type;</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::difference_type difference_type;</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> Array1::value_type value_type;</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710" title="入力された2つのオブジェクトが同じもの（メモリ上で同じ位置にある）かどうかを判定する">is_same_object</a>( in1, out ) || <a class="code" href="namespacemist.html#a0bc34e9d99c662547e0a48b33ec93710" title="入力された2つのオブジェクトが同じもの（メモリ上で同じ位置にある）かどうかを判定する">is_same_object</a>( in2, out ) || in1.empty( ) || in2.empty( ) || in1.size( ) != in2.size( ) )</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        {</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;            <span class="keywordflow">return</span>( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        }</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;        value_type min1 = in1[ 0 ];</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;        value_type max1 = in1[ 0 ];</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;        <span class="keywordflow">for</span>( size_type i = 1 ; i &lt; in1.size( ) ; i++ )</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        {</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;            <span class="keywordflow">if</span>( min1 &gt; in1[ i ] )</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;            {</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;                min1 = in1[ i ];</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;            }</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>( max1 &lt; in1[ i ] )</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;            {</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;                max1 = in1[ i ];</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;            }</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;        }</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;        value_type min2 = in2[ 0 ];</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;        value_type max2 = in2[ 0 ];</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        <span class="keywordflow">for</span>( size_type i = 1 ; i &lt; in2.size( ) ; i++ )</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        {</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;            <span class="keywordflow">if</span>( min2 &gt; in2[ i ] )</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;            {</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;                min2 = in2[ i ];</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;            }</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>( max2 &lt; in2[ i ] )</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;            {</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;                max2 = in2[ i ];</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;            }</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;        }</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;        <span class="keywordflow">return</span>( <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( in1, in2, out, min1, max1, min2, max2, bin ) );</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;    }</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">class</span> Array1, <span class="keyword">class</span> Array2, <span class="keyword">class</span> T, <span class="keyword">class</span> Allocator &gt;</div>
+<div class="line"><a name="l00486"></a><span class="lineno"><a class="code" href="group__statistics__group.html#gaf17a4f8636f657673ebad34c3bc8175a">  486</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( <span class="keyword">const</span> Array1 &amp;in1, <span class="keyword">const</span> Array2 &amp;in2, <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2&lt; T, Allocator &gt;</a> &amp;out )</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;    {</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;        <span class="keywordflow">return</span>( <a class="code" href="group__statistics__group.html#ga230684939d7f54813e0f7a1801e6766d">generate_histogram</a>( in1, in2, out, 1 ) );</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;    }</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    <span class="keyword">namespace </span>detail</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;    {</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;        <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;        <span class="keywordtype">double</span> central_moment( <span class="keyword">const</span> <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2&lt; T, Allocator &gt;</a> &amp;img, <span class="keywordtype">size_t</span> x_order, <span class="keywordtype">size_t</span> y_order, <span class="keywordtype">double</span> x0, <span class="keywordtype">double</span> y0 )</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        {</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;            <span class="keywordtype">double</span> r = 0;</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;            <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> y = 0 ; y &lt; img.<a class="code" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea" title="Y軸方向のコンテナに格納されているデータ数を返す">height</a>() ; ++y )</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;            {</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;                <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> x = 0 ; x &lt; img.<a class="code" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99" title="X軸方向のコンテナに格納されているデータ数を返す">width</a>() ; ++x )</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;                {</div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;                    r += pow( static_cast&lt; double &gt;( x ) - x0, x_order ) * pow( static_cast&lt; double &gt;( y ) - y0, y_order ) * img( x, y );</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;                }</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;            }    </div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;            <span class="keywordflow">return</span>( r );</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        }</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;        <span class="keywordtype">double</span> normalized_central_moment( <span class="keyword">const</span> array2&lt; T, Allocator &gt; &amp;img, <span class="keywordtype">size_t</span> x_order, <span class="keywordtype">size_t</span> y_order, <span class="keywordtype">double</span> u00, <span class="keywordtype">double</span> x0, <span class="keywordtype">double</span> y0 )</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;        {</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;            <span class="keywordflow">return</span>( central_moment( img, x_order, y_order, x0, y0 ) / u00 );</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;        }</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;    }</div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00537"></a><span class="lineno"><a class="code" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc">  537</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc" title="画像のモーメントを求める">moment</a>( <span class="keyword">const</span> <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2&lt; T, Allocator &gt;</a> &amp;img, <span class="keywordtype">size_t</span> x_order, <span class="keywordtype">size_t</span> y_order )</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    {</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;        <span class="keywordtype">double</span> r = 0;</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> y = 0 ; y &lt; img.<a class="code" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea" title="Y軸方向のコンテナに格納されているデータ数を返す">height</a>() ; ++y )</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;        {</div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;            <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> x = 0 ; x &lt; img.<a class="code" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99" title="X軸方向のコンテナに格納されているデータ数を返す">width</a>() ; ++x )</div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;            {</div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;                r += pow( x, x_order ) * pow( y, y_order ) * img( x, y );</div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;            }</div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;        }</div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;        <span class="keywordflow">return</span>( r );</div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;    }</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00558"></a><span class="lineno"><a class="code" href="group__statistics__group.html#ga57bd41d18b36f80b552209193530a628">  558</a></span>&#160;    <span class="keywordtype">double</span> central_moment( <span class="keyword">const</span> <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2&lt; T, Allocator &gt;</a> &amp;img, <span class="keywordtype">size_t</span> x_order, <span class="keywordtype">size_t</span> y_order )</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;    {</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;        <span class="keywordtype">double</span> u00 = <a class="code" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc" title="画像のモーメントを求める">moment</a>( img, 0, 0 );</div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;        <span class="keywordtype">double</span> u10 = <a class="code" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc" title="画像のモーメントを求める">moment</a>( img, 1, 0 );</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;        <span class="keywordtype">double</span> u01 = <a class="code" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc" title="画像のモーメントを求める">moment</a>( img, 0, 1 );</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;        <span class="keywordtype">double</span> x0 = u10 / u00;</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;        <span class="keywordtype">double</span> y0 = u01 / u00;</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;        <span class="keywordflow">return</span>( detail::central_moment( img, x_order, y_order, x0, y0 ) );</div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;    }</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;</div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00578"></a><span class="lineno"><a class="code" href="group__statistics__group.html#ga230cb0a3727439050fa781d432da131f">  578</a></span>&#160;    <span class="keywordtype">double</span> normalized_central_moment( <span class="keyword">const</span> <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2&lt; T, Allocator &gt;</a> &amp;img, <span class="keywordtype">size_t</span> x_order, <span class="keywordtype">size_t</span> y_order )</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;    {</div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;        <span class="keywordtype">double</span> u00 = <a class="code" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc" title="画像のモーメントを求める">moment</a>( img, 0, 0 );</div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;        <span class="keywordtype">double</span> u10 = <a class="code" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc" title="画像のモーメントを求める">moment</a>( img, 1, 0 );</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;        <span class="keywordtype">double</span> u01 = <a class="code" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc" title="画像のモーメントを求める">moment</a>( img, 0, 1 );</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;        <span class="keywordtype">double</span> x0 = u10 / u00;</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;        <span class="keywordtype">double</span> y0 = u01 / u00;</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;        <span class="keywordflow">return</span>( detail::normalized_central_moment( img, x_order, y_order, u00, x0, y0 ) );</div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;    }</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00593"></a><span class="lineno"><a class="code" href="group__statistics__group.html#ga15bd6afc0181d63e9c3e2c18fbca3d9e">  593</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__statistics__group.html#ga15bd6afc0181d63e9c3e2c18fbca3d9e" title="画像からHuモーメントを求める">hu_moments</a>( <span class="keyword">const</span> <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2&lt; T, Allocator &gt;</a> &amp;img, <a class="code" href="classmist_1_1array1.html" title="要素数が可変の解像度付1次元配列">array1&lt; double &gt;</a> &amp;moments )</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;    {</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;        <span class="keywordtype">double</span> u00 = <a class="code" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc" title="画像のモーメントを求める">moment</a>( img, 0, 0 );</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;        <span class="keywordtype">double</span> u10 = <a class="code" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc" title="画像のモーメントを求める">moment</a>( img, 1, 0 );</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;        <span class="keywordtype">double</span> u01 = <a class="code" href="group__statistics__group.html#ga46b0729c0ae846a9a37875a7f3ebc5fc" title="画像のモーメントを求める">moment</a>( img, 0, 1 );</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;        <span class="keywordtype">double</span> x0 = u10 / u00;</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;        <span class="keywordtype">double</span> y0 = u01 / u00;</div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;        <span class="comment">// 正規化中心モーメントを計算</span></div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;        <a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">array2&lt; double &gt;</a> ncm( 4, 4 );</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> x = 0 ; x &lt;= 3 ; ++x )</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;        {</div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;            <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> y = 0 ; y &lt;= 3 ; ++y )</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;            {</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;                <span class="keywordflow">if</span>( x + y &gt; 3 )</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;                {</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;                    <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;                }     </div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;                ncm( x, y ) = detail::normalized_central_moment( img, x, y, u00, x0, y0 );    </div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;            }</div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;        }</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        <span class="comment">// Huモーメントを計算</span></div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        moments.<a class="code" href="classmist_1_1array.html#ab2b09cc3b61f7dc9bb120ed876003705" title="コンテナ内の要素数を変更する">resize</a>( 7 );</div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;        moments( 0 ) = ncm( 2, 0 ) * ncm( 0, 2 );</div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;        moments( 1 ) = pow( ncm( 2, 0 ) - ncm( 0, 2 ), 2.0 ) + 4 * pow( ncm( 1, 1 ), 2.0 );</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;        moments( 2 ) = pow( ncm( 3, 0 ) - 3 * ncm( 1, 2 ), 2.0 ) + pow( 3 * ncm( 2, 1 ) - ncm( 0, 3 ), 2.0 );</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;        moments( 3 ) = pow( ncm( 3, 0 ) * ncm( 1, 2 ), 2.0 ) + pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 );</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        moments( 4 ) = ( ncm( 3, 0 ) - 3 * ncm( 1, 2 ) ) *</div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;                       ( ncm( 3, 0 ) + ncm( 1, 2 ) ) *</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;                       ( pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - 3 * pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ) +</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;                       ( 3 * ncm( 2, 1 ) - ncm( 0, 3 ) ) *</div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;                       ( ncm( 2, 1 ) + ncm( 0, 3 ) ) *</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;                       ( 3 * pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) );    </div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        moments( 5 ) = ( ncm( 2, 0 ) - ncm( 0, 2 ) ) *</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;                       ( pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ) +</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;                       4 * ncm( 1, 1 ) * ( ncm( 3, 0 ) + ncm( 1, 2 ) ) * ( ncm( 2, 1 ) + ncm( 0, 3 ) );</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;        moments( 6 ) = ( 3 * ncm( 2, 1 ) - ncm( 0, 3 ) ) *</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;                       ( ncm( 2, 1 ) + ncm( 0, 3 ) ) *</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;                       ( 3 * pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ) -</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;                       ( ncm( 3, 0 ) - 3 * ncm( 2, 1 ) ) *</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;                       ( ncm( 2, 1 ) + ncm( 0, 3 ) ) *</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;                       ( 3 * pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ); </div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    }</div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;  </div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;  <span class="keyword">namespace </span>normal_distribution</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;  {</div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;    <span class="keywordtype">double</span> probability( <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;x, <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;u, <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;sigma )</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;    {</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;    <span class="keywordflow">if</span>( x.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() != u.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() || u.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() != 1 || x.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() != sigma.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() || sigma.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() != sigma.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() )</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;      {</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;        <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;      }</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;      <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> b = x - u;</div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;      <span class="keywordtype">double</span> t = ( b.<a class="code" href="classmist_1_1matrix.html#a66ab97c265c938cff8ce5e86a47ff3f1" title="転置行列を返す">t</a>() * <a class="code" href="group__numeric__group.html#ga260dc839da68a5284bf1dabe2ede3cff" title="行列の逆行列をLU分解を用いて計算する">mist::inverse</a>( sigma ) * b )( 0, 0 );      </div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;      <span class="keywordtype">double</span> d = <a class="code" href="group__numeric__group.html#ga4629afcc450bb6ad7ae8c2a387f28b50" title="行列式の計算">mist::det</a>( sigma );      </div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;      <span class="keywordflow">return</span> ( 1.0 / pow( 2 * M_PI, 0.5 * x.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ) ) * ( 1.0 / d ) * exp( -0.5 * t );</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;    }</div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;</div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;    <span class="keywordtype">void</span> estimate( <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;sample, <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;<a class="code" href="group__statistics__group.html#gab2e2f495a7afab3959fba5b3abd84932">average</a>, <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;<a class="code" href="group__statistics__group.html#gab1a1cf9612283f16d57f14642517b023">variance</a> )</div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;    {</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;      <span class="keywordflow">if</span>( sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() &lt;= 1 )</div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;    {</div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;    }</div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;</div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;      average.<a class="code" href="classmist_1_1matrix.html#a344bfa81522dc2e3f5e2ddc92c785502" title="行列のサイズを num 行 1 列に変更する">resize</a>( sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>(), 1 );</div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> i = 0 ; i &lt; sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ; ++i )</div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;    {</div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> j = 0 ; j &lt; sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ; ++j )</div>
+<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;        {</div>
+<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;          <a class="code" href="group__statistics__group.html#gab2e2f495a7afab3959fba5b3abd84932">average</a>( j, 0 ) += sample( j, i );</div>
+<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;        }</div>
+<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;    }</div>
+<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;      average /= sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>();</div>
+<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;</div>
+<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;      <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> tmp = sample;</div>
+<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> i = 0 ; i &lt; sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ; ++i )</div>
+<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;    {</div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> j = 0 ; j &lt; sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ; ++j )</div>
+<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;        {</div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;          tmp( j, i ) -= <a class="code" href="group__statistics__group.html#gab2e2f495a7afab3959fba5b3abd84932">average</a>( j, 0 );</div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;        }</div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;    }</div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;      variance = ( tmp * tmp.<a class="code" href="classmist_1_1matrix.html#a66ab97c265c938cff8ce5e86a47ff3f1" title="転置行列を返す">t</a>() ) / ( sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() - 1 );</div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;    }</div>
+<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;  }</div>
+<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;</div>
+<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;</div>
+<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;  <span class="keyword">namespace </span>parzen</div>
+<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;  {</div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;    <span class="keywordtype">double</span> density( <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;sample, <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;x, <span class="keywordtype">double</span> band )</div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;    {</div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;      <span class="keywordflow">if</span>( sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() == 0 )</div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;    {</div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;    }</div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;</div>
+<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;      <span class="keywordflow">if</span>( sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() != x.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() )</div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;    {</div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;    }</div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;</div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;      <span class="keywordflow">if</span>( band &lt;= 0 )</div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;    {</div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;    }</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;      <span class="keywordtype">double</span> t = 0.0;</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> i = 0 ; i &lt; sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ; ++i )</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;    {</div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;      <span class="keywordtype">double</span> a = 1.0;</div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> j = 0 ; j &lt; sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ; ++j )</div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;        {</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;          <span class="keywordtype">double</span> s = fabs( sample( j, i ) - x( j, 0 ) ) / band;</div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;          <span class="keywordflow">if</span>( s &gt; 0.5 )</div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;        {</div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;          a = 0.0;</div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;          <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;        }</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;        }</div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;      t += a;</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;    }</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;      <span class="keywordflow">return</span> ( 1.0 / ( pow( band, sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ) * sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ) ) * t;</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;    }</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;</div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;    <span class="keywordtype">double</span> test( <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;sample, <span class="keywordtype">double</span> band, <span class="keywordtype">int</span> n = 5 )</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    {</div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;      <span class="keywordflow">if</span>( sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() == 0 )</div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    {</div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;    }</div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;</div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;      <span class="keywordflow">if</span>( n == 0 )</div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;    {</div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    }</div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;</div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;      <span class="keywordflow">if</span>( band &lt;= 0 )</div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;    {</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    }</div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;</div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;      <span class="keywordtype">int</span> ns = sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() / n;</div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;      <span class="keywordtype">int</span> n1 = ns * ( n - 1 );</div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;</div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;      <span class="keywordtype">double</span> J = 0;</div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;      <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> a( sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>(), n1 );</div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">int</span> i = 0 ; i &lt; n ; ++i )</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;    {</div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;      <span class="keywordtype">int</span> idx = 0;</div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> j = 0 ; j &lt; sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ; ++j )</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;        {</div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;          <span class="keywordflow">if</span>( static_cast&lt; int &gt;( j / ns ) != i )</div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;        {</div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;          <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> k = 0 ; k &lt; sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ; ++k )</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;            {</div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;              a( k, idx ) = sample( k, j );</div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;            }</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;          ++idx;</div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;        }</div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;        }</div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;</div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> j = 0 ; j &lt; sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ; ++j )</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;        {</div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;          <span class="keywordflow">if</span>( static_cast&lt; int &gt;( j / ns ) == i )</div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;        {</div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;          <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> x( sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>(), 1 );</div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;          sample.<a class="code" href="classmist_1_1matrix.html#ac2e61e7c42d7caa99ec025f43e03e72a" title="コンテナ内の要素をトリミングする">trim</a>( x, 0, j, -1, 1 );          </div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;          J += log( density( a, x, band ) );</div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;        }         </div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;        }</div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;    }      </div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;      <span class="keywordflow">return</span> J / n;</div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    }</div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;  }</div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;</div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;  <span class="keyword">namespace </span>kernel</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;  {</div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;    <span class="keywordtype">double</span> density( <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;sample, <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;x, <span class="keywordtype">double</span> b )</div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;    {</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;      <span class="keywordtype">double</span> t = 0.0;</div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> i = 0 ; i &lt; sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ; ++i )</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;    {</div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;      <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> d = x;</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> j = 0 ; j &lt; sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ; ++j )</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;        {</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;          d( j, 0 ) -= sample( j, i );</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;        }</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;      d /= b;     </div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;      t += 1.0 / pow( 2.0 * M_PI, 0.5 * sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ) * exp( -0.5 * ( d.<a class="code" href="classmist_1_1matrix.html#a66ab97c265c938cff8ce5e86a47ff3f1" title="転置行列を返す">t</a>() * d )( 0, 0 ) );</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;    }      </div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;      <span class="keywordflow">return</span> ( 1.0 / ( pow( b, sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ) * sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ) ) * t;</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    }</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;    <span class="keywordtype">double</span> test( <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;sample, <span class="keywordtype">double</span> band, <span class="keywordtype">int</span> n = 5 )</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;    {</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;      <span class="keywordflow">if</span>( sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() == 0 )</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;    {</div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    }</div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;</div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;      <span class="keywordflow">if</span>( n == 0 )</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;    {</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    }</div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;</div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;      <span class="keywordflow">if</span>( band &lt;= 0 )</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    {</div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    }</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;</div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;      <span class="keywordtype">int</span> ns = sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() / n;</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;      <span class="keywordtype">int</span> n1 = ns * ( n - 1 );</div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;</div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;      <span class="keywordtype">double</span> J = 0;</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;      <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> a( sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>(), n1 );</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">int</span> i = 0 ; i &lt; n ; ++i )</div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;    {</div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;      <span class="keywordtype">int</span> idx = 0;</div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> j = 0 ; j &lt; sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ; ++j )</div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;        {</div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;          <span class="keywordflow">if</span>( static_cast&lt; int &gt;( j / ns ) != i )</div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;        {</div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;          <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> k = 0 ; k &lt; sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ; ++k )</div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;            {</div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;              a( k, idx ) = sample( k, j );</div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;            }</div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;          ++idx;</div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;        }</div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;        }</div>
+<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;</div>
+<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> j = 0 ; j &lt; sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ; ++j )</div>
+<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;        {</div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;          <span class="keywordflow">if</span>( static_cast&lt; int &gt;( j / ns ) == i )</div>
+<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;        {</div>
+<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;          <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> x( sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>(), 1 );</div>
+<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;          sample.<a class="code" href="classmist_1_1matrix.html#ac2e61e7c42d7caa99ec025f43e03e72a" title="コンテナ内の要素をトリミングする">trim</a>( x, 0, j, -1, 1 );          </div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;          J += log( density( a, x, band ) );</div>
+<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;        }         </div>
+<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;        }</div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;    }      </div>
+<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;      <span class="keywordflow">return</span> J / n;</div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;    }</div>
+<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;  }</div>
+<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;</div>
+<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;  <span class="keyword">namespace </span>knn</div>
+<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;  {</div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    <span class="keywordtype">double</span> density( <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;sample, <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;x, <span class="keywordtype">int</span> k )</div>
+<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;    {</div>
+<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;      std::vector&lt; T, Allocator &gt; ssample( sample.<a class="code" href="classmist_1_1array.html#ab44cda26c6af5e5276b12faee45881c4" title="コンテナに格納されているデータ数を返す">size</a>() );</div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">int</span> i = 0 ; i &lt; static_cast&lt; int &gt;( sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ) ; ++i )</div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;    {</div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;      <span class="keywordtype">double</span> dist = 0;</div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">int</span> j = 0 ; j &lt; static_cast&lt; int &gt;( sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ) ; ++j )</div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;        {</div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;          dist += pow( x( j, 0 ) - sample( j, i ), 2.0 );</div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;        }</div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;      ssample[ i ] = dist;</div>
+<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;    }</div>
+<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;  </div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;      std::sort( ssample.begin(), ssample.end() );</div>
+<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;</div>
+<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;      <span class="keywordtype">double</span> r = sqrt( ssample[ k - 1 ] );</div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;</div>
+<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;      <span class="keywordtype">int</span> h = 0;</div>
+<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;      <span class="keywordtype">int</span> d = <span class="keyword">static_cast&lt;</span> <span class="keywordtype">int</span> <span class="keyword">&gt;</span>( sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() );</div>
+<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;      <span class="keywordtype">double</span> g = 1.0;</div>
+<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;      <span class="keywordflow">if</span>( d % 2 == 0 )</div>
+<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;    {</div>
+<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;      d /= 2;</div>
+<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;      <span class="keywordflow">while</span>( d != 1 )</div>
+<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;        {</div>
+<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;          g *= d;</div>
+<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;          d -= 1;</div>
+<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;        }</div>
+<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;    }</div>
+<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;      <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;    {</div>
+<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;      g = 0.5;</div>
+<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;      <span class="keywordflow">while</span>( d != 1 )</div>
+<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;        {</div>
+<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;          g *= ( 0.5 * d );</div>
+<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;          d -= 2;</div>
+<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;        }</div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;      h = 1;</div>
+<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;    }</div>
+<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;      <span class="keywordflow">return</span> ( g * k ) / ( pow( M_PI, 0.5 * ( sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() - h ) ) * pow( r, sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ) * sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() );</div>
+<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;    }</div>
+<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160;</div>
+<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;    <span class="keyword">template</span>&lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator &gt;</div>
+<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;    <span class="keywordtype">double</span> test( <span class="keyword">const</span> <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> &amp;sample, <span class="keywordtype">int</span> k, <span class="keywordtype">int</span> n = 5 )</div>
+<div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;    {</div>
+<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;      <span class="keywordflow">if</span>( sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() == 0 )</div>
+<div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160;    {</div>
+<div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;    }</div>
+<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;</div>
+<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;      <span class="keywordflow">if</span>( n == 0 )</div>
+<div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;    {</div>
+<div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;    }</div>
+<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;</div>
+<div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;      <span class="keywordflow">if</span>( k &lt;= 0 )</div>
+<div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;    {</div>
+<div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160;      <span class="keywordflow">throw</span> std::invalid_argument( <span class="stringliteral">&quot;&quot;</span> );</div>
+<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;    }</div>
+<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;</div>
+<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;      <span class="keywordtype">int</span> ns = sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() / n;</div>
+<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;      <span class="keywordtype">int</span> n1 = ns * ( n - 1 );</div>
+<div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;</div>
+<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;      <span class="keywordtype">double</span> J = 0;</div>
+<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160;</div>
+<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;      <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> a( sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>(), n1 );</div>
+<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">int</span> i = 0 ; i &lt; n ; ++i )</div>
+<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;    {</div>
+<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;      <span class="keywordtype">int</span> idx = 0;</div>
+<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> j = 0 ; j &lt; sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ; ++j )</div>
+<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;        {</div>
+<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;          <span class="keywordflow">if</span>( static_cast&lt; int &gt;( j / ns ) != i )</div>
+<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;        {</div>
+<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;          <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> k = 0 ; k &lt; sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>() ; ++k )</div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;            {</div>
+<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;              a( k, idx ) = sample( k, j );</div>
+<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;            }</div>
+<div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;          ++idx;</div>
+<div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;        }</div>
+<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;        }</div>
+<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;</div>
+<div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> j = 0 ; j &lt; sample.<a class="code" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684" title="列数を返す">cols</a>() ; ++j )</div>
+<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;        {</div>
+<div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;          <span class="keywordflow">if</span>( static_cast&lt; int &gt;( j / ns ) == i )</div>
+<div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160;        {</div>
+<div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;          <a class="code" href="classmist_1_1matrix.html" title="行と列の要素数が可変の行列">mist::matrix&lt; T, Allocator &gt;</a> x( sample.<a class="code" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f" title="行数を返す">rows</a>(), 1 );</div>
+<div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160;          sample.<a class="code" href="classmist_1_1matrix.html#ac2e61e7c42d7caa99ec025f43e03e72a" title="コンテナ内の要素をトリミングする">trim</a>( x, 0, j, -1, 1 );</div>
+<div class="line"><a name="l00976"></a><span class="lineno">  976</span>&#160;          J += log( density( a, x, k ) );</div>
+<div class="line"><a name="l00977"></a><span class="lineno">  977</span>&#160;        }         </div>
+<div class="line"><a name="l00978"></a><span class="lineno">  978</span>&#160;        }</div>
+<div class="line"><a name="l00979"></a><span class="lineno">  979</span>&#160;    }      </div>
+<div class="line"><a name="l00980"></a><span class="lineno">  980</span>&#160;      <span class="keywordflow">return</span> J / n;</div>
+<div class="line"><a name="l00981"></a><span class="lineno">  981</span>&#160;    }</div>
+<div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160;  }</div>
+<div class="line"><a name="l00984"></a><span class="lineno">  984</span>&#160;    <span class="comment">//  統計処理の終わり</span></div>
+<div class="line"><a name="l00985"></a><span class="lineno">  985</span>&#160;}</div>
+<div class="line"><a name="l00986"></a><span class="lineno">  986</span>&#160;</div>
+<div class="line"><a name="l00987"></a><span class="lineno">  987</span>&#160;</div>
+<div class="line"><a name="l00988"></a><span class="lineno">  988</span>&#160;<span class="comment">// mist名前空間の終わり</span></div>
+<div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160;<a class="code" href="mist__conf_8h.html#a5782930a99d85de30831b223eb8df540" title="MIST名前空間の終わり">_MIST_END</a></div>
+<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;</div>
+<div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160;</div>
+<div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;<span class="preprocessor">#endif // __INCLUDE_MIST_STATISTICS__</span></div>
+<div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160;<span class="preprocessor"></span></div>
+</div><!-- fragment --></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:25 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

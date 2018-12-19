@@ -1,0 +1,526 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>構造体 テンプレート mist::mist_memory_operator&lt;true &gt;</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="structmist_1_1mist__memory__operator_3true_01_4.html">mist_memory_operator<true ></a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-static-methods">Static Public メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">構造体 テンプレート mist::mist_memory_operator&lt;true &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>組み込み型用のメモリ操作関数群  
+ <a href="structmist_1_1mist__memory__operator_3true_01_4.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="mist__alloc_8h_source.html">mist_alloc.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public メソッド</h2></td></tr>
+<tr class="memitem:ab438278c917887957036234282604709"><td class="memTemplParams" colspan="2">template&lt;class Allocator &gt; </td></tr>
+<tr class="memitem:ab438278c917887957036234282604709"><td class="memTemplItemLeft" align="right" valign="top">static Allocator::pointer&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1mist__memory__operator_3true_01_4.html#ab438278c917887957036234282604709">allocate_objects1</a> (Allocator &amp;allocator, typename Allocator::size_type num)</td></tr>
+<tr class="memdesc:ab438278c917887957036234282604709"><td class="mdescLeft">&#160;</td><td class="mdescRight">num 個のオブジェクトを確保し，デフォルトの値で初期化する  <a href="#ab438278c917887957036234282604709"></a><br/></td></tr>
+<tr class="memitem:a0986eaa1bf810b05ca87525395e5ec56"><td class="memTemplParams" colspan="2">template&lt;class Allocator &gt; </td></tr>
+<tr class="memitem:a0986eaa1bf810b05ca87525395e5ec56"><td class="memTemplItemLeft" align="right" valign="top">static Allocator::pointer&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1mist__memory__operator_3true_01_4.html#a0986eaa1bf810b05ca87525395e5ec56">allocate_objects2</a> (Allocator &amp;allocator, typename Allocator::size_type num, typename Allocator::const_reference obj)</td></tr>
+<tr class="memdesc:a0986eaa1bf810b05ca87525395e5ec56"><td class="mdescLeft">&#160;</td><td class="mdescRight">num 個のオブジェクトを確保し，引数の値で初期化する  <a href="#a0986eaa1bf810b05ca87525395e5ec56"></a><br/></td></tr>
+<tr class="memitem:aa4bcac99dfd7243ab3720b40528fc6c2"><td class="memTemplParams" colspan="2">template&lt;class Allocator &gt; </td></tr>
+<tr class="memitem:aa4bcac99dfd7243ab3720b40528fc6c2"><td class="memTemplItemLeft" align="right" valign="top">static Allocator::pointer&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1mist__memory__operator_3true_01_4.html#aa4bcac99dfd7243ab3720b40528fc6c2">allocate_objects3</a> (Allocator &amp;allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e)</td></tr>
+<tr class="memdesc:aa4bcac99dfd7243ab3720b40528fc6c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタ s から e の範囲のデータで初期化する  <a href="#aa4bcac99dfd7243ab3720b40528fc6c2"></a><br/></td></tr>
+<tr class="memitem:aae53f18b01287cef3e362e67390c50db"><td class="memTemplParams" colspan="2">template&lt;class Allocator &gt; </td></tr>
+<tr class="memitem:aae53f18b01287cef3e362e67390c50db"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1mist__memory__operator_3true_01_4.html#aae53f18b01287cef3e362e67390c50db">deallocate_objects</a> (Allocator &amp;allocator, typename Allocator::pointer ptr, typename Allocator::size_type num)</td></tr>
+<tr class="memdesc:aae53f18b01287cef3e362e67390c50db"><td class="mdescLeft">&#160;</td><td class="mdescRight">ptr から num 個のオブジェクトを開放しデストラクタを呼び出す  <a href="#aae53f18b01287cef3e362e67390c50db"></a><br/></td></tr>
+<tr class="memitem:afb61f66498fd7e45894219e7e2bd1a71"><td class="memTemplParams" colspan="2">template&lt;class Allocator &gt; </td></tr>
+<tr class="memitem:afb61f66498fd7e45894219e7e2bd1a71"><td class="memTemplItemLeft" align="right" valign="top">static Allocator::pointer&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1mist__memory__operator_3true_01_4.html#afb61f66498fd7e45894219e7e2bd1a71">copy_objects1</a> (Allocator &amp;, typename Allocator::const_pointer s, typename Allocator::const_pointer e, typename Allocator::pointer x)</td></tr>
+<tr class="memdesc:afb61f66498fd7e45894219e7e2bd1a71"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタ s から e までの間のデータを x にコピーする  <a href="#afb61f66498fd7e45894219e7e2bd1a71"></a><br/></td></tr>
+<tr class="memitem:a07d0c3d9734c1c395d9e296d9f1e31f9"><td class="memTemplParams" colspan="2">template&lt;class Allocator &gt; </td></tr>
+<tr class="memitem:a07d0c3d9734c1c395d9e296d9f1e31f9"><td class="memTemplItemLeft" align="right" valign="top">static Allocator::pointer&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1mist__memory__operator_3true_01_4.html#a07d0c3d9734c1c395d9e296d9f1e31f9">copy_objects2</a> (Allocator &amp;, typename Allocator::const_pointer ptr, typename Allocator::size_type num, typename Allocator::pointer to)</td></tr>
+<tr class="memdesc:a07d0c3d9734c1c395d9e296d9f1e31f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタ ptr から num 個のデータを to にコピーする  <a href="#a07d0c3d9734c1c395d9e296d9f1e31f9"></a><br/></td></tr>
+<tr class="memitem:a75fb382b14257d70bb7ece7fc352941b"><td class="memTemplParams" colspan="2">template&lt;class Allocator &gt; </td></tr>
+<tr class="memitem:a75fb382b14257d70bb7ece7fc352941b"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1mist__memory__operator_3true_01_4.html#a75fb382b14257d70bb7ece7fc352941b">fill_objects1</a> (Allocator &amp;, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj)</td></tr>
+<tr class="memdesc:a75fb382b14257d70bb7ece7fc352941b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタ ptr から num 個のデータにobjを代入する  <a href="#a75fb382b14257d70bb7ece7fc352941b"></a><br/></td></tr>
+<tr class="memitem:ae9e8c45f5e158834de36183aabe5ddf8"><td class="memTemplParams" colspan="2">template&lt;class Allocator &gt; </td></tr>
+<tr class="memitem:ae9e8c45f5e158834de36183aabe5ddf8"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmist_1_1mist__memory__operator_3true_01_4.html#ae9e8c45f5e158834de36183aabe5ddf8">fill_objects2</a> (Allocator &amp;, typename Allocator::pointer ptr, typename Allocator::size_type num)</td></tr>
+<tr class="memdesc:ae9e8c45f5e158834de36183aabe5ddf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポインタ ptr から num 個のデータに初期値を代入する  <a href="#ae9e8c45f5e158834de36183aabe5ddf8"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><h3>template&lt;&gt;<br/>
+struct mist::mist_memory_operator&lt;true &gt;</h3>
+
+<p>組み込み型用のメモリ操作関数群 </p>
+</div><h2>関数</h2>
+<a class="anchor" id="ab438278c917887957036234282604709"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Allocator::pointer <a class="el" href="structmist_1_1mist__memory__operator.html">mist::mist_memory_operator</a>&lt;true &gt;::allocate_objects1 </td>
+          <td>(</td>
+          <td class="paramtype">Allocator &amp;&#160;</td>
+          <td class="paramname"><em>allocator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::size_type&#160;</td>
+          <td class="paramname"><em>num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>num 個のオブジェクトを確保し，デフォルトの値で初期化する </p>
+<p>組み込み型のデータの場合は 0 で初期化する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocator</td><td>… 使用するアロケータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>… 確保するオブジェクト数</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>確保したメモリ領域の先頭アドレス </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a0986eaa1bf810b05ca87525395e5ec56"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Allocator::pointer <a class="el" href="structmist_1_1mist__memory__operator.html">mist::mist_memory_operator</a>&lt;true &gt;::allocate_objects2 </td>
+          <td>(</td>
+          <td class="paramtype">Allocator &amp;&#160;</td>
+          <td class="paramname"><em>allocator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::size_type&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::const_reference&#160;</td>
+          <td class="paramname"><em>obj</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>num 個のオブジェクトを確保し，引数の値で初期化する </p>
+<p>組み込み型のデータの場合は値を代入して初期化する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocator</td><td>… 使用するアロケータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>… 確保するオブジェクト数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>… コピーコンストラクタに渡す初期値</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>確保したメモリ領域の先頭アドレス </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa4bcac99dfd7243ab3720b40528fc6c2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Allocator::pointer <a class="el" href="structmist_1_1mist__memory__operator.html">mist::mist_memory_operator</a>&lt;true &gt;::allocate_objects3 </td>
+          <td>(</td>
+          <td class="paramtype">Allocator &amp;&#160;</td>
+          <td class="paramname"><em>allocator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::const_pointer&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::const_pointer&#160;</td>
+          <td class="paramname"><em>e</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ポインタ s から e の範囲のデータで初期化する </p>
+<p>組み込み型のデータの場合は値を代入して初期化する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocator</td><td>… 使用するアロケータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… 開始ポインタ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">e</td><td>… 終了ポインタ</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>確保したメモリ領域の先頭アドレス </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="afb61f66498fd7e45894219e7e2bd1a71"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Allocator::pointer <a class="el" href="structmist_1_1mist__memory__operator.html">mist::mist_memory_operator</a>&lt;true &gt;::copy_objects1 </td>
+          <td>(</td>
+          <td class="paramtype">Allocator &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::const_pointer&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::const_pointer&#160;</td>
+          <td class="paramname"><em>e</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::pointer&#160;</td>
+          <td class="paramname"><em>x</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ポインタ s から e までの間のデータを x にコピーする </p>
+<p>memcpy を利用してバイト単位でデータをコピーする</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocator</td><td>… 使用するアロケータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>… コピー元の先頭アドレス </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">e</td><td>… コピー元の末尾アドレス </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>… コピー先の先頭アドレス</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>コピー先の末尾アドレス </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a07d0c3d9734c1c395d9e296d9f1e31f9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Allocator::pointer <a class="el" href="structmist_1_1mist__memory__operator.html">mist::mist_memory_operator</a>&lt;true &gt;::copy_objects2 </td>
+          <td>(</td>
+          <td class="paramtype">Allocator &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::const_pointer&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::size_type&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::pointer&#160;</td>
+          <td class="paramname"><em>to</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ポインタ ptr から num 個のデータを to にコピーする </p>
+<p>memcpy を利用してバイト単位でデータをコピーする</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocator</td><td>… 使用するアロケータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ptr</td><td>… コピー元の先頭アドレス </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>… コピーするオブジェクト数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">to</td><td>… コピー先の先頭アドレス</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>コピー先の末尾アドレス </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aae53f18b01287cef3e362e67390c50db"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="structmist_1_1mist__memory__operator.html">mist::mist_memory_operator</a>&lt;true &gt;::deallocate_objects </td>
+          <td>(</td>
+          <td class="paramtype">Allocator &amp;&#160;</td>
+          <td class="paramname"><em>allocator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::pointer&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::size_type&#160;</td>
+          <td class="paramname"><em>num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ptr から num 個のオブジェクトを開放しデストラクタを呼び出す </p>
+<p>組み込み型の場合はデストラクタは呼び出さない</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocator</td><td>… 使用するアロケータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ptr</td><td>… 開放するメモリ領域の先頭アドレス </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>… 開放するオブジェクト数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a75fb382b14257d70bb7ece7fc352941b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="structmist_1_1mist__memory__operator.html">mist::mist_memory_operator</a>&lt;true &gt;::fill_objects1 </td>
+          <td>(</td>
+          <td class="paramtype">Allocator &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::pointer&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::size_type&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::const_reference&#160;</td>
+          <td class="paramname"><em>obj</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ポインタ ptr から num 個のデータにobjを代入する </p>
+<p>char 型の場合は memset を利用する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocator</td><td>… 使用するアロケータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ptr</td><td>… 代入する先頭アドレス </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>… 代入するオブジェクト数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>… 代入するオブジェクト </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ae9e8c45f5e158834de36183aabe5ddf8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="structmist_1_1mist__memory__operator.html">mist::mist_memory_operator</a>&lt;true &gt;::fill_objects2 </td>
+          <td>(</td>
+          <td class="paramtype">Allocator &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::pointer&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Allocator::size_type&#160;</td>
+          <td class="paramname"><em>num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ポインタ ptr から num 個のデータに初期値を代入する </p>
+<p>memset を利用して，全要素を0に初期化する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocator</td><td>… 使用するアロケータ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ptr</td><td>… 代入する先頭アドレス </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>… 代入するオブジェクト数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>この構造体の説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="mist__alloc_8h_source.html">mist_alloc.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

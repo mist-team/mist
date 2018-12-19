@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>numeric.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">numeric.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Lapackを用いた行列演算ライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="type__trait_8h_source.html">config/type_trait.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="matrix_8h_source.html">matrix.h</a>&quot;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;algorithm&gt;</code><br/>
+</div>
+<p><a href="numeric_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1matrix__style.html">mist::matrix_style</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列計算をする際の入力となる行列の形式  <a href="structmist_1_1matrix__style.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga8a0a5a446c3cbbcd71b22eed64ca5d24"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga8a0a5a446c3cbbcd71b22eed64ca5d24"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga8a0a5a446c3cbbcd71b22eed64ca5d24">mist::multiply</a> (const matrix&lt; T, Allocator &gt; &amp;a, const matrix&lt; T, Allocator &gt; &amp;b, matrix&lt; T, Allocator &gt; &amp;c, bool a_is_transpose, bool b_is_transpose, typename matrix&lt; T, Allocator &gt;::value_type alpha, typename matrix&lt; T, Allocator &gt;::value_type beta)</td></tr>
+<tr class="memdesc:ga8a0a5a446c3cbbcd71b22eed64ca5d24"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列×行列の演算を行う  <a href="group__numeric__group.html#ga8a0a5a446c3cbbcd71b22eed64ca5d24"></a><br/></td></tr>
+<tr class="memitem:ga22ee45733586d329e0cc04b136f993b2"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga22ee45733586d329e0cc04b136f993b2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga22ee45733586d329e0cc04b136f993b2">mist::multiply</a> (const matrix&lt; T, Allocator &gt; &amp;a, const matrix&lt; T, Allocator &gt; &amp;b, matrix&lt; T, Allocator &gt; &amp;c, bool a_is_transpose=false, bool b_is_transpose=false)</td></tr>
+<tr class="memdesc:ga22ee45733586d329e0cc04b136f993b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列×行列の演算を行う  <a href="group__numeric__group.html#ga22ee45733586d329e0cc04b136f993b2"></a><br/></td></tr>
+<tr class="memitem:gaf17f3062108a491ae28427bcacfffda9"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:gaf17f3062108a491ae28427bcacfffda9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#gaf17f3062108a491ae28427bcacfffda9">mist::permutation_matrix</a> (const matrix&lt; T1, Allocator1 &gt; &amp;pivot, matrix&lt; T2, Allocator2 &gt; &amp;out)</td></tr>
+<tr class="memdesc:gaf17f3062108a491ae28427bcacfffda9"><td class="mdescLeft">&#160;</td><td class="mdescRight">LU分解などで得られるピボット配列からピボット行列を作成  <a href="group__numeric__group.html#gaf17f3062108a491ae28427bcacfffda9"></a><br/></td></tr>
+<tr class="memitem:ga007686de5a5b2750f03f579e88efb2d3"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga007686de5a5b2750f03f579e88efb2d3"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt;<br class="typebreak"/>
+::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga007686de5a5b2750f03f579e88efb2d3">mist::trace</a> (const matrix&lt; T, Allocator &gt; &amp;a)</td></tr>
+<tr class="memdesc:ga007686de5a5b2750f03f579e88efb2d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">トレースの計算（対角成分の和）  <a href="group__numeric__group.html#ga007686de5a5b2750f03f579e88efb2d3"></a><br/></td></tr>
+<tr class="memitem:ga4629afcc450bb6ad7ae8c2a387f28b50"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga4629afcc450bb6ad7ae8c2a387f28b50"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt;<br class="typebreak"/>
+::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga4629afcc450bb6ad7ae8c2a387f28b50">mist::det</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga4629afcc450bb6ad7ae8c2a387f28b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列式の計算  <a href="group__numeric__group.html#ga4629afcc450bb6ad7ae8c2a387f28b50"></a><br/></td></tr>
+<tr class="memitem:ga6709a4d9733dafcb5fab51c0a6811f98"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga6709a4d9733dafcb5fab51c0a6811f98"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga6709a4d9733dafcb5fab51c0a6811f98">mist::solve</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix&lt; T, Allocator &gt; &amp;b, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga6709a4d9733dafcb5fab51c0a6811f98"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列の連立一次方程式を解く関数  <a href="group__numeric__group.html#ga6709a4d9733dafcb5fab51c0a6811f98"></a><br/></td></tr>
+<tr class="memitem:ga09d4ad5b46a612d36d046f7dee47b065"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga09d4ad5b46a612d36d046f7dee47b065"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator1 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga09d4ad5b46a612d36d046f7dee47b065">mist::lu_factorization</a> (const matrix&lt; T, Allocator1 &gt; &amp;a, matrix&lt; __clapack__::integer, Allocator2 &gt; &amp;pivot, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga09d4ad5b46a612d36d046f7dee47b065"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列のLU分解を行う  <a href="group__numeric__group.html#ga09d4ad5b46a612d36d046f7dee47b065"></a><br/></td></tr>
+<tr class="memitem:ga23643e8a2c7459bdc8821f97d1f5ac76"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga23643e8a2c7459bdc8821f97d1f5ac76"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga23643e8a2c7459bdc8821f97d1f5ac76">mist::lu_factorization</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix&lt; T, Allocator &gt; &amp;L, matrix&lt; T, Allocator &gt; &amp;U, matrix&lt; T, Allocator &gt; &amp;pivot, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga23643e8a2c7459bdc8821f97d1f5ac76"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列のLU分解を行う  <a href="group__numeric__group.html#ga23643e8a2c7459bdc8821f97d1f5ac76"></a><br/></td></tr>
+<tr class="memitem:ga39bb1130779dc9a8d06c1193ba242b3d"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga39bb1130779dc9a8d06c1193ba242b3d"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga39bb1130779dc9a8d06c1193ba242b3d">mist::lu_factorization</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga39bb1130779dc9a8d06c1193ba242b3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列のLU分解を行う  <a href="group__numeric__group.html#ga39bb1130779dc9a8d06c1193ba242b3d"></a><br/></td></tr>
+<tr class="memitem:ga93e574190cb6b2b799b080446bcc3d7b"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga93e574190cb6b2b799b080446bcc3d7b"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga93e574190cb6b2b799b080446bcc3d7b">mist::cholesky_factorization</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix_style::style style=matrix_style::sy)</td></tr>
+<tr class="memdesc:ga93e574190cb6b2b799b080446bcc3d7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">対称行列のコレスキー分解を行う  <a href="group__numeric__group.html#ga93e574190cb6b2b799b080446bcc3d7b"></a><br/></td></tr>
+<tr class="memitem:ga9f2c1f0b1c0105313749a4a08779f98e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga9f2c1f0b1c0105313749a4a08779f98e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga9f2c1f0b1c0105313749a4a08779f98e">mist::qr_factorization</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix&lt; T, Allocator &gt; &amp;Q, matrix&lt; T, Allocator &gt; &amp;R, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga9f2c1f0b1c0105313749a4a08779f98e"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列のQR分解を行う  <a href="group__numeric__group.html#ga9f2c1f0b1c0105313749a4a08779f98e"></a><br/></td></tr>
+<tr class="memitem:ga260dc839da68a5284bf1dabe2ede3cff"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga260dc839da68a5284bf1dabe2ede3cff"><td class="memTemplItemLeft" align="right" valign="top">matrix&lt; T, Allocator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga260dc839da68a5284bf1dabe2ede3cff">mist::inverse</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga260dc839da68a5284bf1dabe2ede3cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列の逆行列をLU分解を用いて計算する  <a href="group__numeric__group.html#ga260dc839da68a5284bf1dabe2ede3cff"></a><br/></td></tr>
+<tr class="memitem:ga94da1e1c8dd4fdcac80077d86a8b417e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga94da1e1c8dd4fdcac80077d86a8b417e"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T, Allocator &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga94da1e1c8dd4fdcac80077d86a8b417e">mist::eigen</a> (const matrix&lt; T, Allocator &gt; &amp;a, matrix&lt; T, Allocator &gt; &amp;eigen_value, matrix&lt; T, Allocator &gt; &amp;eigen_vector, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga94da1e1c8dd4fdcac80077d86a8b417e"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列の固有値・固有ベクトルを計算する  <a href="group__numeric__group.html#ga94da1e1c8dd4fdcac80077d86a8b417e"></a><br/></td></tr>
+<tr class="memitem:ga5f85b437b93dc620f245de814b76ba45"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga5f85b437b93dc620f245de814b76ba45"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T2, Allocator2 &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd</a> (const matrix&lt; T1, Allocator1 &gt; &amp;a, matrix&lt; T1, Allocator1 &gt; &amp;u, matrix&lt; T2, Allocator2 &gt; &amp;s, matrix&lt; T1, Allocator1 &gt; &amp;vt, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga5f85b437b93dc620f245de814b76ba45"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列の特異値分解を計算する  <a href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45"></a><br/></td></tr>
+<tr class="memitem:ga79b15340c2aceca0d19497522c616722"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class Allocator1 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ga79b15340c2aceca0d19497522c616722"><td class="memTemplItemLeft" align="right" valign="top">const matrix&lt; T2, Allocator2 &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__numeric__group.html#ga79b15340c2aceca0d19497522c616722">mist::svd</a> (const matrix&lt; T1, Allocator1 &gt; &amp;a, matrix&lt; T2, Allocator2 &gt; &amp;s, matrix&lt; T1, Allocator1 &gt; &amp;vt, matrix_style::style style=matrix_style::ge)</td></tr>
+<tr class="memdesc:ga79b15340c2aceca0d19497522c616722"><td class="mdescLeft">&#160;</td><td class="mdescRight">行列の特異値分解を計算する  <a href="group__numeric__group.html#ga79b15340c2aceca0d19497522c616722"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>Lapackを用いた行列演算ライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

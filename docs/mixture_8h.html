@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>mixture.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">mixture.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>EMアルゴリズムを用いた混合分布の推定  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="vector_8h_source.html">vector.h</a>&quot;</code><br/>
+<code>#include &lt;cmath&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+</div>
+<p><a href="mixture_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1mixture_1_1distribution.html">mist::mixture::distribution</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">混合分布を推定するための分布パラメータ  <a href="structmist_1_1mixture_1_1distribution.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1mixture_1_1distribution2.html">mist::mixture::distribution2</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">混合分布を推定するための分布パラメータ  <a href="structmist_1_1mixture_1_1distribution2.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1mixture"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1mixture.html">mist::mixture</a></td></tr>
+<tr class="memdesc:namespacemist_1_1mixture"><td class="mdescLeft">&#160;</td><td class="mdescRight">混合分布推定に用いるパラメータ <br/></td></tr>
+<tr class="memitem:namespacemist_1_1histogram"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1histogram.html">mist::histogram</a></td></tr>
+<tr class="memdesc:namespacemist_1_1histogram"><td class="mdescLeft">&#160;</td><td class="mdescRight">ヒストグラムから正規分布の混合分布を推定する関数群 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga8e0ad06f1cb9445fb55535f3241e5e05"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga8e0ad06f1cb9445fb55535f3241e5e05"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#ga8e0ad06f1cb9445fb55535f3241e5e05">mist::estimate_mixture</a> (const Array &amp;rSamples, mixture::distribution *opdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double tolerance, size_t &amp;nIteration)</td></tr>
+<tr class="memdesc:ga8e0ad06f1cb9445fb55535f3241e5e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から正規分布の混合分布を推定する  <a href="group__mixture__group.html#ga8e0ad06f1cb9445fb55535f3241e5e05"></a><br/></td></tr>
+<tr class="memitem:gaacbd07e36084039b89fa5a48579fa7e5"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:gaacbd07e36084039b89fa5a48579fa7e5"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#gaacbd07e36084039b89fa5a48579fa7e5">mist::estimate_mixture</a> (const Array &amp;rSamples, mixture::distribution2 *opdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double tolerance, size_t &amp;nIteration)</td></tr>
+<tr class="memdesc:gaacbd07e36084039b89fa5a48579fa7e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から正規分布の混合分布を推定する  <a href="group__mixture__group.html#gaacbd07e36084039b89fa5a48579fa7e5"></a><br/></td></tr>
+<tr class="memitem:gaaa950fd139a0a9b448da5563f150124c"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:gaaa950fd139a0a9b448da5563f150124c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#gaaa950fd139a0a9b448da5563f150124c">mist::estimate_mixture</a> (const Array1 &amp;rSamples, Array2 &amp;pdp, typename Array1::size_type nMaxIteration, double tolerance, typename Array1::size_type &amp;nIteration)</td></tr>
+<tr class="memdesc:gaaa950fd139a0a9b448da5563f150124c"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から正規分布の混合分布を推定する  <a href="group__mixture__group.html#gaaa950fd139a0a9b448da5563f150124c"></a><br/></td></tr>
+<tr class="memitem:ga5c52c04964dddcc4b4da604f9f9da108"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:ga5c52c04964dddcc4b4da604f9f9da108"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#ga5c52c04964dddcc4b4da604f9f9da108">mist::estimate_mixture</a> (const Array1 &amp;rSamples, Array2 &amp;pdp, typename Array1::size_type nMaxIteration, double tolerance)</td></tr>
+<tr class="memdesc:ga5c52c04964dddcc4b4da604f9f9da108"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から1次元正規分布の混合分布を推定する  <a href="group__mixture__group.html#ga5c52c04964dddcc4b4da604f9f9da108"></a><br/></td></tr>
+<tr class="memitem:ga501fbe8466f198add2e46c697eed0980"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga501fbe8466f198add2e46c697eed0980"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#ga501fbe8466f198add2e46c697eed0980">mist::estimate_mixture</a> (const Array &amp;rSamples, mixture::distribution *pdp, typename Array::size_type nComponents, typename Array::size_type nMaxIteration, double tolerance)</td></tr>
+<tr class="memdesc:ga501fbe8466f198add2e46c697eed0980"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から正規分布の混合分布を推定する  <a href="group__mixture__group.html#ga501fbe8466f198add2e46c697eed0980"></a><br/></td></tr>
+<tr class="memitem:ga224870a424283b9fb51de47f16e5b5ff"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga224870a424283b9fb51de47f16e5b5ff"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__mixture__group.html#ga224870a424283b9fb51de47f16e5b5ff">mist::estimate_mixture</a> (const Array &amp;rSamples, mixture::distribution2 *pdp, typename Array::size_type nComponents, typename Array::size_type nMaxIteration, double tolerance)</td></tr>
+<tr class="memdesc:ga224870a424283b9fb51de47f16e5b5ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から2次元正規分布の混合分布を推定する  <a href="group__mixture__group.html#ga224870a424283b9fb51de47f16e5b5ff"></a><br/></td></tr>
+<tr class="memitem:a7e344fbc44fdc9807eff4b30064d96db"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:a7e344fbc44fdc9807eff4b30064d96db"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1histogram.html#a7e344fbc44fdc9807eff4b30064d96db">mist::histogram::estimate_mixture</a> (const Array &amp;rSamples, mixture::distribution *opdp, size_t nSamples, size_t nComponents, double minimum, double bin, size_t nMaxIteration, double tolerance, size_t &amp;nIteration)</td></tr>
+<tr class="memdesc:a7e344fbc44fdc9807eff4b30064d96db"><td class="mdescLeft">&#160;</td><td class="mdescRight">1次元ヒストグラムから正規分布の混合分布を推定する  <a href="#a7e344fbc44fdc9807eff4b30064d96db"></a><br/></td></tr>
+<tr class="memitem:a2cd084f562726153d6335c7e178ccb59"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a2cd084f562726153d6335c7e178ccb59"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1histogram.html#a2cd084f562726153d6335c7e178ccb59">mist::histogram::estimate_mixture</a> (const array2&lt; T, Allocator &gt; &amp;rSamples, mixture::distribution2 *opdp, size_t nComponents, double minimum1, double minimum2, double bin, size_t nMaxIteration, double tolerance, size_t &amp;nIteration)</td></tr>
+<tr class="memdesc:a2cd084f562726153d6335c7e178ccb59"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元ヒストグラムから正規分布の混合分布を推定する  <a href="#a2cd084f562726153d6335c7e178ccb59"></a><br/></td></tr>
+<tr class="memitem:a1bde1b189ea8d639f1870f120c8a1176"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:a1bde1b189ea8d639f1870f120c8a1176"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1histogram.html#a1bde1b189ea8d639f1870f120c8a1176">mist::histogram::estimate_mixture</a> (const Array1 &amp;rSamples, Array2 &amp;pdp, double minimum, double bin, typename Array1::size_type nMaxIteration, double tolerance, typename Array1::size_type &amp;nIteration)</td></tr>
+<tr class="memdesc:a1bde1b189ea8d639f1870f120c8a1176"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から正規分布の混合分布を推定する  <a href="#a1bde1b189ea8d639f1870f120c8a1176"></a><br/></td></tr>
+<tr class="memitem:a53833630c347e6bcb4d70b475a2dc995"><td class="memTemplParams" colspan="2">template&lt;class Array1 , class Array2 &gt; </td></tr>
+<tr class="memitem:a53833630c347e6bcb4d70b475a2dc995"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1histogram.html#a53833630c347e6bcb4d70b475a2dc995">mist::histogram::estimate_mixture</a> (const Array1 &amp;rSamples, Array2 &amp;pdp, double minimum, double bin, typename Array1::size_type nMaxIteration, double tolerance)</td></tr>
+<tr class="memdesc:a53833630c347e6bcb4d70b475a2dc995"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から1次元正規分布の混合分布を推定する  <a href="#a53833630c347e6bcb4d70b475a2dc995"></a><br/></td></tr>
+<tr class="memitem:afddfc660e989fe9801f0900054c1ab38"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:afddfc660e989fe9801f0900054c1ab38"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1histogram.html#afddfc660e989fe9801f0900054c1ab38">mist::histogram::estimate_mixture</a> (const Array &amp;rSamples, mixture::distribution *pdp, typename Array::size_type nComponents, double minimum, double bin, typename Array::size_type nMaxIteration, double tolerance)</td></tr>
+<tr class="memdesc:afddfc660e989fe9801f0900054c1ab38"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から正規分布の混合分布を推定する  <a href="#afddfc660e989fe9801f0900054c1ab38"></a><br/></td></tr>
+<tr class="memitem:a881a1674c90b263aad59a5518ebc0765"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Array1 &gt; </td></tr>
+<tr class="memitem:a881a1674c90b263aad59a5518ebc0765"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1histogram.html#a881a1674c90b263aad59a5518ebc0765">mist::histogram::estimate_mixture</a> (const array2&lt; T, Allocator &gt; &amp;rSamples, Array1 &amp;pdp, double minimum1, double minimum2, double bin, typename Array1::size_type nMaxIteration, double tolerance, typename Array1::size_type &amp;nIteration)</td></tr>
+<tr class="memdesc:a881a1674c90b263aad59a5518ebc0765"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から正規分布の混合分布を推定する  <a href="#a881a1674c90b263aad59a5518ebc0765"></a><br/></td></tr>
+<tr class="memitem:ab7da14324f7acf8e0df49c0286705fb5"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Array1 &gt; </td></tr>
+<tr class="memitem:ab7da14324f7acf8e0df49c0286705fb5"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1histogram.html#ab7da14324f7acf8e0df49c0286705fb5">mist::histogram::estimate_mixture</a> (const array2&lt; T, Allocator &gt; &amp;rSamples, Array1 &amp;pdp, double minimum1, double minimum2, double bin, typename Array1::size_type nMaxIteration, double tolerance)</td></tr>
+<tr class="memdesc:ab7da14324f7acf8e0df49c0286705fb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から1次元正規分布の混合分布を推定する  <a href="#ab7da14324f7acf8e0df49c0286705fb5"></a><br/></td></tr>
+<tr class="memitem:a72f0a72c630c1d1f324187e62c0297e5"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:a72f0a72c630c1d1f324187e62c0297e5"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemist_1_1histogram.html#a72f0a72c630c1d1f324187e62c0297e5">mist::histogram::estimate_mixture</a> (const array2&lt; T, Allocator &gt; &amp;rSamples, mixture::distribution2 *pdp, typename array2&lt; T, Allocator &gt;::size_type nComponents, double minimum1, double minimum2, double bin, typename array2&lt; T, Allocator &gt;::size_type nMaxIteration, double tolerance)</td></tr>
+<tr class="memdesc:a72f0a72c630c1d1f324187e62c0297e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ系列から2次元正規分布の混合分布を推定する  <a href="#a72f0a72c630c1d1f324187e62c0297e5"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>EMアルゴリズムを用いた混合分布の推定 </p>
+<ul>
+<li>参考文献<ul>
+<li>・・・ </li>
+</ul>
+</li>
+</ul>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

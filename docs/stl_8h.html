@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>stl.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_693aed4c217c3209f853cada5eb38eec.html">io</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">stl.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>STL形式のCADデータを読み書きするためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;../facet.h&quot;</code><br/>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+</div>
+<p><a href="stl_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga9a693bb830efe008c1794968dffc433c"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga9a693bb830efe008c1794968dffc433c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__cad__stl__group.html#ga9a693bb830efe008c1794968dffc433c">mist::read_stl</a> (facet_list&lt; T &gt; &amp;facets, const std::wstring &amp;filename)</td></tr>
+<tr class="memdesc:ga9a693bb830efe008c1794968dffc433c"><td class="mdescLeft">&#160;</td><td class="mdescRight">STL（ASCII，バイナリ）形式のファイルからポリゴンデータを読み込む  <a href="group__cad__stl__group.html#ga9a693bb830efe008c1794968dffc433c"></a><br/></td></tr>
+<tr class="memitem:ga81fe990fde7a6679cd4a1d3ede2feab1"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga81fe990fde7a6679cd4a1d3ede2feab1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__cad__stl__group.html#ga81fe990fde7a6679cd4a1d3ede2feab1">mist::read_stl</a> (facet_list&lt; T &gt; &amp;facets, const std::string &amp;filename)</td></tr>
+<tr class="memdesc:ga81fe990fde7a6679cd4a1d3ede2feab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">STL（ASCII，バイナリ）形式のファイルからポリゴンデータを読み込む  <a href="group__cad__stl__group.html#ga81fe990fde7a6679cd4a1d3ede2feab1"></a><br/></td></tr>
+<tr class="memitem:ga6d72ac8c61cf66e355516511f50ebaff"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga6d72ac8c61cf66e355516511f50ebaff"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__cad__stl__group.html#ga6d72ac8c61cf66e355516511f50ebaff">mist::write_stl</a> (const facet_list&lt; T &gt; &amp;facets, const std::wstring &amp;filename, bool use_ascii_format=true)</td></tr>
+<tr class="memdesc:ga6d72ac8c61cf66e355516511f50ebaff"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポリゴンデータをSTL（ASCII，バイナリ）形式で出力する  <a href="group__cad__stl__group.html#ga6d72ac8c61cf66e355516511f50ebaff"></a><br/></td></tr>
+<tr class="memitem:gacd2488ed1a1e20d3b0e5a7590d429ca2"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gacd2488ed1a1e20d3b0e5a7590d429ca2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__cad__stl__group.html#gacd2488ed1a1e20d3b0e5a7590d429ca2">mist::write_stl</a> (const facet_list&lt; T &gt; &amp;facets, const std::string &amp;filename, bool use_ascii_format=true)</td></tr>
+<tr class="memdesc:gacd2488ed1a1e20d3b0e5a7590d429ca2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ポリゴンデータをSTL（ASCII，バイナリ）形式で出力する  <a href="group__cad__stl__group.html#gacd2488ed1a1e20d3b0e5a7590d429ca2"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>STL形式のCADデータを読み書きするためのライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

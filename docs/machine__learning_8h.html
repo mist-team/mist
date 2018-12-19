@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>machine_learning.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#define-members">マクロ定義</a> &#124;
+<a href="#typedef-members">型定義</a>  </div>
+  <div class="headertitle">
+<div class="title">machine_learning.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>機械学習を行うためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="random_8h_source.html">random.h</a>&quot;</code><br/>
+<code>#include &lt;ctime&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;map&gt;</code><br/>
+<code>#include &lt;algorithm&gt;</code><br/>
+</div>
+<p><a href="machine__learning_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1machine__learning_1_1feature__one.html">mist::machine_learning::feature_one</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">機械学習で利用する２カテゴリの特徴量を管理するクラス（内部でのみ使用）  <a href="structmist_1_1machine__learning_1_1feature__one.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1machine__learning_1_1feature.html">mist::machine_learning::feature</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">機械学習で利用する多カテゴリの特徴量を管理するクラス  <a href="structmist_1_1machine__learning_1_1feature.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1machine__learning_1_1pair.html">mist::machine_learning::pair&lt; KEY, VALUE &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">機械学習で利用する２カテゴリの特徴量を管理するクラス（内部でのみ使用）  <a href="structmist_1_1machine__learning_1_1pair.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1threshold__classifier.html">mist::machine_learning::adaboost::threshold_classifier</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AdaBoost で利用するしきい値処理を用いた弱識別器  <a href="classmist_1_1machine__learning_1_1adaboost_1_1threshold__classifier.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1mahalanobis__classifier.html">mist::machine_learning::adaboost::mahalanobis_classifier</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AdaBoost で利用するマハラノビス距離を用いた弱識別器  <a href="classmist_1_1machine__learning_1_1adaboost_1_1mahalanobis__classifier.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html">mist::machine_learning::adaboost::confidence_rating_classifier</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AdaBoost で利用するマハラノビス距離を用いた弱識別器  <a href="classmist_1_1machine__learning_1_1adaboost_1_1confidence__rating__classifier.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1machine__learning_1_1adaboost_1_1classifier.html">mist::machine_learning::adaboost::classifier&lt; __WEAK_CLASSIFIER__ &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AdaBoost を用いた識別器（マルチクラス対応）  <a href="classmist_1_1machine__learning_1_1adaboost_1_1classifier.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1machine__learning"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1machine__learning.html">mist::machine_learning</a></td></tr>
+<tr class="memdesc:namespacemist_1_1machine__learning"><td class="mdescLeft">&#160;</td><td class="mdescRight">機械学習 <br/></td></tr>
+<tr class="memitem:namespacemist_1_1machine__learning_1_1adaboost"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1machine__learning_1_1adaboost.html">mist::machine_learning::adaboost</a></td></tr>
+<tr class="memdesc:namespacemist_1_1machine__learning_1_1adaboost"><td class="mdescLeft">&#160;</td><td class="mdescRight">AdaBoost を用いた識別器 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="define-members"></a>
+マクロ定義</h2></td></tr>
+<tr class="memitem:afa199da9f4306d24c7c6a45ab152d539"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa199da9f4306d24c7c6a45ab152d539"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="machine__learning_8h.html#afa199da9f4306d24c7c6a45ab152d539">__ASYMMETRIC_WEIGHTING__</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:afa199da9f4306d24c7c6a45ab152d539"><td class="mdescLeft">&#160;</td><td class="mdescRight">AdaBoost の弱識別器に付与する重みを非対称にするかどうか <br/></td></tr>
+<tr class="memitem:ae6882ff9c6d74e5e31c602e6faea8f1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae6882ff9c6d74e5e31c602e6faea8f1b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="machine__learning_8h.html#ae6882ff9c6d74e5e31c602e6faea8f1b">__ONE_PER_CLASS_CODE_WORD__</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:ae6882ff9c6d74e5e31c602e6faea8f1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">1クラスに1つ一意の Code Word を割り当てるかどうか <br/></td></tr>
+<tr class="memitem:a648b2b1edd3e38471db4ce3cd97a9a27"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a648b2b1edd3e38471db4ce3cd97a9a27"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="machine__learning_8h.html#a648b2b1edd3e38471db4ce3cd97a9a27">__RANDOM_CODE_WORD__</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:a648b2b1edd3e38471db4ce3cd97a9a27"><td class="mdescLeft">&#160;</td><td class="mdescRight">ERPを実行する際に使用する初期 Code Word をランダムに生成するかどうか <br/></td></tr>
+<tr class="memitem:ab7dfc156a1c8f72f50b28ec41c93aab8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab7dfc156a1c8f72f50b28ec41c93aab8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="machine__learning_8h.html#ab7dfc156a1c8f72f50b28ec41c93aab8">__DEBUG_OUTPUT_LEVEL__</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:ab7dfc156a1c8f72f50b28ec41c93aab8"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンソールに学習の様子をデバッグ情報として出力するレベル（0は何も出力しない） <br/></td></tr>
+<tr class="memitem:a165a7f0e1da66d8e96c2d8b4b99db601"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a165a7f0e1da66d8e96c2d8b4b99db601"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="machine__learning_8h.html#a165a7f0e1da66d8e96c2d8b4b99db601">__NUMBER_OF_INNER_LOOPS__</a>&#160;&#160;&#160;10</td></tr>
+<tr class="memdesc:a165a7f0e1da66d8e96c2d8b4b99db601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ling Li の方法を使って Code Word を更新する最大回数 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="typedef-members"></a>
+型定義</h2></td></tr>
+<tr class="memitem:ac0744899499472c2816ece65bd0e44d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0744899499472c2816ece65bd0e44d7"></a>
+typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1machine__learning.html#ac0744899499472c2816ece65bd0e44d7">mist::machine_learning::feature_value_type</a></td></tr>
+<tr class="memdesc:ac0744899499472c2816ece65bd0e44d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">機械学習で利用する特徴量を表現するデータ型 <br/></td></tr>
+<tr class="memitem:a9c304f8bcc5a482f3099d98ddf11391f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c304f8bcc5a482f3099d98ddf11391f"></a>
+typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1machine__learning.html#a9c304f8bcc5a482f3099d98ddf11391f">mist::machine_learning::feature_weight_type</a></td></tr>
+<tr class="memdesc:a9c304f8bcc5a482f3099d98ddf11391f"><td class="mdescLeft">&#160;</td><td class="mdescRight">機械学習で利用するサンプルの重み表現するデータ型 <br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>機械学習を行うためのライブラリ </p>
+<p>マルチクラス対応の AdaBoost アルゴリズムが実装してあります．</p>
+<ul>
+<li>参考文献<ul>
+<li>Multiclass Adaboost<ul>
+<li>Thomas G. Dietterich, Ghulum Bakiri, <code>Solving Multiclass Learning Problems via Error-Correcting Output Codes,'' Journal of Artificial Intelligence Research, 2, pp. 263--286, 1995</code></li>
+<li><code>Venkatesan Guruswami, Amit Sahai,</code>Multiclass Learning, Boosting, and Error-Correcting Codes,'' Proc. of 12th Annual Conference, Computational Learning Theory, pp. 145&ndash;155, 1999</li>
+<li>Robert E. Schapire, Yoram Singer, <code>Improved Boosting Algorithms Using Confidence-rated Predictions,'' Machine Learning, 37, pp. 297--336, 1999</code></li>
+<li><code>Ling Li,</code>Multiclass Boosting with Repartitioning,'' Proceedings of 23rd International Conference on Machine Learning, pp.569&ndash;576, 2006 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

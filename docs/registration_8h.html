@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>registration.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">registration.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>剛体・非剛体レジストレーション  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">config/mist_conf.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="mist_8h_source.html">mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="vector_8h_source.html">vector.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="minimization_8h_source.html">minimization.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="drawing_8h_source.html">drawing.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="limits_8h_source.html">limits.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="fft_8h_source.html">fft/fft.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="converter_8h_source.html">converter.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="interpolate_8h_source.html">interpolate.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="geometry_8h_source.html">geometry.h</a>&quot;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;complex&gt;</code><br/>
+</div>
+<p><a href="registration_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmist_1_1non__rigid_1_1registration.html">mist::non_rigid::registration&lt; TARGETTYPE &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">非剛体レジストレーションエンジン  <a href="classmist_1_1non__rigid_1_1registration.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+<tr class="memitem:namespacemist_1_1non__rigid"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1non__rigid.html">mist::non_rigid</a></td></tr>
+<tr class="memdesc:namespacemist_1_1non__rigid"><td class="mdescLeft">&#160;</td><td class="mdescRight">FFDを用いた非剛体レジストレーション <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:aa4d5c3a9c55e40b8b36bfddb038c685e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><b>mist::_poc_::serch_peak</b> (const <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; double &gt; &amp;poc_image, point&lt; double &gt; &amp;peak, point&lt; double &gt; &amp;x_peak, point&lt; double &gt; &amp;y_peak)</td></tr>
+<tr class="memitem:a03aee136d044a7434718957e5019cd20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><b>mist::_poc_::poc</b> (const <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; double &gt; &amp;input, const <a class="el" href="classmist_1_1array2.html">mist::array2</a>&lt; double &gt; &amp;reference, double &amp;delta_x, double &amp;delta_y, const double lowpass_range=0.85, const int distance=5)</td></tr>
+<tr class="memdesc:a03aee136d044a7434718957e5019cd20"><td class="mdescLeft">&#160;</td><td class="mdescRight">2枚の画像の平行移動のずれをサブピクセル精度で推定 FFTを使用するため画像の1辺は2のべき乗でなければならない  <a href="#a03aee136d044a7434718957e5019cd20"></a><br/></td></tr>
+<tr class="memitem:aae82ca6d8a66ba5ff338fb1cbff14d6e"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator &gt; </td></tr>
+<tr class="memitem:aae82ca6d8a66ba5ff338fb1cbff14d6e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::poc::estimate</b> (const array2&lt; Value_type, Allocator &gt; &amp;input, const array2&lt; Value_type, Allocator &gt; &amp;reference, double &amp;dx, double &amp;dy, const double low_pass_range=0.85, const int distance=5)</td></tr>
+<tr class="memdesc:aae82ca6d8a66ba5ff338fb1cbff14d6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">2枚の画像のx,y方向の平行移動をサブピクセル精度で計算する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; 任意の型 &gt; 型バージョン  <a href="#aae82ca6d8a66ba5ff338fb1cbff14d6e"></a><br/></td></tr>
+<tr class="memitem:aa192bd609b93e3d0239efa2e7e73f817"><td class="memTemplParams" colspan="2">template&lt;typename Value_type , typename Allocator &gt; </td></tr>
+<tr class="memitem:aa192bd609b93e3d0239efa2e7e73f817"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::poc::estimate</b> (const array2&lt; Value_type, Allocator &gt; &amp;input, const array2&lt; Value_type, Allocator &gt; &amp;reference, vector2&lt; double &gt; &amp;dvec, const double low_pass_range=0.85, const int distance=5)</td></tr>
+<tr class="memdesc:aa192bd609b93e3d0239efa2e7e73f817"><td class="mdescLeft">&#160;</td><td class="mdescRight">2枚の画像のx,y方向の平行移動をサブピクセル精度で計算する: <a class="el" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2</a>&lt; 任意の型 &gt; 型バージョン  <a href="#aa192bd609b93e3d0239efa2e7e73f817"></a><br/></td></tr>
+<tr class="memitem:ac6a538dc560a4752da322c32a977b73a"><td class="memTemplParams" colspan="2">template&lt;class Value_type1 , class Allocator1 , class Value_type2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:ac6a538dc560a4752da322c32a977b73a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::poc::transform</b> (const array2&lt; Value_type1, Allocator1 &gt; &amp;in, array2&lt; Value_type2, Allocator2 &gt; &amp;out, const double &amp;dx, const double &amp;dy, const double factor=-1, const int interpolate_type=BICUBIC)</td></tr>
+<tr class="memdesc:ac6a538dc560a4752da322c32a977b73a"><td class="mdescLeft">&#160;</td><td class="mdescRight">基準画像にあうように平行移動させる  <a href="#ac6a538dc560a4752da322c32a977b73a"></a><br/></td></tr>
+<tr class="memitem:add30f571092103f5c2dfac80fd8dc772"><td class="memTemplParams" colspan="2">template&lt;class Value_type1 , class Allocator1 , class Value_type2 , class Allocator2 &gt; </td></tr>
+<tr class="memitem:add30f571092103f5c2dfac80fd8dc772"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mist::poc::transform</b> (const array2&lt; Value_type1, Allocator1 &gt; &amp;in, array2&lt; Value_type2, Allocator2 &gt; &amp;out, const vector2&lt; double &gt; &amp;dvec, const double factor=-1, const int interpolate_type=BICUBIC)</td></tr>
+<tr class="memdesc:add30f571092103f5c2dfac80fd8dc772"><td class="mdescLeft">&#160;</td><td class="mdescRight">基準画像にあうように平行移動させる  <a href="#add30f571092103f5c2dfac80fd8dc772"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>剛体・非剛体レジストレーション </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

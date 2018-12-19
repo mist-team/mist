@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>TGA 画像入出力</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">TGA 画像入出力</div>  </div>
+<div class="ingroups"><a class="el" href="group__image__group.html">画像入出力</a></div></div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga8bec3835bede9a92d3233b70388b3e26"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga8bec3835bede9a92d3233b70388b3e26"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__tga__group.html#ga8bec3835bede9a92d3233b70388b3e26">mist::read_tga</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename)</td></tr>
+<tr class="memdesc:ga8bec3835bede9a92d3233b70388b3e26"><td class="mdescLeft">&#160;</td><td class="mdescRight">TGA画像をMISTコンテナに読み込む  <a href="#ga8bec3835bede9a92d3233b70388b3e26"></a><br/></td></tr>
+<tr class="memitem:ga4d649516d505f02037cf339bb55fcd24"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga4d649516d505f02037cf339bb55fcd24"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__tga__group.html#ga4d649516d505f02037cf339bb55fcd24">mist::read_tga</a> (array2&lt; T, Allocator &gt; &amp;image, const std::wstring &amp;filename)</td></tr>
+<tr class="memdesc:ga4d649516d505f02037cf339bb55fcd24"><td class="mdescLeft">&#160;</td><td class="mdescRight">TGA画像をMISTコンテナに読み込む  <a href="#ga4d649516d505f02037cf339bb55fcd24"></a><br/></td></tr>
+<tr class="memitem:gadfdcb6ebb9ea381eb0d5f6550c6c9471"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gadfdcb6ebb9ea381eb0d5f6550c6c9471"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__tga__group.html#gadfdcb6ebb9ea381eb0d5f6550c6c9471">mist::write_tga</a> (const array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array2&lt; T, Allocator &gt;::size_type tga_bits=32, bool is_encode_RLE=true)</td></tr>
+<tr class="memdesc:gadfdcb6ebb9ea381eb0d5f6550c6c9471"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナの画像をTGA形式でファイルに出力する  <a href="#gadfdcb6ebb9ea381eb0d5f6550c6c9471"></a><br/></td></tr>
+<tr class="memitem:ga09a6472ceece709a3c7eb00be35b9e4f"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga09a6472ceece709a3c7eb00be35b9e4f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__tga__group.html#ga09a6472ceece709a3c7eb00be35b9e4f">mist::write_tga</a> (const array2&lt; T, Allocator &gt; &amp;image, const std::wstring &amp;filename, typename array2&lt; T, Allocator &gt;::size_type tga_bits=32, bool is_encode_RLE=true)</td></tr>
+<tr class="memdesc:ga09a6472ceece709a3c7eb00be35b9e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナの画像をTGA形式でファイルに出力する  <a href="#ga09a6472ceece709a3c7eb00be35b9e4f"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<p>TGAファイルを読み込んで，MISTコンテナへ格納する． また，MISTコンテナからTGAファイルへの書き出しをサポート． 16，24，32ビットのビットマップに対応． RLE圧縮されたTGAファイルの入出力をサポート．</p>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="tga_8h.html" title="ビットマップ画像を読み書きするためのライブラリ">mist/io/tga.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga8bec3835bede9a92d3233b70388b3e26"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_tga </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TGA画像をMISTコンテナに読み込む </p>
+<dl class="section attention"><dt>注意</dt><dd>RLE圧縮のかかったTGAもサポート（ハフマン符号化を用いたものに対しては未対応）</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__group.html#ga753d074332158a04c160ab1c29182967">mist::read_image()</a>, と <a class="el" href="group__image__tga__group.html#ga4d649516d505f02037cf339bb55fcd24">mist::read_tga()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga4d649516d505f02037cf339bb55fcd24"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_tga </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TGA画像をMISTコンテナに読み込む </p>
+<dl class="section attention"><dt>注意</dt><dd>RLE圧縮のかかったTGAもサポート（ハフマン符号化を用いたものに対しては未対応）</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 画像を読み込む先のMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の読み込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の読み込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__tga__group.html#ga8bec3835bede9a92d3233b70388b3e26">mist::read_tga()</a>, と <a class="el" href="namespacemist.html#ab2f799d2c98c030f7bc5ba23c8fb0380">mist::wstr2str()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gadfdcb6ebb9ea381eb0d5f6550c6c9471"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_tga </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>tga_bits</em> = <code>32</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_encode_RLE</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナの画像をTGA形式でファイルに出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 出力画像を保持するMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 出力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tga_bits</td><td>… 以下のビットマップのビット数のいずれか </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">is_encode_RLE</td><td>… RLE圧縮をかけるかどうか（デフォルトはTrue）</td></tr>
+  </table>
+  </dd>
+</dl>
+<ol type="1">
+<li>16ビット … 各色 5 ビットのビットマップ</li>
+<li>24ビット … フルカラービットマップ</li>
+<li>32ビット … フルカラービットマップ（アルファチャンネル付）</li>
+</ol>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の書き込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の書き込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__group.html#ga0b247072df9e69c7ddddac0f60af66b2">mist::write_image()</a>, と <a class="el" href="group__image__tga__group.html#ga09a6472ceece709a3c7eb00be35b9e4f">mist::write_tga()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga09a6472ceece709a3c7eb00be35b9e4f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::write_tga </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename array2&lt; T, Allocator &gt;::size_type&#160;</td>
+          <td class="paramname"><em>tga_bits</em> = <code>32</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_encode_RLE</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MISTコンテナの画像をTGA形式でファイルに出力する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 出力画像を保持するMISTコンテナ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 出力ファイル名 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tga_bits</td><td>… 以下のビットマップのビット数のいずれか </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">is_encode_RLE</td><td>… RLE圧縮をかけるかどうか（デフォルトはTrue）</td></tr>
+  </table>
+  </dd>
+</dl>
+<ol type="1">
+<li>16ビット … 各色 5 ビットのビットマップ</li>
+<li>24ビット … フルカラービットマップ</li>
+<li>32ビット … フルカラービットマップ（アルファチャンネル付）</li>
+</ol>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 画像の書き込みに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 画像の書き込みに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="group__image__tga__group.html#gadfdcb6ebb9ea381eb0d5f6550c6c9471">mist::write_tga()</a>, と <a class="el" href="namespacemist.html#ab2f799d2c98c030f7bc5ba23c8fb0380">mist::wstr2str()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

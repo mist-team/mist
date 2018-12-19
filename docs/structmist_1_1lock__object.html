@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>構造体 mist::lock_object</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li class="current"><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="classes.html"><span>データ構造索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>データフィールド</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacemist.html">mist</a></li><li class="navelem"><a class="el" href="structmist_1_1lock__object.html">lock_object</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-static-methods">Static Protected メソッド</a>  </div>
+  <div class="headertitle">
+<div class="title">構造体 mist::lock_object<div class="ingroups"><a class="el" href="group__thread__group.html">スレッド</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>スレッドの排他制御をサポートするクラス  
+ <a href="structmist_1_1lock__object.html#details">[詳細]</a></p>
+
+<p><code>#include &lt;<a class="el" href="thread_8h_source.html">thread.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr class="memitem:ab191bb547b9a98147d0c70b321910420"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1lock__object.html#ab191bb547b9a98147d0c70b321910420">lock</a> ()</td></tr>
+<tr class="memdesc:ab191bb547b9a98147d0c70b321910420"><td class="mdescLeft">&#160;</td><td class="mdescRight">排他制御用オブジェクトをロックする  <a href="#ab191bb547b9a98147d0c70b321910420"></a><br/></td></tr>
+<tr class="memitem:afe1d01283cc342f0610309a7e51687ce"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1lock__object.html#afe1d01283cc342f0610309a7e51687ce">try_lock</a> ()</td></tr>
+<tr class="memdesc:afe1d01283cc342f0610309a7e51687ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">排他制御用オブジェクトのロックを試みる  <a href="#afe1d01283cc342f0610309a7e51687ce"></a><br/></td></tr>
+<tr class="memitem:a4cebd035f14d263a93b7f6c922ec70ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4cebd035f14d263a93b7f6c922ec70ed"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1lock__object.html#a4cebd035f14d263a93b7f6c922ec70ed">unlock</a> ()</td></tr>
+<tr class="memdesc:a4cebd035f14d263a93b7f6c922ec70ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">排他制御用オブジェクトのロックを解除する <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pro-static-methods"></a>
+Static Protected メソッド</h2></td></tr>
+<tr class="memitem:aae77374b154d4021259ff032a80bdec8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae77374b154d4021259ff032a80bdec8"></a>
+static lock_object_type &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1lock__object.html#aae77374b154d4021259ff032a80bdec8">double_lock_object</a> ()</td></tr>
+<tr class="memdesc:aae77374b154d4021259ff032a80bdec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">内部で使用するダブルロックオブジェクトを取得する <br/></td></tr>
+<tr class="memitem:a6b6f65bd8de6e27b80f864ee4a37c81b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1lock__object.html#a6b6f65bd8de6e27b80f864ee4a37c81b">initialize</a> (lock_object_type &amp;l)</td></tr>
+<tr class="memdesc:a6b6f65bd8de6e27b80f864ee4a37c81b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ロックオブジェクトの初期化を行う  <a href="#a6b6f65bd8de6e27b80f864ee4a37c81b"></a><br/></td></tr>
+<tr class="memitem:a653d6f6648bb88c5c354821ecb2f5778"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1lock__object.html#a653d6f6648bb88c5c354821ecb2f5778">lock</a> (lock_object_type &amp;l)</td></tr>
+<tr class="memdesc:a653d6f6648bb88c5c354821ecb2f5778"><td class="mdescLeft">&#160;</td><td class="mdescRight">ロックオブジェクトをロックする  <a href="#a653d6f6648bb88c5c354821ecb2f5778"></a><br/></td></tr>
+<tr class="memitem:a7a731166c483302cdb0c534b8edfe65c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1lock__object.html#a7a731166c483302cdb0c534b8edfe65c">try_lock</a> (lock_object_type &amp;l)</td></tr>
+<tr class="memdesc:a7a731166c483302cdb0c534b8edfe65c"><td class="mdescLeft">&#160;</td><td class="mdescRight">排他制御用オブジェクトのロックを試みる  <a href="#a7a731166c483302cdb0c534b8edfe65c"></a><br/></td></tr>
+<tr class="memitem:a17492cd6439968074c031d5f899dedf5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1lock__object.html#a17492cd6439968074c031d5f899dedf5">unlock</a> (lock_object_type &amp;l)</td></tr>
+<tr class="memdesc:a17492cd6439968074c031d5f899dedf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">ロックオブジェクトをロックを解除する  <a href="#a17492cd6439968074c031d5f899dedf5"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>スレッドの排他制御をサポートするクラス </p>
+<p>ロックするオブジェクトを名前を用いて共有化することが可能なクラス． 同名のロックオブジェクトを作成することで別々のスレッド関数内での排他制御が可能となる．</p>
+<dl class="section attention"><dt>注意</dt><dd>ロックオブジェクトの生成時点では，ロックはされないことに注意</dd></dl>
+<ul>
+<li>Windows … クリティカルセクションを利用</li>
+<li>Linux系 … ミューテックスを利用</li>
+</ul>
+<div class="fragment"><div class="line"> 使用例</div>
+<div class="line">lock_object l( <span class="stringliteral">&quot;ロックオブジェクトの名前&quot;</span> );  <span class="comment">// &lt;- 名前を指定しないと，デフォルトのロックオブジェクトが使用される</span></div>
+<div class="line"></div>
+<div class="line">... 何らかの処理 ...</div>
+<div class="line"></div>
+<div class="line">l.lock( );   <span class="comment">// &lt;- これ以降の処理1を排他制御する</span></div>
+<div class="line"></div>
+<div class="line">... 処理1 ...</div>
+<div class="line"></div>
+<div class="line">l.unlock( ); <span class="comment">// &lt;- ここまでの処理1が排他制御される</span></div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line">... 何らかの処理 ...</div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line">l.lock( );   <span class="comment">// &lt;- これ以降の処理2を排他制御する</span></div>
+<div class="line"></div>
+<div class="line">... 処理2 ...</div>
+<div class="line"></div>
+<div class="line">l.unlock( ); <span class="comment">// &lt;- ここまでの処理2が排他制御される</span></div>
+</div><!-- fragment --> </div><h2>関数</h2>
+<a class="anchor" id="a6b6f65bd8de6e27b80f864ee4a37c81b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void mist::lock_object::initialize </td>
+          <td>(</td>
+          <td class="paramtype">lock_object_type &amp;&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ロックオブジェクトの初期化を行う </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">l</td><td>… ロックオブジェクト </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab191bb547b9a98147d0c70b321910420"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::lock_object::lock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>排他制御用オブジェクトをロックする </p>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… ロックに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… ロックに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a653d6f6648bb88c5c354821ecb2f5778"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void mist::lock_object::lock </td>
+          <td>(</td>
+          <td class="paramtype">lock_object_type &amp;&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ロックオブジェクトをロックする </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">l</td><td>… ロックオブジェクト </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="afe1d01283cc342f0610309a7e51687ce"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::lock_object::try_lock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>排他制御用オブジェクトのロックを試みる </p>
+<p>既にロックされていた場合は，ロックせずに false を返す．</p>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… ロックに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… ロックに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a7a731166c483302cdb0c534b8edfe65c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool mist::lock_object::try_lock </td>
+          <td>(</td>
+          <td class="paramtype">lock_object_type &amp;&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>排他制御用オブジェクトのロックを試みる </p>
+<p>既にロックされていた場合は，ロックせずに false を返す．</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">l</td><td>… ロックオブジェクト</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… ロックに成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… ロックに失敗 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a17492cd6439968074c031d5f899dedf5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void mist::lock_object::unlock </td>
+          <td>(</td>
+          <td class="paramtype">lock_object_type &amp;&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ロックオブジェクトをロックを解除する </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">l</td><td>… ロックオブジェクト </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>この構造体の説明は次のファイルから生成されました:<ul>
+<li><a class="el" href="thread_8h_source.html">thread.h</a></li>
+</ul>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:29 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

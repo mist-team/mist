@@ -1,0 +1,554 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>画像描画</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">画像描画</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:ga41301cb16d180b6477d6df33b3d0391b"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga41301cb16d180b6477d6df33b3d0391b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__draw__group.html#ga41301cb16d180b6477d6df33b3d0391b">mist::draw_buffer</a> (const Array &amp;image, typename Array::size_type image_width, typename Array::size_type image_height, typename Array::size_type window_width, typename Array::size_type window_height, double zoom=1.0, double xpos=0.0, double ypos=0.0, bool interpolate=true)</td></tr>
+<tr class="memdesc:ga41301cb16d180b6477d6df33b3d0391b"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元画像をOpenGLを用いてウィンドウに描画する  <a href="#ga41301cb16d180b6477d6df33b3d0391b"></a><br/></td></tr>
+<tr class="memitem:ga50420a9b668fee543c580ed44d93f8fe"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga50420a9b668fee543c580ed44d93f8fe"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__draw__group.html#ga50420a9b668fee543c580ed44d93f8fe">mist::draw_image</a> (const Array &amp;image, typename Array::size_type window_width, typename Array::size_type window_height, double zoom=1.0, double xpos=0.0, double ypos=0.0, double back_r=0.0, double back_g=0.0, double back_b=0.0, bool interpolate=true, bool blend=false)</td></tr>
+<tr class="memdesc:ga50420a9b668fee543c580ed44d93f8fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元画像をOpenGLを用いてウィンドウに描画する  <a href="#ga50420a9b668fee543c580ed44d93f8fe"></a><br/></td></tr>
+<tr class="memitem:ga79ddde040455f3bfc08ffb1258a49349"><td class="memTemplParams" colspan="2">template&lt;class Array &gt; </td></tr>
+<tr class="memitem:ga79ddde040455f3bfc08ffb1258a49349"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__draw__group.html#ga79ddde040455f3bfc08ffb1258a49349">mist::draw_pixels</a> (const Array &amp;image, typename Array::size_type window_width, typename Array::size_type window_height, typename Array::difference_type xpos=0, typename Array::difference_type ypos=0, bool blend=false)</td></tr>
+<tr class="memdesc:ga79ddde040455f3bfc08ffb1258a49349"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元画像をOpenGLを用いてウィンドウに描画する  <a href="#ga79ddde040455f3bfc08ffb1258a49349"></a><br/></td></tr>
+<tr class="memitem:gac4d706f551b839fb7619c8c3c5c43a55"><td class="memItemLeft" align="right" valign="top">vector2&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__image__draw__group.html#gac4d706f551b839fb7619c8c3c5c43a55">mist::screen2point</a> (const vector2&lt; double &gt; &amp;pt, double imgX, double imgY, double aspect, double winW, double winH, double zoom, double posx, double posy)</td></tr>
+<tr class="memdesc:gac4d706f551b839fb7619c8c3c5c43a55"><td class="mdescLeft">&#160;</td><td class="mdescRight">ウィンドウ座標系の点を画像座標系の点に変換する  <a href="#gac4d706f551b839fb7619c8c3c5c43a55"></a><br/></td></tr>
+<tr class="memitem:gafd46aa022954b5b5b7511d078a60e6a3"><td class="memItemLeft" align="right" valign="top">vector2&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__image__draw__group.html#gafd46aa022954b5b5b7511d078a60e6a3">mist::point2screen</a> (const vector2&lt; double &gt; &amp;pt, double imgX, double imgY, double aspect, double winW, double winH, double zoom, double posx, double posy)</td></tr>
+<tr class="memdesc:gafd46aa022954b5b5b7511d078a60e6a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像座標系の点をウィンドウ座標系の点に変換する  <a href="#gafd46aa022954b5b5b7511d078a60e6a3"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="draw_8h.html" title="２次元画像をOpenGLを用いて描画するライブラリ">mist/draw.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="ga41301cb16d180b6477d6df33b3d0391b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::draw_buffer </td>
+          <td>(</td>
+          <td class="paramtype">const Array &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>image_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>image_height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>window_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>window_height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>zoom</em> = <code>1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>xpos</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ypos</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>interpolate</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>2次元画像をOpenGLを用いてウィンドウに描画する </p>
+<p>OpenGLのテクスチャとして，2次元画像をウィンドウに描画する 描画される絵は，ウィンドウの縦と横の短いほうの辺に画像端が張り付くように描画される</p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像の一辺は，2の指数乗になっている必要がある</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">image_width</td><td>… 入力画像内で，画面に描画する幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">image_height</td><td>… 入力画像内で，画面に描画する高さ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">window_width</td><td>… 出力ウィンドウの幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">window_height</td><td>… 出力ウィンドウの高さ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">zoom</td><td>… 拡大率（0より大きい値を指定．デフォルトは1.0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xpos</td><td>… 画像をX軸方向にどれだけずらして描画するか（デフォルトは0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ypos</td><td>… 画像をY軸方向にどれだけずらして描画するか（デフォルトは0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">interpolate</td><td>… 画素の間を補間し，スクリーン上で滑らかにする（デフォルトはtrue）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 描画に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 不適切な入力画像の場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="group__image__draw__group.html#ga50420a9b668fee543c580ed44d93f8fe">mist::draw_image()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga50420a9b668fee543c580ed44d93f8fe"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::draw_image </td>
+          <td>(</td>
+          <td class="paramtype">const Array &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>window_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>window_height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>zoom</em> = <code>1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>xpos</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ypos</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>back_r</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>back_g</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>back_b</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>interpolate</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>blend</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>2次元画像をOpenGLを用いてウィンドウに描画する </p>
+<p>OpenGLのテクスチャとして，2次元画像をウィンドウに描画する 描画される絵は，ウィンドウの縦と横の短いほうの辺に画像端が張り付くように描画される</p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像の一辺は，2の指数乗でなくても正しく描画される</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">window_width</td><td>… 出力ウィンドウの幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">window_height</td><td>… 出力ウィンドウの高さ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">zoom</td><td>… 拡大率（0より大きい値を指定．デフォルトは1.0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xpos</td><td>… 画像をX軸方向にどれだけずらして描画するか（デフォルトは0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ypos</td><td>… 画像をY軸方向にどれだけずらして描画するか（デフォルトは0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">back_r</td><td>… 塗りつぶす背景色の赤成分（デフォルトは0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">back_g</td><td>… 塗りつぶす背景色の緑成分（デフォルトは0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">back_b</td><td>… 塗りつぶす背景色の青成分（デフォルトは0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">interpolate</td><td>… 画素の間を補間し，スクリーン上で滑らかにする（デフォルトはtrue） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">blend</td><td>… すでに描画されている物とブレンドするかどうか（デフォルトはfalse）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 描画に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 不適切な入力画像の場合</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"> 使用例</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="draw_8h.html" title="２次元画像をOpenGLを用いて描画するライブラリ">mist/draw.h</a>&gt;</span></div>
+<div class="line"></div>
+<div class="line"><a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2&lt; mist::rgb&lt; unsigned char &gt;</a> &gt; image; ←画像読み込みルーチンなどで，画像を読み込んでおく．</div>
+<div class="line"></div>
+<div class="line"><a class="code" href="group__image__draw__group.html#ga50420a9b668fee543c580ed44d93f8fe" title="2次元画像をOpenGLを用いてウィンドウに描画する">mist::draw_image</a>( image,         <span class="comment">// 入力画像</span></div>
+<div class="line">                  window_width,  <span class="comment">// 出力するウィンドウの幅</span></div>
+<div class="line">                  window_height, <span class="comment">// 出力するウィンドウの高さ</span></div>
+<div class="line">                  zoom,          <span class="comment">// ズームの割合（デフォルトは1倍）</span></div>
+<div class="line">                  xpos,          <span class="comment">// 中心からX軸方向にずらす割合（デフォルトは0）</span></div>
+<div class="line">                  ypos,          <span class="comment">// 中心からY軸方向にずらす割合（デフォルトは0）</span></div>
+<div class="line">                  back_r,        <span class="comment">// 塗りつぶす背景色の赤成分（デフォルトは0）</span></div>
+<div class="line">                  back_g,        <span class="comment">// 塗りつぶす背景色の緑成分（デフォルトは0）</span></div>
+<div class="line">                  back_b,        <span class="comment">// 塗りつぶす背景色の青成分（デフォルトは0）</span></div>
+<div class="line">                  <a class="code" href="namespacemist.html#a416c4e90fbe4e1ecb13ea585d80a77b2" title="球面線形補間を行う">interpolate</a>,   <span class="comment">// 画素の間を補間し，スクリーン上で滑らかにする（デフォルトはtrue）</span></div>
+<div class="line">                  blend          <span class="comment">// すでに描画されている物とブレンドするかどうか（デフォルトはfalse）</span></div>
+<div class="line">                );</div>
+</div><!-- fragment --> 
+<p>参照先 <a class="el" href="group__image__draw__group.html#ga41301cb16d180b6477d6df33b3d0391b">mist::draw_buffer()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga79ddde040455f3bfc08ffb1258a49349"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Array &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::draw_pixels </td>
+          <td>(</td>
+          <td class="paramtype">const Array &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>window_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::size_type&#160;</td>
+          <td class="paramname"><em>window_height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::difference_type&#160;</td>
+          <td class="paramname"><em>xpos</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Array::difference_type&#160;</td>
+          <td class="paramname"><em>ypos</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>blend</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>2次元画像をOpenGLを用いてウィンドウに描画する </p>
+<p>OpenGLの glDrawPixels 関数を用いて，ウィンドウ上に画像を描画する 描画される絵は，ウィンドウの１画素と画像の１画素が対応するように描画される</p>
+<dl class="section attention"><dt>注意</dt><dd>入力画像の一辺は，2の指数乗でなくても正しく描画される</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">window_width</td><td>… 出力ウィンドウの幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">window_height</td><td>… 出力ウィンドウの高さ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xpos</td><td>… 画像をX軸方向に何画素ずらして描画するか（デフォルトは0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ypos</td><td>… 画像をY軸方向に何画素ずらして描画するか（デフォルトは0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">blend</td><td>… すでに描画されている物とブレンドするかどうか（デフォルトはfalse）</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… 描画に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… 不適切な入力画像の場合</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"> 使用例</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="draw_8h.html" title="２次元画像をOpenGLを用いて描画するライブラリ">mist/draw.h</a>&gt;</span></div>
+<div class="line"></div>
+<div class="line"><a class="code" href="classmist_1_1array2.html" title="要素数が可変の解像度付き2次元配列">mist::array2&lt; mist::rgb&lt; unsigned char &gt;</a> &gt; image; ←画像読み込みルーチンなどで，画像を読み込んでおく．</div>
+<div class="line"></div>
+<div class="line"><a class="code" href="group__image__draw__group.html#ga50420a9b668fee543c580ed44d93f8fe" title="2次元画像をOpenGLを用いてウィンドウに描画する">mist::draw_image</a>( image,         <span class="comment">// 入力画像</span></div>
+<div class="line">                  window_width,  <span class="comment">// 出力するウィンドウの幅</span></div>
+<div class="line">                  window_height, <span class="comment">// 出力するウィンドウの高さ</span></div>
+<div class="line">                  zoom,          <span class="comment">// ズームの割合（デフォルトは1倍）</span></div>
+<div class="line">                  xpos,          <span class="comment">// 中心からX軸方向にずらす割合（デフォルトは0）</span></div>
+<div class="line">                  ypos,          <span class="comment">// 中心からY軸方向にずらす割合（デフォルトは0）</span></div>
+<div class="line">                  blend          <span class="comment">// すでに描画されている物とブレンドするかどうか（デフォルトはfalse）</span></div>
+<div class="line">                );</div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a class="anchor" id="gafd46aa022954b5b5b7511d078a60e6a3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector2&lt; double &gt; mist::point2screen </td>
+          <td>(</td>
+          <td class="paramtype">const vector2&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>imgX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>imgY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>aspect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>winW</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>winH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>zoom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>posx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>posy</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像座標系の点をウィンドウ座標系の点に変換する </p>
+<p>画像上の特定の点をウィンドウ上に反映させたい時などに使用する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pt</td><td>… 画像座標系における点 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">imgX</td><td>… 描画に用いている画像の幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">imgY</td><td>… 描画に用いている画像の高さ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">aspect</td><td>… アスペクト（Y軸方向の画素サイズ / X軸方向の画素サイズ） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">winW</td><td>… 出力ウィンドウの幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">winH</td><td>… 出力ウィンドウの高さ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">zoom</td><td>… 拡大率 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">posx</td><td>… 画像をX軸方向にどれだけずらして描画するか </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">posy</td><td>… 画像をY軸方向にどれだけずらして描画するか</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>ウィンドウ座標系における点の位置 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1vector2.html#af68bdd4edd7479a3e5173dd47c7881be">mist::vector2&lt; T &gt;::x</a>, と <a class="el" href="classmist_1_1vector2.html#ad8df8b8e6bdcd20c4507827fbf4d9f6b">mist::vector2&lt; T &gt;::y</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gac4d706f551b839fb7619c8c3c5c43a55"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector2&lt; double &gt; mist::screen2point </td>
+          <td>(</td>
+          <td class="paramtype">const vector2&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>imgX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>imgY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>aspect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>winW</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>winH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>zoom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>posx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>posy</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ウィンドウ座標系の点を画像座標系の点に変換する </p>
+<p>ウィンドウ上でクリックされた点等を，画像座標系での点に変換する</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pt</td><td>… ウィンドウ座標系における点 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">imgX</td><td>… 描画に用いている画像の幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">imgY</td><td>… 描画に用いている画像の高さ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">aspect</td><td>… アスペクト（Y軸方向の画素サイズ / X軸方向の画素サイズ） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">winW</td><td>… 出力ウィンドウの幅 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">winH</td><td>… 出力ウィンドウの高さ </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">zoom</td><td>… 拡大率 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">posx</td><td>… 画像をX軸方向にどれだけずらして描画するか </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">posy</td><td>… 画像をY軸方向にどれだけずらして描画するか</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>画像座標系における点の位置 </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1vector2.html#af68bdd4edd7479a3e5173dd47c7881be">mist::vector2&lt; T &gt;::x</a>, と <a class="el" href="classmist_1_1vector2.html#ad8df8b8e6bdcd20c4507827fbf4d9f6b">mist::vector2&lt; T &gt;::y</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>DICOM画像入出力</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">DICOM画像入出力</div>  </div>
+<div class="ingroups"><a class="el" href="group__image__group.html">画像入出力</a></div></div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist_1_1dicom"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist_1_1dicom.html">mist::dicom</a></td></tr>
+<tr class="memdesc:namespacemist_1_1dicom"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMファイルを操作する関数・クラスを含む名前空間 <br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gae9f3cde0162d4864f3cc1097ff3e7aec"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gae9f3cde0162d4864f3cc1097ff3e7aec"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__dicom__group.html#gae9f3cde0162d4864f3cc1097ff3e7aec">mist::read_dicom</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename)</td></tr>
+<tr class="memdesc:gae9f3cde0162d4864f3cc1097ff3e7aec"><td class="mdescLeft">&#160;</td><td class="mdescRight">DICOMデータを画像コンテナに読み込む  <a href="#gae9f3cde0162d4864f3cc1097ff3e7aec"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="fragment"><div class="line"> 次のヘッダをインクルードする</div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="dicom_8h.html" title="DICOM画像を読み書きするためのライブラリ">mist/io/dicom.h</a>&gt;</span></div>
+</div><!-- fragment --> <h2>関数</h2>
+<a class="anchor" id="gae9f3cde0162d4864f3cc1097ff3e7aec"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mist::read_dicom </td>
+          <td>(</td>
+          <td class="paramtype">array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>DICOMデータを画像コンテナに読み込む </p>
+<dl class="section note"><dt>覚え書き</dt><dd>本処理では，不要なタグは全て取り除かれてしまうため，必要なデータがある場合は，本関数内を参考にして自作してください</dd></dl>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">image</td><td>… 出力画像 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>… 入力ファイル名</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… DICOMファイルの処理に成功 </td></tr>
+    <tr><td class="paramname">false</td><td>… DICOMファイルではないか，処理できないタグ・データが存在する場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html#a2cbf6506a5c52b607d102a6e36477f2d">mist::dicom::dicom_image_info::bits_allocated</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html#a3273e5e9864607b65366149cb8977cc3">mist::dicom::dicom_image_info::bits_stored</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html#a245616da512fc7d0e95d19fe8774cedb">mist::dicom::dicom_image_info::cols</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html#acbc121c7f2697562073f96575cd2db2a">mist::dicom::dicom_image_info::compression_type</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__tag__container.html#a5b437c0c029b2770e7de723d7e9653cc">mist::dicom::dicom_tag_container::contain()</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__element.html#aeda6bad233fa5c3509c74ad381a94ccf">mist::dicom::dicom_element::data</a>, <a class="el" href="namespacemist_1_1dicom.html#a819058813e183470427a784c74c2cdef">mist::dicom::decode()</a>, <a class="el" href="group__endian__group.html#gaefdd026fc399aab67608954b7d06e8db">mist::from_current_endian()</a>, <a class="el" href="namespacemist_1_1dicom.html#afae1eab718f5fb69b83f0f5f2b3d1918">mist::dicom::get_dicom_info()</a>, <a class="el" href="classmist_1_1array2.html#a07c0dc0ad3bc6d8cac93534ada9b46ea">mist::array2&lt; T, Allocator &gt;::height()</a>, <a class="el" href="namespacemist_1_1dicom.html#ae0b01d637df72179efd33b8db86b0cb2a944c0080733751412d4b9852bc23ecd4">mist::dicom::JPEG</a>, <a class="el" href="namespacemist_1_1dicom.html#ae0b01d637df72179efd33b8db86b0cb2a8c060e365a9f330c078285e2e1a90a7b">mist::dicom::JPEG2000</a>, <a class="el" href="namespacemist_1_1dicom.html#ae0b01d637df72179efd33b8db86b0cb2a44ac645c2b296cb8f059d3a5e1798cfe">mist::dicom::JPEGLS</a>, <a class="el" href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480ea38fddbd352eadcf96b8b91625d03af81">mist::dicom::MONOCHROME1</a>, <a class="el" href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480ea8ef9bb728f570b97f82e3f092813ccba">mist::dicom::MONOCHROME2</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__element.html#a27210bb7e7ba913ebf82d3347b2db312">mist::dicom::dicom_element::num_bytes</a>, <a class="el" href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480ea2cbf21499227acbe6aa84486963f98ca">mist::dicom::PALETTE_COLOR</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html#a505fe6113302d3334d0daec3cdd4269e">mist::dicom::dicom_image_info::photometric_type</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html#a5e290c524d22c19e8b2cd2f1b54addb1">mist::dicom::dicom_image_info::pixel_spacing_x</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html#a38ad6931ebf46d111191ce3131c76e5b">mist::dicom::dicom_image_info::pixel_spacing_y</a>, <a class="el" href="namespacemist_1_1dicom.html#a824784249b8946acae96b6b99306ede5">mist::dicom::read_dicom_tags()</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html#ad91ffff3b6220fdddd968992c4fe9297">mist::dicom::dicom_image_info::rescale_intercept</a>, <a class="el" href="classmist_1_1array2.html#a63fa884381a82e70d5381875fa4c85d5">mist::array2&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1array1.html#ad189b6476ed2486c42552499f1a28aa2">mist::array1&lt; T, Allocator &gt;::reso1()</a>, <a class="el" href="classmist_1_1array2.html#afd5ba81c6f44bf7fe1412ca032d6be33">mist::array2&lt; T, Allocator &gt;::reso2()</a>, <a class="el" href="namespacemist_1_1dicom.html#a3705f3d750df45e39f1d713c01ad480eaa1e0dc7cf7ec9bd2b03853e2044b23fb">mist::dicom::RGB</a>, <a class="el" href="namespacemist_1_1dicom.html#ae0b01d637df72179efd33b8db86b0cb2a66389b0a1e505e0cf05c0e53d0679055">mist::dicom::RLE</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html#ad7852a9dff102590ff65271f978c4142">mist::dicom::dicom_image_info::rows</a>, <a class="el" href="classmist_1_1array2.html#aa35a246d9f1e5ed7e7e86fcf3612da99">mist::array2&lt; T, Allocator &gt;::width()</a>, <a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html#a38f52414c14b9a835a52733705c62dba">mist::dicom::dicom_image_info::window_center</a>, と <a class="el" href="classmist_1_1dicom_1_1dicom__image__info.html#a0fe891a8307d753ca8431c34f7fb56ea">mist::dicom::dicom_image_info::window_width</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

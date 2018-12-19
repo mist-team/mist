@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>ネームスペース line</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="namespaces.html"><span>ネームスペース一覧</span></a></li>
+      <li><a href="namespacemembers.html"><span>ネームスペースメンバ</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">ネームスペース line<div class="ingroups"><a class="el" href="group__hough__group.html">ハフ変換</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>直線に対するHough変換  
+<a href="#details">[詳細]</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:a5b4dbd7452ea8b9dd8e72fa80d983166"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , template&lt; typename, typename &gt; class LINES, class TT , class AAllocator , class FUNCTOR &gt; </td></tr>
+<tr class="memitem:a5b4dbd7452ea8b9dd8e72fa80d983166"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceline.html#a5b4dbd7452ea8b9dd8e72fa80d983166">hough_transform</a> (const array2&lt; T, Allocator &gt; &amp;input, LINES&lt; TT, AAllocator &gt; &amp;lines, std::size_t max_lines, double rho_resolution, double theta_resolution, size_t threshold, FUNCTOR value_functor)</td></tr>
+<tr class="memdesc:a5b4dbd7452ea8b9dd8e72fa80d983166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hough 変換（直線）  <a href="#a5b4dbd7452ea8b9dd8e72fa80d983166"></a><br/></td></tr>
+<tr class="memitem:a2a9d320dd856479aca65c55c6688f199"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , template&lt; typename, typename &gt; class LINES, class TT , class AAllocator &gt; </td></tr>
+<tr class="memitem:a2a9d320dd856479aca65c55c6688f199"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceline.html#a2a9d320dd856479aca65c55c6688f199">hough_transform</a> (const array2&lt; T, Allocator &gt; &amp;input, LINES&lt; TT, AAllocator &gt; &amp;lines, std::size_t max_lines, double rho_resolution=1.0, double theta_resolution=3.1415926535897932384626433832795/360.0, size_t threshold=100)</td></tr>
+<tr class="memdesc:a2a9d320dd856479aca65c55c6688f199"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hough 変換（直線）  <a href="#a2a9d320dd856479aca65c55c6688f199"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>直線に対するHough変換 </p>
+</div><h2>関数</h2>
+<a class="anchor" id="a5b4dbd7452ea8b9dd8e72fa80d983166"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , template&lt; typename, typename &gt; class LINES, class TT , class AAllocator , class FUNCTOR &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool line::hough_transform </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">LINES&lt; TT, AAllocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lines</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>max_lines</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>rho_resolution</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>theta_resolution</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>threshold</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FUNCTOR&#160;</td>
+          <td class="paramname"><em>value_functor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Hough 変換（直線） </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">lines</td><td>… 求まった直線群のリスト（直線は極座標で表現される）. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_lines</td><td>… 抽出する直線の最大本数. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rho_resolution</td><td>… ρ分解能 [pixel] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">theta_resolution</td><td>… θ分解能 [radian] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">threshold</td><td>… 線を抽出する際のしきい値（対応する投票数がしきい値より大きい場合のみ線として抽出する）. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value_functor</td><td>… 入力画像中から直線を表す画素かどうかを判定するファンクタ.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… Hough変換により直線が求まった場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 直線が1本も求まらなかった場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照元 <a class="el" href="namespaceline.html#a2a9d320dd856479aca65c55c6688f199">hough_transform()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2a9d320dd856479aca65c55c6688f199"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class Allocator , template&lt; typename, typename &gt; class LINES, class TT , class AAllocator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool line::hough_transform </td>
+          <td>(</td>
+          <td class="paramtype">const array2&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">LINES&lt; TT, AAllocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lines</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>max_lines</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>rho_resolution</em> = <code>1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>theta_resolution</em> = <code>3.1415926535897932384626433832795&#160;/&#160;360.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>threshold</em> = <code>100</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Hough 変換（直線） </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>… 入力画像 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">lines</td><td>… 求まった直線群のリスト（直線は極座標で表現される）. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_lines</td><td>… 抽出する直線の最大本数. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rho_resolution</td><td>… ρ分解能 [pixel]（デフォルト値 1.0） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">theta_resolution</td><td>… θ分解能 [radian]（デフォルト値 π÷360） </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">threshold</td><td>… 線を抽出する際のしきい値（デフォルト値 100）.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>… Hough変換により直線が求まった場合 </td></tr>
+    <tr><td class="paramname">false</td><td>… 直線が1本も求まらなかった場合 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>参照先 <a class="el" href="namespaceline.html#a5b4dbd7452ea8b9dd8e72fa80d983166">hough_transform()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,675 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>epipolar.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">epipolar.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>epipolar geometry  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &lt;<a class="el" href="mist_8h_source.html">mist/mist.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="matrix_8h_source.html">mist/matrix.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="numeric_8h_source.html">mist/numeric.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="random_8h_source.html">mist/random.h</a>&gt;</code><br/>
+<code>#include &lt;queue&gt;</code><br/>
+<code>#include &lt;cmath&gt;</code><br/>
+</div>
+<p><a href="epipolar_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtrifocal__tensor.html">trifocal_tensor&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">trifocal tensor  <a href="classtrifocal__tensor.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:af4a22385913d193730bbdbcc7de85225"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:af4a22385913d193730bbdbcc7de85225"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>__epipolar__::enforce_rank2</b> (matrix&lt; T &gt; &amp;in, matrix&lt; T &gt; &amp;out)</td></tr>
+<tr class="memdesc:af4a22385913d193730bbdbcc7de85225"><td class="mdescLeft">&#160;</td><td class="mdescRight">enforce rank 2 on a fundamental matrix of rank 3.  <a href="#af4a22385913d193730bbdbcc7de85225"></a><br/></td></tr>
+<tr class="memitem:a899465b0e9fda5ae7ed622b2eb97e72c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><b>__epipolar__::line_triangle_intersection</b> (matrix&lt; double &gt; &amp;origin, matrix&lt; double &gt; &amp;direction, matrix&lt; double &gt; &amp;vert0, matrix&lt; double &gt; &amp;vert1, matrix&lt; double &gt; &amp;vert2, matrix&lt; double &gt; &amp;intersection)</td></tr>
+<tr class="memdesc:a899465b0e9fda5ae7ed622b2eb97e72c"><td class="mdescLeft">&#160;</td><td class="mdescRight">test whether the line and the triangle are intersected  <a href="#a899465b0e9fda5ae7ed622b2eb97e72c"></a><br/></td></tr>
+<tr class="memitem:a9d683a94aa13c4ef8172f3281f2e1c03"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:a9d683a94aa13c4ef8172f3281f2e1c03"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="epipolar_8h.html#a9d683a94aa13c4ef8172f3281f2e1c03">compute_fundamental_matrix</a> (matrix&lt; T1 &gt; &amp;points1, matrix&lt; T1 &gt; &amp;points2, matrix&lt; T2 &gt; &amp;fundamental_matrix)</td></tr>
+<tr class="memdesc:a9d683a94aa13c4ef8172f3281f2e1c03"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute a fundamental matrix from 8 or more correspondence of the points.  <a href="#a9d683a94aa13c4ef8172f3281f2e1c03"></a><br/></td></tr>
+<tr class="memitem:af58e9f3eed10154a261a27b81440914e"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:af58e9f3eed10154a261a27b81440914e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="epipolar_8h.html#af58e9f3eed10154a261a27b81440914e">compute_correspond_epilines</a> (matrix&lt; T1 &gt; &amp;points, int which_image, matrix&lt; T2 &gt; &amp;fundamental_matrix, matrix&lt; T1 &gt; &amp;correspondent_lines)</td></tr>
+<tr class="memdesc:af58e9f3eed10154a261a27b81440914e"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute epipolar lines on the image.  <a href="#af58e9f3eed10154a261a27b81440914e"></a><br/></td></tr>
+<tr class="memitem:a7b1729bf32621abe1b9fe2cbbd317e3f"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:a7b1729bf32621abe1b9fe2cbbd317e3f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="epipolar_8h.html#a7b1729bf32621abe1b9fe2cbbd317e3f">compute_epipole</a> (matrix&lt; T1 &gt; &amp;fundamental_matrix, matrix&lt; T2 &gt; &amp;epipole)</td></tr>
+<tr class="memdesc:a7b1729bf32621abe1b9fe2cbbd317e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute epipole from a fundamental matrix  <a href="#a7b1729bf32621abe1b9fe2cbbd317e3f"></a><br/></td></tr>
+<tr class="memitem:a086d5456d3c73fb73d3840ae095eaefc"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:a086d5456d3c73fb73d3840ae095eaefc"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="epipolar_8h.html#a086d5456d3c73fb73d3840ae095eaefc">factorize_essential_matrix</a> (matrix&lt; T1 &gt; &amp;essential_matrix, matrix&lt; T2 &gt; &amp;t, matrix&lt; T2 &gt; &amp;r1, matrix&lt; T2 &gt; &amp;r2)</td></tr>
+<tr class="memdesc:a086d5456d3c73fb73d3840ae095eaefc"><td class="mdescLeft">&#160;</td><td class="mdescRight">factorize essential matrix  <a href="#a086d5456d3c73fb73d3840ae095eaefc"></a><br/></td></tr>
+<tr class="memitem:ad10ca54e4c8ea7b90a150fa3089e5609"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:ad10ca54e4c8ea7b90a150fa3089e5609"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="epipolar_8h.html#ad10ca54e4c8ea7b90a150fa3089e5609">triangulation_dlt</a> (matrix&lt; T1 &gt; &amp;xc1, matrix&lt; T1 &gt; &amp;xc2, matrix&lt; T2 &gt; &amp;camera_matrix1, matrix&lt; T2 &gt; &amp;camera_matrix2, matrix&lt; T1 &gt; &amp;xw)</td></tr>
+<tr class="memdesc:ad10ca54e4c8ea7b90a150fa3089e5609"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate a coordinate of a point in world coordinate. The triangulation is performed by DLT method.  <a href="#ad10ca54e4c8ea7b90a150fa3089e5609"></a><br/></td></tr>
+<tr class="memitem:abf57d9c08b6c8a4ee7ad0dac76e2e60f"><td class="memTemplParams" colspan="2">template&lt;typename T1 &gt; </td></tr>
+<tr class="memitem:abf57d9c08b6c8a4ee7ad0dac76e2e60f"><td class="memTemplItemLeft" align="right" valign="top">matrix&lt; T1 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="epipolar_8h.html#abf57d9c08b6c8a4ee7ad0dac76e2e60f">trilinear_three_points</a> (matrix&lt; T1 &gt; &amp;p1, matrix&lt; T1 &gt; &amp;p2, matrix&lt; T1 &gt; &amp;p3)</td></tr>
+<tr class="memdesc:abf57d9c08b6c8a4ee7ad0dac76e2e60f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate trilinear relations from 3-view point-point-pont correspondences.  <a href="#abf57d9c08b6c8a4ee7ad0dac76e2e60f"></a><br/></td></tr>
+<tr class="memitem:a3371ca8c4fe4ce152ff2c46a5caaba77"><td class="memTemplParams" colspan="2">template&lt;typename T1 &gt; </td></tr>
+<tr class="memitem:a3371ca8c4fe4ce152ff2c46a5caaba77"><td class="memTemplItemLeft" align="right" valign="top">matrix&lt; T1 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="epipolar_8h.html#a3371ca8c4fe4ce152ff2c46a5caaba77">trilinear_three_lines</a> (matrix&lt; T1 &gt; &amp;l1, matrix&lt; T1 &gt; &amp;l2, matrix&lt; T1 &gt; &amp;l3)</td></tr>
+<tr class="memdesc:a3371ca8c4fe4ce152ff2c46a5caaba77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate trilinear relations from 3-view line-line-line correspondence.  <a href="#a3371ca8c4fe4ce152ff2c46a5caaba77"></a><br/></td></tr>
+<tr class="memitem:a95dccfb1802b6bdc6b704563ba114c17"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:a95dccfb1802b6bdc6b704563ba114c17"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="epipolar_8h.html#a95dccfb1802b6bdc6b704563ba114c17">compute_trifocal_tensor</a> (<a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T1 &gt; &amp;relations, <a class="el" href="classtrifocal__tensor.html">trifocal_tensor</a>&lt; T2 &gt; &amp;tensor)</td></tr>
+<tr class="memdesc:a95dccfb1802b6bdc6b704563ba114c17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute trifocal tensor from trilinear relations.  <a href="#a95dccfb1802b6bdc6b704563ba114c17"></a><br/></td></tr>
+<tr class="memitem:a5caeb918a21f351d1cb560af83a13a2d"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:a5caeb918a21f351d1cb560af83a13a2d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="epipolar_8h.html#a5caeb918a21f351d1cb560af83a13a2d">trifocal_tensor_to_epipoles</a> (<a class="el" href="classtrifocal__tensor.html">trifocal_tensor</a>&lt; T1 &gt; &amp;tensor, <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;epi21, <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;epi31)</td></tr>
+<tr class="memdesc:a5caeb918a21f351d1cb560af83a13a2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute epipoles from trifocal tensor.  <a href="#a5caeb918a21f351d1cb560af83a13a2d"></a><br/></td></tr>
+<tr class="memitem:af7914a06200c4a750f532b6a04929144"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:af7914a06200c4a750f532b6a04929144"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="epipolar_8h.html#af7914a06200c4a750f532b6a04929144">compute_fundamental_matrices</a> (<a class="el" href="classtrifocal__tensor.html">trifocal_tensor</a>&lt; T1 &gt; &amp;tensor, <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;fundamental21, <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;fundamental31)</td></tr>
+<tr class="memdesc:af7914a06200c4a750f532b6a04929144"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute fundamental matrices from trifocal tensor.  <a href="#af7914a06200c4a750f532b6a04929144"></a><br/></td></tr>
+<tr class="memitem:ab8e7659ccffb09fb2b4dcc759638ac96"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:ab8e7659ccffb09fb2b4dcc759638ac96"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="epipolar_8h.html#ab8e7659ccffb09fb2b4dcc759638ac96">trifocal_tensor_to_camera_matrices</a> (<a class="el" href="classtrifocal__tensor.html">trifocal_tensor</a>&lt; T1 &gt; &amp;tensor, <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;mat2, <a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;mat3)</td></tr>
+<tr class="memdesc:ab8e7659ccffb09fb2b4dcc759638ac96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute camera matrices from trifocal tensor.  <a href="#ab8e7659ccffb09fb2b4dcc759638ac96"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>epipolar geometry </p>
+</div><h2>関数</h2>
+<a class="anchor" id="af58e9f3eed10154a261a27b81440914e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 , typename T2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool compute_correspond_epilines </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>which_image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fundamental_matrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>correspondent_lines</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>compute epipolar lines on the image. </p>
+<p>Epipolar line is calculated by "l = F * p" if which_image is 0 or "l = F^T * p" if which_image is 1. The line is represented as "a*x + b*y + c = 0", where "l = [a, b, c]^T".</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">points</td><td>is a array of points. The size is 2xN or 3xN. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">which_image</td><td>is an index of the image including the points (0 or 1). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fundamental</td><td>matrix is a input fundamental matrix. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">correspondent_lines</td><td>are epipolar lines which corresponds to the points. The size is 3xN.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>return true if success </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a7b1729bf32621abe1b9fe2cbbd317e3f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 , typename T2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool compute_epipole </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fundamental_matrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>epipole</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>compute epipole from a fundamental matrix </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">fundamental</td><td>matrix is a input fundamental matrix. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">epipole</td><td>is a (3, 1) matrix</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>return true if success </dd></dl>
+
+<p>参照先 <a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af7914a06200c4a750f532b6a04929144"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 , typename T2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool compute_fundamental_matrices </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtrifocal__tensor.html">trifocal_tensor</a>&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tensor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fundamental21</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fundamental31</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute fundamental matrices from trifocal tensor. </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">tensor</td><td>is the input trifocal tensor </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">fundamental21</td><td>is the fundamental matrix with the second image (3x3) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">fundamental31</td><td>is the fundamental matrix with the third image (3x3)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>Return true if success </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a344bfa81522dc2e3f5e2ddc92c785502">mist::matrix&lt; T, Allocator &gt;::resize()</a>, と <a class="el" href="epipolar_8h.html#a5caeb918a21f351d1cb560af83a13a2d">trifocal_tensor_to_epipoles()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9d683a94aa13c4ef8172f3281f2e1c03"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 , typename T2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool compute_fundamental_matrix </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>points1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>points2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fundamental_matrix</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>compute a fundamental matrix from 8 or more correspondence of the points. </p>
+<p>The fundamental matrix is computed using 8 point algorithm.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">points1</td><td>is an array of points on image1. The size is 2xN or 3xN. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">points2</td><td>is an array of points on image2. The size is 2xN or 3xN. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">fundamental_matrix</td><td>is a fundamental matrix. The size is 3x3.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>return true if success </dd></dl>
+
+<p>参照先 <a class="el" href="group__config__group.html#ga67f325f3b5b54253c4257810b88a9e9f">_DESCENDING_ORDER_EIGEN_VALUE_</a>, と <a class="el" href="group__numeric__group.html#ga94da1e1c8dd4fdcac80077d86a8b417e">mist::eigen()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a95dccfb1802b6bdc6b704563ba114c17"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 , typename T2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool compute_trifocal_tensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>relations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtrifocal__tensor.html">trifocal_tensor</a>&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tensor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute trifocal tensor from trilinear relations. </p>
+<p>Solve At=0 using SVD, where t is the vector of the trifocal tensor components and A are the coefficients of the trilinear relations.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">relations</td><td>is the trilinear relations (Nx27) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">tensor</td><td>is the output trifocal tensor</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>Return true if success </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a8dc20bfab4b7003a9ba0ecad0d0cf684">mist::matrix&lt; T, Allocator &gt;::cols()</a>, <a class="el" href="classmist_1_1matrix.html#a294c15b9a0d9cdcf42fba8e4cb71994f">mist::matrix&lt; T, Allocator &gt;::rows()</a>, と <a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a086d5456d3c73fb73d3840ae095eaefc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 , typename T2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool factorize_essential_matrix </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>essential_matrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>r1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>r2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>factorize essential matrix </p>
+<p>factorize E to SR, where S = U Z U^t R1 = U W V^t or R2 = U W^t V^t E = U diag(1, 1, 0) V^t W = { (0,1,0)^t, (-1,0,0)^t, (0,0,1)^t } Z = { (0,-1,0)^t, (1,0,0)^t, (0,0,0)^t }</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">essential_matrix</td><td>is a input </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">t</td><td>is the traslation vector </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">r1</td><td>is one of the solution of the rotation R </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">r2</td><td>is the other solution of the rotaion R</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>return true if success </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#ae2753299c4d3fe4cfb888977b7a33ad4">mist::matrix&lt; T, Allocator &gt;::_33()</a>, <a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd()</a>, と <a class="el" href="classmist_1_1matrix.html#a66ab97c265c938cff8ce5e86a47ff3f1">mist::matrix&lt; T, Allocator &gt;::t()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad10ca54e4c8ea7b90a150fa3089e5609"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 , typename T2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool triangulation_dlt </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>xc1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>xc2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>camera_matrix1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>camera_matrix2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>xw</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Estimate a coordinate of a point in world coordinate. The triangulation is performed by DLT method. </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">xc1</td><td>is the point on the first camera </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xc2</td><td>is the point on the second camera </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">camera_matrix1</td><td>is that for the first camera </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">camera_matrix2</td><td>is that for the second camera </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">xw</td><td>is the point on the world coordinate</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>return true if success </dd></dl>
+
+<p>参照先 <a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab8e7659ccffb09fb2b4dcc759638ac96"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 , typename T2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool trifocal_tensor_to_camera_matrices </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtrifocal__tensor.html">trifocal_tensor</a>&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tensor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mat2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mat3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute camera matrices from trifocal tensor. </p>
+<p>The first camera matrix is fixed as P = [I | 0]. The camera matrices are obtained up to projection ambiguity.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">tensor</td><td>is the input trifocal tensor </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mat2</td><td>is the camera matrix for the second image (3x4) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mat1</td><td>is the camera matrix for the third image (3x4)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>Return true if success </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a344bfa81522dc2e3f5e2ddc92c785502">mist::matrix&lt; T, Allocator &gt;::resize()</a>, <a class="el" href="classmist_1_1matrix.html#a66ab97c265c938cff8ce5e86a47ff3f1">mist::matrix&lt; T, Allocator &gt;::t()</a>, と <a class="el" href="epipolar_8h.html#a5caeb918a21f351d1cb560af83a13a2d">trifocal_tensor_to_epipoles()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5caeb918a21f351d1cb560af83a13a2d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 , typename T2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool trifocal_tensor_to_epipoles </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtrifocal__tensor.html">trifocal_tensor</a>&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tensor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>epi21</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmist_1_1matrix.html">mist::matrix</a>&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>epi31</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute epipoles from trifocal tensor. </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">tensor</td><td>is the input trifocal tensor </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">epi21</td><td>is the epipole in the second image (3x1) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">epi31</td><td>is the epipole in the third image (3x1)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>Return true if success </dd></dl>
+
+<p>参照先 <a class="el" href="classmist_1_1matrix.html#a344bfa81522dc2e3f5e2ddc92c785502">mist::matrix&lt; T, Allocator &gt;::resize()</a>, と <a class="el" href="group__numeric__group.html#ga5f85b437b93dc620f245de814b76ba45">mist::svd()</a>.</p>
+
+<p>参照元 <a class="el" href="epipolar_8h.html#af7914a06200c4a750f532b6a04929144">compute_fundamental_matrices()</a>, と <a class="el" href="epipolar_8h.html#ab8e7659ccffb09fb2b4dcc759638ac96">trifocal_tensor_to_camera_matrices()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3371ca8c4fe4ce152ff2c46a5caaba77"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">matrix&lt; T1 &gt; trilinear_three_lines </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>l1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>l2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>l3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generate trilinear relations from 3-view line-line-line correspondence. </p>
+<p>Return A, where At=0 and t is the vector of the trifocal tensor components.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">l1</td><td>is a line on the first camera (3x1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">l2</td><td>is a line on the second camera (3x1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">l3</td><td>is a line on the third camera (3x1)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>trilinear relations (3x27) </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="abf57d9c08b6c8a4ee7ad0dac76e2e60f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">matrix&lt; T1 &gt; trilinear_three_points </td>
+          <td>(</td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">matrix&lt; T1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generate trilinear relations from 3-view point-point-pont correspondences. </p>
+<p>Return A, where At=0 and t is the vector of the trifocal tensor components.</p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">p1</td><td>is a point on the first camera (3x1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p2</td><td>is a point on the second camera (3x1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p3</td><td>is a point on the third camera (3x1)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>Return trilinear relations (9x27) </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>color.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_a2627e7237515a7c75baa232ceab4ab6.html">config</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">color.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>カラーデータを扱うためのクラス群  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">mist_conf.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="type__trait_8h_source.html">type_trait.h</a>&quot;</code><br/>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;cmath&gt;</code><br/>
+</div>
+<p><a href="color_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1rgb.html">mist::rgb&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">カラー画像用の画素  <a href="structmist_1_1rgb.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1rgb_1_1rebind.html">mist::rgb&lt; T &gt;::rebind&lt; TT &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の変換を行う  <a href="structmist_1_1rgb_1_1rebind.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1bgr.html">mist::bgr&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">カラー画素の和  <a href="structmist_1_1bgr.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1bgr_1_1rebind.html">mist::bgr&lt; T &gt;::rebind&lt; TT &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の変換を行う  <a href="structmist_1_1bgr_1_1rebind.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1rgba.html">mist::rgba&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">カラー画素の和  <a href="structmist_1_1rgba.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1rgba_1_1rebind.html">mist::rgba&lt; T &gt;::rebind&lt; TT &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の変換を行う  <a href="structmist_1_1rgba_1_1rebind.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1bgra.html">mist::bgra&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">カラー画素の和  <a href="structmist_1_1bgra.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1bgra_1_1rebind.html">mist::bgra&lt; T &gt;::rebind&lt; TT &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の変換を行う  <a href="structmist_1_1bgra_1_1rebind.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1nRGB.html">mist::nRGB&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">カラー画素の和  <a href="structmist_1_1nRGB.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1nRGB_1_1rebind.html">mist::nRGB&lt; T &gt;::rebind&lt; TT &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の変換を行う  <a href="structmist_1_1nRGB_1_1rebind.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color.html">mist::color&lt; T, NDIM &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">カラー画素の和  <a href="structmist_1_1color.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1color_1_1rebind.html">mist::color&lt; T, NDIM &gt;::rebind&lt; TT &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">データ型の変換を行う  <a href="structmist_1_1color_1_1rebind.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1is__color.html">mist::is_color&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">入力された型がカラー画像かどうか調べる  <a href="structmist_1_1is__color.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1float__type_3_01rgb_3_01T_01_4_01_4.html">mist::float_type&lt; rgb&lt; T &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">char 判定  <a href="structmist_1_1float__type_3_01rgb_3_01T_01_4_01_4.html#details">[詳細]</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmist_1_1colors.html">mist::colors&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">定義済み色  <a href="structmist_1_1colors.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gafb3b0a37bc167ec836a25bbf6ff6e1c9"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gafb3b0a37bc167ec836a25bbf6ff6e1c9"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__color__group.html#gafb3b0a37bc167ec836a25bbf6ff6e1c9">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const rgb&lt; T &gt; &amp;c)</td></tr>
+<tr class="memdesc:gafb3b0a37bc167ec836a25bbf6ff6e1c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">カラー画素の和  <a href="group__color__group.html#gafb3b0a37bc167ec836a25bbf6ff6e1c9"></a><br/></td></tr>
+<tr class="memitem:ga84a0c324648514df6c4a2e81ee506326"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga84a0c324648514df6c4a2e81ee506326"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__color__group.html#ga84a0c324648514df6c4a2e81ee506326">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const rgba&lt; T &gt; &amp;c)</td></tr>
+<tr class="memdesc:ga84a0c324648514df6c4a2e81ee506326"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームに，コンテナ内の要素を整形して出力する  <a href="group__color__group.html#ga84a0c324648514df6c4a2e81ee506326"></a><br/></td></tr>
+<tr class="memitem:gac19730e61808d5ed56e36701e5bd222c"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gac19730e61808d5ed56e36701e5bd222c"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__color__group.html#gac19730e61808d5ed56e36701e5bd222c">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const nRGB&lt; T &gt; &amp;c)</td></tr>
+<tr class="memdesc:gac19730e61808d5ed56e36701e5bd222c"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームに，コンテナ内の要素を整形して出力する  <a href="group__color__group.html#gac19730e61808d5ed56e36701e5bd222c"></a><br/></td></tr>
+<tr class="memitem:ga4cf480138643c71dec5cd909500231b3"><td class="memTemplParams" colspan="2">template&lt;class T , size_t NDIM&gt; </td></tr>
+<tr class="memitem:ga4cf480138643c71dec5cd909500231b3"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__color__group.html#ga4cf480138643c71dec5cd909500231b3">mist::operator&lt;&lt;</a> (std::ostream &amp;out, const color&lt; T, NDIM &gt; &amp;c)</td></tr>
+<tr class="memdesc:ga4cf480138643c71dec5cd909500231b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定されたストリームに，コンテナ内の要素を整形して出力する  <a href="group__color__group.html#ga4cf480138643c71dec5cd909500231b3"></a><br/></td></tr>
+<tr class="memitem:gae42505ff88c40dfd1dfbcb1b8cfec0a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__color__group.html#gae42505ff88c40dfd1dfbcb1b8cfec0a2">mist::rgb2hsv</a> (double r, double g, double b, double &amp;h, double &amp;s, double &amp;v)</td></tr>
+<tr class="memdesc:gae42505ff88c40dfd1dfbcb1b8cfec0a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB色空間をHSV色空間に変換する  <a href="group__color__group.html#gae42505ff88c40dfd1dfbcb1b8cfec0a2"></a><br/></td></tr>
+<tr class="memitem:ga34c5bc869545a0a4ba09ae8b27a85b9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__color__group.html#ga34c5bc869545a0a4ba09ae8b27a85b9c">mist::hsv2rgb</a> (double h, double s, double v, double &amp;r, double &amp;g, double &amp;b)</td></tr>
+<tr class="memdesc:ga34c5bc869545a0a4ba09ae8b27a85b9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">HSV色空間をRGB色空間に変換する  <a href="group__color__group.html#ga34c5bc869545a0a4ba09ae8b27a85b9c"></a><br/></td></tr>
+<tr class="memitem:ga875d639f54578382aa75a3dad2b8540b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__color__group.html#ga875d639f54578382aa75a3dad2b8540b">mist::rgb2yiq</a> (double r, double g, double b, double &amp;y, double &amp;i, double &amp;q)</td></tr>
+<tr class="memdesc:ga875d639f54578382aa75a3dad2b8540b"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB色空間をYIQ色空間に変換する  <a href="group__color__group.html#ga875d639f54578382aa75a3dad2b8540b"></a><br/></td></tr>
+<tr class="memitem:ga9620938a382f5fa7876ac182f0568f81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__color__group.html#ga9620938a382f5fa7876ac182f0568f81">mist::yiq2rgb</a> (double y, double i, double q, double &amp;r, double &amp;g, double &amp;b)</td></tr>
+<tr class="memdesc:ga9620938a382f5fa7876ac182f0568f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">YIQ色空間をRGB色空間に変換する  <a href="group__color__group.html#ga9620938a382f5fa7876ac182f0568f81"></a><br/></td></tr>
+<tr class="memitem:ga7bbda68f0fecb0fb68920346ad6be705"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__color__group.html#ga7bbda68f0fecb0fb68920346ad6be705">mist::rgb2ycbcr</a> (double r, double g, double b, double &amp;y, double &amp;cb, double &amp;cr)</td></tr>
+<tr class="memdesc:ga7bbda68f0fecb0fb68920346ad6be705"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB色空間をYCbCr色空間に変換する  <a href="group__color__group.html#ga7bbda68f0fecb0fb68920346ad6be705"></a><br/></td></tr>
+<tr class="memitem:gacd12541e13faffbe74fd9a995e011af7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__color__group.html#gacd12541e13faffbe74fd9a995e011af7">mist::ycbcr2rgb</a> (double y, double cb, double cr, double &amp;r, double &amp;g, double &amp;b)</td></tr>
+<tr class="memdesc:gacd12541e13faffbe74fd9a995e011af7"><td class="mdescLeft">&#160;</td><td class="mdescRight">YCbCr色空間をRGB色空間に変換する  <a href="group__color__group.html#gacd12541e13faffbe74fd9a995e011af7"></a><br/></td></tr>
+<tr class="memitem:ga9bf627ce7c7276b8e54c8f6a3410d664"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__color__group.html#ga9bf627ce7c7276b8e54c8f6a3410d664">mist::rgb2xyz</a> (double r, double g, double b, double &amp;x, double &amp;y, double &amp;z)</td></tr>
+<tr class="memdesc:ga9bf627ce7c7276b8e54c8f6a3410d664"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB色空間をXYZ色空間に変換する  <a href="group__color__group.html#ga9bf627ce7c7276b8e54c8f6a3410d664"></a><br/></td></tr>
+<tr class="memitem:ga6f1849ea887dadf53a8ef89a56049787"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__color__group.html#ga6f1849ea887dadf53a8ef89a56049787">mist::xyz2rgb</a> (double x, double y, double z, double &amp;r, double &amp;g, double &amp;b)</td></tr>
+<tr class="memdesc:ga6f1849ea887dadf53a8ef89a56049787"><td class="mdescLeft">&#160;</td><td class="mdescRight">XYZ色空間をRGB色空間に変換する  <a href="group__color__group.html#ga6f1849ea887dadf53a8ef89a56049787"></a><br/></td></tr>
+<tr class="memitem:gabd5531211fe6481ae17826b7039ad4c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__color__group.html#gabd5531211fe6481ae17826b7039ad4c2">mist::rgb2lab</a> (double r, double g, double b, double &amp;l_, double &amp;a_, double &amp;b_)</td></tr>
+<tr class="memdesc:gabd5531211fe6481ae17826b7039ad4c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB色空間をL*a*b*色空間に変換する  <a href="group__color__group.html#gabd5531211fe6481ae17826b7039ad4c2"></a><br/></td></tr>
+<tr class="memitem:ga5f19cd1265cd3ab52a05ebc333e5dc79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__color__group.html#ga5f19cd1265cd3ab52a05ebc333e5dc79">mist::lab2rgb</a> (double l_, double a_, double b_, double &amp;r, double &amp;g, double &amp;b)</td></tr>
+<tr class="memdesc:ga5f19cd1265cd3ab52a05ebc333e5dc79"><td class="mdescLeft">&#160;</td><td class="mdescRight">L*a*b*色空間をRGB色空間に変換する  <a href="group__color__group.html#ga5f19cd1265cd3ab52a05ebc333e5dc79"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>カラーデータを扱うためのクラス群 </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

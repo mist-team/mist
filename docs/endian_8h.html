@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>endian.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_a2627e7237515a7c75baa232ceab4ab6.html">config</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">データ構造</a> &#124;
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">endian.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>計算機のエンディアンを取得し，自動的に変換するライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist__conf_8h_source.html">mist_conf.h</a>&quot;</code><br/>
+</div>
+<p><a href="endian_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+データ構造</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionmist_1_1byte__array.html">mist::byte_array&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">バイト配列と値のペアを表現するクラス  <a href="unionmist_1_1byte__array.html#details">[詳細]</a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gae759de748e6a8e7e503e2b3f93d48a03"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__endian__group.html#gae759de748e6a8e7e503e2b3f93d48a03">mist::_is_little_endian_</a> ()</td></tr>
+<tr class="memdesc:gae759de748e6a8e7e503e2b3f93d48a03"><td class="mdescLeft">&#160;</td><td class="mdescRight">現在のマシンのエンディアンがリトルエンディアンかどうかを調べる  <a href="group__endian__group.html#gae759de748e6a8e7e503e2b3f93d48a03"></a><br/></td></tr>
+<tr class="memitem:ga53141a1351836e135495bb28769bf43f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__endian__group.html#ga53141a1351836e135495bb28769bf43f">mist::_is_big_endian_</a> ()</td></tr>
+<tr class="memdesc:ga53141a1351836e135495bb28769bf43f"><td class="mdescLeft">&#160;</td><td class="mdescRight">現在のマシンのエンディアンがビッグエンディアンかどうかを調べる  <a href="group__endian__group.html#ga53141a1351836e135495bb28769bf43f"></a><br/></td></tr>
+<tr class="memitem:gac02114a7bc93baa61d52c12644a0f9ee"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gac02114a7bc93baa61d52c12644a0f9ee"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__endian__group.html#gac02114a7bc93baa61d52c12644a0f9ee">mist::swap_bytes</a> (byte_array&lt; T &gt; &amp;bytes)</td></tr>
+<tr class="memdesc:gac02114a7bc93baa61d52c12644a0f9ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">byte_array内のバイトスワップをする  <a href="group__endian__group.html#gac02114a7bc93baa61d52c12644a0f9ee"></a><br/></td></tr>
+<tr class="memitem:gacb558bd66eaef6dcb3038d60e251eddc"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gacb558bd66eaef6dcb3038d60e251eddc"><td class="memTemplItemLeft" align="right" valign="top">byte_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__endian__group.html#gacb558bd66eaef6dcb3038d60e251eddc">mist::to_current_endian</a> (const byte_array&lt; T &gt; &amp;bytes, bool from_little_endian)</td></tr>
+<tr class="memdesc:gacb558bd66eaef6dcb3038d60e251eddc"><td class="mdescLeft">&#160;</td><td class="mdescRight">byte_array内のデータを現在の計算機のエンディアンに合わせる  <a href="group__endian__group.html#gacb558bd66eaef6dcb3038d60e251eddc"></a><br/></td></tr>
+<tr class="memitem:gaefdd026fc399aab67608954b7d06e8db"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gaefdd026fc399aab67608954b7d06e8db"><td class="memTemplItemLeft" align="right" valign="top">byte_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__endian__group.html#gaefdd026fc399aab67608954b7d06e8db">mist::from_current_endian</a> (const byte_array&lt; T &gt; &amp;bytes, bool to_little_endian)</td></tr>
+<tr class="memdesc:gaefdd026fc399aab67608954b7d06e8db"><td class="mdescLeft">&#160;</td><td class="mdescRight">byte_array内のデータを現在の計算機のエンディアンから目的のエンディアンに合わせる  <a href="group__endian__group.html#gaefdd026fc399aab67608954b7d06e8db"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>計算機のエンディアンを取得し，自動的に変換するライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:27 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

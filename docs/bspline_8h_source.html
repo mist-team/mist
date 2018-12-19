@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>bspline.h ソースファイル</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">bspline.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="bspline_8h.html">説明を見る。</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Copyright (c) 2003-2011, MIST Project, Nagoya University</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// All rights reserved.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// Redistribution and use in source and binary forms, with or without modification,</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// are permitted provided that the following conditions are met:</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// 1. Redistributions of source code must retain the above copyright notice,</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// this list of conditions and the following disclaimer.</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// 2. Redistributions in binary form must reproduce the above copyright notice,</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// this list of conditions and the following disclaimer in the documentation</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// and/or other materials provided with the distribution.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// 3. Neither the name of the Nagoya University nor the names of its contributors</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// may be used to endorse or promote products derived from this software</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// without specific prior written permission.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_BSPLINE__</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __INCLUDE_BSPLINE__</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#ifndef __INCLUDE_MIST_CONF_H__</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="mist__conf_8h.html" title="MISTの設定ファイル">config/mist_conf.h</a>&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// mist名前空間の始まり</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<a class="code" href="mist__conf_8h.html#a7895efefff8bac18aad4afb2a3154927" title="MIST名前空間の始まり">_MIST_BEGIN</a></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span> &lt; <span class="keywordtype">int</span> K &gt;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="structmist_1_1bspline__base.html">   53</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structmist_1_1bspline__base.html" title="Bスプラインの基底関数を計算する関数を実装した構造体">bspline_base</a></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="code" href="structmist_1_1bspline__base.html#abe5302f88c7cd0c9637ad84cefe0ba89">   63</a></span>&#160;    <span class="keyword">static</span> <span class="keywordtype">double</span> Base( <span class="keyword">const</span> std::vector&lt; double &gt; &amp;knot, std::vector&lt; double &gt;::size_type i, <span class="keywordtype">double</span> t )</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordtype">double</span> B = 0.0;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">if</span>( knot[ i + K - 1 ] - knot[ i ] != 0 )</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            B = ( t - knot[ i ] ) * <a class="code" href="structmist_1_1bspline__base.html" title="Bスプラインの基底関数を計算する関数を実装した構造体">bspline_base&lt; K - 1 &gt;::Base</a>( knot, i, t ) / ( knot[ i + K - 1 ] - knot[ i ] );</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">if</span>( knot[ i + K ] - knot[ i + 1 ] != 0 )</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            B += ( knot[ i + K ] - t ) * <a class="code" href="structmist_1_1bspline__base.html" title="Bスプラインの基底関数を計算する関数を実装した構造体">bspline_base&lt; K - 1 &gt;::Base</a>( knot, i + 1, t ) / ( knot[ i + K ] - knot[ i + 1 ] );</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordflow">return</span>( B );</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;};</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">template</span> &lt; &gt;</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="code" href="structmist_1_1bspline__base_3_011_01_4.html">   86</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structmist_1_1bspline__base.html" title="Bスプラインの基底関数を計算する関数を実装した構造体">bspline_base</a>&lt; 1 &gt;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;{</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="code" href="structmist_1_1bspline__base_3_011_01_4.html#a7d52295c5e17ad96a8edd8100f1c2239">   96</a></span>&#160;    <span class="keyword">static</span> <span class="keywordtype">double</span> Base( <span class="keyword">const</span> std::vector&lt; double &gt; &amp;knot, std::vector&lt; double &gt;::size_type i, <span class="keywordtype">double</span> t )</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">return</span>( ( knot[ i ] &lt;= t &amp;&amp; t &lt; knot[ i + 1 ] ) ? 1.0 : 0.0 );</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="keyword">template</span> &lt; <span class="keyword">class</span> T, <span class="keywordtype">int</span> K, <span class="keyword">class</span> Allocator = std::allocator&lt; T &gt; &gt;</div>
+<div class="line"><a name="l00154"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html">  154</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmist_1_1bspline.html" title="Bスプライン曲線を扱うためのクラス">bspline</a> : <span class="keyword">public</span> std::vector&lt; T, Allocator &gt;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;{</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keyword">typedef</span> std::vector&lt; T, Allocator &gt; base;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> base::allocator_type allocator_type;       </div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> base::reference reference;                 </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> base::const_reference const_reference;     </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> base::value_type value_type;               </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> base::size_type size_type;                 </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> base::difference_type difference_type;     </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> base::pointer pointer;                     </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> base::const_pointer const_pointer;         </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keyword">typedef</span> std::vector&lt; double &gt; knot_list;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00171"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fd">  171</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fd" title="ノットベクトルを手動で設定しない場合のデフォルトのモード">BSplineMode</a></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    {</div>
+<div class="line"><a name="l00173"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fdaed94ff2d8378042559d8272ace12d51d">  173</a></span>&#160;        <a class="code" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fdaed94ff2d8378042559d8272ace12d51d" title="閉曲線の設定">ROUND</a>,                  </div>
+<div class="line"><a name="l00174"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fdaf10c89957104b1d14541c80675afdd22">  174</a></span>&#160;        <a class="code" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fdaf10c89957104b1d14541c80675afdd22" title="最初と最後の制御点を通る場合の設定">THROUGH</a>,                </div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    };</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00178"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html#a4321f4da661e8a56188cbd58c8e25d3c">  178</a></span>&#160;    knot_list <a class="code" href="classmist_1_1bspline.html#a4321f4da661e8a56188cbd58c8e25d3c" title="ノットベクトル">knot_</a>;            </div>
+<div class="line"><a name="l00179"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html#a48a1ab39feecaf1a0ba9e5d2102e2d98">  179</a></span>&#160;    <a class="code" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fd" title="ノットベクトルを手動で設定しない場合のデフォルトのモード">BSplineMode</a> <a class="code" href="classmist_1_1bspline.html#a48a1ab39feecaf1a0ba9e5d2102e2d98" title="デフォルトのノットベクトル設定">mode_</a>;          </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00191"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html#abceabec86f63b4bf61f6d737cbc7ed57">  191</a></span>&#160;    value_type operator( )( <span class="keywordtype">double</span> t )</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    {</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        size_type n = base::size( ) - 1;    <span class="comment">// n + 1 は制御点の数</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        size_type m = n + K;                <span class="comment">// m + 1 はノットベクトルの数</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keywordflow">if</span>( knot_.size( ) &lt; m + 1 )</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        {</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            <span class="comment">// 不適切なノットベクトルが設定されています</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            knot( mode_ );</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        }</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>( base::empty( ) )</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keywordflow">return</span>( value_type( 0 ) );</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        t *= <span class="keyword">static_cast&lt;</span> <span class="keywordtype">double</span> <span class="keyword">&gt;</span>( m - 2 * K + 2 );</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="comment">// まず，ゼロ要素を作成する</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        value_type p = value_type( base::operator[]( 0 ) ) * 0;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keywordflow">for</span>( size_type i = 0 ; i &lt; base::size( ) ; i++ )</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        {</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <span class="keywordtype">double</span> B = <a class="code" href="structmist_1_1bspline__base.html" title="Bスプラインの基底関数を計算する関数を実装した構造体">bspline_base&lt; K &gt;::Base</a>( knot_, i, t );</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            p += B * base::operator[]( i );</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        }</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keywordflow">return</span>( p );</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    }</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
+<div class="line"><a name="l00224"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html#abc8209ed97451c06254c44e3a59eba1a">  224</a></span>&#160;    <span class="keywordtype">void</span> knot( <span class="keyword">const</span> knot_list &amp;kknot )</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    {</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        knot_ = kknot;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    }</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html#a0a02fd10dc0d4923cc65fadd6ac438a3">  235</a></span>&#160;    <span class="keywordtype">void</span> knot( <a class="code" href="classmist_1_1bspline.html#aab4e2e7d9afd92e27e16d8f7df9880fd" title="ノットベクトルを手動で設定しない場合のデフォルトのモード">BSplineMode</a> mode )</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    {</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        size_type n = base::size( ) - 1;    <span class="comment">// n + 1 は制御点の数</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        size_type m = n + K;                <span class="comment">// m + 1 はノットベクトルの数</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        size_type i;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        knot_list kknot( m + 1 );</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <span class="keywordflow">switch</span>( mode )</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        {</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keywordflow">case</span> ROUND:</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            <span class="comment">// リングの場合</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            <span class="keywordflow">for</span>( i = 0 ; i &lt;= m ; i++ )</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            {</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                kknot[ i ] = <span class="keyword">static_cast&lt;</span> <span class="keywordtype">double</span> <span class="keyword">&gt;</span>( i - K + 1 );</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            }</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="keywordflow">case</span> THROUGH:</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            <span class="comment">// 最初と最後を通る曲線の場合</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <span class="keywordflow">for</span>( i = 0 ; i &lt; K ; i++ )</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            {</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                kknot[ i ] = 0.0;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            }</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            <span class="keywordflow">for</span>( i = K ; i &lt; m - K + 1 ; i++ )</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            {</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                kknot[ i ] = <span class="keyword">static_cast&lt;</span> <span class="keywordtype">double</span> <span class="keyword">&gt;</span>( i - K + 1 );</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            }</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            <span class="keywordflow">for</span>( i = m - K + 1 ; i &lt;= m ; i++ )</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            {</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                kknot[ i ] = <span class="keyword">static_cast&lt;</span> <span class="keywordtype">double</span> <span class="keyword">&gt;</span>( 2 + m - 2 * K );</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            }</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        }</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        knot( kknot );</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    }</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00273"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html#a740f7a4fcaccd07df439e4e57446400d">  273</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classmist_1_1bspline.html" title="Bスプライン曲線を扱うためのクラス">bspline</a> &amp;operator =( <span class="keyword">const</span> <a class="code" href="classmist_1_1bspline.html" title="Bスプライン曲線を扱うためのクラス">bspline</a> &amp;b )</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    {</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="keywordflow">if</span>( <span class="keyword">this</span> != &amp;b )</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        {</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;            base::operator =( b );</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            knot_ = b.<a class="code" href="classmist_1_1bspline.html#a4321f4da661e8a56188cbd58c8e25d3c" title="ノットベクトル">knot_</a>;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            mode_ = b.<a class="code" href="classmist_1_1bspline.html#a48a1ab39feecaf1a0ba9e5d2102e2d98" title="デフォルトのノットベクトル設定">mode_</a>;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        }</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordflow">return</span>( *<span class="keyword">this</span> );</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    }</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html#abb05ee7f2740c60e052f60351823728b">  285</a></span>&#160;    <a class="code" href="classmist_1_1bspline.html" title="Bスプライン曲線を扱うためのクラス">bspline</a>( <span class="keyword">const</span> <a class="code" href="classmist_1_1bspline.html" title="Bスプライン曲線を扱うためのクラス">bspline</a> &amp;b ) : base( b ), knot_( b.knot_ ), mode_( b.mode_ )</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    {</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    }</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
+<div class="line"><a name="l00293"></a><span class="lineno"><a class="code" href="classmist_1_1bspline.html#a705b486e4e0afc775bc4805ae133b6ef">  293</a></span>&#160;    <a class="code" href="classmist_1_1bspline.html" title="Bスプライン曲線を扱うためのクラス">bspline</a>( ) : mode_( THROUGH )</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    {</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    }</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;};</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">//  Bスプライングループの終わり</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">//  自由曲線・曲面グループの終わり</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">// mist名前空間の終わり</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<a class="code" href="mist__conf_8h.html#a5782930a99d85de30831b223eb8df540" title="MIST名前空間の終わり">_MIST_END</a></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="preprocessor">#endif // __INCLUDE_BSPLINE__</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="preprocessor"></span></div>
+</div><!-- fragment --></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:13 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>

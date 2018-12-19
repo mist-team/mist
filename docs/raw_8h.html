@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>raw.h</title>
+<link href="mist.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.8.1.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="modules.html"><span>モジュール</span></a></li>
+      <li><a href="namespaces.html"><span>ネームスペース</span></a></li>
+      <li><a href="annotated.html"><span>データ構造</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>グローバル</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_579a68839c78fddcc3b2dc4406acdc4a.html">mist</a></li><li class="navelem"><a class="el" href="dir_693aed4c217c3209f853cada5eb38eec.html">io</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">ネームスペース</a> &#124;
+<a href="#func-members">関数</a>  </div>
+  <div class="headertitle">
+<div class="title">raw.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>バイナリ画像を読み書きするためのライブラリ  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="mist_8h_source.html">../mist.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="color_8h_source.html">../config/color.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="endian_8h_source.html">../config/endian.h</a>&quot;</code><br/>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;zlib.h&gt;</code><br/>
+</div>
+<p><a href="raw_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+ネームスペース</h2></td></tr>
+<tr class="memitem:namespacemist"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemist.html">mist</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:gae10c8395b422903dba6a944e0214f367"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:gae10c8395b422903dba6a944e0214f367"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#gae10c8395b422903dba6a944e0214f367">mist::read_raw</a> (array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::size_type w, typename array&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:gae10c8395b422903dba6a944e0214f367"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#gae10c8395b422903dba6a944e0214f367"></a><br/></td></tr>
+<tr class="memitem:ga7d89abc77cf7d7928812036d3963b47e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:ga7d89abc77cf7d7928812036d3963b47e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga7d89abc77cf7d7928812036d3963b47e">mist::write_raw</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset, bool to_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:ga7d89abc77cf7d7928812036d3963b47e"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を 無圧縮RAW 画像として出力する  <a href="group__image__raw__group.html#ga7d89abc77cf7d7928812036d3963b47e"></a><br/></td></tr>
+<tr class="memitem:ga6ff8968348aae67b04d88727715d1c59"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:ga6ff8968348aae67b04d88727715d1c59"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga6ff8968348aae67b04d88727715d1c59">mist::write_raw_gz</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset, bool to_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:ga6ff8968348aae67b04d88727715d1c59"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する  <a href="group__image__raw__group.html#ga6ff8968348aae67b04d88727715d1c59"></a><br/></td></tr>
+<tr class="memitem:ga167e1b2cf4e4e43b5634a9b37f0aa79f"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga167e1b2cf4e4e43b5634a9b37f0aa79f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga167e1b2cf4e4e43b5634a9b37f0aa79f">mist::read_raw</a> (array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::size_type w, typename array&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga167e1b2cf4e4e43b5634a9b37f0aa79f"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#ga167e1b2cf4e4e43b5634a9b37f0aa79f"></a><br/></td></tr>
+<tr class="memitem:ga0cf056bd9f983873e07f39ae61e1fa74"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga0cf056bd9f983873e07f39ae61e1fa74"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga0cf056bd9f983873e07f39ae61e1fa74">mist::write_raw</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset, bool to_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga0cf056bd9f983873e07f39ae61e1fa74"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を 無圧縮RAW 画像として出力する  <a href="group__image__raw__group.html#ga0cf056bd9f983873e07f39ae61e1fa74"></a><br/></td></tr>
+<tr class="memitem:ga4794ac9647a998a6656a090d0d10dff0"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga4794ac9647a998a6656a090d0d10dff0"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga4794ac9647a998a6656a090d0d10dff0">mist::write_raw_gz</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset, bool to_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga4794ac9647a998a6656a090d0d10dff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する  <a href="group__image__raw__group.html#ga4794ac9647a998a6656a090d0d10dff0"></a><br/></td></tr>
+<tr class="memitem:ga0ff55f0a2c90bce107706d2fa34cc708"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga0ff55f0a2c90bce107706d2fa34cc708"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga0ff55f0a2c90bce107706d2fa34cc708">mist::read_raw</a> (array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::size_type w, typename array&lt; T, Allocator &gt;::value_type offset=0, bool from_little_endian=false)</td></tr>
+<tr class="memdesc:ga0ff55f0a2c90bce107706d2fa34cc708"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#ga0ff55f0a2c90bce107706d2fa34cc708"></a><br/></td></tr>
+<tr class="memitem:ga250d7c45fcf34891a2778fc6b16bbecf"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga250d7c45fcf34891a2778fc6b16bbecf"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga250d7c45fcf34891a2778fc6b16bbecf">mist::write_raw</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset=0, bool to_little_endian=false)</td></tr>
+<tr class="memdesc:ga250d7c45fcf34891a2778fc6b16bbecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を 無圧縮RAW 画像として出力する  <a href="group__image__raw__group.html#ga250d7c45fcf34891a2778fc6b16bbecf"></a><br/></td></tr>
+<tr class="memitem:gaf0eae253c4d769143fba1877c1e31930"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:gaf0eae253c4d769143fba1877c1e31930"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#gaf0eae253c4d769143fba1877c1e31930">mist::write_raw_gz</a> (const array&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array&lt; T, Allocator &gt;::value_type offset=typename array&lt; T, Allocator &gt;::value_type(0), bool to_little_endian=false)</td></tr>
+<tr class="memdesc:gaf0eae253c4d769143fba1877c1e31930"><td class="mdescLeft">&#160;</td><td class="mdescRight">MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する  <a href="group__image__raw__group.html#gaf0eae253c4d769143fba1877c1e31930"></a><br/></td></tr>
+<tr class="memitem:ga939d72732c9d524c7477be51022abe46"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:ga939d72732c9d524c7477be51022abe46"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga939d72732c9d524c7477be51022abe46">mist::read_raw</a> (array1&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array1&lt; T, Allocator &gt;::size_type w, double x, typename array1&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:ga939d72732c9d524c7477be51022abe46"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#ga939d72732c9d524c7477be51022abe46"></a><br/></td></tr>
+<tr class="memitem:ga163f589ce6ba7b4e0bf996314abc0e41"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga163f589ce6ba7b4e0bf996314abc0e41"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga163f589ce6ba7b4e0bf996314abc0e41">mist::read_raw</a> (array1&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array1&lt; T, Allocator &gt;::size_type w, double x, typename array1&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga163f589ce6ba7b4e0bf996314abc0e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#ga163f589ce6ba7b4e0bf996314abc0e41"></a><br/></td></tr>
+<tr class="memitem:ga457045ee7950c3238891932e0b4e2efa"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga457045ee7950c3238891932e0b4e2efa"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga457045ee7950c3238891932e0b4e2efa">mist::read_raw</a> (array1&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array1&lt; T, Allocator &gt;::size_type w, double x=1.0, typename array1&lt; T, Allocator &gt;::value_type offset=0, bool from_little_endian=false)</td></tr>
+<tr class="memdesc:ga457045ee7950c3238891932e0b4e2efa"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#ga457045ee7950c3238891932e0b4e2efa"></a><br/></td></tr>
+<tr class="memitem:ga8fbba41c7f6bae50c804965412bf635e"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:ga8fbba41c7f6bae50c804965412bf635e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga8fbba41c7f6bae50c804965412bf635e">mist::read_raw</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array2&lt; T, Allocator &gt;::size_type w, typename array2&lt; T, Allocator &gt;::size_type h, double x, double y, typename array2&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:ga8fbba41c7f6bae50c804965412bf635e"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#ga8fbba41c7f6bae50c804965412bf635e"></a><br/></td></tr>
+<tr class="memitem:ga2fcfa518b1f67f0f56a8079a2c906f62"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga2fcfa518b1f67f0f56a8079a2c906f62"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga2fcfa518b1f67f0f56a8079a2c906f62">mist::read_raw</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array2&lt; T, Allocator &gt;::size_type w, typename array2&lt; T, Allocator &gt;::size_type h, double x, double y, typename array2&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga2fcfa518b1f67f0f56a8079a2c906f62"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#ga2fcfa518b1f67f0f56a8079a2c906f62"></a><br/></td></tr>
+<tr class="memitem:ga7711026977c14725bca1e188a7f2e0c2"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga7711026977c14725bca1e188a7f2e0c2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga7711026977c14725bca1e188a7f2e0c2">mist::read_raw</a> (array2&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array2&lt; T, Allocator &gt;::size_type w, typename array2&lt; T, Allocator &gt;::size_type h, double x=1.0, double y=1.0, typename array2&lt; T, Allocator &gt;::value_type offset=0, bool from_little_endian=false)</td></tr>
+<tr class="memdesc:ga7711026977c14725bca1e188a7f2e0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#ga7711026977c14725bca1e188a7f2e0c2"></a><br/></td></tr>
+<tr class="memitem:ga4089ac188873c089f83188ff900c977a"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class ValueType , class Functor &gt; </td></tr>
+<tr class="memitem:ga4089ac188873c089f83188ff900c977a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga4089ac188873c089f83188ff900c977a">mist::read_raw</a> (array3&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array3&lt; T, Allocator &gt;::size_type w, typename array3&lt; T, Allocator &gt;::size_type h, typename array3&lt; T, Allocator &gt;::size_type d, double x, double y, double z, typename array3&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback)</td></tr>
+<tr class="memdesc:ga4089ac188873c089f83188ff900c977a"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#ga4089ac188873c089f83188ff900c977a"></a><br/></td></tr>
+<tr class="memitem:ga85a166992ffc87ffad277da1163801b3"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator , class Functor &gt; </td></tr>
+<tr class="memitem:ga85a166992ffc87ffad277da1163801b3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga85a166992ffc87ffad277da1163801b3">mist::read_raw</a> (array3&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array3&lt; T, Allocator &gt;::size_type w, typename array3&lt; T, Allocator &gt;::size_type h, typename array3&lt; T, Allocator &gt;::size_type d, double x, double y, double z, typename array3&lt; T, Allocator &gt;::value_type offset, bool from_little_endian, Functor callback)</td></tr>
+<tr class="memdesc:ga85a166992ffc87ffad277da1163801b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#ga85a166992ffc87ffad277da1163801b3"></a><br/></td></tr>
+<tr class="memitem:ga9215330ae66f8fa0b774a9acde503aa3"><td class="memTemplParams" colspan="2">template&lt;class T , class Allocator &gt; </td></tr>
+<tr class="memitem:ga9215330ae66f8fa0b774a9acde503aa3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__image__raw__group.html#ga9215330ae66f8fa0b774a9acde503aa3">mist::read_raw</a> (array3&lt; T, Allocator &gt; &amp;image, const std::string &amp;filename, typename array3&lt; T, Allocator &gt;::size_type w, typename array3&lt; T, Allocator &gt;::size_type h, typename array3&lt; T, Allocator &gt;::size_type d, double x=1.0, double y=1.0, double z=1.0, typename array3&lt; T, Allocator &gt;::value_type offset=typename array3&lt; T, Allocator &gt;::value_type(0), bool from_little_endian=false)</td></tr>
+<tr class="memdesc:ga9215330ae66f8fa0b774a9acde503aa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む  <a href="group__image__raw__group.html#ga9215330ae66f8fa0b774a9acde503aa3"></a><br/></td></tr>
+</table>
+<a name="details" id="details"></a><h2>説明</h2>
+<div class="textblock"><p>バイナリ画像を読み書きするためのライブラリ </p>
+</div></div><!-- contents -->
+<hr size="1"><address style="align: right;"><small>
+Generated on Wed Nov 12 2014 19:44:28 for MIST by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.1.2</small></address>
+</body>
+</html>
