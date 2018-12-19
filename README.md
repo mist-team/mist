@@ -3,3 +3,6 @@
 
 # ドキュメント
 https://mist-team.github.io/mist/
+
+# チュートリアル
+https://github.com/mist-team/mist/wiki
